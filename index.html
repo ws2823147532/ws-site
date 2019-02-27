@@ -5,22 +5,19 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="dns-prefetch" href="//litten.me">
-  <title>Litten的博客</title>
+  <link rel="dns-prefetch" href="https://ws2823147532.github.io/ws-site">
+  <title>wangshang&#39;s博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与前端性能。非专业视觉设计师。此为博客一枚。">
-<meta name="keywords" content="前端,js,jquery,javascript,html5,开发者,程序猿,程序媛,极客,编程,代码,开源,IT网站,Developer,Programmer,Coder,Geek,html,css,css3,用户体验">
+  <meta name="keywords" content="java,python">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Litten的博客">
-<meta property="og:url" content="//litten.me/index.html">
-<meta property="og:site_name" content="Litten的博客">
-<meta property="og:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与前端性能。非专业视觉设计师。此为博客一枚。">
+<meta property="og:title" content="wangshang&#39;s博客">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/index.html">
+<meta property="og:site_name" content="wangshang&#39;s博客">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Litten的博客">
-<meta name="twitter:description" content="华中科技大学09级，就职于腾讯SNG。擅长各项前端技能，深入研究移动端开发与前端性能。非专业视觉设计师。此为博客一枚。">
+<meta name="twitter:title" content="wangshang&#39;s博客">
   
-    <link rel="alternative" href="/atom.xml" title="Litten的博客" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="wangshang&#39;s博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -50,10 +47,8 @@
 			<img src class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">Litten</a></h1>
+		  <h1 class="header-author"><a href="/">王尚</a></h1>
 		</hgroup>
-		
-		<p class="header-subtitle">胆小认生，不易相处</p>
 		
 
 		<nav class="header-menu">
@@ -110,10 +105,8 @@
 				<img src class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">Litten</h1>
+			  <h1 class="header-author js-header-author">王尚</h1>
 			</hgroup>
-			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>胆小认生，不易相处<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -159,6 +152,106 @@
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-记一次线上JVM问题调试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/ws-site/2019/02/27/记一次线上JVM问题调试/">记一次线上JVM问题调试</a>
+    </h1>
+  
+
+        
+        <a href="/ws-site/2019/02/27/记一次线上JVM问题调试/" class="archive-article-date">
+  	<time datetime="2019-02-27T03:21:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="发现java进程"><a href="#发现java进程" class="headerlink" title="发现java进程"></a>发现java进程</h3><ul>
+<li>使用linux命令：ps</li>
+</ul>
+<pre><code>ps -ef | grep prcessName
+[root@YZSJHL81-35 ~]# ps -ef | grep Bootstrap
+root     118271      1 99 00:10 ?        3-16:08:07  Bootstrap start
+root     197682 197016  0 17:08 pts/0    00:00:00 grep Bootstrap
+</code></pre><ul>
+<li>使用java自带的检测工具 jps</li>
+</ul>
+<pre><code>[root@YZSJHL81-35 ~]# jps
+118271 Bootstrap
+197101 Jps
+</code></pre>
+        
+          <a class="article-more-a" href="/ws-site/2019/02/27/记一次线上JVM问题调试/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">JVM问题调试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/ws-site/categories/JVM//" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/ws-site/2019/02/27/记一次线上JVM问题调试/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-demo" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -248,7 +341,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 Litten
+    		&copy; 2019 王尚
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -329,6 +422,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">JVM问题调试</a>
+              </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">css</a>

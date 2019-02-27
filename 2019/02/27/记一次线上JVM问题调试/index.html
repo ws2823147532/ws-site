@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://ws2823147532.github.io/ws-site">
-  <title>Archives: 2015/10 | wangshang&#39;s博客</title>
+  <title>记一次线上JVM问题调试 | wangshang&#39;s博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="java,python">
-<meta property="og:type" content="website">
-<meta property="og:title" content="wangshang&#39;s博客">
-<meta property="og:url" content="https://ws2823147532.github.io/ws-site/archives/2015/10/index.html">
+  <meta name="description" content="记录一次线上JVM问题调试的过程">
+<meta name="keywords" content="JVM问题调试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次线上JVM问题调试">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/2019/02/27/记一次线上JVM问题调试/index.html">
 <meta property="og:site_name" content="wangshang&#39;s博客">
+<meta property="og:description" content="记录一次线上JVM问题调试的过程">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-27T03:26:22.573Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wangshang&#39;s博客">
+<meta name="twitter:title" content="记一次线上JVM问题调试">
+<meta name="twitter:description" content="记录一次线上JVM问题调试的过程">
   
     <link rel="alternative" href="/atom.xml" title="wangshang&#39;s博客" type="application/atom+xml">
   
@@ -151,60 +155,223 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-记一次线上JVM问题调试" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/ws-site/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/ws-site/2015/10/21/demo/" class="archive-article-date">
-  	<time datetime="2015-10-21T02:34:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-10-21</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/ws-site/2015/10/21/demo/">辨析 Sass 中的 Map 和 List</a>
+    <h1 class="article-title" itemprop="name">
+      记一次线上JVM问题调试
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/ws-site/2019/02/27/记一次线上JVM问题调试/" class="archive-article-date">
+  	<time datetime="2019-02-27T03:21:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="发现java进程"><a href="#发现java进程" class="headerlink" title="发现java进程"></a>发现java进程</h3><ul>
+<li>使用linux命令：ps</li>
+</ul>
+<pre><code>ps -ef | grep prcessName
+[root@YZSJHL81-35 ~]# ps -ef | grep Bootstrap
+root     118271      1 99 00:10 ?        3-16:08:07  Bootstrap start
+root     197682 197016  0 17:08 pts/0    00:00:00 grep Bootstrap
+</code></pre><ul>
+<li>使用java自带的检测工具 jps</li>
+</ul>
+<pre><code>[root@YZSJHL81-35 ~]# jps
+118271 Bootstrap
+197101 Jps
+</code></pre><a id="more"></a>
+<ul>
+<li>检测java进程启动的时间</li>
+</ul>
+<pre><code>ps -p 118271 -o etime
+ps -p 118271 -o etime=
+</code></pre><ul>
+<li>检测进程打开的文件数</li>
+</ul>
+<pre><code>lsof -n -p 118271 | wc -l
+</code></pre><h3 id="检测系统的进程"><a href="#检测系统的进程" class="headerlink" title="检测系统的进程"></a>检测系统的进程</h3><ul>
+<li>top</li>
+</ul>
+<pre><code>top - 17:11:21 up 132 days,  2:14,  1 user,  load average: 0.12, 0.21, 0.18
+Tasks: 298 total,   1 running, 297 sleeping,   0 stopped,   0 zombie
+Cpu(s):  1.0%us,  0.6%sy,  0.0%ni, 98.0%id,  0.3%wa,  0.0%hi,  0.1%si,  0.0%st
+Mem:  99009860k total, 90554384k used,  8455476k free,   333672k buffers
+Swap:        0k total,        0k used,        0k free, 81820024k cached
+
+PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+
+q-退出
+1-显示所有的cpu及其状态
+</code></pre><ul>
+<li>查看指定进程下所有线程的状态</li>
+</ul>
+<pre><code>top -Hp pid
+</code></pre><h3 id="查看JVM的GC状态"><a href="#查看JVM的GC状态" class="headerlink" title="查看JVM的GC状态"></a>查看JVM的GC状态</h3><pre><code>jstat -gcutil -t pid 1000 100 ---查看pid进程的GC状态每隔1000ms一次，一共100次
+</code></pre><p>​    </p>
+<h3 id="查看JVM栈信息"><a href="#查看JVM栈信息" class="headerlink" title="查看JVM栈信息"></a>查看JVM栈信息</h3><pre><code>printf &apos;%x\n&apos; tid -- 打印指定线程id的十六进制表示
+jstack pid | grep &apos;tid十六进制&apos; -C20 -color  -- 查看进程的栈信息
+jmap -histo:live pid --查看进程所有存活的实例
+jmap -dumap:format=b,file=dump.hprof pid --导出JVM的dump文件
+</code></pre>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">css</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">JVM问题调试</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/ws-site/categories/JVM//" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=https://ws2823147532.github.io/ws-site/2019/02/27/记一次线上JVM问题调试/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/ws-site/2015/10/21/demo/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">辨析 Sass 中的 Map 和 List</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -227,8 +394,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
