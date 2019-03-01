@@ -3,11 +3,11 @@
   <title>wangshang&#39;s博客</title>
   
   <subtitle>记录学习</subtitle>
-  <link href="/ws-site/atom.xml" rel="self"/>
+  <link href="/atom.xml" rel="self"/>
   
-  <link href="https://ws2823147532.github.io/ws-site/"/>
+  <link href="https://shang.at/"/>
   <updated>2019-02-27T04:24:46.202Z</updated>
-  <id>https://ws2823147532.github.io/ws-site/</id>
+  <id>https://shang.at/</id>
   
   <author>
     <name>王尚</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>记一次线上JVM问题调试</title>
-    <link href="https://ws2823147532.github.io/ws-site/post/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BA%BF%E4%B8%8AJVM%E9%97%AE%E9%A2%98%E8%B0%83%E8%AF%95/"/>
-    <id>https://ws2823147532.github.io/ws-site/post/记一次线上JVM问题调试/</id>
+    <link href="https://shang.at/post/%E8%AE%B0%E4%B8%80%E6%AC%A1%E7%BA%BF%E4%B8%8AJVM%E9%97%AE%E9%A2%98%E8%B0%83%E8%AF%95/"/>
+    <id>https://shang.at/post/记一次线上JVM问题调试/</id>
     <published>2019-02-27T03:21:32.000Z</published>
     <updated>2019-02-27T04:24:46.202Z</updated>
     
@@ -31,17 +31,17 @@
     
     </summary>
     
-      <category term="JVM" scheme="https://ws2823147532.github.io/ws-site/categories/JVM/"/>
+      <category term="JVM" scheme="https://shang.at/categories/JVM/"/>
     
     
-      <category term="JVM问题调试" scheme="https://ws2823147532.github.io/ws-site/tags/JVM%E9%97%AE%E9%A2%98%E8%B0%83%E8%AF%95/"/>
+      <category term="JVM问题调试" scheme="https://shang.at/tags/JVM%E9%97%AE%E9%A2%98%E8%B0%83%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>辨析 Sass 中的 Map 和 List</title>
-    <link href="https://ws2823147532.github.io/ws-site/post/demo/"/>
-    <id>https://ws2823147532.github.io/ws-site/post/demo/</id>
+    <link href="https://shang.at/post/demo/"/>
+    <id>https://shang.at/post/demo/</id>
     <published>2015-10-21T02:34:12.000Z</published>
     <updated>2019-02-27T04:21:45.236Z</updated>
     
@@ -56,7 +56,7 @@
     </summary>
     
     
-      <category term="css" scheme="https://ws2823147532.github.io/ws-site/tags/css/"/>
+      <category term="css" scheme="https://shang.at/tags/css/"/>
     
   </entry>
   

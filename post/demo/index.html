@@ -3,17 +3,17 @@
 <head><meta name="generator" content="Hexo 3.8.0">
 <meta charset="utf-8">
 <title>辨析 Sass 中的 Map 和 List - wangshang&#39;s博客</title>
-<base href="/ws-site/">
+<base href="/">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-<link rel="canonical" href="https://ws2823147532.github.io/ws-site/post/demo/">
-<link rel="icon" type="image/x-icon" href="/ws-site/favicon.ico">
+<link rel="canonical" href="https://shang.at/post/demo/">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
 <meta name="description" content="如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。 自从可以使用 Map 之后，开发者们开始毫">
 <meta name="keywords" content="css">
 <meta property="og:type" content="website">
 <meta property="og:title" content="辨析 Sass 中的 Map 和 List">
-<meta property="og:url" content="https://ws2823147532.github.io/ws-site/post/demo/index.html">
+<meta property="og:url" content="https://shang.at/post/demo/index.html">
 <meta property="og:site_name" content="wangshang&#39;s博客">
 <meta property="og:description" content="如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。 自从可以使用 Map 之后，开发者们开始毫">
 <meta property="og:locale" content="default">
@@ -23,15 +23,15 @@
 <meta name="twitter:title" content="辨析 Sass 中的 Map 和 List">
 <meta name="twitter:description" content="如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。 自从可以使用 Map 之后，开发者们开始毫">
 <meta name="twitter:image" content="https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=160">
-<link rel="alternate" type="application/atom+xml" title="wangshang&#39;s博客" href="/ws-site/atom.xml">
-<link rel="stylesheet" href="/ws-site/fonts.b9b22ef890c930ac7a13.css">
-<link rel="stylesheet" href="/ws-site/styles.942c2aa7be6bc74cfb59.css">
-<link rel="stylesheet" href="/ws-site/theme.79d0cb0b7f53a2ae2dbb.css">
-<script src="/ws-site/config.7c6987b3f44872b87b0a.js"></script>
+<link rel="alternate" type="application/atom+xml" title="wangshang&#39;s博客" href="/atom.xml">
+<link rel="stylesheet" href="/fonts.b9b22ef890c930ac7a13.css">
+<link rel="stylesheet" href="/styles.942c2aa7be6bc74cfb59.css">
+<link rel="stylesheet" href="/theme.79d0cb0b7f53a2ae2dbb.css">
+<script src="/config.e815c37919248929622f.js"></script>
 </head>
 <body>
 <is-d2a57d></is-d2a57d>
-<script src="/ws-site/runtime.a5dd35324ddfd942bef1.js"></script>
-<script src="/ws-site/polyfills.bd3fb034406e30e3b5dc.js"></script>
-<script src="/ws-site/main.8f14c2dee0d43c5f5861.en.js"></script></body>
+<script src="/runtime.a5dd35324ddfd942bef1.js"></script>
+<script src="/polyfills.bd3fb034406e30e3b5dc.js"></script>
+<script src="/main.8f14c2dee0d43c5f5861.en.js"></script></body>
 </html>
