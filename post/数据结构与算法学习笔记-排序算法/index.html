@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>数据结构与算法学习笔记-排序算法 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class="logo" href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id="post">
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>数据结构与算法学习笔记-排序算法</h1>
+          <div class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月29日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#排序算法" class="tag">排序算法</a>
+
+
+            
+          </div>
+          <h3 id="O-n-2"><a href="#O-n-2" class="headerlink" title="O(n^2)"></a>O(n^2)</h3><h4 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序(Bubble Sort)"></a>冒泡排序(Bubble Sort)</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒泡排序只会操作相邻的两个数据。每次冒泡操作都会对相邻的两个元素进行比较，看是否符合大小关系要求。如果不满足就互换位置。一次冒泡至少会让一个元素移动到它应该在的位置，重复n次，就完成了n个元素的排序工作。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    冒泡排序：从小到大</span></span><br><span class="line"><span class="string">    :param nums:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">      <span class="keyword">return</span> nums</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, len(nums)):</span><br><span class="line">            <span class="keyword">if</span> nums[i] &gt; nums[j]:</span><br><span class="line">                nums[i], nums[j] = nums[j], nums[i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort1</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">      <span class="keyword">return</span> nums</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(nums) - <span class="number">1</span> - i):</span><br><span class="line">            <span class="keyword">if</span> nums[j] &gt; nums[j + i]:</span><br><span class="line">                nums[j], nums[j + <span class="number">1</span>] = nums[j + <span class="number">1</span>], nums[j]</span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    nums = [<span class="number">-23</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">-4</span>, <span class="number">34</span>]</span><br><span class="line">    print(bubble_sort(nums))</span><br></pre></td></tr></table></figure>
+<h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">将一个元素插入一个已经有序的序列，使其依然有序。首先，将原始的序列分为两个子序列，有序的和无序的，然后，从无序的序列中依次拿出一个元素，插入到有序的序列的合适位置，并保持有序的序列依然有序，直到无序的序列中没有元素了。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert_sort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(nums)):</span><br><span class="line">        tmp = nums[i]</span><br><span class="line">        j = i - <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> tmp &lt; nums[j]:</span><br><span class="line">                nums[j + <span class="number">1</span>] = nums[j]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        nums[j + <span class="number">1</span>] = tmp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    nums = [<span class="number">-23</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">-4</span>, <span class="number">34</span>, <span class="number">2</span>]</span><br><span class="line">    print(insert_sort(nums))</span><br></pre></td></tr></table></figure>
+<h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">选择排序是选择无序序列中的最小的元素放到有序序列的末尾，直到无序序列没有元素。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums) - <span class="number">1</span>):</span><br><span class="line">        min_val = nums[i]</span><br><span class="line">        min_j = i</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i + <span class="number">1</span>, len(nums)):</span><br><span class="line">            <span class="keyword">if</span> min_val &gt; nums[j]:</span><br><span class="line">                min_val = nums[j]</span><br><span class="line">                min_j = j</span><br><span class="line">        nums[i], nums[min_j] = nums[min_j], nums[i]</span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    nums = [<span class="number">-23</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">-4</span>, <span class="number">34</span>, <span class="number">2</span>]</span><br><span class="line">    print(selection_sort(nums))</span><br></pre></td></tr></table></figure>
+<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">希尔排序是对插入排序的优化。</span><br><span class="line">希尔排序，通过将原始序列按照一定的步长划分为多个子序列</span><br><span class="line">	将原始的一维数组映射成二维数组，</span><br><span class="line">	然后按列进行插入排序，</span><br><span class="line">这样的话，可以让一个元素在一次比较中跨越较大的区间，随后算法在使用较小的步长，一直到步长为1</span><br><span class="line">(已知当对有序度较高数组进行排序时，插入排序的时间复杂度接近O(N)，因此可以大幅度提高插入排序的效率)。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常见的步长选择有</p>
+</blockquote>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1g1v89bmqd2j30oe082q9e.jpg" alt="image-20190408145100849"></p>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort</span><span class="params">(list)</span>:</span></span><br><span class="line">    n = len(list)</span><br><span class="line">    <span class="comment"># 初始步长</span></span><br><span class="line">    gap = n // <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> gap &gt; <span class="number">0</span>:</span><br><span class="line">        print(gap)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(gap, n):</span><br><span class="line">            <span class="comment"># 每个步长进行插入排序</span></span><br><span class="line">            temp = list[i]</span><br><span class="line">            j = i</span><br><span class="line">            <span class="comment"># 插入排序</span></span><br><span class="line">            <span class="keyword">while</span> j &gt;= gap <span class="keyword">and</span> list[j - gap] &gt; temp:</span><br><span class="line">                list[j] = list[j - gap]</span><br><span class="line">                j -= gap</span><br><span class="line">                print(<span class="string">'inner='</span>, list)</span><br><span class="line">            list[j] = temp</span><br><span class="line">        print(list)</span><br><span class="line">        <span class="comment"># 得到新的步长</span></span><br><span class="line">        gap = gap // <span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shell_sort1</span><span class="params">(collection)</span>:</span></span><br><span class="line">    <span class="comment"># Marcin Ciura's gap sequence</span></span><br><span class="line">    gaps = [<span class="number">701</span>, <span class="number">301</span>, <span class="number">132</span>, <span class="number">57</span>, <span class="number">23</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> gap <span class="keyword">in</span> gaps:</span><br><span class="line">        i = gap</span><br><span class="line">        <span class="keyword">while</span> i &lt; len(collection):</span><br><span class="line">            temp = collection[i]</span><br><span class="line">            j = i</span><br><span class="line">            <span class="keyword">while</span> j &gt;= gap <span class="keyword">and</span> collection[j - gap] &gt; temp:</span><br><span class="line">                collection[j] = collection[j - gap]</span><br><span class="line">                j -= gap</span><br><span class="line">            collection[j] = temp</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> collection</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    nums = [<span class="number">-23</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">-4</span>, <span class="number">34</span>, <span class="number">2</span>]</span><br><span class="line">    print(<span class="string">'\n'</span>, shell_sort1(nums))</span><br></pre></td></tr></table></figure>
+<h3 id="O-nlogn"><a href="#O-nlogn" class="headerlink" title="O(nlogn)"></a>O(nlogn)</h3><h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<p>将数组分为两部分，分别排序，最后将两部分排好序的数组合并成一个有序的数组。利用递归的方式，重复上述过程。</p>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(nums)</span>:</span></span><br><span class="line">    print(<span class="string">'before='</span>, nums)</span><br><span class="line">    length = len(nums)</span><br><span class="line">    <span class="keyword">if</span> length &gt; <span class="number">1</span>:</span><br><span class="line">        midpoint = length // <span class="number">2</span></span><br><span class="line">        left_half = merge_sort(nums[:midpoint])</span><br><span class="line">        right_half = merge_sort(nums[midpoint:])</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        k = <span class="number">0</span></span><br><span class="line">        left_length = len(left_half)</span><br><span class="line">        right_length = len(right_half)</span><br><span class="line">        <span class="keyword">while</span> i &lt; left_length <span class="keyword">and</span> j &lt; right_length:</span><br><span class="line">            <span class="keyword">if</span> left_half[i] &lt; right_half[j]:</span><br><span class="line">                nums[k] = left_half[i]</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                nums[k] = right_half[j]</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">            k += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> i &lt; left_length:</span><br><span class="line">            nums[k] = left_half[i]</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">            k += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> j &lt; right_length:</span><br><span class="line">            nums[k] = right_half[j]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">            k += <span class="number">1</span></span><br><span class="line">    print(<span class="string">'after='</span>, nums)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    nums = [<span class="number">-23</span>, <span class="number">0</span>, <span class="number">6</span>, <span class="number">-4</span>, <span class="number">34</span>, <span class="number">2</span>]</span><br><span class="line">    print(<span class="string">'\n'</span>, merge_sort(nums))</span><br></pre></td></tr></table></figure>
+<h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<p>随机选择一个pivot节点，然后将少数组中的数据分成大于pivot和小于pivot的两部分，然后递归地将大于pivot和小于pivot的部分再按照相同的思路处理，直到每个pivot两端的部分都只有最多一个元素</p>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(collection)</span>:</span></span><br><span class="line">    length = len(collection)</span><br><span class="line">    <span class="keyword">if</span> length &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> collection</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = collection[<span class="number">0</span>]</span><br><span class="line">        greater = [element <span class="keyword">for</span> element <span class="keyword">in</span> collection[<span class="number">1</span>:] <span class="keyword">if</span> element &gt; pivot]</span><br><span class="line">        lesser = [element <span class="keyword">for</span> element <span class="keyword">in</span> collection[<span class="number">1</span>:] <span class="keyword">if</span> element &lt;= pivot]</span><br><span class="line">        <span class="keyword">return</span> quick_sort(lesser) + [pivot] + quick_sort(greater)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>O(n) 时间复杂度内求无序数组中的第 K 大元素</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择数组的最后一个元素，作为pivot，然后将数组的所有元素分为大于pivot和小于pivot的两部分，</span></span><br><span class="line"><span class="comment"># 如果 len(lesser) == k - 1，则返回pivot</span></span><br><span class="line"><span class="comment"># 如果 len(lesser) &gt;= k，则说明要查找的元素在小于pivot的部分，那么继续在lesser中查找</span></span><br><span class="line"><span class="comment"># 否则的话，说明要查找的元素在大于pivot的部分，那么继续在greater中查找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_k_max</span><span class="params">(nums, k)</span>:</span></span><br><span class="line">    length = len(nums)</span><br><span class="line">    <span class="keyword">if</span> length &lt; k:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    pivot = nums[length - <span class="number">1</span>]</span><br><span class="line">    greater = [element <span class="keyword">for</span> element <span class="keyword">in</span> nums[:length - <span class="number">1</span>] <span class="keyword">if</span> element &gt; pivot]</span><br><span class="line">    lesser = [element <span class="keyword">for</span> element <span class="keyword">in</span> nums[:length - <span class="number">1</span>] <span class="keyword">if</span> element &lt;= pivot]</span><br><span class="line">    <span class="keyword">if</span> len(lesser) == k - <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> pivot</span><br><span class="line">    <span class="keyword">elif</span> len(lesser) &gt;= k:</span><br><span class="line">        <span class="keyword">return</span> find_k_max(lesser, k)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> find_k_max(greater, k - len(lesser) - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="O-n"><a href="#O-n" class="headerlink" title="O(n)"></a>O(n)</h3><h4 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h4><blockquote>
+<p>算法描述</p>
+</blockquote>
+<blockquote>
+<p>算法实现</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>排序算法</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+<th>稳定性</th>
+<th>是否基于比较</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冒泡排序</td>
+<td>O($$n^2$$)</td>
+<td>O(1)</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>选择排序</td>
+<td>O($$n^2$$)</td>
+<td>O(1)</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>插入排序</td>
+<td>O($$n^2$$)</td>
+<td>O(1)</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td>O($$nlog^2n$$)</td>
+<td>O(1)</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>O($$nlogn$$)</td>
+<td>O(n)</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>O($$nlogn$$)</td>
+<td>O(1)</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td>O($$nlogn$$)</td>
+<td></td>
+<td></td>
+<td>是</td>
+</tr>
+<tr>
+<td>计数排序</td>
+<td>O($$n$$)</td>
+<td></td>
+<td></td>
+<td>否</td>
+</tr>
+<tr>
+<td>计数排序</td>
+<td>O($$n$$)</td>
+<td></td>
+<td></td>
+<td>否</td>
+</tr>
+<tr>
+<td>桶排序</td>
+<td>O($$n$$)</td>
+<td></td>
+<td></td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#O-n-2"><span class="toc-number">1.</span> <span class="toc-text">O(n^2)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#冒泡排序-Bubble-Sort"><span class="toc-number">1.1.</span> <span class="toc-text">冒泡排序(Bubble Sort)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#插入排序"><span class="toc-number">1.2.</span> <span class="toc-text">插入排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#选择排序"><span class="toc-number">1.3.</span> <span class="toc-text">选择排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#希尔排序"><span class="toc-number">1.4.</span> <span class="toc-text">希尔排序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O-nlogn"><span class="toc-number">2.</span> <span class="toc-text">O(nlogn)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#归并排序"><span class="toc-number">2.1.</span> <span class="toc-text">归并排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#快速排序"><span class="toc-number">2.2.</span> <span class="toc-text">快速排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#堆排序"><span class="toc-number">2.3.</span> <span class="toc-text">堆排序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#O-n"><span class="toc-number">3.</span> <span class="toc-text">O(n)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#计数排序"><span class="toc-number">3.1.</span> <span class="toc-text">计数排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基数排序"><span class="toc-number">3.2.</span> <span class="toc-text">基数排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#桶排序"><span class="toc-number">3.3.</span> <span class="toc-text">桶排序</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/数据结构与算法学习笔记-排序算法/";
+  var disqus_url = "https://shang.at/post/数据结构与算法学习笔记-排序算法/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

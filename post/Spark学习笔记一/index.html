@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Spark学习笔记一 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class="logo" href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id="post">
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Spark学习笔记一</h1>
+          <div class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月10日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#pyspark官方文档学习" class="tag">pyspark官方文档学习</a>
+
+
+            
+          </div>
+          <blockquote>
+<p>版本：pyspark 2.4.0</p>
+</blockquote>
+<h2 id="主要包"><a href="#主要包" class="headerlink" title="主要包"></a>主要包</h2><ul>
+<li><a href="#pyspark">pyspark</a></li>
+<li><a href="http://spark.apache.org/docs/latest/api/python/pyspark.sql.html" target="_blank" rel="noopener">pyspark.sql module</a></li>
+<li><a href="http://spark.apache.org/docs/latest/api/python/pyspark.streaming.html" target="_blank" rel="noopener">pyspark.streaming module</a></li>
+<li><a href="http://spark.apache.org/docs/latest/api/python/pyspark.ml.html" target="_blank" rel="noopener">pyspark.ml package</a></li>
+<li><a href="http://spark.apache.org/docs/latest/api/python/pyspark.mllib.html" target="_blank" rel="noopener">pyspark.mllib package</a></li>
+</ul>
+<h3 id="pyspark"><a href="#pyspark" class="headerlink" title="pyspark"></a>pyspark</h3><ul>
+<li><p>pyspark.<strong>SparkConf</strong>(<em>loadDefaults=True</em>, <em>_jvm=None</em>, <em>_jconf=None</em>)</p>
+<p>是spark应用的配置类，默认loadDefaults=True，会自动加载java系统参数中的spark.*的参数，_jconf是一个已经存在的sparkConf句柄</p>
+<p>主要api：</p>
+<ul>
+<li>setMaster()<ul>
+<li>设置应用的提交类型：local|local[n]|local[*] or 不填，本地测试时可以填local系列，提交到集群运行时可以不用填，提交任务的时候会根据集群的配置，自动选择提交的类型：standalone或者yarn模式</li>
+</ul>
+</li>
+<li>setAppName()<ul>
+<li>设置应用的名称</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>pyspark.<strong>SparkContext</strong>(<em>master=None</em>, <em>appName=None</em>, <em>sparkHome=None</em>, <em>pyFiles=None</em>, <em>environment=None</em>, <em>batchSize=0</em>, <em>serializer=PickleSerializer()</em>, <em>conf=None</em>, <em>gateway=None</em>, <em>jsc=None</em>, <em>profiler_cls=<class 'pyspark.profiler.basicprofiler'></class></em>)</p>
+<p>spark应用上下文，是spark应用的主要入口。代表了与spark cluster的链接，可以用来在集群中创建RDD和广播变量。</p>
+<p>主要api讲解：</p>
+<ul>
+<li><p>addFile(self, path, recursive=False)</p>
+<ul>
+<li>为spark job添加一个可下载文件，spark的每一个node都会下载一份，可以是local file、hdfs file、http file、https file或ftp file。可以使用SparkFiles通过<strong>文件名</strong>来读取设置的文件，</li>
+</ul>
+<blockquote>
+<p>注意，每个应用中，每个文件名只能设置一次。recursive设置为True时，传递的path可以是目录，但是目前只支持hdfs file的场景</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> tempfile <span class="keyword">import</span> gettempdir</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf</span><br><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkContext</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkFiles</span><br><span class="line"></span><br><span class="line">    conf = SparkConf()</span><br><span class="line">    conf.setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"My app"</span>)</span><br><span class="line">    sc = SparkContext(conf=conf)</span><br><span class="line">    path = os.path.join(gettempdir(), <span class="string">"test.txt"</span>)</span><br><span class="line">    print(path)</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">"w"</span>) <span class="keyword">as</span> testFile:</span><br><span class="line">        _ = testFile.write(<span class="string">"100"</span>)</span><br><span class="line">    sc.addFile(path)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(iterator)</span>:</span></span><br><span class="line">        <span class="keyword">with</span> open(SparkFiles.get(<span class="string">'test.txt'</span>)) <span class="keyword">as</span> testFile:</span><br><span class="line">            fileVal = int(testFile.readline())</span><br><span class="line">            print(fileVal)</span><br><span class="line">            <span class="keyword">return</span> [x * fileVal <span class="keyword">for</span> x <span class="keyword">in</span> iterator]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    result = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]).mapPartitions(func).collect()</span><br><span class="line">    print(result)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>accumulator(<em>value</em>, <em>accum_param=None</em>)</p>
+<ul>
+<li>创建一个累加器。一个全局共享的可以进行累加的变量，只能在worker上进行update操作，在driver上获取结果值得操作。值类型默认是int和float类型，也可以使用accum_param参数设置为自定义的数据类型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 代码后加</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>broadcast(value)</p>
+<ul>
+<li>在集群中广播一个只读的值，返回一个Broadcast对象，以便在分布式方法中调用。被广播的变量只会被发送到集群的各个node上一次</li>
+</ul>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主要包"><span class="toc-number">1.</span> <span class="toc-text">主要包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pyspark"><span class="toc-number">1.1.</span> <span class="toc-text">pyspark</span></a></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Spark学习笔记一/";
+  var disqus_url = "https://shang.at/post/Spark学习笔记一/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

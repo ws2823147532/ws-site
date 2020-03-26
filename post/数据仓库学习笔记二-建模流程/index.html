@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>数据仓库学习笔记二-建模流程 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class="logo" href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id="post">
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>数据仓库学习笔记二-建模流程</h1>
+          <div class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据仓库/">数据仓库</a>
+  </div>
+
+
+
+            
+            
+          </div>
+          <h2 id="数据建模的基本流程"><a href="#数据建模的基本流程" class="headerlink" title="数据建模的基本流程"></a>数据建模的基本流程</h2><p>在建模的不同阶段，将数据模型分为三个层次，每层的作用各不相同。</p>
+<ul>
+<li>概念模型:确定系统的核心以及划清系统范围和 边界 </li>
+<li>逻辑模型:梳理业务规则以及对概念模型的求精 </li>
+<li>物理模型:从性能、访问、开发等多方面考虑， 做系统的实现 </li>
+</ul>
+<h4 id="概念模型"><a href="#概念模型" class="headerlink" title="概念模型"></a>概念模型</h4><p>概念建模小贴士1 </p>
+<ul>
+<li>注重全局的理解而非细节 </li>
+<li>在概念模型阶段，即需要对整体架构做思考 </li>
+<li>概念模型通常是自上而下的模式，通过会议等模式反复沟通，澄清需求 </li>
+<li>在此阶段，应粗略地估算出整个项目需要的时间以及项目计划草案 </li>
+<li>根据计划粗略地估算出项目的费用 </li>
+<li>是数据模型工程师与客户沟通的破冰之旅，使他们在此期间达成共识并奠定未来良好的沟通基础以及私人关系 </li>
+<li>出品的概念模型可以帮助划定系统边界以及避免方向性的错误 </li>
+<li>商业主导，相比技术专家而言，更需要商业专家</li>
+<li>是未来逻辑模型的沟通基础，以及逐步求精的依据 </li>
+</ul>
+<p>概念模型交付品通常具备如下特点: </p>
+<ul>
+<li>与客户一致的商业语言 </li>
+<li>尽量一页纸描述清楚整个模型</li>
+<li>通常用实体关系型图表示，但不需添加实体的属性 </li>
+<li>允许多对多的关系存在 </li>
+</ul>
+<h4 id="逻辑模型"><a href="#逻辑模型" class="headerlink" title="逻辑模型"></a>逻辑模型</h4><p>逻辑建模小提示1</p>
+<ul>
+<li>应更精确估算出整个项目需要的时间以及项目计划草案 </li>
+<li>并且根据计划更精确地估算出项目的费用 </li>
+<li>当实体数量超过100时，需要定义术语表 </li>
+<li>规范化</li>
+<li>先规范化再逆规范化，不可一步到位 </li>
+<li>不可缺少约束的定义</li>
+<li>使用CASE工具做逻辑模型 </li>
+<li>多对多关系需要解决 </li>
+<li>需要同级评审(Peer Review) </li>
+<li>确定可信赖数据源，关键属性需用真实数据验证 </li>
+<li>应用成熟的建模模式(Pattern)</li>
+<li>一定程度的抽象化，决定了未来模型的弹性</li>
+<li>高质量的模型定义 </li>
+<li>重要关联关系需要强制建立 </li>
+<li>与概念模型保持一致 </li>
+<li>注意模型的版本管理 </li>
+<li>非常非常注意细节</li>
+<li>数据库专家深度介入</li>
+<li>占据整个数据建模80%以上时间</li>
+<li>不要忽视属性的长度定义和约束定义</li>
+<li>不要忽视属性的默认值(Default Value) </li>
+<li>使用控制数据范围的域(Domain) </li>
+</ul>
+<p>逻辑建模交付品的特点</p>
+<ul>
+<li>要像一本书，而非一页纸</li>
+<li>所有实体属性均需添加</li>
+<li>实体间关系要清晰描述</li>
+<li>使用术语表</li>
+<li>遵循命名规范</li>
+<li>采用CASE工具创建项目文件</li>
+<li>对各个实体必须有清晰描述</li>
+<li>对关键属性必须有清晰描述</li>
+</ul>
+<h4 id="物理模型"><a href="#物理模型" class="headerlink" title="物理模型"></a>物理模型</h4><p>物理建模小贴士1</p>
+<ul>
+<li>使用CASE工具由逻辑模型自动生成 </li>
+<li>应用术语表自动转换生成字段名称</li>
+<li>对表空间、索引、视图、物化视图、主键、外键等都有命名规则</li>
+<li>逆规范化在逻辑层完成，而非本层</li>
+<li>数据库DBA深度介入，需要DBA的评审(Peer Review)</li>
+<li>和数据库的DDL保持一致</li>
+<li>注意版本管理</li>
+<li>注意开发、测试、生产三个不同版本的模型管理</li>
+<li>注意性能</li>
+<li>估算数据规模</li>
+<li>考虑数据归档</li>
+<li>充分考虑未来使用数据库的优点和缺点 </li>
+</ul>
+<p>物理建模交付品的特点</p>
+<ul>
+<li>自动生成基础库表结构，之后适度手动调整 </li>
+<li>与未来要使用的数据库类型息息相关 </li>
+<li>生成数据字典并发布</li>
+<li>可直接用于生成DDL</li>
+<li>DDL中注意注释的生成 </li>
+</ul>
+<h2 id="如何进行高质量数据建模"><a href="#如何进行高质量数据建模" class="headerlink" title="如何进行高质量数据建模"></a>如何进行高质量数据建模</h2><p>什么样的模型算是高质量数据模型? </p>
+<ul>
+<li>对真实世界的抽象正确而完整 </li>
+<li>用建模语言表达清晰而准确</li>
+<li>框架稳定且灵活，满足当下的需求并能够一定程度容纳未来的变化 </li>
+<li>根据需求尽可能减少数据冗余</li>
+<li>充分考虑潜在的性能问题</li>
+<li>从企业全局的视角出发构筑模型 </li>
+</ul>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1g0pvn5khjfj31040fmq7c.jpg" alt="image-20190303202626939"></p>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据建模的基本流程"><span class="toc-number">1.</span> <span class="toc-text">数据建模的基本流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概念模型"><span class="toc-number">1.0.1.</span> <span class="toc-text">概念模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#逻辑模型"><span class="toc-number">1.0.2.</span> <span class="toc-text">逻辑模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#物理模型"><span class="toc-number">1.0.3.</span> <span class="toc-text">物理模型</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#如何进行高质量数据建模"><span class="toc-number">2.</span> <span class="toc-text">如何进行高质量数据建模</span></a></li>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/数据仓库学习笔记二-建模流程/";
+  var disqus_url = "https://shang.at/post/数据仓库学习笔记二-建模流程/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

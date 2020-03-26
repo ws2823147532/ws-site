@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Spark学习笔记-SparkSQL内置函数 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class="logo" href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id="post">
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Spark学习笔记-SparkSQL内置函数</h1>
+          <div class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#sparkSql内置函数" class="tag">sparkSql内置函数</a>
+
+
+            
+          </div>
+          <blockquote>
+<p>学习SparkSQL中的一些内置函数</p>
+</blockquote>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><ul>
+<li><p>获取默认时区</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">spark.conf.get(<span class="string">'spark.sql.session.timeZone'</span>)</span><br><span class="line"></span><br><span class="line">&gt;&gt; <span class="string">'Asia/Shanghai'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取当前时间</p>
+<ul>
+<li><p>获取当前日期：current_date()</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">    select current_date()</span></span><br><span class="line"><span class="string">"""</span>).toPandas()</span><br><span class="line"></span><br><span class="line">&gt;&gt; <span class="number">2019</span><span class="number">-03</span><span class="number">-19</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取当前时间：current_timestamp()/now()</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">    select current_timestamp()</span></span><br><span class="line"><span class="string">"""</span>).toPandas()</span><br><span class="line"></span><br><span class="line">&gt;&gt; <span class="number">2019</span><span class="number">-03</span><span class="number">-19</span> <span class="number">13</span>:<span class="number">54</span>:<span class="number">22.236</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>从日期中截取字段</p>
+<ul>
+<li><p>截取年月日、时分秒:year,month,day/dayofmonth,hour,minute,second</p>
+</li>
+<li><p>dayofweek ,dayofyear</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1 = Sunday, 2 = Monday, ..., 7 = Saturday</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>weekofyear</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Extract the week number of a given date as integer.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>trunc截取某部分的日期，其他部分默认为01</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Returns date truncated to the unit specified by the format.</span><br><span class="line"></span><br><span class="line">Parameters:	format – ‘year’, ‘yyyy’, ‘yy’ or ‘month’, ‘mon’, ‘mm’</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>date_trunc [“YEAR”, “YYYY”, “YY”, “MON”, “MONTH”, “MM”, “DAY”, “DD”, “HOUR”, “MINUTE”, “SECOND”, “WEEK”, “QUARTER”]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Returns timestamp truncated to the unit specified by the format.</span><br><span class="line"></span><br><span class="line">Parameters:	format – ‘year’, ‘yyyy’, ‘yy’, ‘month’, ‘mon’, ‘mm’, ‘day’, ‘dd’, ‘hour’, ‘minute’, ‘second’, ‘week’, ‘quarter’</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>date_format将时间转化为某种格式的字符串</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Converts a date/timestamp/string to a value of string in the format specified by the date format given by the second argument.</span><br><span class="line"></span><br><span class="line">A pattern could be for instance dd.MM.yyyy and could return a string like ‘18.03.1993’. All pattern letters of the Java class java.text.SimpleDateFormat can be used.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>日期时间转换</p>
+<ul>
+<li><p>unix_timestamp返回当前时间的unix时间戳</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Convert time string with given pattern (‘yyyy-MM-dd HH:mm:ss’, by default) to Unix time stamp (in seconds), using the default timezone and the default locale, return null if fail.</span><br><span class="line"></span><br><span class="line">if timestamp is None, then it returns current timestamp.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>from_unixtime将时间戳换算成当前时间，to_unix_timestamp将时间转化为时间戳</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Converts the number of seconds from unix epoch (1970-01-01 00:00:00 UTC) to a string representing the timestamp of that moment in the current system time zone in the given format.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>to_date/date将字符串转化为日期格式，to_timestamp（Since: 2.2.0）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Converts a Column of pyspark.sql.types.StringType or pyspark.sql.types.TimestampType into pyspark.sql.types.DateType using the optionally specified format. Specify formats according to SimpleDateFormats. By default, it follows casting rules to pyspark.sql.types.DateType if the format is omitted (equivalent to col.cast(&quot;date&quot;)).</span><br><span class="line"></span><br><span class="line">Converts a Column of pyspark.sql.types.StringType or pyspark.sql.types.TimestampType into pyspark.sql.types.DateType using the optionally specified format. Specify formats according to SimpleDateFormats. By default, it follows casting rules to pyspark.sql.types.TimestampType if the format is omitted (equivalent to col.cast(&quot;timestamp&quot;)).</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>quarter 将1年4等分(range 1 to 4)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Extract the quarter of a given date as integer.</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>日期、时间计算</p>
+<ul>
+<li>months_between两个日期之间的月数</li>
+<li>add_months返回日期后n个月后的日期</li>
+<li>last_day(date),next_day(start_date, day_of_week)</li>
+<li>date_add,date_sub(减)</li>
+<li>datediff（两个日期间的天数）</li>
+</ul>
+</li>
+<li>utc</li>
+</ul>
+<blockquote>
+<p>在集群中对于时间戳的转换，如果不指定时区，默认会采用集群配置的时区，集群默认时区可以通过如下方式获取：spark.conf.get(‘spark.sql.session.timeZone’)。一般而言，这个值应该是集群统一设置，独立提交job的时候，不需要设置。 </p>
+</blockquote>
+<ul>
+<li><ul>
+<li><p>to_utc_timestamp(timestamp, tz)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">将timestamp按照给定的tz解释，返回utc timestamp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>from_utc_timestamp(timestamp, tz)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">将timestamp按照utc解释，返回给定tz的timestamp</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对于有时区相关的数据统计时，需要注意。比如：集群默认时区设置为UTC，一般将数据存到集群中的时候会将时间戳转为utc timestamp以便后续的操作。此时如果有一个需求是统计北京时间的当天的数据，那么第一个想到的方式是使用current_date()获取当前日期，然后将数据中的时间戳使用to_date(from_utc_timestamp(from_unixtime(ts), ‘Asia/Beijing’))，然后进行比较。但是current_date()获取的日期，是根据集群默认时区得来的，因此会有时区的不同导致的数据统计错误，因此，这种情况不能直接使用current_date()，正确的使用方式是：to_date(from_utc_timestamp(current_timestamp(), ‘Asia/Beijing’))，然后在进行比较。</p>
+</blockquote>
+<h3 id="表关联"><a href="#表关联" class="headerlink" title="表关联"></a>表关联</h3><ul>
+<li><p>Join(<em>other</em>, <em>on=None</em>, <em>how=None</em>)</p>
+<ul>
+<li>on：a string for the join column name, a list of column names, a join expression (Column), or a list of Columns. If on is a string or a list of strings indicating the name of the join column(s), the column(s) must exist on both sides, and this performs an equi-join.</li>
+<li>how：str, default <code>inner</code>. Must be one of: <code>inner</code>, <code>cross</code>, <code>outer</code>, <code>full</code>, <code>full_outer</code>, <code>left</code>, <code>left_outer</code>, <code>right</code>, <code>right_outer</code>, <code>left_semi</code>, and <code>left_anti</code><ul>
+<li>inner:内连，返回joinDF1和joinDF2合并的rows，如果joinDF2中有多条记录对应于joinDF1的同一条记录，那么返回的row number会大于joinDF1的row number</li>
+<li>outer,full,full_outer：全连</li>
+<li>left, left_outer：左连</li>
+<li>right，right_outer:右连</li>
+<li>left_semi：过滤出joinDF1中和joinDF2共有的部分，只返回joinDF1中的rows</li>
+<li>left_anti：过滤出joinDF1中joinDF2没有的部分，只返回joinDF1中的rows</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>crossJoin(<em>other</em>)</p>
+</li>
+</ul>
+<blockquote>
+<p>返回两个DF的笛卡尔积</p>
+</blockquote>
+<h3 id="Parses-the-expression"><a href="#Parses-the-expression" class="headerlink" title="Parses the expression"></a>Parses the expression</h3><ul>
+<li>expr</li>
+</ul>
+<blockquote>
+<p>将字符串表示的表达式，翻译成DSL</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">expr(<span class="string">"length(name)"</span>)</span><br><span class="line"></span><br><span class="line">expr(<span class="string">"array_contains(user_id_set, user_id)"</span>)</span><br></pre></td></tr></table></figure>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#日期函数"><span class="toc-number">1.</span> <span class="toc-text">日期函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表关联"><span class="toc-number">2.</span> <span class="toc-text">表关联</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Parses-the-expression"><span class="toc-number">3.</span> <span class="toc-text">Parses the expression</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Spark学习笔记-SparkSQL内置函数/";
+  var disqus_url = "https://shang.at/post/Spark学习笔记-SparkSQL内置函数/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

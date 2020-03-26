@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Spark学习笔记-union方法 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class="logo" href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id="post">
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Spark学习笔记-union方法</h1>
+          <div class="post-meta">
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月12日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Spark学习" class="tag">Spark学习</a>
+
+
+            
+          </div>
+          <h3 id="方法简介"><a href="#方法简介" class="headerlink" title="方法简介"></a>方法简介</h3><p>pyspark.sql.dataframe.DataFrame#union(other)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">union两个df，效果相当于union all(pyspark.sql.dataframe.DataFrame#unionAll在2.0以后就被Deprecated了)。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>union方法的特点是：</p>
+<ul>
+<li>schema会使用前面df的schema，</li>
+<li>只有两个有相同数量列的df才能进行union，</li>
+<li>union的时候会根据列的顺序进行union，与属性名无关</li>
+</ul>
+</blockquote>
+<h3 id="案例测试"><a href="#案例测试" class="headerlink" title="案例测试"></a>案例测试</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line">spark = SparkSession \</span><br><span class="line">        .builder \</span><br><span class="line">        .master(<span class="string">'local[*]'</span>) \</span><br><span class="line">        .enableHiveSupport() \</span><br><span class="line">        .getOrCreate()</span><br><span class="line">        </span><br><span class="line">df1 = spark.createDataFrame([&#123;<span class="string">'name'</span>:<span class="string">'cc'</span>, <span class="string">'age'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name'</span>:<span class="string">'aa'</span>, <span class="string">'age'</span>:<span class="number">25</span>&#125;])</span><br><span class="line"></span><br><span class="line">df1.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: long (nullable = true)</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">df2 = spark.createDataFrame([&#123;<span class="string">'name1'</span>:<span class="string">'bb'</span>, <span class="string">'age1'</span>:<span class="number">2</span>&#125;, &#123;<span class="string">'name1'</span>:<span class="string">'dd'</span>, <span class="string">'age1'</span>:<span class="number">3</span>&#125;])</span><br><span class="line">df2.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age1: long (nullable = true)</span><br><span class="line">     |-- name1: string (nullable = true)</span><br><span class="line">df1.union(df2)</span><br><span class="line">	DataFrame[age: bigint, name: string]</span><br><span class="line">union_df = df1.union(df2)</span><br><span class="line">union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: long (nullable = true)</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">union_df.show()</span><br><span class="line">                                                                                </span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    |  <span class="number">2</span>|  bb|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    +---+----+</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>).union(df2.select(<span class="string">'age1'</span>))</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +----+</span><br><span class="line">    |name|</span><br><span class="line">    +----+</span><br><span class="line">    |  cc|</span><br><span class="line">    |  aa|</span><br><span class="line">    |   <span class="number">2</span>|</span><br><span class="line">    |   <span class="number">3</span>|</span><br><span class="line">    +----+</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>, <span class="string">'age'</span>).union(df2.select(<span class="string">'age1'</span>))</span><br><span class="line">        pyspark.sql.utils.AnalysisException: <span class="string">"Union can only be performed on tables with the 		 same number of columns, but the first table has 2 columns and the second table 			has 1 columns;;\n'Union\n:- Project [name#1, age#0L]\n:  +- LogicalRDD [age#0L, 			name#1], false\n+- Project [age1#4L]\n   +- LogicalRDD [age1#4L, name1#5], false\n"</span></span><br><span class="line">select_union_df = df1.select(<span class="string">'age'</span>).union(df2.select(<span class="string">'name1'</span>))</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +---+</span><br><span class="line">    |age|</span><br><span class="line">    +---+</span><br><span class="line">    | <span class="number">24</span>|</span><br><span class="line">    | <span class="number">25</span>|</span><br><span class="line">    | bb|</span><br><span class="line">    | dd|</span><br><span class="line">    +---+</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: string (nullable = true)</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>, <span class="string">'age'</span>).union(df2.select(<span class="string">'age1'</span>, <span class="string">'name1'</span>))</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">     |-- age: string (nullable = true)</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +----+---+</span><br><span class="line">    |name|age|</span><br><span class="line">    +----+---+</span><br><span class="line">    |  cc| <span class="number">24</span>|</span><br><span class="line">    |  aa| <span class="number">25</span>|</span><br><span class="line">    |   <span class="number">2</span>| bb|</span><br><span class="line">    |   <span class="number">3</span>| dd|</span><br><span class="line">    +----+---+</span><br></pre></td></tr></table></figure>
+<h3 id="其他案例"><a href="#其他案例" class="headerlink" title="其他案例"></a>其他案例</h3><p>要想实现sql中union的效果，需要结合distinct()来使用:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1 = spark.createDataFrame([&#123;<span class="string">'name'</span>:<span class="string">'cc'</span>, <span class="string">'age'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name'</span>:<span class="string">'aa'</span>, <span class="string">'age'</span>:<span class="number">25</span>&#125;])</span><br><span class="line">df2 = spark.createDataFrame([&#123;<span class="string">'name1'</span>:<span class="string">'cc'</span>, <span class="string">'age1'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name1'</span>:<span class="string">'dd'</span>, <span class="string">'age1'</span>:<span class="number">3</span>&#125;])</span><br><span class="line">df1.union(df2).show()</span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    +---+----+</span><br><span class="line">df1.union(df2).distinct().show()</span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    +---+----+</span><br></pre></td></tr></table></figure>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#方法简介"><span class="toc-number">1.</span> <span class="toc-text">方法简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例测试"><span class="toc-number">2.</span> <span class="toc-text">案例测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他案例"><span class="toc-number">3.</span> <span class="toc-text">其他案例</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Spark学习笔记-union方法/";
+  var disqus_url = "https://shang.at/post/Spark学习笔记-union方法/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
