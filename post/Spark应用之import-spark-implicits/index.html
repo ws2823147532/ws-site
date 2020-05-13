@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang=zh-CN>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,7 +19,7 @@
 <body>
   <header>
   <div class="header-container">
-    <a class="logo" href="/">
+    <a class='logo' href="/">
       <span>努力，奋斗</span>
     </a>
     <ul class="right-header">
@@ -52,12 +52,12 @@
   </div>
 </header>
 
-  <main id="post">
+  <main id='post'>
   <div class="content">
     <article>
         <section class="content markdown-body">
           <h1>Spark应用之import spark.implicits._</h1>
-          <div class="post-meta">
+          <div class='post-meta'>
             <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年03月25日</time>
             
               | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
@@ -73,13 +73,16 @@
                   <i class="fa fa-tag" aria-hidden="true"></i>
                 
                
-  <a href="/tags/#Spark应用" class="tag">Spark应用</a>
+  <a href="/tags/#Spark应用" class='tag'>Spark应用</a>
 
 
             
           </div>
-          <p>在初期使用spark的时候，大家都会遇见一个很奇怪的写法</p>
-
+          <p>在初期使用spark的时候，大家都会遇见一个很奇怪的写法<strong><code>import spark.implicits._</code></strong></p>
+<p>这里面包含了四个关键字：<code>import</code>、<code>spark</code>、<code>implicits</code>、<code>_</code></p>
+<p><code>import</code>和<code>_</code>实际上是Scala中包引入的写法，表示引入指定包内的所有成员</p>
+<p>本文主要想记录一下另外两个关键字：<code>spark</code>、<code>implicits</code></p>
+<h4 id="关键字一：spark"><a href="#关键字一：spark" class="headerlink" title="关键字一：spark"></a>关键字一：spark</h4><h4 id="关键字二：implicits"><a href="#关键字二：implicits" class="headerlink" title="关键字二：implicits"></a>关键字二：implicits</h4>
         </section>
     </article>
     
@@ -94,6 +97,13 @@
         
   </div>
   <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#关键字一：spark"><span class="toc-number">1.</span> <span class="toc-text">关键字一：spark</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#关键字二：implicits"><span class="toc-number">2.</span> <span class="toc-text">关键字二：implicits</span></a></li></ol>
+        </div>
+    </div>
     
   </aside>
 </main>

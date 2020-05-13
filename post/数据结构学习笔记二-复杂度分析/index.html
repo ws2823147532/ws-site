@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang=zh-CN>
-  <head><meta name="generator" content="Hexo 3.8.0">
+  <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,7 +19,7 @@
 <body>
   <header>
   <div class="header-container">
-    <a class="logo" href="/">
+    <a class='logo' href="/">
       <span>努力，奋斗</span>
     </a>
     <ul class="right-header">
@@ -52,12 +52,12 @@
   </div>
 </header>
 
-  <main id="post">
+  <main id='post'>
   <div class="content">
     <article>
         <section class="content markdown-body">
           <h1>数据结构学习笔记二-复杂度分析</h1>
-          <div class="post-meta">
+          <div class='post-meta'>
             <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
             
               | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
@@ -73,12 +73,25 @@
                   <i class="fa fa-tag" aria-hidden="true"></i>
                 
                
-  <a href="/tags/#复杂度分析" class="tag">复杂度分析</a>
+  <a href="/tags/#复杂度分析" class='tag'>复杂度分析</a>
 
 
             
           </div>
-          
+          <h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><blockquote>
+<p>通常使用大O时间复杂度表示法：它表示了代码执行时间随数据规模增长的变化趋势， 亦可称为 渐进式时间复杂度</p>
+</blockquote>
+<h5 id="几种常见时间复杂度实例分析"><a href="#几种常见时间复杂度实例分析" class="headerlink" title="几种常见时间复杂度实例分析"></a>几种常见时间复杂度实例分析</h5><p><img src="https://tva1.sinaimg.cn/large/00831rSTly1gdoc1gtxmaj30vq0fwjti.jpg" alt></p>
+<h5 id="各种时间复杂度执行时间比较"><a href="#各种时间复杂度执行时间比较" class="headerlink" title="各种时间复杂度执行时间比较"></a>各种时间复杂度执行时间比较</h5><p><img src="https://tva1.sinaimg.cn/large/00831rSTly1gdoc4hoot3j30vq0hsjsq.jpg" alt></p>
+<p>故可以看出来O(logn)的算法要比O(n)的算法效率上快上不少</p>
+<h5 id="常见排序算法的时间复杂度"><a href="#常见排序算法的时间复杂度" class="headerlink" title="常见排序算法的时间复杂度"></a>常见排序算法的时间复杂度</h5><p><img src="https://tva1.sinaimg.cn/large/00831rSTly1gdodlkfxkoj30vq0jkju5.jpg" alt></p>
+<h3 id="空间复杂度"><a href="#空间复杂度" class="headerlink" title="空间复杂度"></a>空间复杂度</h3><blockquote>
+<p>亦可称为 渐进空间复杂度，表示算法的存储空间与数据规模之间的增长关系</p>
+</blockquote>
+<p>空间复杂度基本就只有O(1)、O(n)、O(n^2)</p>
+<h3 id="时间复杂度进阶"><a href="#时间复杂度进阶" class="headerlink" title="时间复杂度进阶"></a>时间复杂度进阶</h3><p>实际上我们前面说的大O表示法只是一个初级的判断方式，此外还有最好情况时间复杂度、最坏情况时间复杂度、平均时间复杂度、均摊时间复杂度。</p>
+<p>在大部分的时间大O表示法已经能够分辨出各种算法的时间复杂度了。只有在特殊情况下（同一块代码(或分析出的相同的大O等级)在不同的情况下，时间复杂度有量级的差距），才需要使用最好、最坏、平均三种方法来区分。均摊的情况就更加特殊了，比如向数组加入一个元素，当数组长度不足时，扩充数组再添加元素。</p>
+
         </section>
     </article>
     
@@ -93,6 +106,13 @@
         
   </div>
   <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.</span> <span class="toc-text">时间复杂度</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#几种常见时间复杂度实例分析"><span class="toc-number">1.0.1.</span> <span class="toc-text">几种常见时间复杂度实例分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#各种时间复杂度执行时间比较"><span class="toc-number">1.0.2.</span> <span class="toc-text">各种时间复杂度执行时间比较</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#常见排序算法的时间复杂度"><span class="toc-number">1.0.3.</span> <span class="toc-text">常见排序算法的时间复杂度</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#空间复杂度"><span class="toc-number">2.</span> <span class="toc-text">空间复杂度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间复杂度进阶"><span class="toc-number">3.</span> <span class="toc-text">时间复杂度进阶</span></a></li></ol>
+        </div>
+    </div>
     
   </aside>
 </main>
