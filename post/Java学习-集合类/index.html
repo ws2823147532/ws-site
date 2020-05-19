@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Java学习-集合类 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Java学习-集合类</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月17日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA源码/">JAVA源码</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#JAVA集合类-列表" class='tag'>JAVA集合类-列表</a>
+
+
+            
+          </div>
+          <p>[TOC]</p>
+<h4 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev3hd1fgnj30ye0u0jws.jpg" alt></p>
+<blockquote>
+<p>注：这里只列举了单一线线程使用的集合对象(Vector除外)</p>
+</blockquote>
+<p>JVAV中列表类集合，按照数据的存储方式可以分为两大类：基于数组和基于链表。两种方式各有好处，需要根据实际业务场景做出选择。</p>
+<ul>
+<li><p>数组</p>
+<ul>
+<li>优点<ul>
+<li>支持随机访问，给定下标的访问是O(1)的时间复杂度</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>内存必须是连续的，否则会申请空间失败</li>
+<li>查找、插入、扩容、删除都是O(n)的时间复杂度</li>
+<li>有容量的限制，增加节点时，可能会因为数组大小不够导致扩容，扩容的时间复杂度是O(n)的</li>
+</ul>
+</li>
+<li>使用注意<ul>
+<li>最好能够预估数据的最大容量，可以预先设计capacity，尽量避免扩容操作</li>
+<li>但是在特别的使用场景下，基于数组的实现效率会更好，比如下面要说的ArrayDeque</li>
+</ul>
+</li>
+<li>具体实现<ul>
+<li>ArrayList</li>
+<li>Vector</li>
+<li>Stack</li>
+<li>ArrayDeque</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>链表</p>
+<ul>
+<li><p>优点</p>
+<ul>
+<li>内存不用是连续的</li>
+<li>插入、删除都是O(1)的时间复杂度</li>
+<li>没有容量的限制，按理说限制就是JVAV堆的大小限制</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>查找是O(n)的时间复杂度</li>
+</ul>
+</li>
+<li><p>使用</p>
+<ul>
+<li>单独使用链表的时候，还挺少的，毕竟一个没有附加特性的链表结构，仅仅只能够做到新增和删除的时间复杂度为O(1)，但是查询却需要O(n)，并且还需要额外的空间存储链表结构。数组可以通过预估容量的方式尽量减少扩容的操作，对比发现，使用基于数组的集合性价比更高</li>
+</ul>
+</li>
+<li><p>具体实现</p>
+<ul>
+<li><p>LinkList</p>
+</li>
+<li><p>LinkList在定位低index个元素的时候，有个优化的点可以学习</p>
+</li>
+<li><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function">Node&lt;E&gt; <span class="title">node</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// assert isElementIndex(index);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (index &lt; (size &gt;&gt; <span class="number">1</span>)) &#123;</span><br><span class="line">        Node&lt;E&gt; x = first;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; index; i++)</span><br><span class="line">            x = x.next;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;E&gt; x = last;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">1</span>; i &gt; index; i--)</span><br><span class="line">            x = x.prev;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>总结：可以发现，基于数组和基于链表的集合实现方式，想要从他们中查询到具体的元素，时间复杂度都是O(n)的，这是因为，这里仅仅考虑了数据的存储方式，并没有额外的信息给出来，所以是没有办法加速查询的。要想实现加速查询，那么就必须在这基础上增加新的特性：</p>
+</blockquote>
+<ul>
+<li>数组<ul>
+<li>有序性：可以借助有序性使用二分查找，把查找时间复杂度降到O(log n)</li>
+</ul>
+</li>
+<li>链表<ul>
+<li>建立树结构：<ul>
+<li>二叉搜索树：前序遍历就是正向排序，可以把查询的时间复杂度降到O(log n)，但是要维护二叉搜索，尽量保证他是平衡的(但是这个的时间复杂度是O(1)的)</li>
+<li>堆：查找最大(最小)值是O(1)的时间复杂度</li>
+</ul>
+</li>
+<li>升维：比如跳表，就是在有序的链表上建立多级索引来实现加速查询的，可以把查找时间复杂度降到O(log n)，但是在新增和删除节点时需要维护多级索引(但是这个的时间复杂度是O(1)的)</li>
+</ul>
+</li>
+</ul>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevgxzxj4uj30iw0ij0uy.jpg" alt="image-20200517151558262"></p>
+<p>接口信息如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Method</th>
+<th>Return</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>add(E)</td>
+<td>boolean</td>
+<td>向队列加入元素，如果空间不足，会触发扩容</td>
+</tr>
+<tr>
+<td>Insert</td>
+<td>add(int, E)</td>
+<td>void</td>
+<td>向指定位置插入元素，可能会抛IndexOutOfBoundsException</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>remove(Object)</td>
+<td>boolean</td>
+<td>移除指定的元素，没有的话返回false，有的话返回true</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>remove(int)</td>
+<td>E</td>
+<td>移除指定index的元素，可能会抛IndexOutOfBoundsException</td>
+</tr>
+<tr>
+<td>Examine</td>
+<td>get(int)</td>
+<td>E</td>
+<td>返回指定index的元素，可能会抛IndexOutOfBoundsException</td>
+</tr>
+<tr>
+<td>Update</td>
+<td>set(int, E)</td>
+<td>E</td>
+<td>更新指定index的元素，可能会抛IndexOutOfBoundsException</td>
+</tr>
+</tbody>
+</table>
+<p>在List的源码中发现多处这样的代码：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 只返回第一个遇到的o，当o为null的时候，o.equals会报错</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (elementData[i]==<span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (o.equals(elementData[i]))</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>详看扩容操作</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">   	ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">   	elementData[size++] = e;</span><br><span class="line">   	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DEFAULT_CAPACITY=10</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">           minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       ensureExplicitCapacity(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       modCount++;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// overflow-conscious code</span></span><br><span class="line">       <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">           grow(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// overflow-conscious code</span></span><br><span class="line">       <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">       <span class="comment">// newCapacity = int(1.5*oldCapacity)</span></span><br><span class="line">       <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = minCapacity;</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">       <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">       elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">   &#125;</span><br><span class="line">	</span><br><span class="line"><span class="comment">// 整形溢出：Integer.MAX_VALUE + 8&lt;0</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hugeCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError();</span><br><span class="line">       <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">           Integer.MAX_VALUE :</span><br><span class="line">           MAX_ARRAY_SIZE;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevjdx0lvfj305o056aa0.jpg" alt="image-20200517164030856"></p>
+<p>设计了一套支持队列操作的接口，如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Method</th>
+<th>Return</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td>add(E)</td>
+<td>boolean</td>
+<td>向队列添加一个元素，如果没有空间会抛出IllegalStateException</td>
+</tr>
+<tr>
+<td>Insert</td>
+<td>offer(E)</td>
+<td>boolean</td>
+<td>向队列添加一个元素，如果没有空间会返回false</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>remove()</td>
+<td>E</td>
+<td>移除并返回头结点，如果队列为空的话，会抛NoSuchElementException</td>
+</tr>
+<tr>
+<td>Remove</td>
+<td>poll()</td>
+<td>E</td>
+<td>移除并返回头结点，如果队列为空的话，会返回null</td>
+</tr>
+<tr>
+<td>Examine</td>
+<td>element()</td>
+<td>E</td>
+<td>返回头结点，如果队列为空的话，会抛NoSuchElementException</td>
+</tr>
+<tr>
+<td>Examine</td>
+<td>peek()</td>
+<td>E</td>
+<td>返回头结点，如果队列为空的话，会返回null</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevjrosqnyj30g80i8dhk.jpg" alt="image-20200517165344428"></p>
+<h4 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevk1e2lppj306v04s0sp.jpg" alt="image-20200517170304083"></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>通常使用ArrayDeque来作为先进先出的Queue，后进先出的Stack</p>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#总览"><span class="toc-number">1.</span> <span class="toc-text">总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#List"><span class="toc-number">2.</span> <span class="toc-text">List</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Queue"><span class="toc-number">3.</span> <span class="toc-text">Queue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Deque"><span class="toc-number">4.</span> <span class="toc-text">Deque</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stack"><span class="toc-number">5.</span> <span class="toc-text">Stack</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结："><span class="toc-number">6.</span> <span class="toc-text">总结：</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Java学习-集合类/";
+  var disqus_url = "https://shang.at/post/Java学习-集合类/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>

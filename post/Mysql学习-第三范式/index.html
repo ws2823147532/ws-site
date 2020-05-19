@@ -73,7 +73,7 @@
                   <i class="fa fa-tag" aria-hidden="true"></i>
                 
                
-  <a href="/tags/#Mysql" class='tag'>Mysql</a>
+  <a href="/tags/#第三范式" class='tag'>第三范式</a>
 
 
             
@@ -82,7 +82,50 @@
 <p>数据库表的每一列都是不可分割的基本数据项，同一列中不能有多个值，即实体中的某个属性不能有多个值或者不能有重复的属性</p>
 <p>符合1NF的关系中的每个属性都不可再分</p>
 </blockquote>
-<h4 id="第二范式-2NF"><a href="#第二范式-2NF" class="headerlink" title="第二范式(2NF)"></a>第二范式(2NF)</h4>
+<p>有两点要求：</p>
+<ul>
+<li>schema定义：每个属性不可再分，即字段的含义要明确，同一个字段不应该有多于1个的含义<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm6y05xoj314m08c77c.jpg" alt="image-20200513102942067"></li>
+<li>图中的这种schema在RDBMS中是不可能存在的，也就是无法创建的。可以改成如下的schema:</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm8stpcij313w05c412.jpg" alt="image-20200513103132122"></li>
+</ul>
+</li>
+<li>存储的数据：同一列中不能有多个值<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm622kgkj318s0bcgs2.jpg" alt="image-20200513102837775"></li>
+<li>图中的一个字段里面存了多个值，这种情况在RDBMS中是可以存在的，但是该字段是可再分的，应该。可以将数据分成多条存储，如下图</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqmclbtx1j318k0batey.jpg" alt="image-20200513103510685"></li>
+</ul>
+</li>
+</ul>
+<h4 id="第二范式-2NF"><a href="#第二范式-2NF" class="headerlink" title="第二范式(2NF)"></a>第二范式(2NF)</h4><blockquote>
+<p>满足第一范式</p>
+<p>没有部分依赖</p>
+</blockquote>
+<p>在同一个表中，不能存在某些字段依赖一些键，而另一些字段依赖另外一些键</p>
+<p>员工表的一个候选键是{id，mobile，deptNo}，而deptName依赖于deptNo，同样 name 依赖于 id，因此不是 2NF的。为了满足第二范式的条件，需要将这个表拆分成employee、dept、employee_dept、employee_mobile四个表</p>
+<p>不满足2NF的表，可能存在的问题：修改异常、新增异常、删除异常</p>
+<h4 id="第三范式-3NF"><a href="#第三范式-3NF" class="headerlink" title="第三范式(3NF)"></a>第三范式(3NF)</h4><blockquote>
+<p>满足第二范式</p>
+<p>没有传递依赖</p>
+</blockquote>
+<p>在同一个表中，不要存在字段A依赖字段B，同时字段B依赖字段C，推导出来字段A间接依赖字段C的关系。</p>
+<p>员工表的province、city、district依赖于zip，而zip依赖于id，换句话说，province、city、district传递依赖于id，违反了 3NF 规则。为了满足第三范式的条件，可以将这个表拆分成employee和zip两个表</p>
+<p><em>但是这种关系也不是一定不能存在，视具体的业务而定吧</em></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>假设有一个名为<code>employee</code>的员工表，它有九个属性：<code>id</code>(员工编号)、<code>name</code>(员工名称)、<code>mobile</code>(电话)、<code>zip</code>(邮编)、<code>province</code>(省份)、<code>city</code>(城市)、<code>district</code>(区县)、<code>deptNo</code>(所属部门编号)、<code>deptName</code>(所属部门名称)、表总数据如下：</p>
+<table><br><thead><br><tr><br><th>id</th><br><th>name</th><br><th>mobile</th><br><th>zip</th><br><th>province</th><br><th>city</th><br><th>district</th><br><th>deptNo</th><br><th>deptName</th><br></tr><br></thead><br><tbody><br><tr><br><td>101</td><br><td>张三</td><br>    <td>13910000001<br>13910000002</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D1</td><br><td>部门1</td><br></tr><br><tr><br><td>101</td><br><td>张三</td><br><td>13910000001<br>13910000002</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D2</td><br><td>部门2</td><br></tr><br><tr><br><td>102</td><br><td>李四</td><br><td>13910000003</td><br><td>200001</td><br><td>上海</td><br><td>上海</td><br><td>静安区</td><br><td>D3</td><br><td>部门3</td><br></tr><br><tr><br><td>103</td><br><td>王五</td><br><td>13910000004</td><br><td>510001</td><br><td>广东省</td><br><td>广州</td><br><td>白云区</td><br><td>D4</td><br><td>部门4</td><br></tr><br><tr><br><td>103</td><br><td>王五</td><br><td>13910000004</td><br><td>510001</td><br><td>广东省</td><br><td>广州</td><br><td>白云区</td><br><td>D5</td><br><td>部门 5</td><br></tr><br></tbody><br></table>
+
+<p>将上表改成满足第1范式，如下：</p>
+<table><br><thead><br><tr><br><th>id</th><br><th>name</th><br><th>mobile</th><br><th>zip</th><br><th>province</th><br><th>city</th><br><th>district</th><br><th>deptNo</th><br><th>deptName</th><br></tr><br></thead><br><tbody><br><tr><br><td>101</td><br><td>张三</td><br><td>13910000001</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D1</td><br><td>部门1</td><br></tr><br><tr><br><td>101</td><br><td>张三</td><br><td>13910000002</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D1</td><br><td>部门1</td><br></tr><br><tr><br><td>101</td><br><td>张三</td><br><td>13910000001</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D2</td><br><td>部门2</td><br></tr><br><tr><br><td>101</td><br><td>张三</td><br><td>13910000002</td><br><td>100001</td><br><td>北京</td><br><td>北京</td><br><td>海淀区</td><br><td>D2</td><br><td>部门2</td><br></tr><br><tr><br><td>102</td><br><td>李四</td><br><td>13910000003</td><br><td>200001</td><br><td>上海</td><br><td>上海</td><br><td>静安区</td><br><td>D3</td><br><td>部门3</td><br></tr><br><tr><br><td>103</td><br><td>王五</td><br><td>13910000004</td><br><td>510001</td><br><td>广东省</td><br><td>广州</td><br><td>白云区</td><br><td>D4</td><br><td>部门4</td><br></tr><br><tr><br><td>103</td><br><td>王五</td><br><td>13910000004</td><br><td>510001</td><br><td>广东省</td><br><td>广州</td><br><td>白云区</td><br><td>D5</td><br><td>部门5</td><br></tr><br></tbody><br></table>
+
+<h6 id="仍存在的问题"><a href="#仍存在的问题" class="headerlink" title="仍存在的问题"></a>仍存在的问题</h6><ol>
+<li><strong>修改异常</strong>：上表中张三、王五都有多条记录，因为他隶属于两个部门。如果我们要修改王五的地址，必修修改两行记录。假如一个部门得到了王五的新地址并进行了更新，而另一个部门没有，那么此时王五在表中会存在两个不同的地址，导致了数据不一致</li>
+<li><strong>新增异常：</strong>假如一个新员工假如公司，他正处于入职培训阶段，还没有被正式分配到某个部门，如果<code>deptNo</code>字段不允许为空，我们就无法向<code>employee</code>表中新增该员工的数据。</li>
+<li><strong>删除异常：</strong>假设公司撤销了D3部门，那么在删除<code>deptNo</code>为D3的行时，会将李四的信息也一并删除。因为他隶属于D3这一部门。</li>
+</ol>
+<p>为了解决上面的问题，我们可以将上述表设计成满足3NF</p>
+<p>在关系数据库模型设计中，一般需要满足第三范式的要求。如果一个表具有良好的主外键设计，就应该是满足3NF的表。规范化带来的好处是通过减少数据冗余提高更新数据的效率，同时保证数据完整性。然而，我们在实际应用中也要防止过度规范化的问题。规范化程度越高，划分的表就越多，在查询数据时越有可能使用表连接操作。而如果连接的表过多，会影响查询性能。关键的问题是要依据业务需求，仔细权衡数据查询和数据更新关系，指定最合适的规范化程度。不要为了遵循严格的规范化规则而修改业务需求。</p>
+<p><a href="https://www.jianshu.com/p/5a8bb84289a9" target="_blank" rel="noopener">参考</a></p>
+
         </section>
     </article>
     
@@ -101,7 +144,7 @@
     <div class="toc-container">
         <h1>目录</h1>
         <div class="content">
-            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一范式-1NF"><span class="toc-number">1.</span> <span class="toc-text">第一范式(1NF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二范式-2NF"><span class="toc-number">2.</span> <span class="toc-text">第二范式(2NF)</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#第一范式-1NF"><span class="toc-number">1.</span> <span class="toc-text">第一范式(1NF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第二范式-2NF"><span class="toc-number">2.</span> <span class="toc-text">第二范式(2NF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#第三范式-3NF"><span class="toc-number">3.</span> <span class="toc-text">第三范式(3NF)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#示例"><span class="toc-number">4.</span> <span class="toc-text">示例</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#仍存在的问题"><span class="toc-number">4.0.1.</span> <span class="toc-text">仍存在的问题</span></a></li></ol></li></ol></li></ol>
         </div>
     </div>
     
