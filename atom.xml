@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://shang.at/"/>
-  <updated>2020-05-17T15:16:15.157Z</updated>
+  <updated>2020-05-31T23:37:26.809Z</updated>
   <id>https://shang.at/</id>
   
   <author>
@@ -15,6 +15,225 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据结构与算法学习笔记-内存不足</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%86%85%E5%AD%98%E4%B8%8D%E8%B6%B3/"/>
+    <id>https://shang.at/post/数据结构与算法学习笔记-内存不足/</id>
+    <published>2020-05-31T23:35:34.000Z</published>
+    <updated>2020-05-31T23:37:26.809Z</updated>
+    
+    <content type="html"><![CDATA[<p>中位数定义：数字排序之后，位于中间的那个数。比如将100亿个数字进行排序，排序之后，位于第50亿个位置的那个数 就是中位数。 </p><p>  ①内存够：内存够还慌什么啊，直接把100亿个全部排序了，你用冒泡都可以…然后找到中间那个就可以了。但是你以为面试官会给你内存？？ </p><p>  ②内存不够：题目说是整数，我们认为是带符号的int,所以4字节，占32位。 </p><p>  假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。 </p><p>  从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中） </p><p>  现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。 </p><p>  现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。 </p><p>  抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。 </p><p>  按照上述思路，直到划分的文件可直接加载进内存时，就可以直接对数字进行快速排序，找出中位数了。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;中位数定义：数字排序之后，位于中间的那个数。比如将100亿个数字进行排序，排序之后，位于第50亿个位置的那个数 就是中位数。 &lt;/p&gt;
+&lt;p&gt;  ①内存够：内存够还慌什么啊，直接把100亿个全部排序了，你用冒泡都可以…然后找到中间那个就可以了。但是你以为面试官会给你内存？？
+      
+    
+    </summary>
+    
+      <category term="数据结构与算法" scheme="https://shang.at/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="外排-分组归并-桶排序" scheme="https://shang.at/tags/%E5%A4%96%E6%8E%92-%E5%88%86%E7%BB%84%E5%BD%92%E5%B9%B6-%E6%A1%B6%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-Future</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-Future/"/>
+    <id>https://shang.at/post/Java学习-Future/</id>
+    <published>2020-05-31T22:44:35.000Z</published>
+    <updated>2020-05-31T22:45:01.561Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="JAVA源码" scheme="https://shang.at/categories/JAVA%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="并发编程-Future" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-Future/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python学习-一些常见的操作</title>
+    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-%E4%B8%80%E4%BA%9B%E5%B8%B8%E8%A7%81%E7%9A%84%E6%93%8D%E4%BD%9C/"/>
+    <id>https://shang.at/post/Python学习-一些常见的操作/</id>
+    <published>2020-05-29T09:15:13.000Z</published>
+    <updated>2020-05-30T01:49:14.370Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>如何初始化一个一维数组</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line">l = [<span class="number">0</span>]*n</span><br><span class="line">l1 = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure><ul><li>如何初始化一个二维数组</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">l = [[<span class="number">0</span>]*m]*n   <span class="comment"># 会有赋值问题：n个[0]*m 实际上都是同一个对象</span></span><br><span class="line">l1 = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]  <span class="comment"># 没有赋值问题</span></span><br></pre></td></tr></table></figure><ul><li>如何初始化一个二维数组并且设置右边界和下边界为1(根据实际情况处理)</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">dp = [[<span class="number">1</span> <span class="keyword">if</span> i == m - <span class="number">1</span> <span class="keyword">or</span> j == n - <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(m)] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure><ul><li>正序遍历</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure><ul><li>倒序遍历</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure><ul><li>二维数组一维化</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">b=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">c=list(chain(*b))</span><br><span class="line">print(c)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">ab = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">print([i <span class="keyword">for</span> item <span class="keyword">in</span> ab <span class="keyword">for</span> i <span class="keyword">in</span> item])</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">8</span>]]</span><br><span class="line">print(reduce(operator.add, a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">8</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>, <span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">l=[]</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">3</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> a[m]:</span><br><span class="line">        l.append(i)</span><br><span class="line">print(l)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">a= eval(<span class="string">'['</span>+str(a).replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'['</span>,<span class="string">''</span>).replace(<span class="string">']'</span>,<span class="string">''</span>)+<span class="string">']'</span>)</span><br><span class="line">print(a)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatten</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(a, (list, )):</span><br><span class="line">        <span class="keyword">return</span> [a]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        b = []</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> a:</span><br><span class="line">            b += flatten(item)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    a = [[[<span class="number">1</span>,<span class="number">2</span>],<span class="number">3</span>],[<span class="number">4</span>,[<span class="number">5</span>,<span class="number">6</span>]],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">    print(flatten(a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br></pre></td></tr></table></figure><ul><li>如何拷贝一个一维数组</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">y = x[:]</span><br></pre></td></tr></table></figure><ul><li>如何拷贝一个二维数组</li></ul><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line">y = [row[:] <span class="keyword">for</span> row <span class="keyword">in</span> x]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy, deepcopy</span><br><span class="line">y = deepcopy(x)</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">old_array = [[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>]]</span><br><span class="line"><span class="comment"># python2.*</span></span><br><span class="line">new_array = map(list, old_array)</span><br><span class="line"><span class="comment"># python3.*</span></span><br><span class="line">new_array = list(map(list, old_array))</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">arr = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"></span><br><span class="line">deepcopy1d2d = <span class="keyword">lambda</span> lVals: [x <span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, list) <span class="keyword">else</span> x[:] <span class="keyword">for</span> x <span class="keyword">in</span> lVals]</span><br><span class="line"></span><br><span class="line">dst = deepcopy1d2d(arr)</span><br><span class="line"></span><br><span class="line">dst[<span class="number">1</span>][<span class="number">1</span>]=<span class="number">150</span></span><br><span class="line"><span class="keyword">print</span> dst</span><br><span class="line"><span class="keyword">print</span> arr</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;如何初始化一个一维数组&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;n=&lt;span class=&quot;number&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="https://shang.at/categories/Python/"/>
+    
+    
+      <category term="常见操作技巧" scheme="https://shang.at/tags/%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C%E6%8A%80%E5%B7%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python学习-lru_cache</title>
+    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-lru-cache/"/>
+    <id>https://shang.at/post/Python学习-lru-cache/</id>
+    <published>2020-05-28T01:48:49.000Z</published>
+    <updated>2020-05-28T01:49:40.668Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="Python" scheme="https://shang.at/categories/Python/"/>
+    
+    
+      <category term="lru_cache" scheme="https://shang.at/tags/lru-cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-Thread</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-Thread/"/>
+    <id>https://shang.at/post/Java学习-Thread/</id>
+    <published>2020-05-24T11:17:33.000Z</published>
+    <updated>2020-05-25T10:04:55.397Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h4><p>进程：每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n个线程。（进程是资源分配的最小单位）<br>线程：同一类线程共享代码和数据空间，每个线程有独立的运行栈和程序计数器(PC)，线程切换开销小。（线程是cpu调度的最小单位）</p><h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p>创建、就绪、运行、阻塞、终止</p><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf4q1vrvkuj30fa0awaal.jpg" alt></p><ol><li>创建：新创建的一个线程对象</li><li>就绪：线程对象创建成功后，其他的线程调用该对象的start方法。该状态的线程位于可运行线程池内，变的可运行，等待获取CPU的使用权呢</li><li>运行：就绪状态的线程获取了CPU使用权，执行程序代码</li><li>阻塞：阻塞状态是线程因为某种原因放弃了CPU使用权，暂停运行。直到线程再次进入就绪状态，才有机会转到运行状态。阻塞的情况分为以下三种：<ol><li>等待阻塞：运行的线程执行wait方法，JVM会把该线程放入等待池中<strong>(wait会释放持有的锁)</strong></li><li>同步阻塞：运行的线程在获取对象同步锁的时，如果该同步锁被别的线程占用，则JVM会把改线程放入锁池中</li><li>其他阻塞：运行的线程执行sleep或join方法，或者发出了I/O(文件读写、网络请求)请求，JVM会把该线程置为阻塞状态。当sleep状态超时、join等待线程终止或者超时、或者I/O处理完毕时，线程重新转入就绪状态<strong>(sleep不会释放持有的锁)</strong></li></ol></li><li>终止：线程执行完了或者因异常推出了run方法，该线程结束生命周期</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h4 id=&quot;线程的基本概念&quot;&gt;&lt;a href=&quot;#线程的基本概念&quot; class=&quot;headerlink&quot; title=&quot;线程的基本概念&quot;&gt;&lt;/a&gt;线程的基本概念&lt;/h4&gt;&lt;p&gt;进程：每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n
+      
+    
+    </summary>
+    
+      <category term="JAVA源码" scheme="https://shang.at/categories/JAVA%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="并发编程-Thread" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-Thread/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-并发编程</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    <id>https://shang.at/post/Java学习-并发编程/</id>
+    <published>2020-05-24T10:46:42.000Z</published>
+    <updated>2020-05-24T11:18:03.790Z</updated>
+    
+    <content type="html"><![CDATA[<p>Java中的并发编程是指：如何协调多个线程来共同完成一件任务，其中最主要的就是如何处理共享数据</p><p>并发编程是为了充分利用计算机处理器资源，提高系统吞吐量，提高程序执行效率而逐步演化出来的一种编程模式，它主要解决了以下的一些问题：</p><ol><li>充分发挥多处理器的强大能力<ol><li>现在处理器的基本调度单位是线程，多线程程序可以充分发挥多处理器的能力</li></ol></li><li>让异步编程更加简单<ol><li>对于一个需要IO操作(耗时)的事件，可以让它在一个独立的线程中处理，而不会使主流程卡顿</li></ol></li><li>让程序建模更加简单<ol><li>可以将复杂的工作流分解为一组简单的工作流，每个工作流放到一个线程中独立执行，只在特定的同步位置进行交互</li></ol></li><li>等</li></ol><p>JAVA中的并发编程实际上就是面向线程编程，其中最主要的问题就是处理线程间数据共享的问题。因此诞生了很多同步技术：</p><ul><li><a href="/post/Java学习-Thread">JAVA中的Thread</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Java中的并发编程是指：如何协调多个线程来共同完成一件任务，其中最主要的就是如何处理共享数据&lt;/p&gt;
+&lt;p&gt;并发编程是为了充分利用计算机处理器资源，提高系统吞吐量，提高程序执行效率而逐步演化出来的一种编程模式，它主要解决了以下的一些问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;充分发
+      
+    
+    </summary>
+    
+      <category term="JAVA源码" scheme="https://shang.at/categories/JAVA%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="并发编程" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-JVM</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-JVM/"/>
+    <id>https://shang.at/post/Java学习-JVM/</id>
+    <published>2020-05-24T10:42:22.000Z</published>
+    <updated>2020-05-24T10:42:57.262Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="JAVA学习" scheme="https://shang.at/categories/JAVA%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="JVM" scheme="https://shang.at/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-wait&amp;notify</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-wait-notify/"/>
+    <id>https://shang.at/post/Java学习-wait-notify/</id>
+    <published>2020-05-22T05:09:37.000Z</published>
+    <updated>2020-05-24T10:46:59.543Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="JAVA源码" scheme="https://shang.at/categories/JAVA%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="并发编程" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-Timer</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-Timer/"/>
+    <id>https://shang.at/post/Java学习-Timer/</id>
+    <published>2020-05-22T02:31:16.000Z</published>
+    <updated>2020-05-22T02:31:16.871Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Java学习-NIO</title>
+    <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-NIO/"/>
+    <id>https://shang.at/post/Java学习-NIO/</id>
+    <published>2020-05-19T18:46:53.000Z</published>
+    <updated>2020-05-20T02:54:52.451Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://www.cnblogs.com/duanxz/p/6782783.html" target="_blank" rel="noopener">Java NIO系列教程（六） 多路复用器Selector</a></p><p>ServerSocketChannel：一个面向流的侦听套接字 通道。用于监听是否有新的连接到来，可以调用accept函数获取到来的连接(SocketChannel)</p><p>SocketChannel：一个面向流的连接套接字 通道。用于从连接中读取数据，和向连接写入数据</p><p>Selector：选择器，可以管理一批注册的通道集合的信息和它们的就绪状态(OP_CONNECT|OP_ACCEPT|OP_READ|OP_WRITE)</p><p>SelectionKey：选择键封装了特定的<strong>通道</strong>与<strong>特定的选择器</strong>的注册关系，一个key就代表了一个channel</p><p>SelectableChannel可以被注册到Selector对象上，然后调用Selector.select()方法可以更新SelectionKeys(即处于某种就绪状态的通道集合)，然后我们就可以遍历这些通过处理相应的事件。比如连接就绪的通道，我们会把他们注册成读状态，等待它读就绪；连接读就绪，我们就可以从中读取数据；连接写就绪，我们就可以向连接写数据</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/duanxz/p/6782783.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Java NIO系列教程（六） 多路复用器Selector&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;ServerSoc
+      
+    
+    </summary>
+    
+      <category term="JAVA源码" scheme="https://shang.at/categories/JAVA%E6%BA%90%E7%A0%81/"/>
+    
+    
+      <category term="NIO" scheme="https://shang.at/tags/NIO/"/>
+    
+  </entry>
   
   <entry>
     <title>Java学习-线程安全的集合类</title>
@@ -248,268 +467,6 @@
     
     
       <category term="python源码学习" scheme="https://shang.at/tags/python%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python学习-bisect</title>
-    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-bisect/"/>
-    <id>https://shang.at/post/Python学习-bisect/</id>
-    <published>2020-04-16T08:47:50.000Z</published>
-    <updated>2020-04-16T08:49:46.149Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>这个模块对有序列表提供了支持，使得他们可以在插入新数据仍然保持有序。对于长列表，如果其包含元素的比较操作十分昂贵的话，这可以是对更常见方法的改进</p></blockquote><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">"""Bisection algorithms."""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Insert item x in list a, and keep it sorted assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If x is already in a, insert it to the right of the rightmost x.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line">insort = insort_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Return the index where to insert item x in list a, assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The return value i is such that all e in a[:i] have e &lt;= x, and all e in</span></span><br><span class="line"><span class="string">    a[i:] have e &gt; x.  So if x already appears in the list, a.insert(x) will</span></span><br><span class="line"><span class="string">    insert just after the rightmost x already there.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line">bisect = bisect_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Insert item x in list a, and keep it sorted assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If x is already in a, insert it to the left of the leftmost x.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Return the index where to insert item x in list a, assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The return value i is such that all e in a[:i] have e &lt; x, and all e in</span></span><br><span class="line"><span class="string">    a[i:] have e &gt;= x.  So if x already appears in the list, a.insert(x) will</span></span><br><span class="line"><span class="string">    insert just before the leftmost x already there.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line"><span class="comment"># Overwrite above definitions with a fast C implementation</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> _bisect <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;这个模块对有序列表提供了支持，使得他们可以在插入新数据仍然保持有序。对于长列表，如果其包含元素的比较操作十分昂贵的话，这可以是对更常见方法的改进&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="https://shang.at/categories/Python/"/>
-    
-    
-      <category term="python源码学习" scheme="https://shang.at/tags/python%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据结构与算法学习笔记-查找算法</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/"/>
-    <id>https://shang.at/post/数据结构与算法学习笔记-查找算法/</id>
-    <published>2020-04-10T00:58:45.000Z</published>
-    <updated>2020-04-10T01:00:39.177Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table><thead><tr><th>查找算法</th><th>时间复杂度</th><th></th></tr></thead><tbody><tr><td>二分查找</td><td>O($$logn$$)</td><td>O(logn)</td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td></tr></tbody></table>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h3&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;查找算法&lt;/th&gt;
-&lt;th&gt;时间复杂度&lt;/th&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead
-      
-    
-    </summary>
-    
-      <category term="数据结构与算法" scheme="https://shang.at/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="查找算法" scheme="https://shang.at/tags/%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spark应用之import spark.implicits._</title>
-    <link href="https://shang.at/post/Spark%E5%BA%94%E7%94%A8%E4%B9%8Bimport-spark-implicits/"/>
-    <id>https://shang.at/post/Spark应用之import-spark-implicits/</id>
-    <published>2020-03-25T09:10:54.000Z</published>
-    <updated>2020-03-27T06:38:15.397Z</updated>
-    
-    <content type="html"><![CDATA[<p>在初期使用spark的时候，大家都会遇见一个很奇怪的写法<strong><code>import spark.implicits._</code></strong></p><p>这里面包含了四个关键字：<code>import</code>、<code>spark</code>、<code>implicits</code>、<code>_</code></p><p><code>import</code>和<code>_</code>实际上是Scala中包引入的写法，表示引入指定包内的所有成员</p><p>本文主要想记录一下另外两个关键字：<code>spark</code>、<code>implicits</code></p><h4 id="关键字一：spark"><a href="#关键字一：spark" class="headerlink" title="关键字一：spark"></a>关键字一：spark</h4><h4 id="关键字二：implicits"><a href="#关键字二：implicits" class="headerlink" title="关键字二：implicits"></a>关键字二：implicits</h4>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;在初期使用spark的时候，大家都会遇见一个很奇怪的写法&lt;strong&gt;&lt;code&gt;import spark.implicits._&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;这里面包含了四个关键字：&lt;code&gt;import&lt;/code&gt;、&lt;code&gt;spark&lt;/co
-      
-    
-    </summary>
-    
-      <category term="Spark" scheme="https://shang.at/categories/Spark/"/>
-    
-    
-      <category term="Spark应用" scheme="https://shang.at/tags/Spark%E5%BA%94%E7%94%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hadoop源码学习一</title>
-    <link href="https://shang.at/post/hadoop%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E4%B8%80/"/>
-    <id>https://shang.at/post/hadoop源码学习一/</id>
-    <published>2019-07-10T03:03:43.000Z</published>
-    <updated>2020-05-14T03:39:39.124Z</updated>
-    
-    <content type="html"><![CDATA[<p>先导知识</p><ul><li><p><a href="/post/Java学习-代理">JAVA-代理</a></p></li><li><p><a href="/post/分布式服务框架-IPC-RPC">IPC/RPC</a></p></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;先导知识&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/post/Java学习-代理&quot;&gt;JAVA-代理&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/post/分布式服务框架-IPC-RPC&quot;&gt;IPC/RPC&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-      
-    
-    </summary>
-    
-      <category term="Hadoop" scheme="https://shang.at/categories/Hadoop/"/>
-    
-    
-      <category term="Hadoop-IPC" scheme="https://shang.at/tags/Hadoop-IPC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pandas-学习</title>
-    <link href="https://shang.at/post/Pandas-%E5%AD%A6%E4%B9%A0/"/>
-    <id>https://shang.at/post/Pandas-学习/</id>
-    <published>2019-06-11T01:53:35.000Z</published>
-    <updated>2019-08-03T02:17:49.584Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="Pandas" scheme="https://shang.at/categories/Pandas/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Python学习-时间处理</title>
-    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86/"/>
-    <id>https://shang.at/post/Python学习-时间处理/</id>
-    <published>2019-06-06T08:37:46.000Z</published>
-    <updated>2019-08-03T02:17:49.584Z</updated>
-    
-    <content type="html"><![CDATA[<p>关于时间戳的几个概念<br>时间戳，根据1970年1月1日00:00:00开始按秒计算的偏移量。<br>时间元组（struct_time），包含9个元素。 </p><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">time.struct_time(tm_year=<span class="number">2017</span>, tm_mon=<span class="number">10</span>, tm_mday=<span class="number">1</span>, tm_hour=<span class="number">14</span>, tm_min=<span class="number">21</span>, tm_sec=<span class="number">57</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">274</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure><p>时间格式字符串，字符串形式的时间。<br>time模块与时间戳和时间相关的重要函数</p><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">time.time() <span class="comment"># 生成当前的时间戳，格式为10位整数的浮点数。</span></span><br><span class="line">time.strftime() <span class="comment"># 根据时间元组生成时间格式化字符串。</span></span><br><span class="line">time.strptime() <span class="comment"># 根据时间格式化字符串生成时间元组。time.strptime()与time.strftime()为互操作。</span></span><br><span class="line">time.localtime() <span class="comment"># 根据时间戳生成当前时区的时间元组。</span></span><br><span class="line">time.mktime() <span class="comment"># 根据时间元组生成时间戳。</span></span><br></pre></td></tr></table></figure><p>示例</p><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">##生成当前时间的时间戳，只有一个参数即时间戳的位数，默认为10位，输入位数即生成相应位数的时间戳，比如可以生成常用的13位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_timestamp</span><span class="params">(digits = <span class="number">10</span>)</span>:</span></span><br><span class="line">    time_stamp = time.time()</span><br><span class="line">    digits = <span class="number">10</span> ** (digits <span class="number">-10</span>)</span><br><span class="line">    time_stamp = int(round(time_stamp*digits))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间戳规范为10位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_timestamp10</span><span class="params">(time_stamp)</span>:</span></span><br><span class="line">    time_stamp = int (time_stamp* (<span class="number">10</span> ** (<span class="number">10</span>-len(str(time_stamp)))))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将当前时间转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_date</span><span class="params">(format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_stamp = int(time.time())</span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将10位时间戳转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_date</span><span class="params">(time_stamp, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间字符串转换为10位时间戳，时间字符串默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_to_timestamp</span><span class="params">(date, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.strptime(date, format_string)</span><br><span class="line">    time_stamp = int(time.mktime(time_array))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##不同时间格式字符串的转换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_style_transfomation</span><span class="params">(date, format_string1=<span class="string">"%Y-%m-%d %H:%M:%S"</span>,format_string2=<span class="string">"%Y-%m-%d %H-%M-%S"</span>)</span>:</span></span><br><span class="line">    time_array  = time.strptime(date, format_string1)</span><br><span class="line">    str_date = time.strftime(format_string2, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line">print(now_to_date())</span><br><span class="line">print(timestamp_to_date(<span class="number">1506816572</span>))</span><br><span class="line">print(date_to_timestamp(<span class="string">'2017-10-01 08:09:32'</span>))</span><br><span class="line">print(timestamp_to_timestamp10(<span class="number">1506816572546</span>))</span><br><span class="line">print(date_style_transfomation(<span class="string">'2017-10-01 08:09:32'</span>))</span><br></pre></td></tr></table></figure><p>结果为</p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1506836224000</span><br><span class="line">2017-10-01 13:37:04</span><br><span class="line">2017-10-01 08:09:32</span><br><span class="line">1506816572</span><br><span class="line">1506816572</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;关于时间戳的几个概念&lt;br&gt;时间戳，根据1970年1月1日00:00:00开始按秒计算的偏移量。&lt;br&gt;时间元组（struct_time），包含9个元素。 &lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="https://shang.at/categories/Python/"/>
-    
-    
-      <category term="python中的时间处理" scheme="https://shang.at/tags/python%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%A4%84%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spark学习笔记-Configuration</title>
-    <link href="https://shang.at/post/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Configuration/"/>
-    <id>https://shang.at/post/Spark学习笔记-Configuration/</id>
-    <published>2019-06-03T09:32:33.000Z</published>
-    <updated>2019-08-03T02:17:49.585Z</updated>
-    
-    <content type="html"><![CDATA[<p> submit 参数</p><p>运行时可配置参数：在代码中使用spark.conf.set(‘’， ‘’)的方式设置。运行时设置的参数不会在WebUI中显示</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt; submit 参数&lt;/p&gt;
-&lt;p&gt;运行时可配置参数：在代码中使用spark.conf.set(‘’， ‘’)的方式设置。运行时设置的参数不会在WebUI中显示&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="Spark" scheme="https://shang.at/categories/Spark/"/>
-    
-    
-      <category term="Configuration" scheme="https://shang.at/tags/Configuration/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python学习-队列</title>
-    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-%E9%98%9F%E5%88%97/"/>
-    <id>https://shang.at/post/Python学习-队列/</id>
-    <published>2019-06-03T02:10:48.000Z</published>
-    <updated>2020-05-11T02:35:59.597Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue <span class="comment">#LILO队列</span></span><br><span class="line">q = Queue() <span class="comment">#创建队列对象</span></span><br><span class="line">q.put(<span class="number">0</span>)    <span class="comment">#在队列尾部插入元素</span></span><br><span class="line">q.put(<span class="number">1</span>)</span><br><span class="line">q.put(<span class="number">2</span>)</span><br><span class="line">print(<span class="string">'LILO队列'</span>,q.queue)  <span class="comment">#查看队列中的所有元素</span></span><br><span class="line">print(q.get())  <span class="comment">#返回并删除队列头部元素</span></span><br><span class="line">print(q.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue <span class="comment">#LIFO队列</span></span><br><span class="line">lifoQueue = LifoQueue()</span><br><span class="line">lifoQueue.put(<span class="number">1</span>)</span><br><span class="line">lifoQueue.put(<span class="number">2</span>)</span><br><span class="line">lifoQueue.put(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'LIFO队列'</span>,lifoQueue.queue)</span><br><span class="line">lifoQueue.get() <span class="comment">#返回并删除队列尾部元素</span></span><br><span class="line">lifoQueue.get()</span><br><span class="line">print(lifoQueue.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue <span class="comment">#优先队列</span></span><br><span class="line">priorityQueue = PriorityQueue() <span class="comment">#创建优先队列对象</span></span><br><span class="line">priorityQueue.put(<span class="number">3</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">78</span>)   <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">100</span>)  <span class="comment">#插入元素</span></span><br><span class="line">print(priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.put(<span class="number">1</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">2</span>)    <span class="comment">#插入元素</span></span><br><span class="line">print(<span class="string">'优先级队列:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)</span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'全部被删除后:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque   <span class="comment">#双端队列</span></span><br><span class="line">dequeQueue = deque([<span class="string">'Eric'</span>,<span class="string">'John'</span>,<span class="string">'Smith'</span>])</span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.append(<span class="string">'Tom'</span>)    <span class="comment">#在右侧插入新元素</span></span><br><span class="line">dequeQueue.appendleft(<span class="string">'Terry'</span>)  <span class="comment">#在左侧插入新元素</span></span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.rotate(<span class="number">2</span>)    <span class="comment">#循环右移2次</span></span><br><span class="line">print(<span class="string">'循环右移2次后的队列'</span>,dequeQueue)</span><br><span class="line">dequeQueue.popleft()    <span class="comment">#返回并删除队列最左端元素</span></span><br><span class="line">print(<span class="string">'删除最左端元素后的队列：'</span>,dequeQueue)</span><br><span class="line">dequeQueue.pop()    <span class="comment">#返回并删除队列最右端元素</span></span><br><span class="line">print(<span class="string">'删除最右端元素后的队列：'</span>,dequeQueue)</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;队列&quot;&gt;&lt;a href=&quot;#队列&quot; class=&quot;headerlink&quot; title=&quot;队列&quot;&gt;&lt;/a&gt;队列&lt;/h3&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span c
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="https://shang.at/categories/Python/"/>
-    
-    
-      <category term="数据结构" scheme="https://shang.at/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spark学习笔记-广播变量</title>
-    <link href="https://shang.at/post/Spark%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B9%BF%E6%92%AD%E5%8F%98%E9%87%8F/"/>
-    <id>https://shang.at/post/Spark学习笔记-广播变量/</id>
-    <published>2019-05-28T08:19:03.000Z</published>
-    <updated>2019-08-03T02:17:49.589Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Shared-Variables"><a href="#Shared-Variables" class="headerlink" title="Shared Variables"></a>Shared Variables</h2><p>通常，当在远程集群节点上执行传递给Spark操作（例如<code>map</code>or <code>reduce</code>）的函数时，它将在函数中使用的所有变量的单独副本上工作。这些变量将复制到每台计算机，并且远程计算机上的变量的更新不会传播回驱动程序。支持跨任务的通用，读写共享变量效率低下。但是，Spark确实为两种常见的使用模式提供了两种有限类型的<em>共享变量</em>：广播变量和累加器。</p><h2 id="Broadcast"><a href="#Broadcast" class="headerlink" title="Broadcast"></a>Broadcast</h2><p>广播变量允许程序员在每台机器上保留一个只读变量，而不是随副本一起发送它的副本。例如，它们可用于以有效的方式为每个节点提供大输入数据集的副本。Spark还尝试使用有效的广播算法来分发广播变量，以降低通信成本。</p><p>Spark动作通过一组阶段执行，由分布式“shuffle”操作分隔。Spark自动广播每个阶段中任务所需的公共数据。以这种方式广播的数据以序列化形式缓存并在运行每个任务之前反序列化。这意味着显式创建广播变量仅在跨多个阶段的任务需要相同数据或以反序列化形式缓存数据很重要时才有用。</p><p>广播变量是<code>v</code>通过调用从变量创建的<code>SparkContext.broadcast(v)</code>。广播变量是一个包装器<code>v</code>，可以通过调用该<code>value</code> 方法来访问它的值。下面的代码显示了这个：</p><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>broadcastVar = sc.broadcast([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&lt;pyspark.broadcast.Broadcast object at <span class="number">0x102789f10</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>broadcastVar.value</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure><p>创建广播变量后，应该使用它来代替<code>v</code>群集上运行的任何函数中的值，这样<code>v</code>就不会多次传送到节点。此外，在<code>v</code>广播之后不应修改对象 ，以确保所有节点获得相同的广播变量值（例如，如果稍后将变量发送到新节点）。</p><p><a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html" target="_blank" rel="noopener">Performance Tuning</a></p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">== Physical Plan ==</span><br><span class="line">InMemoryTableScan [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_outstanding_amount_ex_dp90#6075]</span><br><span class="line">   +- InMemoryRelation [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_outstanding_amount_ex_dp90#6075], true, 10000, StorageLevel(disk, 1 replicas)</span><br><span class="line">         +- *(34) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, ((coalesce(nanvl(total_disburse_amount#5203, null), 0.0) - cast(coalesce(total_repay_principal_amount#5974, 0) as double)) - coalesce(nanvl(total_write_off_principal#5986, null), 0.0)) AS total_outstanding_amount_ex_dp90#6075]</span><br><span class="line">            +- SortMergeJoin [bill_create_date#4955], [write_off_date#4776], LeftOuter</span><br><span class="line">               :- *(23) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_disburse_amount#5203, total_repay_principal_amount#5974]</span><br><span class="line">               :  +- SortMergeJoin [bill_create_date#4955], [repay_date#5789], LeftOuter</span><br><span class="line">               :     :- *(6) Sort [bill_create_date#4955 ASC NULLS FIRST], false, 0</span><br><span class="line">               :     :  +- Exchange hashpartitioning(bill_create_date#4955, 200)</span><br><span class="line">               :     :     +- *(5) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_disburse_amount#5203]</span><br><span class="line">               :     :        +- Window [sum(disburse_amount#5197) windowspecdefinition(1, bill_create_date#4955 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_disburse_amount#5203], [1], [bill_create_date#4955 ASC NULLS FIRST]</span><br><span class="line">               :     :           +- *(4) Sort [1 ASC NULLS FIRST, bill_create_date#4955 ASC NULLS FIRST], false, 0</span><br><span class="line">               :     :              +- Exchange hashpartitioning(1, 200)</span><br><span class="line">               :     :                 +- *(3) HashAggregate(keys=[bill_create_date#4955, week_last_day#5015, month_last_day#5075], functions=[sum(cast(principal#615 as double))])</span><br><span class="line">               :     :                    +- Exchange hashpartitioning(bill_create_date#4955, week_last_day#5015, month_last_day#5075, 200)</span><br><span class="line">               :     :                       +- *(2) HashAggregate(keys=[bill_create_date#4955, week_last_day#5015, month_last_day#5075], functions=[partial_sum(cast(principal#615 as double))])</span><br><span class="line">               :     :                          +- *(2) Project [principal#615, cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) AS bill_create_date#4955, next_day(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), Sun) AS week_last_day#5015, last_day(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date)) AS month_last_day#5075]</span><br><span class="line">               :     :                             +- *(2) BroadcastHashJoin [id#392], [loan_id#609], Inner, BuildRight</span><br><span class="line">               :     :                                :- *(2) Project [id#392]</span><br><span class="line">               :     :                                :  +- *(2) Filter (status#397 IN (COMPLETED,CURRENT,LATE) &amp;&amp; isnotnull(id#392))</span><br><span class="line">               :     :                                :     +- *(2) FileScan parquet [id#392,status#397] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [In(status, [COMPLETED,CURRENT,LATE]), IsNotNull(id)], ReadSchema: struct&lt;id:string,status:string&gt;</span><br><span class="line">               :     :                                +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">               :     :                                   +- *(1) Project [loan_id#609, principal#615, create_time#632L]</span><br><span class="line">               :     :                                      +- *(1) Filter ((cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) &lt;= 18043) &amp;&amp; isnotnull(loan_id#609))</span><br><span class="line">               :     :                                         +- *(1) FileScan parquet [loan_id#609,principal#615,create_time#632L] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(loan_id)], ReadSchema: struct&lt;loan_id:string,principal:string,create_time:bigint&gt;</span><br><span class="line">               :     +- *(22) Sort [repay_date#5789 ASC NULLS FIRST], false, 0</span><br><span class="line">               :        +- Exchange hashpartitioning(repay_date#5789, 200)</span><br><span class="line">               :           +- *(21) Project [repay_date#5789, total_repay_principal_amount#5974]</span><br><span class="line">               :              +- Window [sum(repay_principal_amount#5970) windowspecdefinition(1, repay_date#5789 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_repay_principal_amount#5974], [1], [repay_date#5789 ASC NULLS FIRST]</span><br><span class="line">               :                 +- *(20) Sort [1 ASC NULLS FIRST, repay_date#5789 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                    +- Exchange hashpartitioning(1, 200)</span><br><span class="line">               :                       +- *(19) HashAggregate(keys=[repay_date#5789], functions=[sum(CASE WHEN (isnull(write_off_date#4776) || (write_off_date#4776 &gt; repay_date#5789)) THEN repaid_principal#684 END)])</span><br><span class="line">               :                          +- Exchange hashpartitioning(repay_date#5789, 200)</span><br><span class="line">               :                             +- *(18) HashAggregate(keys=[repay_date#5789], functions=[partial_sum(CASE WHEN (isnull(write_off_date#4776) || (write_off_date#4776 &gt; repay_date#5789)) THEN repaid_principal#684 END)])</span><br><span class="line">               :                                +- *(18) Project [repaid_principal#684, write_off_date#4776, cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) AS repay_date#5789]</span><br><span class="line">               :                                   +- SortMergeJoin [loan_id#609], [loan_id#5672], LeftOuter</span><br><span class="line">               :                                      :- *(12) Sort [loan_id#609 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                                      :  +- Exchange hashpartitioning(loan_id#609, 200)</span><br><span class="line">               :                                      :     +- *(11) Project [loan_id#609, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :        +- *(11) BroadcastHashJoin [id#608], [bill_id#670], Inner, BuildRight</span><br><span class="line">               :                                      :           :- *(11) Project [id#608, loan_id#609]</span><br><span class="line">               :                                      :           :  +- *(11) BroadcastHashJoin [id#392], [loan_id#609], Inner, BuildRight</span><br><span class="line">               :                                      :           :     :- *(11) Project [id#392]</span><br><span class="line">               :                                      :           :     :  +- *(11) Filter (status#397 IN (COMPLETED,CURRENT,LATE) &amp;&amp; isnotnull(id#392))</span><br><span class="line">               :                                      :           :     :     +- *(11) FileScan parquet [id#392,status#397] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [In(status, [COMPLETED,CURRENT,LATE]), IsNotNull(id)], ReadSchema: struct&lt;id:string,status:string&gt;</span><br><span class="line">               :                                      :           :     +- BroadcastExchange HashedRelationBroadcastMode(List(input[1, string, true]))</span><br><span class="line">               :                                      :           :        +- *(7) Project [id#608, loan_id#609]</span><br><span class="line">               :                                      :           :           +- *(7) Filter (isnotnull(loan_id#609) &amp;&amp; isnotnull(id#608))</span><br><span class="line">               :                                      :           :              +- *(7) FileScan parquet [id#608,loan_id#609] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(loan_id), IsNotNull(id)], ReadSchema: struct&lt;id:string,loan_id:string&gt;</span><br><span class="line">               :                                      :           +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">               :                                      :              +- *(10) Project [bill_id#670, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :                 +- *(10) Filter ((isnotnull(rn#5382) &amp;&amp; (rn#5382 = 1)) &amp;&amp; (cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) &lt;= 18043))</span><br><span class="line">               :                                      :                    +- Window [row_number() windowspecdefinition(bill_id#670, repay_time#692 DESC NULLS LAST, specifiedwindowframe(RowFrame, unboundedpreceding$(), currentrow$())) AS rn#5382], [bill_id#670], [repay_time#692 DESC NULLS LAST]</span><br><span class="line">               :                                      :                       +- *(9) Sort [bill_id#670 ASC NULLS FIRST, repay_time#692 DESC NULLS LAST], false, 0</span><br><span class="line">               :                                      :                          +- Exchange hashpartitioning(bill_id#670, 200)</span><br><span class="line">               :                                      :                             +- *(8) Project [bill_id#670, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :                                +- *(8) Filter isnotnull(bill_id#670)</span><br><span class="line">               :                                      :                                   +- *(8) FileScan parquet [bill_id#670,repaid_principal#684,repay_time#692] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(bill_id)], ReadSchema: struct&lt;bill_id:string,repaid_principal:decimal(20,0),repay_time:timestamp&gt;</span><br><span class="line">               :                                      +- *(17) Sort [loan_id#5672 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                                         +- *(17) HashAggregate(keys=[loan_id#5672], functions=[first(write_off_date#4705, true)])</span><br><span class="line">               :                                            +- *(17) HashAggregate(keys=[loan_id#5672], functions=[partial_first(write_off_date#4705, true)])</span><br><span class="line">               :                                               +- *(17) Project [loan_id#5672, write_off_date#4705]</span><br><span class="line">               :                                                  +- *(17) BroadcastHashJoin [bill_id#4714], [bill_id#670], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :- *(17) Project [loan_id#5672, write_off_date#4705, bill_id#4714]</span><br><span class="line">               :                                                     :  +- *(17) BroadcastHashJoin [loan_id#5672], [loan_id#4718], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :     :- *(17) Project [loan_id#5672, write_off_date#4705]</span><br><span class="line">               :                                                     :     :  +- *(17) BroadcastHashJoin [loan_id#5672], [loan_id#4708], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :     :     :- *(17) HashAggregate(keys=[loan_id#5672], functions=[min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">               :                                                     :     :     :  +- Exchange hashpartitioning(loan_id#5672, 200)</span><br><span class="line">               :                                                     :     :     :     +- *(13) HashAggregate(keys=[loan_id#5672], functions=[partial_min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">               :                                                     :     :     :        +- *(13) Project [loan_id#5672, (CASE WHEN isnotnull(CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END WHEN isnotnull(CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END ELSE 0 END &gt;= 91) AS is_write_off_bill#4594, date_add(cast(due_date#5686 as date), 91) AS write_off_date#4630]</span><br><span class="line">               :                                                     :     :     :           +- *(13) Filter (CASE WHEN isnotnull(CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END WHEN isnotnull(CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END ELSE 0 END &gt;= 91)</span><br><span class="line">               :                                                     :     :     :              +- *(13) FileScan parquet [loan_id#5672,status#5676,due_date#5686,repay_time#5694L] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;loan_id:string,status:string,due_date:string,repay_time:bigint&gt;</span><br><span class="line">               :                                                     :     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">               :                                                     :     :        +- *(14) Project [id#392 AS loan_id#4708]</span><br><span class="line">               :                                                     :     :           +- *(14) FileScan parquet [id#392] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string&gt;</span><br><span class="line">               :                                                     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[1, string, true]))</span><br><span class="line">               :                                                     :        +- *(15) Project [id#4717 AS bill_id#4714, loan_id#4718]</span><br><span class="line">               :                                                     :           +- *(15) FileScan parquet [id#4717,loan_id#4718] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,loan_id:string&gt;</span><br><span class="line">               :                                                     +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">               :                                                        +- *(16) FileScan parquet [bill_id#670] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;bill_id:string&gt;</span><br><span class="line">               +- *(33) Sort [write_off_date#4776 ASC NULLS FIRST], false, 0</span><br><span class="line">                  +- Exchange hashpartitioning(write_off_date#4776, 200)</span><br><span class="line">                     +- *(32) Project [write_off_date#4776, total_write_off_principal#5986]</span><br><span class="line">                        +- Window [sum(write_off_principal#5982) windowspecdefinition(1, write_off_date#4776 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_write_off_principal#5986], [1], [write_off_date#4776 ASC NULLS FIRST]</span><br><span class="line">                           +- *(31) Sort [1 ASC NULLS FIRST, write_off_date#4776 ASC NULLS FIRST], false, 0</span><br><span class="line">                              +- Exchange hashpartitioning(1, 200)</span><br><span class="line">                                 +- *(30) HashAggregate(keys=[write_off_date#4776], functions=[sum(write_off_principal#4779)])</span><br><span class="line">                                    +- Exchange hashpartitioning(write_off_date#4776, 200)</span><br><span class="line">                                       +- *(29) HashAggregate(keys=[write_off_date#4776], functions=[partial_sum(write_off_principal#4779)])</span><br><span class="line">                                          +- SortAggregate(key=[loan_id#609], functions=[first(write_off_date#4705, true), first(amount#398, true), sum(CASE WHEN (isnotnull(repayment_date#4760) &amp;&amp; (repayment_date#4760 &lt; write_off_date#4705)) THEN repaid_principal#684 ELSE 0 END)])</span><br><span class="line">                                             +- SortAggregate(key=[loan_id#609], functions=[partial_first(write_off_date#4705, true), partial_first(amount#398, true), partial_sum(CASE WHEN (isnotnull(repayment_date#4760) &amp;&amp; (repayment_date#4760 &lt; write_off_date#4705)) THEN repaid_principal#684 ELSE 0 END)])</span><br><span class="line">                                                +- *(28) Sort [loan_id#609 ASC NULLS FIRST], false, 0</span><br><span class="line">                                                   +- *(28) Project [loan_id#609, write_off_date#4705, amount#398, repaid_principal#684, cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) AS repayment_date#4760]</span><br><span class="line">                                                      +- *(28) BroadcastHashJoin [bill_id#4714], [bill_id#670], LeftOuter, BuildRight</span><br><span class="line">                                                         :- *(28) Project [loan_id#609, write_off_date#4705, amount#398, bill_id#4714]</span><br><span class="line">                                                         :  +- *(28) BroadcastHashJoin [loan_id#609], [loan_id#4718], LeftOuter, BuildRight</span><br><span class="line">                                                         :     :- *(28) Project [loan_id#609, write_off_date#4705, amount#398]</span><br><span class="line">                                                         :     :  +- *(28) BroadcastHashJoin [loan_id#609], [loan_id#4708], LeftOuter, BuildRight</span><br><span class="line">                                                         :     :     :- *(28) HashAggregate(keys=[loan_id#609], functions=[min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">                                                         :     :     :  +- ReusedExchange [loan_id#609, min#6101], Exchange hashpartitioning(loan_id#5672, 200)</span><br><span class="line">                                                         :     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">                                                         :     :        +- *(25) Project [id#392 AS loan_id#4708, amount#398]</span><br><span class="line">                                                         :     :           +- *(25) FileScan parquet [id#392,amount#398] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,amount:string&gt;</span><br><span class="line">                                                         :     +- ReusedExchange [bill_id#4714, loan_id#4718], BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[1, string, true]))</span><br><span class="line">                                                         +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">                                                            +- *(27) Project [bill_id#670, repay_time#692, repaid_principal#684]</span><br><span class="line">                                                               +- *(27) FileScan parquet [bill_id#670,repaid_principal#684,repay_time#692] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;bill_id:string,repaid_principal:decimal(20,0),repay_time:timestamp&gt;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;Shared-Variables&quot;&gt;&lt;a href=&quot;#Shared-Variables&quot; class=&quot;headerlink&quot; title=&quot;Shared Variables&quot;&gt;&lt;/a&gt;Shared Variables&lt;/h2&gt;&lt;p&gt;通常，当在远程集群节点上执行
-      
-    
-    </summary>
-    
-      <category term="Spark" scheme="https://shang.at/categories/Spark/"/>
-    
-    
-      <category term="Spark学习" scheme="https://shang.at/tags/Spark%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据结构学习笔记二-算法</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E4%BA%8C-%E7%AE%97%E6%B3%95/"/>
-    <id>https://shang.at/post/数据结构学习笔记二-算法/</id>
-    <published>2019-05-16T09:54:29.000Z</published>
-    <updated>2019-05-16T14:39:58.762Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><h2 id="深度和广度优先搜索"><a href="#深度和广度优先搜索" class="headerlink" title="深度和广度优先搜索"></a>深度和广度优先搜索</h2><h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><p>##分治算法</p><h2 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h2><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><h2 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h2><h2 id="并行算法"><a href="#并行算法" class="headerlink" title="并行算法"></a>并行算法</h2>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;递归&quot;&gt;&lt;a href=&quot;#递归&quot; class=&quot;headerlink&quot; title=&quot;递归&quot;&gt;&lt;/a&gt;递归&lt;/h2&gt;&lt;h2 id=&quot;二分查找&quot;&gt;&lt;a href=&quot;#二分查找&quot; class=&quot;headerlink&quot; title=&quot;二分查找&quot;&gt;&lt;/a&gt;二分查找&lt;/h
-      
-    
-    </summary>
-    
-      <category term="数据结构与算法" scheme="https://shang.at/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="算法" scheme="https://shang.at/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
