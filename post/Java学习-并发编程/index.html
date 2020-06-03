@@ -62,7 +62,7 @@
             
               | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA源码/">JAVA源码</a>
+    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
   </div>
 
 
@@ -78,26 +78,20 @@
 
             
           </div>
-          <p>Java中的并发编程是指：如何协调多个线程来共同完成一件任务，其中最主要的就是如何处理共享数据</p>
-<p>并发编程是为了充分利用计算机处理器资源，提高系统吞吐量，提高程序执行效率而逐步演化出来的一种编程模式，它主要解决了以下的一些问题：</p>
-<ol>
-<li>充分发挥多处理器的强大能力<ol>
-<li>现在处理器的基本调度单位是线程，多线程程序可以充分发挥多处理器的能力</li>
-</ol>
-</li>
-<li>让异步编程更加简单<ol>
-<li>对于一个需要IO操作(耗时)的事件，可以让它在一个独立的线程中处理，而不会使主流程卡顿</li>
-</ol>
-</li>
-<li>让程序建模更加简单<ol>
-<li>可以将复杂的工作流分解为一组简单的工作流，每个工作流放到一个线程中独立执行，只在特定的同步位置进行交互</li>
-</ol>
-</li>
-<li>等</li>
-</ol>
-<p>JAVA中的并发编程实际上就是面向线程编程，其中最主要的问题就是处理线程间数据共享的问题。因此诞生了很多同步技术：</p>
+          <h4 id="整体脑图"><a href="#整体脑图" class="headerlink" title="整体脑图"></a>整体脑图</h4><p><img src="/images/chenssy_juc_201712.png"></p>
 <ul>
-<li><a href="/post/Java学习-Thread">JAVA中的Thread</a></li>
+<li><a href="/post/JAVA并发编程-1-内存模型">JAVA并发编程-1-内存模型</a></li>
+<li><a href="/post/JAVA并发编程-2-并发基础">JAVA并发编程-2-并发基础</a></li>
+<li><a href="/post/JAVA并发编程-3-锁">JAVA并发编程-3-锁</a></li>
+<li><a href="/post/JAVA并发编程-4-并发工具类">JAVA并发编程-4-并发工具类</a></li>
+<li><a href="/post/JAVA并发编程-5-其他">JAVA并发编程-5-ThreadLocal&amp;Fork&amp;Join</a></li>
+<li><a href="/post/JAVA并发编程-6-并发集合">JAVA并发编程-6-并发集合</a></li>
+<li><a href="/post/JAVA并发编程-7-Atomic">JAVA并发编程-7-Atomic</a></li>
+<li><a href="/post/JAVA并发编程-8-阻塞队列">JAVA并发编程-8-阻塞队列</a></li>
+<li><a href="/post/JAVA并发编程-9-线程池">JAVA并发编程-9-线程池</a></li>
+<li><a href="/post/JAVA并发编程-10-响应式编程-RxJava">JAVA并发编程-10-响应式编程-RxJava</a></li>
+<li><a href="/post/JAVA并发编程-12-并发框架-Disruptor">JAVA并发编程-12-并发框架-Disruptor</a></li>
+<li></li>
 </ul>
 
         </section>
@@ -114,6 +108,13 @@
         
   </div>
   <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#整体脑图"><span class="toc-number">1.</span> <span class="toc-text">整体脑图</span></a></li></ol>
+        </div>
+    </div>
     
   </aside>
 </main>

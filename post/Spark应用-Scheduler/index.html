@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Spark应用-Scheduler | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Spark应用-Scheduler</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月01日</time>
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Scheduler" class='tag'>Scheduler</a>
+
+
+            
+          </div>
+          <p>Spark任务有四种提交方式：</p>
+<ul>
+<li>local</li>
+<li>standalone</li>
+<li>yarn(这里着重讲)</li>
+<li>mesos</li>
+</ul>
+<p>这里涉及到两层的任务调度：</p>
+<h5 id="第一层：schedule-across-applications，应用间的任务调度"><a href="#第一层：schedule-across-applications，应用间的任务调度" class="headerlink" title="第一层：schedule across applications，应用间的任务调度"></a>第一层：schedule across applications，应用间的任务调度</h5><p>Spark的application提交到yarn平台，yarn平台负责Spark application的调度，这里也分为两层：</p>
+<h6 id="第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"><a href="#第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排" class="headerlink" title="第一层：Yarn的队列，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"></a>第一层：<a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">Yarn的队列</a>，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排</h6><p>yarn有三种任务调度模型：</p>
+<ul>
+<li>FIFO scheduler：先入先出调度器，整个Yarn集群只有一个任务队列，所有提交的任务都要等待上一个任务完全执行完才能执行</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxdpkawcj30hx0d9wfw.jpg" alt="fifo"></p>
+<ul>
+<li>Capacity scheduler：容量调度器，以Capacity为中心，把资源划分到若干个队列中，各个队列内根据自己的逻辑分配资源。例如下图中队列A可以调度的资源可以占80%，队列B占有剩下的20%，各队列接受相应的作业请求，在自己的资源中分配</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxee77bdj30m10f0406.jpg" alt="capacity"></p>
+<ul>
+<li>Fair scheduler：秉承公平性原则，尽可能让各个作业得到的资源平均。先提交的job1马上占满了集群资源，那么作业2提交之后，原本Job1占有的资源拨出一些给作业2，从而达到“公平”<strong>(但是要等到job1的某些task执行完毕之后才能把资源让出来)</strong></li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxeyu1x4j30hl0cv75n.jpg" alt="fair"></p>
+<h6 id="第二层：Yarn队列内的调度"><a href="#第二层：Yarn队列内的调度" class="headerlink" title="第二层：Yarn队列内的调度"></a>第二层：Yarn队列内的调度</h6><p>当使用FIFO scheduler，自不必说，它只有一个先进先出的队列，也就是队列内部的任务调度；Capacity scheduler会把 集群分成若干个队列，每个队列内部采用FIFO的策略；Fair scheduler可以通过设置，每个Fair Queue内部使用不同的schedulingPolicy，但是会有一个文档级别的默认策略的配置defaultQueueSchedulingPolicy，如果每个Queue没有自己的设置，那么就用defaultQueueSchedulingPolicy</p>
+<h5 id="第二层：schedule-within-application，同一个SparkContext内的job调度"><a href="#第二层：schedule-within-application，同一个SparkContext内的job调度" class="headerlink" title="第二层：schedule within application，同一个SparkContext内的job调度"></a>第二层：schedule within application，同一个SparkContext内的job调度</h5>
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#第一层：schedule-across-applications，应用间的任务调度"><span class="toc-number">1.</span> <span class="toc-text">第一层：schedule across applications，应用间的任务调度</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"><span class="toc-number">1.1.</span> <span class="toc-text">第一层：Yarn的队列，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#第二层：Yarn队列内的调度"><span class="toc-number">1.2.</span> <span class="toc-text">第二层：Yarn队列内的调度</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#第二层：schedule-within-application，同一个SparkContext内的job调度"><span class="toc-number">2.</span> <span class="toc-text">第二层：schedule within application，同一个SparkContext内的job调度</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Spark应用-Scheduler/";
+  var disqus_url = "https://shang.at/post/Spark应用-Scheduler/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+</body>
+</html>
