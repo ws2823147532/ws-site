@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>java学习-JVM疑问 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>java学习-JVM疑问</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月05日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#JVM疑问" class='tag'>JVM疑问</a>
+
+
+            
+          </div>
+          <p>在学习JVM的内存模型的时候，我有这样一些疑惑：</p>
+<p>1、我们通常只是定义了堆大小(-Xms初始，-Xmx最大)，虚拟机栈大小(-Xss)。<br>但是我发现这并不能计算出一个java进程占用的全部内存大小。<br>以下是我自己理解的(JDK1.8)：<br>java进程占用的内存<br>​    =JVM管理的内存+非JVM管理的内存<br>​    =线程独立的内存+线程共享的内存<br>​    =n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+堆外内存(off-heap:direct memory)<br>其中：<br>​    JVM管理的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)<br>​    非JVM管理的内存：元空间(metaspace)+堆外内存(off-heap:direct memory)<br>​    线程独立的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数<br>​    线程共享的内存：堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+对外内存(off-heap:direct memory)</p>
+<p>2、在JDK1.7及以前，有个永久代(PermGen)，也就是文中说的方法区。这块区域也被称为非堆内存<br>​    那么在JDK1.8及以后，永久代变成了元空间，到了JVM管理之外了，那么JDK1.8及以后的版本中还有非堆内存(non-heap)的说法吗？如果有的话，是指什么呢？</p>
+<p>3、关于线程独立的这块内存{n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数}，它是完全独立于其他的内存的吗？<br>​    还是会分享堆内存，受到堆内存大小的限制<br>​    还是说Thread对象是建立在堆内存，然后每个Thread对应的虚拟机栈都是独立的吗？ 换句话说，随着Thread的增加(堆内存充足：还能给新的对象分配内存)，java进程占用的内存会越来越大—–我觉得这肯定不对，但是我却无法解释</p>
+<p>4、我做了一些测试(JDK1.8)：<br>​    4.1、指定很小的堆内存，改变虚拟机栈大小<br>​        4.1.1、-Xms2m -Xmx2m -Xss16m 启动java进程，直到递归调用1,016,085深度，会报StackOverflowError<br>​        4.1.2、-Xms2m -Xmx2m -Xss8m 启动java进程，直到递归调用318,031深度，会报StackOverflowError<br>​    4.2、指定很小的堆内存，如-Xms2m -Xmx2m，最终会报OutOfMemoryError</p>
+<p>我谈一下我的理解，首先，新创建的线程对象肯定是放在堆中的；每个线程独立的虚拟机栈，存放了很多的栈帧，每个栈帧实际上存放了局部变量表(和其他三部分)，每个栈帧对应了一个函数调用，在这个线程中执行的每个函数中的变量可能会存放在堆里面，也有可能会直接在栈上分配内存，因为这里有一个逃逸的概念(仅函数内部使用的局部变量直接在栈上分配内存，不会占用堆内存)。</p>
+<p>所以在我的理解里面，如果虚拟机栈是一个完全独立于堆的内存，那么虚拟机栈就不会受到堆内存大小的限制(比如我上面做的实验：当堆内存远小于虚拟机栈大小，最终报的异常仍然是StackOverflowError，而不是OutOfMemoryError)</p>
+<p>所以我才会想到，如果虚拟机栈是一个完全独立于堆的内存，无限的创建线程，每个线程的虚拟机栈如果都无限接近于-Xss分配的最大限度，那么最终会耗尽系统的所有 内存吧</p>
+<p>我又做了一个实验，就是无限的创建线程，然后在调用start()的时候，报了OutOfMemoryError:unable to create new native thread的异常，看来操作系统在这里是对线程数是有限制的。</p>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/java学习-JVM疑问/";
+  var disqus_url = "https://shang.at/post/java学习-JVM疑问/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

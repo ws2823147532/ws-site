@@ -108,6 +108,11 @@
 <li>方法区</li>
 <li>直接内存 (非运行时数据区的一部分)</li>
 </ul>
+<blockquote>
+<p>疑问：线程私有的内存占用是JVM管理的内存的哪一部分？</p>
+<p>Xss参数是设定虚拟机中每个线程占用的栈内存大小，而<code>虚拟机栈可分配的内存</code>又跟物理机的内存大小、Java堆内存、方法区(JDK1.7及以前)等内存大小相关，其它的区分得的内存越大，虚拟机栈能够分得的内存就越小，并发的线程数量也就越小————这句话是对的吗？</p>
+<p>测试：单线程 启动参数 -Xss16m -Xms2m -Xmx2m，stack depth:415910 报了StackOverflowError</p>
+</blockquote>
 <h3 id="2-1-程序计数器"><a href="#2-1-程序计数器" class="headerlink" title="2.1 程序计数器"></a>2.1 程序计数器</h3><p>程序计数器是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。<strong>字节码解释器工作时通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等功能都需要依赖这个计数器来完成。</strong></p>
 <p>另外，<strong>为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。</strong></p>
 <p><strong>从上面的介绍中我们知道程序计数器主要有两个作用：</strong></p>
@@ -119,7 +124,7 @@
 <h3 id="2-2-Java-虚拟机栈"><a href="#2-2-Java-虚拟机栈" class="headerlink" title="2.2 Java 虚拟机栈"></a>2.2 Java 虚拟机栈</h3><p><strong>与程序计数器一样，Java 虚拟机栈也是线程私有的，它的生命周期和线程相同，描述的是 Java 方法执行的内存模型，每次方法调用的数据都是通过栈传递的。</strong></p>
 <p><strong>Java 内存可以粗糙的区分为堆内存（Heap）和栈内存 (Stack),其中栈就是现在说的虚拟机栈，或者说是虚拟机栈中局部变量表部分。</strong> （实际上，Java 虚拟机栈是由一个个栈帧组成，而每个栈帧中都拥有：局部变量表、操作数栈、动态链接、方法出口信息。）</p>
 <p><strong>局部变量表主要存放了编译期可知的各种数据类型</strong>（boolean、byte、char、short、int、float、long、double）、<strong>对象引用</strong>（reference 类型，它不同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）。</p>
-<p><strong>Java 虚拟机栈会出现两种错误：StackOverFlowError 和 OutOfMemoryError。</strong></p>
+<p><strong>Java 虚拟机栈会出现两种错误：StackOverFlowError 和 OutOfMemoryError。</strong><a href="/post/Java学习-常见异常#StackOverflowError和OutOfMemoryError的区别">二者差异</a></p>
 <ul>
 <li><strong>StackOverFlowError：</strong> 若 Java 虚拟机栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度的时候，就抛出 StackOverFlowError 错误。</li>
 <li><strong>OutOfMemoryError：</strong> 若 Java 虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出 OutOfMemoryError 错误。</li>
@@ -133,12 +138,20 @@
 <li>抛出异常。</li>
 </ol>
 <p>不管哪种返回方式都会导致栈帧被弹出。</p>
+<blockquote>
+<p><strong>疑问：虚拟机栈到底是占用的哪块内存呢？JVM直接开辟的系统内存空间，还是会共享heap空间？由于每次创建线程，都会创建其对应的虚拟机栈，那么线程创建太多会带来极大的内存消耗代价(以及线程切换代价)</strong></p>
+<p>做了一个实验：</p>
+<p>​    -Xss4m -Xms8m -Xmx8m：stack depth:215835 报了java.lang.StackOverflowError</p>
+<p>​    -Xss16m -Xms8m -Xmx8m：stack depth:416734 报了java.lang.StackOverflowError</p>
+<p>​    -Xss32m -Xms8m -Xmx8m：stack depth:835116 报了java.lang.StackOverflowError</p>
+<p>从实验结果来看，限制了内存大小之后，改变虚拟机栈大小，无论把虚拟机栈设置多大，最终都是报的java.lang.StackOverflowError，是不是可以得出这样的结论，hotspot的设计中虚拟机栈使用的是独立于java堆内存的系统空间呢？</p>
+</blockquote>
 <h3 id="2-3-本地方法栈"><a href="#2-3-本地方法栈" class="headerlink" title="2.3 本地方法栈"></a>2.3 本地方法栈</h3><p>和虚拟机栈所发挥的作用非常相似，区别是： <strong>虚拟机栈为虚拟机执行 Java 方法 （也就是字节码）服务，而本地方法栈则为虚拟机使用到的 Native 方法服务。</strong> 在 HotSpot 虚拟机中和 Java 虚拟机栈合二为一。</p>
 <p>本地方法被执行的时候，在本地方法栈也会创建一个栈帧，用于存放该本地方法的局部变量表、操作数栈、动态链接、出口信息。</p>
 <p>方法执行完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种错误。</p>
 <h3 id="2-4-堆"><a href="#2-4-堆" class="headerlink" title="2.4 堆"></a>2.4 堆</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。<strong>此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。</strong></p>
-<p><strong>Java世界中“几乎”所有的对象都在堆中分配，但是，随着JIT编译期的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么“绝对”了。从jdk 1.7开始已经默认开启逃逸分析，如果某些方法中的对象引用没有被返回或者未被外面使用（也就是未逃逸出去），那么对象可以直接在栈上分配内存。</strong></p>
-<p>Java 堆是垃圾收集器管理的主要区域，因此也被称作<strong>GC 堆（Garbage Collected Heap）</strong>.从垃圾回收的角度，由于现在收集器基本都采用分代垃圾收集算法，所以 Java 堆还可以细分为：新生代和老年代：再细致一点有：Eden 空间、From Survivor、To Survivor 空间等。<strong>进一步划分的目的是更好地回收内存，或者更快地分配内存。</strong></p>
+<p><strong>Java世界中“几乎”所有的对象都在堆中分配，但是，随着JIT编译期的发展与逃逸分析技术逐渐成熟，栈上分配、标量替换优化技术将会导致一些微妙的变化，所有的对象都分配到堆上也渐渐变得不那么“绝对”了。从jdk 1.7开始已经默认开启<code>逃逸分析</code>，如果某些方法中的对象引用没有被返回或者未被外面使用（也就是未逃逸出去），那么对象可以直接在栈上分配内存。</strong></p>
+<p>Java 堆是垃圾收集器管理的主要区域，因此也被称作<strong>GC 堆（Garbage Collected Heap）</strong>.从垃圾回收的角度，由于现在收集器基本都采用<code>分代垃圾收集算法</code>，所以 Java 堆还可以细分为：新生代和老年代：再细致一点有：Eden 空间、From Survivor、To Survivor 空间等。<strong>进一步划分的目的是更好地回收内存，或者更快地分配内存。</strong></p>
 <p>在 JDK 7 版本及JDK 7 版本之前，堆内存被通常被分为下面三部分：</p>
 <ol>
 <li>新生代内存(Young Generation)</li>
@@ -195,13 +208,20 @@
 <p>修正(<a href="https://github.com/Snailclimb/JavaGuide/issues/747" target="_blank" rel="noopener">issue747</a>，<a href="https://blog.csdn.net/q5706503/article/details/84640762" target="_blank" rel="noopener">reference</a>)： </p>
 <ol>
 <li><strong>JDK1.7之前运行时常量池逻辑包含字符串常量池存放在方法区, 此时hotspot虚拟机对方法区的实现为永久代</strong></li>
-<li><strong>JDK1.7 字符串常量池被从方法区拿到了堆中, 这里没有提到运行时常量池,也就是说字符串常量池被单独拿到堆,运行时常量池剩下的东西还在方法区, 也就是hotspot中的永久代</strong> 。</li>
+<li><strong>JDK1.7 <code>字符串常量池</code>被从方法区拿到了堆中, 这里没有提到运行时常量池,也就是说字符串常量池被单独拿到堆,运行时常量池剩下的东西还在方法区, 也就是hotspot中的永久代</strong> 。</li>
 <li><strong>JDK1.8 hotspot移除了永久代用元空间(Metaspace)取而代之, 这时候字符串常量池还在堆, 运行时常量池还在方法区, 只不过方法区的实现从永久代变成了元空间(Metaspace)</strong> </li>
 </ol>
+<p>实验：以下三组参数分别运行同一段代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">&gt;         List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">&gt;         <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">&gt;         <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">&gt;             list.add(String.valueOf(i++).intern());</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt; </span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>JDK1.6 -XX:PermSize=20M -XX:MaxPermSize=20M设置永久区大小，报OutOfMemoryError： PermGen space，说明字符串常量位于PermGen</p>
+<p>JDK1.7 -XX:PermSize=20M -XX:MaxPermSize=20M设置永久区大小，OutOfMemoryError： Java heap space，说明字符串常量位于了heap内</p>
+<p>JDK1.8 -XX:MetaspaceSize=20M -XX:MaxMetaspaceSize=20M设置永久区大小，OutOfMemoryError： Java heap space，说明字符串常量还在heap内</p>
 </blockquote>
 <p>相关问题：JVM 常量池中存储的是对象还是引用呢？： <a href="https://www.zhihu.com/question/57109429/answer/151717241" target="_blank" rel="noopener">https://www.zhihu.com/question/57109429/answer/151717241</a>  by RednaxelaFX</p>
 <h3 id="2-7-直接内存"><a href="#2-7-直接内存" class="headerlink" title="2.7 直接内存"></a>2.7 直接内存</h3><p><strong>直接内存并不是虚拟机运行时数据区的一部分，也不是虚拟机规范中定义的内存区域，但是这部分内存也被频繁地使用。而且也可能导致 OutOfMemoryError 错误出现。</strong></p>
-<p>JDK1.4 中新加入的 <strong>NIO(New Input/Output) 类</strong>，引入了一种基于<strong>通道（Channel）</strong> 与<strong>缓存区（Buffer）</strong> 的 I/O 方式，它可以直接使用 Native 函数库直接分配堆外内存，然后通过一个存储在 Java 堆中的 DirectByteBuffer 对象作为这块内存的引用进行操作。这样就能在一些场景中显著提高性能，因为<strong>避免了在 Java 堆和 Native 堆之间来回复制数据</strong>。</p>
+<p>JDK1.4 中新加入的 <strong>NIO(New Input/Output) 类</strong>，引入了一种基于<strong>通道（Channel）</strong> 与<strong>缓存区（Buffer）</strong> 的 I/O 方式，它可以直接使用 Native 函数库直接分配堆外内存，然后通过一个存储在 Java 堆中的 DirectByteBuffer 对象作为这块内存的引用进行操作。这样就能在一些场景中显著提高性能，因为<strong>避免了在 Java 堆和 Native 堆之间来回复制数据</strong>。<a href="/post/java网络编程-零拷贝">这就是网络编程中常说的Zero-copy(零拷贝)</a></p>
 <p>本机直接内存的分配不会受到 Java 堆的限制，但是，既然是内存就会受到本机总内存大小以及处理器寻址空间的限制。</p>
 <h2 id="三-HotSpot-虚拟机对象探秘"><a href="#三-HotSpot-虚拟机对象探秘" class="headerlink" title="三 HotSpot 虚拟机对象探秘"></a>三 HotSpot 虚拟机对象探秘</h2><p>通过上面的介绍我们大概知道了虚拟机的内存情况，下面我们来详细的了解一下 HotSpot 虚拟机在 Java 堆中对象分配、布局和访问的全过程。</p>
 <h3 id="3-1-对象的创建"><a href="#3-1-对象的创建" class="headerlink" title="3.1 对象的创建"></a>3.1 对象的创建</h3><p>下图便是 Java 对象的创建过程，我建议最好是能默写出来，并且要掌握每一步在做什么。<br><img src="https://my-blog-to-use.oss-cn-beijing.aliyuncs.com/2019-6/Java创建对象的过程.png" alt="Java创建对象的过程"></p>
@@ -429,6 +449,11 @@
 </script>
 <script src="/lib/jquery.fancybox.min.js"></script>
 
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
 
 </body>
 </html>

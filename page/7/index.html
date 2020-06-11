@@ -56,6 +56,322 @@
   <div class="posts-list">
     
       <section>
+        <a href="/post/airflow安装/">
+          <h3 class='post-head'>
+            airflow安装
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># airflow needs a home, ~/airflow is the default,</span><br><span class="line"># but you can lay foundation somewhere else if you prefer</span><br><span class="line"># (optional)</span><br><span class="line">export AIRFLOW_HOME=~/airflow</span><br><span class="line"></span><br><span class="line"># install from pypi using pip</span><br><span class="line">pip install apache-airflow</span><br><span class="line"></span><br><span class="line"># initialize the database</span><br><span class="line">airflow initdb</span><br><span class="line"></span><br><span class="line"># start the web server, default port is 8080</span><br><span class="line">airflow webserver -p 8080</span><br><span class="line"></span><br><span class="line"># start the scheduler</span><br><span class="line">airflow scheduler</span><br><span class="line"></span><br><span class="line"># visit localhost:8080 in the browser and enable the example dag in the home page</span><br></pre></td></tr></table></figure>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-抽样方法和自增ID/">
+          <h3 class='post-head'>
+            Spark学习笔记-抽样方法和自增ID
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="抽样方法"><a href="#抽样方法" class="headerlink" title="抽样方法"></a>抽样方法</h3><p><code>sample</code>(<em>withReplacement=None</em>, <em>fraction=None</em>, <em>seed=None</em>)</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-SparkSQL内置函数/">
+          <h3 class='post-head'>
+            Spark学习笔记-SparkSQL内置函数
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <blockquote>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#sparkSql内置函数" class='tag'>sparkSql内置函数</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据分析小知识点/">
+          <h3 class='post-head'>
+            数据分析小知识点
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <blockquote>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据分析/">数据分析</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#数据分析Tips" class='tag'>数据分析Tips</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-窗口函数/">
+          <h3 class='post-head'>
+            Spark学习笔记-窗口函数
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> Window</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> StructType, StringType, StructField, IntegerType</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">schema = StructType([</span><br><span class="line">    StructField(<span class="string">'shop_id'</span>, StringType()),</span><br><span class="line">    StructField(<span class="string">'date'</span>, StringType()),</span><br><span class="line">    StructField(<span class="string">'amount'</span>, IntegerType())</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月12日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-union方法/">
+          <h3 class='post-head'>
+            Spark学习笔记-union方法
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="方法简介"><a href="#方法简介" class="headerlink" title="方法简介"></a>方法简介</h3><p>pyspark.sql.dataframe.DataFrame#union(other)</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月12日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记一/">
+          <h3 class='post-head'>
+            Spark学习笔记一
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <blockquote>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月10日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#pyspark官方文档学习" class='tag'>pyspark官方文档学习</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据仓库学习笔记二-建模流程/">
+          <h3 class='post-head'>
+            数据仓库学习笔记二-建模流程
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h2 id="数据建模的基本流程"><a href="#数据建模的基本流程" class="headerlink" title="数据建模的基本流程"></a>数据建模的基本流程</h2><p>在建模的不同阶段，将数据模型分为三个层次，每层的作用各不相同。</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据仓库/">数据仓库</a>
+  </div>
+
+
+
+          
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据仓库学习笔记二-重要意义/">
+          <h3 class='post-head'>
+            数据仓库学习笔记二-重要意义
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h2 id="数据时代的演化"><a href="#数据时代的演化" class="headerlink" title="数据时代的演化"></a>数据时代的演化</h2><h2 id="DIKW"><a href="#DIKW" class="headerlink" title="DIKW"></a>DIKW</h2><p>data数据 + information信息 + knowledge知识 + wisdom智慧</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据仓库/">数据仓库</a>
+  </div>
+
+
+
+          
+          
+        </div>
+      </section>
+    
+      <section>
         <a href="/post/数据仓库学习笔记一/">
           <h3 class='post-head'>
             数据仓库学习笔记一
@@ -85,189 +401,6 @@
         </div>
       </section>
     
-      <section>
-        <a href="/post/数据结构学习笔记二-复杂度分析/">
-          <h3 class='post-head'>
-            数据结构学习笔记二-复杂度分析
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><blockquote>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#复杂度分析" class='tag'>复杂度分析</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/数据结构学习笔记一/">
-          <h3 class='post-head'>
-            数据结构学习笔记一
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h3><h5 id="数组为什么从0开始编号"><a href="#数组为什么从0开始编号" class="headerlink" title="数组为什么从0开始编号"></a>数组为什么从0开始编号</h5><blockquote>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#数据结构" class='tag'>数据结构</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/Python数据科学学习笔记一/">
-          <h3 class='post-head'>
-            Python数据科学学习笔记一
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <h3 id="描述性统计和探索型数据分析"><a href="#描述性统计和探索型数据分析" class="headerlink" title="描述性统计和探索型数据分析"></a>描述性统计和探索型数据分析</h3><h4 id="变量类型"><a href="#变量类型" class="headerlink" title="变量类型"></a>变量类型</h4><ul>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python数据分析/">Python数据分析</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#描述性统计和探索型数据分析" class='tag'>描述性统计和探索型数据分析</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/记一次线上JVM问题调试/">
-          <h3 class='post-head'>
-            记一次线上JVM问题调试
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            记录一次线上JVM问题调试的过程
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年02月27日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#JVM问题调试" class='tag'>JVM问题调试</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/demo/">
-          <h3 class='post-head'>
-            辨析 Sass 中的 Map 和 List
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            <p>如果你使用过 Sass 3.3 之前的版本，那么你一定对那段时光颇有感触，那时候没有现如今这么好的条件，那时候的 Map 还只能用多重列表（lists of list）来模拟。多重列表可以实现复杂数据的嵌套定义，但却不是以键值对的形式实现的，所有当我们需要获取其中特定的某一项时就会比较麻烦。Map 这种数据类型天生就是基于键值对的形式，非常便于组织数据。</p>
-<p>自从可以使用 Map 之后，开发者们开始毫无顾忌地定义 Map 存储数据，比如断点宽度、颜色值、栅格布局等等响应式排版的细节，都被一股脑的塞进了 Map 中。</p>
-<p>那么，有了 Map 之后，我们还有必要使用 List 吗？可能某些人会觉得为了保持向后兼容应该继续使用多重列表模拟 Map，因为可能有些开发者仍然在使用老版本的 Sass 编译器，但实际上，这是多此一举了，Sass 的版本通常由 <code>package.json</code> 或者其他同类型的项目配置文件所控制，往往只需一条命令（<code>gem update sass</code>）即可更新 Sass 的版本，因此基本上无需考虑对老版本的兼容问题。</p>
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2015年10月21日</time>
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#css" class='tag'>css</a>
-
-
-          
-        </div>
-      </section>
-    
   </div>
   <aside>
     
@@ -287,7 +420,7 @@
           文章分类
         </h1>
         <div class="content">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA源码/">JAVA源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li></ul>
+          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li></ul>
         </div>
       </div>
     
@@ -318,6 +451,10 @@
     </div>
     
     
+    <div class='page-next'>
+      <a href="/page/8/">下一页</a>
+    </div>
+    
   </div>
 </div>
 
@@ -335,6 +472,11 @@
 </footer>
 
 
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
 
 </body>
 </html>

@@ -122,11 +122,9 @@
 <p>分析：</p>
 <p>NTILE就是把有序分区中的行分发到指定数据的组中，各个组有编号，编号从1开始，对于每一行，NTILE返回此行所属的组的编号</p>
 <p>设置n=5，那么ntile就会把排好序的数据均分成n个组，ntile函数会返回每条数据所在组的组编号，从而可以达到取前百分比的数据</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>思考：在使用row_number函数的时候，并没有指定rowsBetween，那么默认应该是默认的rows between unbounded preceding and current row。<br>但是，结果却是把组内的所有元素都进行了标号</p>
 <p>rowsBetween应该是针对于具有聚合性质的函数起作用</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
         </section>
     </article>
     
@@ -258,6 +256,11 @@
 </script>
 <script src="/lib/jquery.fancybox.min.js"></script>
 
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
 
 </body>
 </html>

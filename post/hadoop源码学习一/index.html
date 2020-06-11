@@ -78,13 +78,51 @@
 
             
           </div>
-          <p>先导知识</p>
+          <blockquote>
+<p> 先导知识</p>
+</blockquote>
 <ul>
 <li><p><a href="/post/Java学习-动态代理">JAVA-动态代理</a></p>
 </li>
 <li><p><a href="/post/分布式服务框架-IPC-RPC">IPC/RPC</a></p>
 </li>
 </ul>
+<p>hadoop一共包含以下几个组成部分</p>
+<ul>
+<li>hadoop-common<ul>
+<li>fs</li>
+<li>io</li>
+<li>ipc：是hadoop的灵魂，连接了集群的每一个节点</li>
+</ul>
+</li>
+<li>hdfs<ul>
+<li>fs</li>
+<li>NN：NameNode，NN server+filesystem manager</li>
+<li>DN：DataNode，管理数据block的存储 定时向NN汇报</li>
+</ul>
+</li>
+<li><p>yarn</p>
+<ul>
+<li>RM</li>
+<li>NM</li>
+</ul>
+</li>
+<li><p>tools</p>
+</li>
+</ul>
+<h3 id="Hadoop-中的-IPC框架"><a href="#Hadoop-中的-IPC框架" class="headerlink" title="Hadoop 中的 IPC框架"></a>Hadoop 中的 IPC框架</h3><h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h4><blockquote>
+<p>流程图</p>
+</blockquote>
+<p><img src="/images/Hadoop-IPC-Server-Overview.jpg" alt="Hadoop-IPC-Server-Overview"></p>
+<blockquote>
+<p>线程模型</p>
+</blockquote>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h4><blockquote>
+<p>流程图</p>
+</blockquote>
+<blockquote>
+<p>线程模型</p>
+</blockquote>
 
         </section>
     </article>
@@ -100,6 +138,13 @@
         
   </div>
   <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hadoop-中的-IPC框架"><span class="toc-number">1.</span> <span class="toc-text">Hadoop 中的 IPC框架</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Server"><span class="toc-number">1.1.</span> <span class="toc-text">Server</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Client"><span class="toc-number">1.2.</span> <span class="toc-text">Client</span></a></li></ol></li></ol>
+        </div>
+    </div>
     
   </aside>
 </main>
@@ -217,6 +262,11 @@
 </script>
 <script src="/lib/jquery.fancybox.min.js"></script>
 
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
 
 </body>
 </html>
