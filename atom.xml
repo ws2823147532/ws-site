@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://shang.at/"/>
-  <updated>2020-06-10T06:45:03.736Z</updated>
+  <updated>2020-06-13T02:18:33.907Z</updated>
   <id>https://shang.at/</id>
   
   <author>
@@ -15,6 +15,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java学习-底层知识总结</title>
+    <link href="https://shang.at/post/java%E5%AD%A6%E4%B9%A0-%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
+    <id>https://shang.at/post/java学习-底层知识总结/</id>
+    <published>2020-06-13T00:20:45.000Z</published>
+    <updated>2020-06-13T02:18:33.907Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><p>JVM：Java Virtual Machine</p><p>JMM：Java Memory Model</p><h2 id="1：JVM基础知识"><a href="#1：JVM基础知识" class="headerlink" title="1：JVM基础知识"></a>1：JVM基础知识</h2><ol><li>什么是JVM</li><li>常见的JVM</li></ol><h2 id="2：ClassFileFormat"><a href="#2：ClassFileFormat" class="headerlink" title="2：ClassFileFormat"></a>2：ClassFileFormat</h2><h2 id="3：类编译-加载-初始化"><a href="#3：类编译-加载-初始化" class="headerlink" title="3：类编译-加载-初始化"></a>3：类编译-加载-初始化</h2><p>hashcode<br>锁的信息（2位 四种组合）<br>GC信息（年龄）<br>如果是数组，数组的长度</p><h2 id="4：JMM"><a href="#4：JMM" class="headerlink" title="4：JMM"></a>4：JMM</h2><p>new Cat()<br>pointer -&gt; Cat.class<br>寻找方法的信息</p><h2 id="5：对象"><a href="#5：对象" class="headerlink" title="5：对象"></a>5：对象</h2><p>1：句柄池 （指针池）间接指针，节省内存<br>2：直接指针，访问速度快</p><h2 id="6：GC基础知识"><a href="#6：GC基础知识" class="headerlink" title="6：GC基础知识"></a>6：GC基础知识</h2><p>栈上分配<br>TLAB（Thread Local Allocation Buffer）<br>Old<br>Eden<br>老不死 - &gt; Old</p><h2 id="7：GC常用垃圾回收器"><a href="#7：GC常用垃圾回收器" class="headerlink" title="7：GC常用垃圾回收器"></a>7：GC常用垃圾回收器</h2><p>new Object()<br>markword          8个字节<br>类型指针           8个字节<br>实例变量           0<br>补齐                  0<br>16字节（压缩 非压缩）<br>Object o<br>8个字节<br>JVM参数指定压缩或非压缩</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;JVM&quot;&gt;&lt;a href=&quot;#JVM&quot; class=&quot;headerlink&quot; title=&quot;JVM&quot;&gt;&lt;/a&gt;JVM&lt;/h1&gt;&lt;p&gt;JVM：Java Virtual Machine&lt;/p&gt;
+&lt;p&gt;JMM：Java Memory Model&lt;/p&gt;
+&lt;h2 id=&quot;
+      
+    
+    </summary>
+    
+      <category term="JAVA学习" scheme="https://shang.at/categories/JAVA%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="java底层" scheme="https://shang.at/tags/java%E5%BA%95%E5%B1%82/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java学习-class文件格式</title>
+    <link href="https://shang.at/post/java%E5%AD%A6%E4%B9%A0-class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/"/>
+    <id>https://shang.at/post/java学习-class文件格式/</id>
+    <published>2020-06-13T00:12:38.000Z</published>
+    <updated>2020-06-13T00:18:59.170Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="JAVA学习" scheme="https://shang.at/categories/JAVA%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="class文件格式" scheme="https://shang.at/tags/class%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python学习-metaclass实现单例</title>
+    <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-metaclass%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B/"/>
+    <id>https://shang.at/post/Python学习-metaclass实现单例/</id>
+    <published>2020-06-12T01:35:16.000Z</published>
+    <updated>2020-06-12T01:35:16.633Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>java学习-运行时线程</title>
+    <link href="https://shang.at/post/java%E5%AD%A6%E4%B9%A0-%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://shang.at/post/java学习-运行时线程/</id>
+    <published>2020-06-11T03:40:56.000Z</published>
+    <updated>2020-06-11T03:52:13.279Z</updated>
+    
+    <content type="html"><![CDATA[<p>一个Java进程启动之后，至少会创建以下几个线程：</p><ul><li>main</li><li>Finalizer</li><li>Reference Handler</li><li>Signal Dispatcher</li><li>Others: 用户自己创建的线程</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;一个Java进程启动之后，至少会创建以下几个线程：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;main&lt;/li&gt;
+&lt;li&gt;Finalizer&lt;/li&gt;
+&lt;li&gt;Reference Handler&lt;/li&gt;
+&lt;li&gt;Signal Dispatcher&lt;/li&gt;
+&lt;li&gt;Others: 用户自
+      
+    
+    </summary>
+    
+      <category term="JAVA学习" scheme="https://shang.at/categories/JAVA%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="运行时线程" scheme="https://shang.at/tags/%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>数据结构与算法学习笔记-JOIN的算法实现</title>
@@ -208,9 +298,9 @@
     <link href="https://shang.at/post/Java%E5%AD%A6%E4%B9%A0-%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8/"/>
     <id>https://shang.at/post/Java学习-常见异常/</id>
     <published>2020-06-03T09:31:00.000Z</published>
-    <updated>2020-06-08T22:56:34.865Z</updated>
+    <updated>2020-06-12T02:06:08.511Z</updated>
     
-    <content type="html"><![CDATA[<h5 id="StackOverflowError和OutOfMemoryError的区别-JDK1-8"><a href="#StackOverflowError和OutOfMemoryError的区别-JDK1-8" class="headerlink" title="StackOverflowError和OutOfMemoryError的区别(JDK1.8)"></a>StackOverflowError和OutOfMemoryError的区别(JDK1.8)</h5><p>StackOverflowError：Thrown when a stack overflow occurs because an application recurses too deeply.</p><p>OutOfMemoryError：Thrown when the Java Virtual Machine cannot allocate an object because it is out of memory, and no more memory could be made available by the garbage collector.</p><p>从对这两个Error的注释来看，</p><p>由于应用程序递归过深而在堆栈溢出时会抛出StackOverflowError；同一个函数递归调用时，内存不足</p><p>当Java虚拟机由于内存不足而无法分配对象，并且垃圾回收器无法再提供更多内存时，抛出OutOfMemoryError。创建新的对象(包括虚拟机栈：函数调用(也包括递归调用)时创建虚拟机栈)时，内存不足</p><p>在java应用启动的时候，可以通过-Xss来设置虚拟机栈大小，虚拟机栈默认大小为1024k</p><p>在java里，函数的递归调用受到以下几方面的影响：</p><ol><li>虚拟机栈大小：设置的虚拟机栈</li><li>局部变量表大小</li></ol>]]></content>
+    <content type="html"><![CDATA[<h5 id="StackOverflowError和OutOfMemoryError的区别-JDK1-8"><a href="#StackOverflowError和OutOfMemoryError的区别-JDK1-8" class="headerlink" title="StackOverflowError和OutOfMemoryError的区别(JDK1.8)"></a>StackOverflowError和OutOfMemoryError的区别(JDK1.8)</h5><p>StackOverflowError：Thrown when a stack overflow occurs because an application recurses too deeply.</p><p>OutOfMemoryError：Thrown when the Java Virtual Machine cannot allocate an object because it is out of memory, and no more memory could be made available by the garbage collector.</p><p>从对这两个Error的注释来看，</p><p>由于应用程序递归过深而在堆栈溢出时会抛出StackOverflowError；同一个函数递归调用时，内存不足</p><p>当Java虚拟机由于内存不足而无法分配对象，并且垃圾回收器无法再提供更多内存时，抛出OutOfMemoryError。创建新的对象(包括虚拟机栈：函数调用(也包括递归调用)时创建虚拟机栈)时，内存不足</p><p>在java应用启动的时候，可以通过-Xss来设置虚拟机栈大小，虚拟机栈默认大小为1024k</p><p>在java里，函数的递归调用受到以下几方面的影响：</p><ol><li>虚拟机栈大小：设置的虚拟机栈</li><li>局部变量表大小</li></ol><p><a href="https://blog.csdn.net/chengyun19830206/article/details/78452321" target="_blank" rel="noopener">https://blog.csdn.net/chengyun19830206/article/details/78452321</a></p><p><a href="https://dzone.com/articles/outofmemoryerror-unable-create" target="_blank" rel="noopener">https://dzone.com/articles/outofmemoryerror-unable-create</a></p><p><a href="https://blog.csdn.net/kylinsoong/article/details/16879653" target="_blank" rel="noopener">https://blog.csdn.net/kylinsoong/article/details/16879653</a></p><p><a href="https://www.jianshu.com/p/c09727dc8f92" target="_blank" rel="noopener">https://www.jianshu.com/p/c09727dc8f92</a></p>]]></content>
     
     <summary type="html">
     
@@ -365,78 +455,6 @@
     
     
       <category term="并发集合" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA并发编程-5-其他</title>
-    <link href="https://shang.at/post/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-5-%E5%85%B6%E4%BB%96/"/>
-    <id>https://shang.at/post/JAVA并发编程-5-其他/</id>
-    <published>2020-06-03T02:51:25.000Z</published>
-    <updated>2020-06-03T02:59:14.785Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="JAVA并发编程" scheme="https://shang.at/categories/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="ThreadLocal-Fork&amp;Join" scheme="https://shang.at/tags/ThreadLocal-Fork-Join/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA并发编程-4-并发工具类</title>
-    <link href="https://shang.at/post/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-4-%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB/"/>
-    <id>https://shang.at/post/JAVA并发编程-4-并发工具类/</id>
-    <published>2020-06-03T02:51:14.000Z</published>
-    <updated>2020-06-03T02:58:42.622Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="JAVA并发编程" scheme="https://shang.at/categories/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="并发工具类" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%B1%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA并发编程-3-锁</title>
-    <link href="https://shang.at/post/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-3-%E9%94%81/"/>
-    <id>https://shang.at/post/JAVA并发编程-3-锁/</id>
-    <published>2020-06-03T02:51:06.000Z</published>
-    <updated>2020-06-03T02:58:32.008Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="JAVA并发编程" scheme="https://shang.at/categories/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="锁" scheme="https://shang.at/tags/%E9%94%81/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA并发编程-2-并发基础</title>
-    <link href="https://shang.at/post/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-2-%E5%B9%B6%E5%8F%91%E5%9F%BA%E7%A1%80/"/>
-    <id>https://shang.at/post/JAVA并发编程-2-并发基础/</id>
-    <published>2020-06-03T02:50:55.000Z</published>
-    <updated>2020-06-03T02:58:23.366Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="JAVA并发编程" scheme="https://shang.at/categories/JAVA%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="并发基础" scheme="https://shang.at/tags/%E5%B9%B6%E5%8F%91%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   

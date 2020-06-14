@@ -93,7 +93,11 @@
 </ul>
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxeyu1x4j30hl0cv75n.jpg" alt="fair"></p>
 <h6 id="第二层：Yarn队列内的调度"><a href="#第二层：Yarn队列内的调度" class="headerlink" title="第二层：Yarn队列内的调度"></a>第二层：Yarn队列内的调度</h6><p>当使用FIFO scheduler，自不必说，它只有一个先进先出的队列，也就是队列内部的任务调度；Capacity scheduler会把 集群分成若干个队列，每个队列内部采用FIFO的策略；Fair scheduler可以通过设置，每个Fair Queue内部使用不同的schedulingPolicy，但是会有一个文档级别的默认策略的配置defaultQueueSchedulingPolicy，如果每个Queue没有自己的设置，那么就用defaultQueueSchedulingPolicy</p>
-<h5 id="第二层：schedule-within-application，同一个SparkContext内的job调度"><a href="#第二层：schedule-within-application，同一个SparkContext内的job调度" class="headerlink" title="第二层：schedule within application，同一个SparkContext内的job调度"></a>第二层：schedule within application，同一个SparkContext内的job调度</h5>
+<h5 id="第二层：schedule-within-application，同一个SparkContext内的job调度"><a href="#第二层：schedule-within-application，同一个SparkContext内的job调度" class="headerlink" title="第二层：schedule within application，同一个SparkContext内的job调度"></a>第二层：schedule within application，同一个SparkContext内的job调度</h5><p><a href="https://bruce.blog.csdn.net/article/details/88349295" target="_blank" rel="noopener">谈Spark下并行执行多个Job的问题</a></p>
+<p><a href="https://www.tuicool.com/articles/r2qA7vm" target="_blank" rel="noopener">一次 Spark SQL 性能提升10倍的经历</a></p>
+<p><a href="https://ieevee.com/tech/2016/07/11/spark-scheduler.html" target="_blank" rel="noopener">Spark调度（一）：Task调度算法，FIFO还是FAIR</a></p>
+<p><a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">理解YARN Scheduler</a></p>
+
         </section>
     </article>
     
