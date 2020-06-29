@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Shell编程-常用命令 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Shell编程-常用命令</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Shell编程/">Shell编程</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#常见命令" class='tag'>常见命令</a>
+
+
+            
+          </div>
+          <h4 id="文本编辑"><a href="#文本编辑" class="headerlink" title="文本编辑"></a>文本编辑</h4><h5 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h5><h5 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h5><h4 id="Linux上的定时器"><a href="#Linux上的定时器" class="headerlink" title="Linux上的定时器"></a>Linux上的定时器</h4><h5 id="cron"><a href="#cron" class="headerlink" title="cron"></a>cron</h5><h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><h5 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h5><h5 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h5><h4 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h4><h5 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h5><h5 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h5><h5 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h5><h4 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h4><h5 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h5>
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#文本编辑"><span class="toc-number">1.</span> <span class="toc-text">文本编辑</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#sed"><span class="toc-number">1.1.</span> <span class="toc-text">sed</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#awk"><span class="toc-number">1.2.</span> <span class="toc-text">awk</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux上的定时器"><span class="toc-number">2.</span> <span class="toc-text">Linux上的定时器</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#cron"><span class="toc-number">2.1.</span> <span class="toc-text">cron</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#命令"><span class="toc-number">3.</span> <span class="toc-text">命令</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#xargs"><span class="toc-number">3.1.</span> <span class="toc-text">xargs</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#exec"><span class="toc-number">3.2.</span> <span class="toc-text">exec</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#远程控制"><span class="toc-number">4.</span> <span class="toc-text">远程控制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#ssh"><span class="toc-number">4.1.</span> <span class="toc-text">ssh</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#scp"><span class="toc-number">4.2.</span> <span class="toc-text">scp</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#rsync"><span class="toc-number">4.3.</span> <span class="toc-text">rsync</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#软件管理"><span class="toc-number">5.</span> <span class="toc-text">软件管理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#rpm"><span class="toc-number">5.1.</span> <span class="toc-text">rpm</span></a></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Shell编程-常用命令/";
+  var disqus_url = "https://shang.at/post/Shell编程-常用命令/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

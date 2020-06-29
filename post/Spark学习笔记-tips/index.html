@@ -94,7 +94,7 @@
 <ul>
 <li>窗口函数会引起重分区吗？分区数(200)是固定的吗？</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test_df = kreditpintar.spark.range(0, end=100, numPartitions=5).toDF(&apos;input&apos;)</span><br><span class="line">test_df.rdd.getNumPartitions() # 5</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test_1_df = test_df.withColumn(&apos;id&apos;, row_number().over(Window.partitionBy(lit(1)).orderBy(&apos;input&apos;)))</span><br><span class="line">test_1_df.rdd.getNumPartitions() # 200</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test_2_df = test_df.withColumn(&apos;id&apos;, monotonically_increasing_id())</span><br><span class="line">test_2_df.rdd.getNumPartitions() # 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">test_df = kreditpintar.spark.range(0, end=100, numPartitions=5).toDF(&apos;input&apos;)</span><br><span class="line">test_df.rdd.getNumPartitions() # 5</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test_1_df = test_df.withColumn(&apos;id&apos;, row_number().over(Window.partitionBy(lit(1)).orderBy(&apos;input&apos;)))</span><br><span class="line">test_1_df.rdd.getNumPartitions() # 200</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">test_2_df = test_df.withColumn(&apos;id&apos;, monotonically_increasing_id())</span><br><span class="line">test_2_df.rdd.getNumPartitions() # 5</span><br></pre></td></tr></table></figure>
 <ul>
 <li>通过withColumn(‘group’, lit(‘aaaabbb’))添加的新列，不能最为后续的join操作的condition expression？</li>
 </ul>
@@ -104,7 +104,7 @@
 <li><p>哪一个效率更高</p>
 </li>
 <li><p>groupby 、窗口函数、distinct三种方式去重 哪个效率高</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">distinct&gt;groupby&gt;窗口函数</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distinct&gt;groupby&gt;窗口函数</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -117,7 +117,7 @@
 <ul>
 <li>转化long列类型到时间戳，保留毫秒信息</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a_df = spark.createDataFrame([[<span class="number">1556613225852</span>]], [<span class="string">'a'</span>])</span><br><span class="line">a_df.select((col(<span class="string">'a'</span>)/<span class="number">1000.0</span>).cast(<span class="string">'timestamp'</span>)).toPandas()</span><br><span class="line"></span><br><span class="line"><span class="comment">#CAST((a / 1000.0) AS TIMESTAMP)</span></span><br><span class="line"><span class="comment">#0	2019-04-30 08:33:45.852</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a_df = spark.createDataFrame([[<span class="number">1556613225852</span>]], [<span class="string">'a'</span>])</span><br><span class="line">a_df.select((col(<span class="string">'a'</span>)/<span class="number">1000.0</span>).cast(<span class="string">'timestamp'</span>)).toPandas()</span><br><span class="line"></span><br><span class="line"><span class="comment">#CAST((a / 1000.0) AS TIMESTAMP)</span></span><br><span class="line"><span class="comment">#0	2019-04-30 08:33:45.852</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>spark进行计算的过程中间检查数据没有问题，但是执行collect后出现数据不一致的情况(丢失数据和union后的数据重复)</li>
 </ul>

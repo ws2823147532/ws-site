@@ -56,9 +56,9 @@
   <div class="posts-list">
     
       <section>
-        <a href="/post/hadoop源码学习一/">
+        <a href="/post/Python学习-一些常见的操作/">
           <h3 class='post-head'>
-            hadoop源码学习一
+            Python学习-一些常见的操作
           </h3>
         </a>
         
@@ -66,76 +66,12 @@
           
             
               
-                <blockquote>
+                <h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><ul>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年07月10日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Hadoop/">Hadoop</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Hadoop-IPC" class='tag'>Hadoop-IPC</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/Pandas-学习/">
-          <h3 class='post-head'>
-            Pandas-学习
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年06月11日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Pandas/">Pandas</a>
-  </div>
-
-
-
-          
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/Python学习-时间处理/">
-          <h3 class='post-head'>
-            Python学习-时间处理
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <p>关于时间戳的几个概念<br>时间戳，根据1970年1月1日00:00:00开始按秒计算的偏移量。<br>时间元组（struct_time），包含9个元素。 </p>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年06月06日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月29日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -151,7 +87,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#python中的时间处理" class='tag'>python中的时间处理</a>
+  <a href="/tags/#常见操作技巧" class='tag'>常见操作技巧</a>
 
 
           
@@ -159,61 +95,17 @@
       </section>
     
       <section>
-        <a href="/post/Spark学习笔记-Configuration/">
+        <a href="/post/Python学习-lru-cache/">
           <h3 class='post-head'>
-            Spark学习笔记-Configuration
+            Python学习-lru_cache
           </h3>
         </a>
         
         <div class="post-content">
           
-            
-              
-                <p> submit 参数</p>
-              
-          
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年06月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark/">Spark</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Configuration" class='tag'>Configuration</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/Python学习-队列/">
-          <h3 class='post-head'>
-            Python学习-队列
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-            
-              
-                <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue <span class="comment">#LILO队列</span></span><br><span class="line">q = Queue() <span class="comment">#创建队列对象</span></span><br><span class="line">q.put(<span class="number">0</span>)    <span class="comment">#在队列尾部插入元素</span></span><br><span class="line">q.put(<span class="number">1</span>)</span><br><span class="line">q.put(<span class="number">2</span>)</span><br><span class="line">print(<span class="string">'LILO队列'</span>,q.queue)  <span class="comment">#查看队列中的所有元素</span></span><br><span class="line">print(q.get())  <span class="comment">#返回并删除队列头部元素</span></span><br><span class="line">print(q.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue <span class="comment">#LIFO队列</span></span><br><span class="line">lifoQueue = LifoQueue()</span><br><span class="line">lifoQueue.put(<span class="number">1</span>)</span><br><span class="line">lifoQueue.put(<span class="number">2</span>)</span><br><span class="line">lifoQueue.put(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'LIFO队列'</span>,lifoQueue.queue)</span><br><span class="line">lifoQueue.get() <span class="comment">#返回并删除队列尾部元素</span></span><br><span class="line">lifoQueue.get()</span><br><span class="line">print(lifoQueue.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue <span class="comment">#优先队列</span></span><br><span class="line">priorityQueue = PriorityQueue() <span class="comment">#创建优先队列对象</span></span><br><span class="line">priorityQueue.put(<span class="number">3</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">78</span>)   <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">100</span>)  <span class="comment">#插入元素</span></span><br><span class="line">print(priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.put(<span class="number">1</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">2</span>)    <span class="comment">#插入元素</span></span><br><span class="line">print(<span class="string">'优先级队列:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)</span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'全部被删除后:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque   <span class="comment">#双端队列</span></span><br><span class="line">dequeQueue = deque([<span class="string">'Eric'</span>,<span class="string">'John'</span>,<span class="string">'Smith'</span>])</span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.append(<span class="string">'Tom'</span>)    <span class="comment">#在右侧插入新元素</span></span><br><span class="line">dequeQueue.appendleft(<span class="string">'Terry'</span>)  <span class="comment">#在左侧插入新元素</span></span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.rotate(<span class="number">2</span>)    <span class="comment">#循环右移2次</span></span><br><span class="line">print(<span class="string">'循环右移2次后的队列'</span>,dequeQueue)</span><br><span class="line">dequeQueue.popleft()    <span class="comment">#返回并删除队列最左端元素</span></span><br><span class="line">print(<span class="string">'删除最左端元素后的队列：'</span>,dequeQueue)</span><br><span class="line">dequeQueue.pop()    <span class="comment">#返回并删除队列最右端元素</span></span><br><span class="line">print(<span class="string">'删除最右端元素后的队列：'</span>,dequeQueue)</span><br></pre></td></tr></table></figure>
-              
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月28日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
@@ -229,7 +121,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#数据结构" class='tag'>数据结构</a>
+  <a href="/tags/#lru_cache" class='tag'>lru_cache</a>
 
 
           
@@ -237,9 +129,9 @@
       </section>
     
       <section>
-        <a href="/post/Spark学习笔记-广播变量/">
+        <a href="/post/Java学习-Thread/">
           <h3 class='post-head'>
-            Spark学习笔记-广播变量
+            Java学习-Thread
           </h3>
         </a>
         
@@ -247,16 +139,16 @@
           
             
               
-                <h2 id="Shared-Variables"><a href="#Shared-Variables" class="headerlink" title="Shared Variables"></a>Shared Variables</h2><p>通常，当在远程集群节点上执行传递给Spark操作（例如<code>map</code>or <code>reduce</code>）的函数时，它将在函数中使用的所有变量的单独副本上工作。这些变量将复制到每台计算机，并且远程计算机上的变量的更新不会传播回驱动程序。支持跨任务的通用，读写共享变量效率低下。但是，Spark确实为两种常见的使用模式提供了两种有限类型的<em>共享变量</em>：广播变量和累加器。</p>
+                <h4 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h4><p>进程：每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n个线程。（进程是资源分配的最小单位）<br>线程：同一类线程共享代码和数据空间，每个线程有独立的运行栈和程序计数器(PC)，线程切换开销小。（线程是cpu调度的最小单位）</p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年05月28日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月24日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
   </div>
 
 
@@ -268,7 +160,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+  <a href="/tags/#并发编程-Thread" class='tag'>并发编程-Thread</a>
 
 
           
@@ -276,9 +168,9 @@
       </section>
     
       <section>
-        <a href="/post/数据结构学习笔记二-算法/">
+        <a href="/post/Java学习-并发编程/">
           <h3 class='post-head'>
-            数据结构学习笔记二-算法
+            Java学习-并发编程
           </h3>
         </a>
         
@@ -286,16 +178,16 @@
           
             
               
-                <h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><h2 id="深度和广度优先搜索"><a href="#深度和广度优先搜索" class="headerlink" title="深度和广度优先搜索"></a>深度和广度优先搜索</h2><h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><p>##分治算法</p>
+                <h4 id="整体脑图"><a href="#整体脑图" class="headerlink" title="整体脑图"></a>整体脑图</h4><p><img src="/images/chenssy_juc_201712.png"></p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年05月16日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月24日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
   </div>
 
 
@@ -307,7 +199,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#算法" class='tag'>算法</a>
+  <a href="/tags/#并发编程" class='tag'>并发编程</a>
 
 
           
@@ -315,9 +207,9 @@
       </section>
     
       <section>
-        <a href="/post/Spark学习笔记-pivot透视图/">
+        <a href="/post/Java学习-JVM/">
           <h3 class='post-head'>
-            Spark学习笔记-pivot透视图
+            Java学习-JVM
           </h3>
         </a>
         
@@ -325,16 +217,16 @@
           
             
               
-                <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = spark.createDataFrame([</span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xm'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xl'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xp'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目2'</span>,<span class="number">200</span>, <span class="string">'ch'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目3'</span>,<span class="number">300</span>, <span class="string">'xl'</span>),    </span><br><span class="line">    (<span class="string">'2018-02'</span>,<span class="string">'项目1'</span>,<span class="number">1000</span>, <span class="string">'xp'</span>), </span><br><span class="line">    (<span class="string">'2018-02'</span>,<span class="string">'项目2'</span>,<span class="number">2000</span>, <span class="string">'xl'</span>), </span><br><span class="line">    (<span class="string">'2018-03'</span>,<span class="string">'项目x'</span>,<span class="number">999</span>, <span class="string">'xm'</span>)</span><br><span class="line">], [<span class="string">'date'</span>,<span class="string">'project'</span>,<span class="string">'income'</span>, <span class="string">'saler'</span>])</span><br></pre></td></tr></table></figure>
+                <p><a href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/jvm/Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F.md" target="_blank" rel="noopener">转载地址 : JavaGuide</a></p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年05月09日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月24日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
   </div>
 
 
@@ -346,7 +238,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+  <a href="/tags/#JVM" class='tag'>JVM</a>
 
 
           
@@ -354,9 +246,77 @@
       </section>
     
       <section>
-        <a href="/post/Spark学习笔记-tips/">
+        <a href="/post/Java学习-wait-notify/">
           <h3 class='post-head'>
-            Spark学习笔记-tips
+            Java学习-wait&notify
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月22日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#wait&notify" class='tag'>wait&amp;notify</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Java学习-Timer/">
+          <h3 class='post-head'>
+            Java学习-Timer
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月22日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Timer" class='tag'>Timer</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Java学习-NIO/">
+          <h3 class='post-head'>
+            Java学习-NIO
           </h3>
         </a>
         
@@ -364,16 +324,16 @@
           
             
               
-                <ul>
+                <p><a href="https://www.cnblogs.com/duanxz/p/6782783.html" target="_blank" rel="noopener">Java NIO系列教程（六） 多路复用器Selector</a></p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年04月15日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月20日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
   </div>
 
 
@@ -385,7 +345,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+  <a href="/tags/#NIO" class='tag'>NIO</a>
 
 
           
@@ -393,9 +353,9 @@
       </section>
     
       <section>
-        <a href="/post/BI工具使用之Tableau一/">
+        <a href="/post/Java学习-线程安全的集合类/">
           <h3 class='post-head'>
-            BI工具使用之Tableau一
+            Java学习-线程安全的集合类
           </h3>
         </a>
         
@@ -403,11 +363,33 @@
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年04月11日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月17日</time>
+          
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Java学习-Iterator/">
+          <h3 class='post-head'>
+            Java学习-Iterator
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <p>在看Iterator之前，先看一个早期版本的迭代器java.util.Enumeration</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月17日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/BI/">BI</a>
+    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
   </div>
 
 
@@ -419,7 +401,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Tableau" class='tag'>Tableau</a>
+  <a href="/tags/#JAVA-Iterator" class='tag'>JAVA-Iterator</a>
 
 
           
@@ -445,7 +427,7 @@
           文章分类
         </h1>
         <div class="content">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li></ul>
+          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop学习/">Hadoop学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hive学习/">Hive学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python学习/">Python学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell编程/">Shell编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/大数据生态/">大数据生态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具使用/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a></li></ul>
         </div>
       </div>
     

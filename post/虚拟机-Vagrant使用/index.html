@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>虚拟机-Vagrant使用 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>虚拟机-Vagrant使用</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/虚拟机/">虚拟机</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Vagrant" class='tag'>Vagrant</a>
+
+
+            
+          </div>
+          <h4 id="什么是Vagrant"><a href="#什么是Vagrant" class="headerlink" title="什么是Vagrant"></a>什么是Vagrant</h4><p>vagrant是一个基于VirtualBox, VMware, AWS等平台的一个构造和管理VM的工具，它提供了一个简单的工作流程，让VM的创建和管理全都自动化。vagrant的配置是基于ruby的</p>
+<p>Vagrant是基于Box的，Box是针对Vagrant运行环境的封装</p>
+<h4 id="如何使用Vagrant"><a href="#如何使用Vagrant" class="headerlink" title="如何使用Vagrant"></a>如何使用Vagrant</h4><p>Step 1：安装</p>
+<p>官网：<a href="https://www.vagrantup.com" target="_blank" rel="noopener">https://www.vagrantup.com</a></p>
+<p>Step 2：初始化环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir vm-workspace</span><br><span class="line">cd vm-workspace</span><br><span class="line">vagrant init</span><br></pre></td></tr></table></figure>
+<p>Step 3：配置Vagrantfile</p>
+<blockquote>
+<p>经过vagrant init之后，会在vm-workspace下生成一个Vagrantfile，内容如下(删除了注释)</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>配置文件简介：</p>
+<ul>
+<li>2 是指当前配置的Vagrant config的版本，目前Vagrant只支持两个版本 1和2，这里我不用改，用2就可以</li>
+<li>config 就是配置对象，我们可以对他进行配置</li>
+<li>do … end 是ruby的语法，就是一个代码块</li>
+</ul>
+<p>下面是创建了</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 指定了配置的版本</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  <span class="comment"># 指定 box为 centos/7</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line">  <span class="comment"># 使用define定义vm的配置节点：一个配置节点就是一个虚拟机。</span></span><br><span class="line">  <span class="comment"># 这里表示：在config中配置一个master的vm，该vm的配置对象命名为master，下面可以对该配置进行配置</span></span><br><span class="line">  config.vm.define <span class="symbol">:master</span> <span class="keyword">do</span> <span class="params">|master|</span></span><br><span class="line">    <span class="comment"># 配置master的hostname为master</span></span><br><span class="line">    master.vm.hostname = <span class="string">"master"</span></span><br><span class="line">    <span class="comment"># 定义 虚机容器提供者配置，这里使用virtualbox。打开virtualbox后，可以在里面看到对应的vm实例</span></span><br><span class="line">    master.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">      v.name = <span class="string">"master"</span>  <span class="comment"># vm的名称</span></span><br><span class="line">      v.memory = <span class="number">1024</span>    <span class="comment"># vm的内存</span></span><br><span class="line">      v.cpus = <span class="number">1</span>         <span class="comment"># vm可以使用的CPU个数</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment"># 配置master vm使用host-only网络模式，ip为10.211.55.100</span></span><br><span class="line">    master.vm.network <span class="symbol">:private_network</span>, <span class="symbol">ip:</span> <span class="string">"10.211.55.100"</span></span><br><span class="line">    <span class="comment"># 配置vagrant 启动vm的时候，需要执行的命令或脚本</span></span><br><span class="line">    <span class="comment"># master.vm.provision :shell, path: "bootstrap_master.sh"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 再次循环给vm创建3个配置节点，即再创建3个虚拟机</span></span><br><span class="line">  (<span class="number">1</span>..<span class="number">3</span>).each <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">    config.vm.define <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span> <span class="keyword">do</span> <span class="params">|node|</span></span><br><span class="line">      node.vm.hostname = <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">      node.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">        v.name = <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">        v.memory = <span class="number">1024</span></span><br><span class="line">        v.cpus = <span class="number">1</span></span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">      node.vm.network <span class="symbol">:private_network</span>, <span class="symbol">ip:</span> <span class="string">"10.211.55.10<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">      <span class="comment"># node.vm.provision :shell, path: "bootstrap_master.sh"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># config.vm.synced_folder "" ""  # vagrant默认会把当前工作目录挂载在vm的/vagrant目录下</span></span><br><span class="line">  config.vm.provision <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap.sh"</span></span><br><span class="line">  config.vm.provision <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"sshd.sh"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bootstrap.sh:虚拟机初始化的过程，并且配置java、sshkey、hosts</span><br><span class="line">sudo yum -y update</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line">sudo yum groupinstall -y development</span><br><span class="line">sudo yum install -y java-1.8.0-openjdk net-tools rsync mlocate wget vim \</span><br><span class="line">	gcc zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel</span><br><span class="line"><span class="meta">#</span> set Java</span><br><span class="line">echo 'export JAVA_HOME=/usr/lib/jvm/jre' &gt;&gt; /etc/profile.d/java.sh</span><br><span class="line">echo 'export PATH=/usr/lib/jvm/jre/bin:$PATH' &gt;&gt; /etc/profile.d/java.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> sshkey</span><br><span class="line">sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> set hosts</span><br><span class="line">echo '10.211.55.100 node0' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.101 node1' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.102 node2' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.102 node3' &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> sshd.sh: centos/7下的ssh 默认没有开启PasswordAuthentication，所以单独使用这个脚本开启一下</span><br><span class="line"><span class="meta">#</span> 免去后面配置免密登录的时候，再去修改</span><br><span class="line"><span class="meta">#</span> open PasswordAuthentication</span><br><span class="line">sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line">sed -i 's/PasswordAuthentication no/#PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> restart sshd</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<ol>
+<li><p>Vagrant的网络连接方式有三种：</p>
+<p>NAT : 缺省创建，用于让vm可以通过host转发访问局域网甚至互联网。</p>
+<p>host-only : 只有主机可以访问vm，其他机器无法访问它。</p>
+<p>bridge : 此模式下vm就像局域网中的一台独立的机器，可以被其他机器访问。</p>
+</li>
+<li><p>根据vagrantfile的层次，分为：</p>
+<p>configure级：它定义在 Vagrant.configure(“2”) 的下一层次，形如： config.vm.provision …</p>
+<p>vm级：它定义在 config.vm.define :master do |master| 的下一层次，master.vm.provision …</p>
+<p>执行的顺序是先执行configure级任务，再执行vm级任务，即便configure级任务在vm定义的下面才定义</p>
+</li>
+</ol>
+<p>Step 4：启动Vagrant</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<p>Step 5：连接vm</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh node0</span><br></pre></td></tr></table></figure>
+<p>Step 6：切换到root用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su</span><br><span class="line">password默认是vagrant</span><br></pre></td></tr></table></figure>
+<p>至此，就可以使用vm了。</p>
+<p>有一个非常有用的命令：<code>vagrant rsync-auto</code>。因为我们可能会经常性的修改共享文件夹，这个命令可以触发共享文件夹的同步，而不需要执行<code>vagrant reload</code>来同步共享文件夹，该命令会重启VM</p>
+<h4 id="Vagrant常用命令"><a href="#Vagrant常用命令" class="headerlink" title="Vagrant常用命令"></a>Vagrant常用命令</h4><h6 id="vagrant-help"><a href="#vagrant-help" class="headerlink" title="vagrant help"></a>vagrant help</h6><ul>
+<li>vagrant help</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant help</span><br></pre></td></tr></table></figure>
+<ul>
+<li>vagrant [command] -h</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box -h</span><br></pre></td></tr></table></figure>
+<h6 id="vagrant-box"><a href="#vagrant-box" class="headerlink" title="vagrant box"></a>vagrant box</h6><ul>
+<li>添加box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add --name centos-7.4-base centos-7.4-base.box</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>移除box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box remove centos-7.4-base</span><br></pre></td></tr></table></figure>
+<h6 id="vagrant-vm"><a href="#vagrant-vm" class="headerlink" title="vagrant vm"></a>vagrant vm</h6><ul>
+<li>初始化</li>
+</ul>
+<p>如果自己编写Vagrantfile，不需要这一步</p>
+<p>这一步会把config.vm.box写入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init centos-7.4-base</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看状态</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant status</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ssh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>暂停虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant suspend</span><br></pre></td></tr></table></figure>
+<ul>
+<li>恢复虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant resume</span><br></pre></td></tr></table></figure>
+<ul>
+<li>关闭虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant halt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>销毁虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant destroy</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更新Vagrantfile，刷新容器</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+<h6 id="vagrant-snapshot"><a href="#vagrant-snapshot" class="headerlink" title="vagrant snapshot"></a>vagrant snapshot</h6><p>使用虚拟机快照命令需要先启动虚拟机</p>
+<ul>
+<li>保存虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot save snap1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>list虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>恢复虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot restore snap1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot delete snap1</span><br></pre></td></tr></table></figure>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是Vagrant"><span class="toc-number">1.</span> <span class="toc-text">什么是Vagrant</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何使用Vagrant"><span class="toc-number">2.</span> <span class="toc-text">如何使用Vagrant</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Vagrant常用命令"><span class="toc-number">3.</span> <span class="toc-text">Vagrant常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#vagrant-help"><span class="toc-number">3.0.1.</span> <span class="toc-text">vagrant help</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#vagrant-box"><span class="toc-number">3.0.2.</span> <span class="toc-text">vagrant box</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#vagrant-vm"><span class="toc-number">3.0.3.</span> <span class="toc-text">vagrant vm</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#vagrant-snapshot"><span class="toc-number">3.0.4.</span> <span class="toc-text">vagrant snapshot</span></a></li></ol></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/虚拟机-Vagrant使用/";
+  var disqus_url = "https://shang.at/post/虚拟机-Vagrant使用/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

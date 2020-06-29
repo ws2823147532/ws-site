@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link active">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='index'>
+  <div class="posts-list">
+    
+      <section>
+        <a href="/post/BI工具使用之Tableau一/">
+          <h3 class='post-head'>
+            BI工具使用之Tableau一
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年04月11日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/BI/">BI</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Tableau" class='tag'>Tableau</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-DSL语法/">
+          <h3 class='post-head'>
+            Spark学习笔记-DSL语法
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月31日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#sparkSql-DSL语法" class='tag'>sparkSql-DSL语法</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据结构与算法学习笔记-排序算法/">
+          <h3 class='post-head'>
+            数据结构与算法学习笔记-排序算法
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="算法分类"><a href="#算法分类" class="headerlink" title="算法分类"></a>算法分类</h3><p>十种常见排序算法可以分为两大类：</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月29日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#排序算法" class='tag'>排序算法</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据分析-reduce函数引发的/">
+          <h3 class='post-head'>
+            数据分析-reduce函数引发的
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="reduce-in-python"><a href="#reduce-in-python" class="headerlink" title="reduce in python"></a>reduce in python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _functools.reduce</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reduce</span><span class="params">(function, sequence, initial=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    reduce(function, sequence[, initial]) -&gt; value</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Apply a function of two arguments cumulatively to the items of a sequence,</span></span><br><span class="line"><span class="string">    from left to right, so as to reduce the sequence to a single value.</span></span><br><span class="line"><span class="string">    For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates</span></span><br><span class="line"><span class="string">    ((((1+2)+3)+4)+5).  If initial is present, it is placed before the items</span></span><br><span class="line"><span class="string">    of the sequence in the calculation, and serves as a default when the</span></span><br><span class="line"><span class="string">    sequence is empty.</span></span><br><span class="line"><span class="string">    :param function:给定的一个func，func具有两个参数，参数1是临时聚合值，参数2是序列中下一个待聚合的值</span></span><br><span class="line"><span class="string">    :param sequence:待处理的可迭代的序列</span></span><br><span class="line"><span class="string">    :param initial:聚合数据的初始值</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月28日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据分析/">数据分析</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tags" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#reduce" class='tag'>reduce</a>
+
+  <a href="/tags/#数据分析技巧" class='tag'>数据分析技巧</a>
+
+  <a href="/tags/#有初始值的聚合操作" class='tag'>有初始值的聚合操作</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/信贷数据统计的相关指标/">
+          <h3 class='post-head'>
+            信贷数据统计的相关指标
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="贷款类型"><a href="#贷款类型" class="headerlink" title="贷款类型"></a>贷款类型</h3><ul>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月22日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据分析/">数据分析</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#分析指标" class='tag'>分析指标</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/airflow安装/">
+          <h3 class='post-head'>
+            airflow安装
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># airflow needs a home, ~/airflow is the default,</span><br><span class="line"># but you can lay foundation somewhere else if you prefer</span><br><span class="line"># (optional)</span><br><span class="line">export AIRFLOW_HOME=~/airflow</span><br><span class="line"></span><br><span class="line"># install from pypi using pip</span><br><span class="line">pip install apache-airflow</span><br><span class="line"></span><br><span class="line"># initialize the database</span><br><span class="line">airflow initdb</span><br><span class="line"></span><br><span class="line"># start the web server, default port is 8080</span><br><span class="line">airflow webserver -p 8080</span><br><span class="line"></span><br><span class="line"># start the scheduler</span><br><span class="line">airflow scheduler</span><br><span class="line"></span><br><span class="line"># visit localhost:8080 in the browser and enable the example dag in the home page</span><br></pre></td></tr></table></figure>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-抽样方法和自增ID/">
+          <h3 class='post-head'>
+            Spark学习笔记-抽样方法和自增ID
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <h3 id="抽样方法"><a href="#抽样方法" class="headerlink" title="抽样方法"></a>抽样方法</h3><p><code>sample</code>(<em>withReplacement=None</em>, <em>fraction=None</em>, <em>seed=None</em>)</p>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-SparkSQL内置函数/">
+          <h3 class='post-head'>
+            Spark学习笔记-SparkSQL内置函数
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <blockquote>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#sparkSql内置函数" class='tag'>sparkSql内置函数</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/数据分析小知识点/">
+          <h3 class='post-head'>
+            数据分析小知识点
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <blockquote>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月19日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据分析/">数据分析</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#数据分析Tips" class='tag'>数据分析Tips</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Spark学习笔记-窗口函数/">
+          <h3 class='post-head'>
+            Spark学习笔记-窗口函数
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+            
+              
+                <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> Window</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> StructType, StringType, StructField, IntegerType</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">schema = StructType([</span><br><span class="line">    StructField(<span class="string">'shop_id'</span>, StringType()),</span><br><span class="line">    StructField(<span class="string">'date'</span>, StringType()),</span><br><span class="line">    StructField(<span class="string">'amount'</span>, IntegerType())</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+              
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年03月12日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Spark/">Spark</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Spark学习" class='tag'>Spark学习</a>
+
+
+          
+        </div>
+      </section>
+    
+  </div>
+  <aside>
+    
+    
+      <div class="avatar">
+        <img src="/unnamed.jpg" alt="avatar">
+          
+            <div class="content">
+                <span>学习，坚持不懈的学习<br/>努力，坚持不懈的努力</span>
+            </div>
+          
+      </div>
+    
+    
+      <div class="categories">
+        <h1>
+          文章分类
+        </h1>
+        <div class="content">
+          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop学习/">Hadoop学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hive学习/">Hive学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python学习/">Python学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell编程/">Shell编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/大数据生态/">大数据生态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具使用/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a></li></ul>
+        </div>
+      </div>
+    
+    
+      <div class="links">
+        <h1>
+          友情链接
+        </h1>
+        <div class="content">
+          
+            <a href="https://www.baidu.com/" target="_blank">百度</a>
+          
+            <a href="https://www.google.com/" target="_blank">谷歌</a>
+          
+            <a href="https://www.zhihu.com/" target="_blank">知乎</a>
+          
+        </div>
+      </div>
+    
+  </aside>
+</main>
+
+  <div class="paging">
+  <div class="paging-container">
+    
+    <div class='page-prev'>
+      <a href="/page/8/">上一页</a>
+    </div>
+    
+    
+    <div class='page-next'>
+      <a href="/page/10/">下一页</a>
+    </div>
+    
+  </div>
+</div>
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

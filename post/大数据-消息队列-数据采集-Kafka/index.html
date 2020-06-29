@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>大数据-消息队列-数据采集-Kafka | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>大数据-消息队列-数据采集-Kafka</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/大数据生态/">大数据生态</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Kafka" class='tag'>Kafka</a>
+
+
+            
+          </div>
+          <h4 id="Kafka的基本概念和架构"><a href="#Kafka的基本概念和架构" class="headerlink" title="Kafka的基本概念和架构"></a>Kafka的基本概念和架构</h4><p>Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用</p>
+<p>逻辑上概念：</p>
+<ul>
+<li><p>Producer：生产消息的客户端</p>
+</li>
+<li><p>Consumer：消费消息的客户端</p>
+<ul>
+<li><p>Consumer Group：同一个ConsumerGroup中的Consumer往往是一个服务的多个实例，用来提高消费的效率，也就是说同一个CG中的多个C不能重复消费消息；不同CG往往代表了多种服务，他们处理不同的业务，所以，不同的CG中的C对于消息的处理是相互独立的，如CG2中的C2可以重复的消费在CG1中的C1已经消费过的消息</p>
+<blockquote>
+<p>消费者使用Consumer Group名称标记自己，并且发布到Topic的每条记录都会传递到每个订阅Consumer Group中的一个消费者实例。</p>
+<p>​    如果所有Consumer实例都具有相同的Consumer Group，那么Topic中的记录会在该ConsumerGroup中的Consumer实例进行均分消费；</p>
+<p>​    如果所有Consumer实例具有不同的ConsumerGroup，则每条记录将广播到所有Consumer Group进程。</p>
+<p>更常见的是，我们发现Topic具有少量的Consumer Group，每个Consumer Group可以理解为一个“逻辑的订阅者”。每个Consumer Group均由许多Consumer实例组成，以实现<code>可伸缩性和容错能力</code>。这无非就是发布-订阅模型，其中订阅者是<code>消费者的集群</code>而不是单个进程。这种消费方式Kafka会将Topic按照分区的方式均分给一个Consumer Group下的实例，如果ConsumerGroup下有新的成员介入，则新介入的Consumer实例会去接管ConsumerGroup内其他消费者负责的某些分区，同样如果一下ConsumerGroup下的有其他Consumer实例宕机，则由该ConsumerGroup中其他Consumer实例接管。</p>
+</blockquote>
+<p><img src="/images/kafka消费者组.png" height="300" width="400"></p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Tocpic：一组Record可以作为一个Topic在集群中被管理</p>
+<ul>
+<li>Record：Producer生产的每一条消息就是一个Record，每一个Record只能属于一个Topic</li>
+</ul>
+<blockquote>
+<p>由于Kafka的Topic的分区策略，因此Kafka仅提供分区中记录的有序性，也就意味着相同Topic的不同分区记录之间无顺序。因为针对于绝大多数的大数据应用和使用场景， 使用分区内部有序或者使用key进行分区策略已经足够满足绝大多数应用场景。但是，如果您需要记录全局有序，则可以通过只有一个分区Topic来实现，尽管这将意味着每个ConsumerGroup只有一个Consumer进程</p>
+</blockquote>
+</li>
+<li><p>Partition：每个Topic会有<code>num.partitions(默认)</code>个分区，每个Topic在创建的时候，也可以被指定分区的个数。</p>
+<blockquote>
+<p>Kafka中对Topic实现日志分区的有以下目的：</p>
+<ol>
+<li>支持集群存储的横向扩容。如果单一服务器的资源不够用，那么增加集群节点即可</li>
+<li>每个服务器充当其某些分区的Leader，也可能充当其他分区的Follwer，因此群集中的负载得到了很好的平衡。</li>
+<li>同一个Topic 多个分区可以提高Consumer消费的并行度</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>在kafka中同一个partition的record是严格有序的，但是不同partition的record并不是严格有序的。也就是说，kafka只能保证partition内部record的有序消费</p>
+</blockquote>
+<ul>
+<li>Duplicate(副本)：每个分区会有<code>--replication-factor</code>个副本，是在Topic被创建的时候指定的</li>
+</ul>
+</li>
+<li><p>offset (非常重要的一个概念)  <font color="red">– 待补充</font></p>
+<blockquote>
+<p>在kafka中对于消息的生产和消费都是通过offset控制的。同一个partition的消息record的offset是递增的，消费者消费的时候，也是消费的指定的offset之后的消息。</p>
+<p>消费者会定期的上传自己消费的offset给kafka server</p>
+</blockquote>
+</li>
+<li><p>Segments  <font color="red">– 待补充</font></p>
+</li>
+</ul>
+<p>架构上的概念</p>
+<ul>
+<li><p>Broker：Kafka集群内的节点被称为broker</p>
+</li>
+<li><p>Leader：kafka采用主从的架构，每个partition都有自己的leader。每个partition的leader负责消息的读写</p>
+</li>
+<li><p>Follower：每个</p>
+</li>
+<li><p>ISR</p>
+</li>
+</ul>
+<h4 id="kafka的基本使用"><a href="#kafka的基本使用" class="headerlink" title="kafka的基本使用"></a>kafka的基本使用</h4><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><ul>
+<li>创建topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--create \</span><br><span class="line">--topic topic01 \</span><br><span class="line">--partitions 3 \</span><br><span class="line">--replication-factor 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看topic列表</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看topic详情</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--describe \</span><br><span class="line">--topic topic01</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--create \</span><br><span class="line">--topic topic03 \</span><br><span class="line">--partitions 1 \</span><br><span class="line">--replication-factor 1</span><br><span class="line"></span><br><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--alter \</span><br><span class="line">--topic topic03 \</span><br><span class="line">--partitions 2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--delete \</span><br><span class="line">--topic topic03</span><br></pre></td></tr></table></figure>
+<ul>
+<li>消费者订阅topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-consumer.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--topic topic01 \</span><br><span class="line">--group g1 \</span><br><span class="line">--property print.key=true \</span><br><span class="line">--property print.value=true \</span><br><span class="line">--property key.separator=,</span><br></pre></td></tr></table></figure>
+<ul>
+<li>消费者组</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kafka-consumer-groups.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--list</span><br><span class="line"></span><br><span class="line">kafka-consumer-groups.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--describe \</span><br><span class="line">--group g1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生产者生产消息</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-producer.sh \</span><br><span class="line">--broker-list node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--topic topic01</span><br></pre></td></tr></table></figure>
+<h5 id="API"><a href="#API" class="headerlink" title="API"></a>API</h5><h6 id="基本API"><a href="#基本API" class="headerlink" title="基本API"></a>基本API</h6><h6 id="高级API"><a href="#高级API" class="headerlink" title="高级API"></a>高级API</h6><h4 id="架构进阶"><a href="#架构进阶" class="headerlink" title="架构进阶"></a>架构进阶</h4><h5 id="高性能分析之零拷贝-amp-源码分析"><a href="#高性能分析之零拷贝-amp-源码分析" class="headerlink" title="高性能分析之零拷贝&amp;源码分析"></a>高性能分析之零拷贝&amp;源码分析</h5><h5 id="数据同步机制"><a href="#数据同步机制" class="headerlink" title="数据同步机制"></a>数据同步机制</h5><h4 id="kafka与其他软件的集成"><a href="#kafka与其他软件的集成" class="headerlink" title="kafka与其他软件的集成"></a>kafka与其他软件的集成</h4><h5 id="与Flume的集成"><a href="#与Flume的集成" class="headerlink" title="与Flume的集成"></a>与Flume的集成</h5><h5 id="与SpringBoot的集成"><a href="#与SpringBoot的集成" class="headerlink" title="与SpringBoot的集成"></a>与SpringBoot的集成</h5><h5 id="在大数据流计算中的应用"><a href="#在大数据流计算中的应用" class="headerlink" title="在大数据流计算中的应用"></a>在大数据流计算中的应用</h5><h4 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h4><p>Kafka中的leader监控和topic的元数据，都是存在zk中</p>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kafka的基本概念和架构"><span class="toc-number">1.</span> <span class="toc-text">Kafka的基本概念和架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kafka的基本使用"><span class="toc-number">2.</span> <span class="toc-text">kafka的基本使用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#命令"><span class="toc-number">2.1.</span> <span class="toc-text">命令</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#API"><span class="toc-number">2.2.</span> <span class="toc-text">API</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#基本API"><span class="toc-number">2.2.1.</span> <span class="toc-text">基本API</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#高级API"><span class="toc-number">2.2.2.</span> <span class="toc-text">高级API</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#架构进阶"><span class="toc-number">3.</span> <span class="toc-text">架构进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#高性能分析之零拷贝-amp-源码分析"><span class="toc-number">3.1.</span> <span class="toc-text">高性能分析之零拷贝&amp;源码分析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#数据同步机制"><span class="toc-number">3.2.</span> <span class="toc-text">数据同步机制</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#kafka与其他软件的集成"><span class="toc-number">4.</span> <span class="toc-text">kafka与其他软件的集成</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#与Flume的集成"><span class="toc-number">4.1.</span> <span class="toc-text">与Flume的集成</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#与SpringBoot的集成"><span class="toc-number">4.2.</span> <span class="toc-text">与SpringBoot的集成</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#在大数据流计算中的应用"><span class="toc-number">4.3.</span> <span class="toc-text">在大数据流计算中的应用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Zookeeper"><span class="toc-number">5.</span> <span class="toc-text">Zookeeper</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/大数据-消息队列-数据采集-Kafka/";
+  var disqus_url = "https://shang.at/post/大数据-消息队列-数据采集-Kafka/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

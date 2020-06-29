@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>Hadoop学习-配置详解 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>Hadoop学习-配置详解</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Hadoop学习/">Hadoop学习</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#Hadoop配置详解" class='tag'>Hadoop配置详解</a>
+
+
+            
+          </div>
+          <p>版本：<a href="https://hadoop.apache.org/docs/r2.7.3/" target="_blank" rel="noopener">2.7.3</a></p>
+<h3 id="core-default-xml"><a href="#core-default-xml" class="headerlink" title="core-default.xml"></a>core-default.xml</h3><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fs.defaultFS</code></td>
+<td><code>file:///</code></td>
+<td>定义<code>namenode</code>的URI，改成<code>hdfs://host:port/</code></td>
+</tr>
+<tr>
+<td><code>hadoop.tmp.dir</code></td>
+<td><code>/tmp/hadoop-${user.name}</code></td>
+<td>定义其他临时目录的根目录</td>
+</tr>
+<tr>
+<td><code>io.file.buffer.size</code></td>
+<td><code>4096</code></td>
+<td>读写文件操作时的缓存字节数，必须是硬件上的内存页大小的整数倍</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hdfs-default-xml"><a href="#hdfs-default-xml" class="headerlink" title="hdfs-default.xml"></a>hdfs-default.xml</h3><h4 id="namenode"><a href="#namenode" class="headerlink" title="namenode"></a>namenode</h4><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.namenode.http(s)-address</code></td>
+<td><code>0.0.0.0:50070(50470)</code></td>
+<td>配置<code>dfs</code>的<code>web ui</code>界面，不建议修改。可以通过<code>http://namenode_hostname:50070</code>访问</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.name.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/name</code></td>
+<td>配置<code>DFS namenode</code>的<code>fsimage</code>文件存放在本次文件系统的路径。如果配置了使用逗号分隔的多个路径，那么namemode会在每个目录下面都冗余的存放一份。</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.edits.dir</code></td>
+<td><code>dfs.namenode.name.dir</code></td>
+<td>配置<code>DFS namenode</code>的<code>edits</code>文件存放在本次文件系统的路径。如果配置了使用逗号分隔的多个路径，那么namemode会在每个目录下面都冗余的存放一份。</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.fs-limits.min-block-size</code></td>
+<td><code>1048576</code>  <code>1m</code></td>
+<td>最小块大小（以字节为单位），由Namenode在创建时强制执行。这样可以防止意外创建具有很小块大小（因此有很多块）的文件，这会降低性能。减少数据块的数量，</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.handler.count</code></td>
+<td><code>10</code></td>
+<td>namenode端服务的线程数，测试时可以配置的小一些，减少内存占用</td>
+</tr>
+</tbody>
+</table>
+<h4 id="datanode"><a href="#datanode" class="headerlink" title="datanode"></a>datanode</h4><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.datanode.data.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/data</code></td>
+<td>文件块的在<code>local filesystem</code>中的存放路径。如果提供的是逗号分隔的目录列表，那么数据将会存储在所有的目录中，(通常目录列表是在不同的设备上)。目录应该被相应的存储类型所标记(HDFS上有四种存储设备：SSD、DISK、ARCHIVE、RAM_DISK)，如果没有指定，默认是DISK。如果目录不存在，那么会自动创建(需要获取目录权限)</td>
+</tr>
+<tr>
+<td><code>dfs.datanode.handler.count</code></td>
+<td><code>10</code></td>
+<td>namenode端服务的线程数，测试时可以配置的小一些，减少内存占用</td>
+</tr>
+</tbody>
+</table>
+<h4 id="secondary-namenode"><a href="#secondary-namenode" class="headerlink" title="secondary namenode"></a>secondary namenode</h4><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.namenode.secondary.http(s)-address</code></td>
+<td><code>0.0.0.0:50090(50091)</code></td>
+<td>配置<code>secondary namenode</code>的http server和端口</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/namesecondary</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.edits.dir</code></td>
+<td><code>${dfs.namenode.checkpoint.dir}</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.period</code></td>
+<td><code>3600</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.txns</code></td>
+<td><code>1000000</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.check.period</code></td>
+<td><code>60</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.max-retries</code></td>
+<td><code>3</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.num.checkpoints.retained</code></td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="dfs"><a href="#dfs" class="headerlink" title="dfs"></a>dfs</h4><table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.permissions.enabled</code></td>
+<td><code>true</code></td>
+<td>配置是否启用权限检查，默认是启用的。测试时可以设置为false。当开启状态时，dfs不会检测文件的权限检测。<a href="https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-hdfs/HdfsPermissionsGuide.html" target="_blank" rel="noopener">HDFS Permission</a>HDFS默认启动namenode的user为superuser，这个</td>
+</tr>
+<tr>
+<td><code>dfs.blocksize</code></td>
+<td><code>134217728</code>  <code>128m</code></td>
+<td>单位字节，新文件的block 大小</td>
+</tr>
+<tr>
+<td><code>dfs.hosts</code> / <code>dfs.hosts.exclude</code></td>
+<td></td>
+<td>List of permitted/excluded DataNodes.If necessary, use these files to control the list of allowable datanodes.</td>
+</tr>
+<tr>
+<td><code>dfs.replication</code></td>
+<td><code>3</code></td>
+<td>块副本数</td>
+</tr>
+<tr>
+<td><code>dfs.webhdfs.enabled</code></td>
+<td><code>true</code></td>
+<td>启动namenode和datanode上的WebHHDFS(REST API)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mapred-default-xml"><a href="#mapred-default-xml" class="headerlink" title="mapred-default.xml"></a>mapred-default.xml</h3><h4 id="MapReduce-Applications"><a href="#MapReduce-Applications" class="headerlink" title="MapReduce Applications"></a>MapReduce Applications</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>mapreduce.framework.name</code></td>
+<td style="text-align:left"><code>yarn</code></td>
+<td style="text-align:left">Execution framework set to Hadoop YARN.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.map.memory.mb</code></td>
+<td style="text-align:left"><code>1536</code></td>
+<td style="text-align:left">Larger resource limit for maps.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.map.java.opts</code></td>
+<td style="text-align:left"><code>-Xmx1024M</code></td>
+<td style="text-align:left">Larger heap-size for child jvms of maps.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.memory.mb</code></td>
+<td style="text-align:left"><code>3072</code></td>
+<td style="text-align:left">Larger resource limit for reduces.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.java.opts</code></td>
+<td style="text-align:left"><code>-Xmx2560M</code></td>
+<td style="text-align:left">Larger heap-size for child jvms of reduces.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.task.io.sort.mb</code></td>
+<td style="text-align:left"><code>100</code></td>
+<td style="text-align:left">Higher memory-limit while sorting data for efficiency.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.task.io.sort.factor</code></td>
+<td style="text-align:left"><code>10</code></td>
+<td style="text-align:left">More streams merged at once while sorting files.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.shuffle.parallelcopies</code></td>
+<td style="text-align:left"><code>5</code></td>
+<td style="text-align:left">Higher number of parallel copies run by reduces to fetch outputs from very large number of maps.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="MapReduce-JobHistory-Server"><a href="#MapReduce-JobHistory-Server" class="headerlink" title="MapReduce JobHistory Server"></a>MapReduce JobHistory Server</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.address</code></td>
+<td style="text-align:left"><code>0.0.0.0:10020</code></td>
+<td style="text-align:left">MapReduce JobHistory Server IPC host:port</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.webapp.address</code></td>
+<td style="text-align:left"><code>0.0.0.0:19888</code></td>
+<td style="text-align:left">MapReduce JobHistory Server Web UI host:port</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.app.mapreduce.am.staging-dir</code></td>
+<td style="text-align:left"><code>/tmp/hadoop-yarn/staging</code></td>
+<td style="text-align:left">The staging dir used while submitting jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.intermediate-done-dir</code></td>
+<td style="text-align:left"><code>${yarn.app.mapreduce.am.staging-dir}/history/done_intermediate</code></td>
+<td style="text-align:left">Directory where history files are written by MapReduce jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.done-dir</code></td>
+<td style="text-align:left"><code>${yarn.app.mapreduce.am.staging-dir}/history/done</code></td>
+<td style="text-align:left">Directory where history files are managed by the MR JobHistory Server.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yarn-default-xml"><a href="#yarn-default-xml" class="headerlink" title="yarn-default.xml"></a>yarn-default.xml</h3><h4 id="ResourceManager-and-NodeManager"><a href="#ResourceManager-and-NodeManager" class="headerlink" title="ResourceManager and NodeManager"></a>ResourceManager and NodeManager</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.acl.enable</code></td>
+<td style="text-align:left"><code>false</code></td>
+<td style="text-align:left">是否开启ACLs</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.admin.acl</code></td>
+<td style="text-align:left"><code>*</code></td>
+<td style="text-align:left">ACL to set admins on the cluster. ACLs are of for <em>comma-separated-usersspacecomma-separated-groups</em>. Defaults to special value of <strong>*</strong> which means <em>anyone</em>. Special value of just <em>space</em> means no one has access.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation-enable</code></td>
+<td style="text-align:left"><code>false</code></td>
+<td style="text-align:left">是否启动日志聚合。日志聚合会收集每个container的日志并且在应用完成后将他们移动到HDFS中。具体目录由下面两个选项配置<code>yarn.nodemanager.remote-app-log-dir</code>和<code>yarn.nodemanager.remote-app-log-dir-suffix</code>。用户可以通过<code>Application Timeline Server</code>访问这些日志文件</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8032</code></td>
+<td style="text-align:left">配置RM的URI<br>for clients to submit jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.scheduler.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8030</code></td>
+<td style="text-align:left">资源调度器URI<br>for ApplicationMasters to talk to Scheduler to obtain resources.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.resource-tracker.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8031</code></td>
+<td style="text-align:left">for NodeManagers.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.admin.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8033</code></td>
+<td style="text-align:left">for administrative commands.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.webapp.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8088</code></td>
+<td style="text-align:left">RM web application</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.hostname</code></td>
+<td style="text-align:left"><code>0.0.0.0</code></td>
+<td style="text-align:left"><code>ResourceManager</code> host.应该改成特定的hostname</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.web-proxy.address</code></td>
+<td style="text-align:left">默认没有配置，会作为RM的一部分运行</td>
+<td style="text-align:left">The address for the web proxy as HOST:PORT, if this is not given then the proxy will run as part of the RM</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.scheduler.class</code></td>
+<td style="text-align:left"><code>org.apache.hadoop.yarn.server.resourcemanager.&lt;br /&gt;scheduler.capacity.CapacityScheduler</code></td>
+<td style="text-align:left">指定RM使用的调度器：<code>CapacityScheduler</code> (recommended), <code>FairScheduler</code> (also recommended), or <code>FifoScheduler</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.scheduler.minimum-allocation-mb</code></td>
+<td style="text-align:left"><code>1024</code></td>
+<td style="text-align:left">In MBs，Minimum limit of memory to allocate to each container request at the <code>ResourceManager</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.scheduler.maximum-allocation-mb</code></td>
+<td style="text-align:left"><code>8192</code></td>
+<td style="text-align:left">In MBs，Maximum limit of memory to allocate to each container request at the <code>Resource Manager</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.nodes.include-path</code> / <code>yarn.resourcemanager.nodes.exclude-path</code></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">List of permitted/excluded NodeManagers.If necessary, use these files to control the list of allowable NodeManagers.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.resource.memory-mb</code></td>
+<td style="text-align:left"><code>8192</code></td>
+<td style="text-align:left">Resource i.e. available physical memory, in MB, for given <code>NodeManager</code>.Defines total available resources on the <code>NodeManager</code> to be made available to running containers</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.vmem-pmem-ratio</code></td>
+<td style="text-align:left"><code>2.1</code><br>Maximum ratio by which virtual memory usage of tasks may exceed physical memory</td>
+<td style="text-align:left">The virtual memory usage of each task may exceed its physical memory limit by this ratio. The total amount of virtual memory used by tasks on the NodeManager may exceed its physical memory usage by this ratio.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.local-dirs</code></td>
+<td style="text-align:left"><code>${hadoop.tmp.dir}/nm-local-dir</code><br>Comma-separated list of paths on the local filesystem where intermediate data is written.</td>
+<td style="text-align:left">Multiple paths help spread disk i/o.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.log-dirs</code></td>
+<td style="text-align:left"><code>${yarn.log.dir}/userlogs</code><br>Comma-separated list of paths on the local filesystem where logs are written.</td>
+<td style="text-align:left">Multiple paths help spread disk i/o.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.log.retain-seconds</code></td>
+<td style="text-align:left"><em>10800</em></td>
+<td style="text-align:left">Default time (in seconds) to retain log files on the NodeManager. Only applicable if log-aggregation is disabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.remote-app-log-dir</code></td>
+<td style="text-align:left"><code>/tmp/logs</code></td>
+<td style="text-align:left">HDFS directory where the application logs are moved on application completion. Need to set appropriate permissions. Only applicable if log-aggregation is enabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.remote-app-log-dir-suffix</code></td>
+<td style="text-align:left"><code>logs</code></td>
+<td style="text-align:left">Suffix appended to the remote log dir. Logs will be aggregated to <code>${yarn.nodemanager.remote-app-log-dir}/${user}/${thisParam}</code> Only applicable if log-aggregation is enabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.aux-services</code></td>
+<td style="text-align:left"><code>mapreduce_shuffle</code></td>
+<td style="text-align:left">Shuffle service that needs to be set for Map Reduce applications.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="History-Server-Needs-to-be-moved-elsewhere"><a href="#History-Server-Needs-to-be-moved-elsewhere" class="headerlink" title="History Server (Needs to be moved elsewhere)"></a>History Server (Needs to be moved elsewhere)</h4><table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation.retain-seconds</code></td>
+<td style="text-align:left"><code>-1</code></td>
+<td style="text-align:left">How long to keep aggregation logs before deleting them. -1 disables. Be careful, set this too small and you will spam the name node.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation.retain-check-interval-seconds</code></td>
+<td style="text-align:left"><code>-1</code></td>
+<td style="text-align:left">Time between checks for aggregated log retention. If set to 0 or a negative value then the value is computed as one-tenth of the aggregated log retention time. Be careful, set this too small and you will spam the name node.</td>
+</tr>
+</tbody>
+</table>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#core-default-xml"><span class="toc-number">1.</span> <span class="toc-text">core-default.xml</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hdfs-default-xml"><span class="toc-number">2.</span> <span class="toc-text">hdfs-default.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#namenode"><span class="toc-number">2.1.</span> <span class="toc-text">namenode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#datanode"><span class="toc-number">2.2.</span> <span class="toc-text">datanode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#secondary-namenode"><span class="toc-number">2.3.</span> <span class="toc-text">secondary namenode</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dfs"><span class="toc-number">2.4.</span> <span class="toc-text">dfs</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mapred-default-xml"><span class="toc-number">3.</span> <span class="toc-text">mapred-default.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-Applications"><span class="toc-number">3.1.</span> <span class="toc-text">MapReduce Applications</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MapReduce-JobHistory-Server"><span class="toc-number">3.2.</span> <span class="toc-text">MapReduce JobHistory Server</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yarn-default-xml"><span class="toc-number">4.</span> <span class="toc-text">yarn-default.xml</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ResourceManager-and-NodeManager"><span class="toc-number">4.1.</span> <span class="toc-text">ResourceManager and NodeManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ResourceManager"><span class="toc-number">4.2.</span> <span class="toc-text">ResourceManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NodeManager"><span class="toc-number">4.3.</span> <span class="toc-text">NodeManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#History-Server-Needs-to-be-moved-elsewhere"><span class="toc-number">4.4.</span> <span class="toc-text">History Server (Needs to be moved elsewhere)</span></a></li></ol></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/Hadoop学习-配置详解/";
+  var disqus_url = "https://shang.at/post/Hadoop学习-配置详解/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

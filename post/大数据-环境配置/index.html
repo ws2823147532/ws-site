@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang=zh-CN>
+  <head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content>
+  <meta name="keywords" content>
+  
+    <link rel="icon" href="/favicon.ico">
+  
+    
+  <title>大数据-环境配置 | 努力，奋斗</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <header>
+  <div class="header-container">
+    <a class='logo' href="/">
+      <span>努力，奋斗</span>
+    </a>
+    <ul class="right-header">
+      
+        <li class="nav-item">
+          
+            <a href="/" class="item-link">首页</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/about" class="item-link">关于</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/archives" class="item-link">归档</a>
+          
+        </li>
+      
+        <li class="nav-item">
+          
+            <a href="/tags" class="item-link">标签</a>
+          
+        </li>
+      
+    </ul>
+  </div>
+</header>
+
+  <main id='post'>
+  <div class="content">
+    <article>
+        <section class="content markdown-body">
+          <h1>大数据-环境配置</h1>
+          <div class='post-meta'>
+            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
+            
+              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/大数据生态/">大数据生态</a>
+  </div>
+
+
+
+            
+            
+              | 
+                  <i class="fa fa-tag" aria-hidden="true"></i>
+                
+               
+  <a href="/tags/#大数据环境" class='tag'>大数据环境</a>
+
+
+            
+          </div>
+          <h5 id="linux的文件和目录的权限规则"><a href="#linux的文件和目录的权限规则" class="headerlink" title="linux的文件和目录的权限规则"></a>linux的文件和目录的权限规则</h5><p>使用<code>ls -l</code>命令可以查看当前目录的文件列表以及权限信息，显示如下</p>
+<p>drwxr-xr-x</p>
+<h5 id="linux安装rpm包"><a href="#linux安装rpm包" class="headerlink" title="linux安装rpm包"></a>linux安装rpm包</h5><h5 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 生成密钥 公钥</span><br><span class="line">sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 将公钥拷贝到目标机器</span><br><span class="line">ssh-copy-id user@tartget_hostame</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 这样之后就可以在节点之间 免密登录了</span><br><span class="line">ssh user@tartget_hostame</span><br><span class="line">ssh tartget_hostame # 如果当前登录的用户和target的用户名一致，则不需要加user@</span><br></pre></td></tr></table></figure>
+<p>注意，如果执行ssh-copy-id 输入密码后仍报错(<code>Permission denied (publickey,gssapi-keyex,gssapi-with-mic)</code>)，可以尝试按照如下方案解决：</p>
+<p>进入target机器，进入<code>cd /etc/ssh/sshd_config</code>，然后修改为<code>PasswordAuthentication yes</code>，最后重启sshd服务<code>service sshd restart</code>即可</p>
+<h5 id="同步时钟"><a href="#同步时钟" class="headerlink" title="同步时钟"></a>同步时钟</h5><p>ntpdate cn.pool.ntp.org | ntp[1-7].aliyun.com</p>
+<p>clock -w</p>
+
+        </section>
+    </article>
+    
+        <!-- disqus 评论框 start -->
+        <div class="comment">
+            <div id="disqus_thread" class="disqus-thread">
+              <i>加载评论框需要翻墙</i>
+            </div>
+        </div>
+        <!-- disqus 评论框 end -->
+    
+        
+  </div>
+  <aside>
+    
+    <div class="toc-container">
+        <h1>目录</h1>
+        <div class="content">
+            <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#linux的文件和目录的权限规则"><span class="toc-number">1.</span> <span class="toc-text">linux的文件和目录的权限规则</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#linux安装rpm包"><span class="toc-number">2.</span> <span class="toc-text">linux安装rpm包</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#免密登录"><span class="toc-number">3.</span> <span class="toc-text">免密登录</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#同步时钟"><span class="toc-number">4.</span> <span class="toc-text">同步时钟</span></a></li></ol>
+        </div>
+    </div>
+    
+  </aside>
+</main>
+
+<!-- disqus 公共JS代码 -->
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = "ws-blog";
+  var disqus_identifier = "https://shang.at/post/大数据-环境配置/";
+  var disqus_url = "https://shang.at/post/大数据-环境配置/";
+
+  isAgent(getDisqus)
+
+  // determine user agent in China
+  function isAgent(cb) {
+    var url = '//graph.facebook.com/feed?callback=h';
+    var xhr = new XMLHttpRequest();
+    var called = false;
+    xhr.open('GET', url);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+      called = true;
+      cb(true);
+      }
+    };
+    xhr.send();
+    // timeout 1s, this facebook API is very fast.
+    setTimeout(function() {
+      if (!called) {
+      xhr.abort();
+      cb(false)
+      }
+    }, 1000);
+  }
+
+  function getDisqus(isAgent) {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
+    dsq.async = true
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
+  }
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+  <footer>
+  <div class="copyright">
+    <div>
+      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
+    </div>
+    <div>
+      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="/lib/in-view.min.js"></script>
+<script src="/lib/lodash.min.js"></script>
+<script>
+  var isDown = true
+  var oldY = 0
+  inView.offset(50)
+
+  document.body.addEventListener('touchstart', function(){});
+  
+  window.addEventListener('scroll', _.throttle(e => {
+    var currentY = window.scrollY
+    if((oldY - currentY) < 0) {
+      isDown = true
+    } else {
+      isDown = false
+    }
+    oldY = currentY
+  }, 250))
+
+  $("article img").each(function() {
+      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+      $(this).wrapAll(strA);
+  });
+
+  $('.toc-link').each(function() {
+      var href = $(this).attr("href");
+      
+      inView(href).on('exit', () => {
+        if (isDown) {
+          handleActive(href)
+        }
+      })
+
+      inView(href).on('enter', () => {
+        if (!isDown) {
+          handleActive(href)
+        }
+      })
+
+      this.onclick = function(e) {
+        var pos = $(href).offset().top - 10;
+        $("html,body").animate({scrollTop: pos}, 300);
+        setTimeout(() => {
+          handleActive(href)
+        }, 350)
+        return false
+      }
+  })
+
+  function handleActive(href) {
+    document.querySelectorAll('.toc-link').forEach(elm => {
+      elm.classList.remove('active')
+    })
+    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+  }
+</script>
+<script src="/lib/jquery.fancybox.min.js"></script>
+
+
+<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
+    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+</div>
+<script src="/js/totop.js"></script>
+
+</body>
+</html>

@@ -56,9 +56,43 @@
   <div class="posts-list">
     
       <section>
-        <a href="/post/java网络编程-零拷贝/">
+        <a href="/post/Hadoop学习-源码编译/">
           <h3 class='post-head'>
-            java网络编程-零拷贝
+            Hadoop学习-源码编译
+          </h3>
+        </a>
+        
+        <div class="post-content">
+          
+        </div>
+        <div class='post-meta'>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
+          
+            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Hadoop学习/">Hadoop学习</a>
+  </div>
+
+
+
+          
+          
+            <span class="seperator">|</span>
+             
+                <i class="fa fa-tag" aria-hidden="true"></i>
+              
+             
+  <a href="/tags/#Hadoop源码编译" class='tag'>Hadoop源码编译</a>
+
+
+          
+        </div>
+      </section>
+    
+      <section>
+        <a href="/post/Hadoop学习-集群搭建/">
+          <h3 class='post-head'>
+            Hadoop学习-集群搭建
           </h3>
         </a>
         
@@ -66,16 +100,16 @@
           
             
               
-                <h4 id="什么是零拷贝"><a href="#什么是零拷贝" class="headerlink" title="什么是零拷贝"></a>什么是零拷贝</h4><p>刚才讲阻塞 IO 的时候我讲到，系统内核处理 IO 操作分为两个阶段——等待数据和拷贝数据。等待数据，就是系统内核在等待网卡接收到数据后，把数据写到内核中；而拷贝数据，就是系统内核在获取到数据后，将数据拷贝到用户进程的空间中。以下是具体流程：</p>
+                <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> hadoop.sh -&gt; /etc/profile.d/</span><br><span class="line">export HADOOP_PREFIX=/root/hadoop</span><br><span class="line">export HADOOP_YARN_HOME=$&#123;HADOOP_PREFIX&#125;</span><br><span class="line">export HADOOP_CONF_DIR=$&#123;HADOOP_PREFIX&#125;/etc/hadoop</span><br><span class="line">export YARN_LOG_DIR=$&#123;HADOOP_YARN_HOME&#125;/logs</span><br><span class="line">export YARN_IDENT_STRING=root</span><br><span class="line">export HADOOP_MAPRED_IDENT_STRING=root</span><br><span class="line">export PATH=$&#123;HADOOP_PREFIX&#125;/bin:$&#123;HADOOP_PREFIX&#125;/sbin:$&#123;PATH&#125;</span><br></pre></td></tr></table></figure>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月04日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+    <a class="article-category-link" href="/categories/Hadoop学习/">Hadoop学习</a>
   </div>
 
 
@@ -87,7 +121,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#网络编程-零拷贝" class='tag'>网络编程-零拷贝</a>
+  <a href="/tags/#Hadoop集群搭建" class='tag'>Hadoop集群搭建</a>
 
 
           
@@ -95,9 +129,9 @@
       </section>
     
       <section>
-        <a href="/post/java学习-JVM参数/">
+        <a href="/post/Hadoop学习-配置详解/">
           <h3 class='post-head'>
-            java学习-JVM参数
+            Hadoop学习-配置详解
           </h3>
         </a>
         
@@ -105,16 +139,16 @@
           
             
               
-                <h4 id="查看JVM参数"><a href="#查看JVM参数" class="headerlink" title="查看JVM参数"></a>查看JVM参数</h4><p>启动应用的时候分别加以下的参数可以打印相关的参数：</p>
+                <p>版本：<a href="https://hadoop.apache.org/docs/r2.7.3/" target="_blank" rel="noopener">2.7.3</a></p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+    <a class="article-category-link" href="/categories/Hadoop学习/">Hadoop学习</a>
   </div>
 
 
@@ -126,7 +160,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#JVM参数" class='tag'>JVM参数</a>
+  <a href="/tags/#Hadoop配置详解" class='tag'>Hadoop配置详解</a>
 
 
           
@@ -134,9 +168,9 @@
       </section>
     
       <section>
-        <a href="/post/Java学习-常见异常/">
+        <a href="/post/Shell编程-常用命令/">
           <h3 class='post-head'>
-            Java学习-常见异常
+            Shell编程-常用命令
           </h3>
         </a>
         
@@ -144,16 +178,16 @@
           
             
               
-                <h5 id="StackOverflowError和OutOfMemoryError的区别-JDK1-8"><a href="#StackOverflowError和OutOfMemoryError的区别-JDK1-8" class="headerlink" title="StackOverflowError和OutOfMemoryError的区别(JDK1.8)"></a>StackOverflowError和OutOfMemoryError的区别(JDK1.8)</h5><p>StackOverflowError：Thrown when a stack overflow occurs because an application recurses too deeply.</p>
+                <h4 id="文本编辑"><a href="#文本编辑" class="headerlink" title="文本编辑"></a>文本编辑</h4><h5 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h5><h5 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h5><h4 id="Linux上的定时器"><a href="#Linux上的定时器" class="headerlink" title="Linux上的定时器"></a>Linux上的定时器</h4><h5 id="cron"><a href="#cron" class="headerlink" title="cron"></a>cron</h5><h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><h5 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h5><h5 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h5><h4 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h4><h5 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h5><h5 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h5><h5 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h5><h4 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h4><h5 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h5>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA学习/">JAVA学习</a>
+    <a class="article-category-link" href="/categories/Shell编程/">Shell编程</a>
   </div>
 
 
@@ -165,7 +199,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#常见异常" class='tag'>常见异常</a>
+  <a href="/tags/#常见命令" class='tag'>常见命令</a>
 
 
           
@@ -173,43 +207,9 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-12-并发框架-Disruptor/">
+        <a href="/post/操作系统-centos7修改hostname/">
           <h3 class='post-head'>
-            JAVA并发编程-12-并发框架(Disruptor)
-          </h3>
-        </a>
-        
-        <div class="post-content">
-          
-        </div>
-        <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
-  </div>
-
-
-
-          
-          
-            <span class="seperator">|</span>
-             
-                <i class="fa fa-tag" aria-hidden="true"></i>
-              
-             
-  <a href="/tags/#Disruptor" class='tag'>Disruptor</a>
-
-
-          
-        </div>
-      </section>
-    
-      <section>
-        <a href="/post/JAVA并发编程-11-响应式编程-RxJava/">
-          <h3 class='post-head'>
-            JAVA并发编程-11-响应式编程(RxJava)
+            操作系统-centos7修改hostname
           </h3>
         </a>
         
@@ -217,20 +217,12 @@
           
             
               
-                <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
+                <p>在CentOS7中，有三种定义的主机名:静态的（static）、瞬态的（transient）、灵活的（pretty）。“静态”主机名也称为内核主机名，是系统在启动时从/etc/hostname自动初始化的主机名。“瞬态”主机名是在系统运行时临时分配的主机名，例如，通过DHCP或mDNS服务器分配。静态主机名和瞬态主机名都遵从作为互联网域名同样的字符限制规则。而另一方面，“灵活”主机名则允许使用自由形式（包括特殊/空白字符）的主机名，以展示给终端用户。</p>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
-          
-            | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
-  </div>
-
-
-
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
           
           
             <span class="seperator">|</span>
@@ -238,7 +230,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#RxJava" class='tag'>RxJava</a>
+  <a href="/tags/#centos7修改hostname" class='tag'>centos7修改hostname</a>
 
 
           
@@ -246,9 +238,9 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-10-协程/">
+        <a href="/post/工具使用-vim/">
           <h3 class='post-head'>
-            JAVA并发编程-10-协程
+            工具使用-vim
           </h3>
         </a>
         
@@ -256,16 +248,16 @@
           
             
               
-                <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
+                <h4 id="vim快捷键"><a href="#vim快捷键" class="headerlink" title="vim快捷键"></a>vim快捷键</h4><ul>
               
           
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月23日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
+    <a class="article-category-link" href="/categories/工具使用/">工具使用</a>
   </div>
 
 
@@ -277,7 +269,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#协程" class='tag'>协程</a>
+  <a href="/tags/#vim" class='tag'>vim</a>
 
 
           
@@ -285,21 +277,26 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-9-线程池/">
+        <a href="/post/大数据-常见端口/">
           <h3 class='post-head'>
-            JAVA并发编程-9-线程池
+            大数据-常见端口
           </h3>
         </a>
         
         <div class="post-content">
           
+            
+              
+                <ul>
+              
+          
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月21日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
+    <a class="article-category-link" href="/categories/大数据生态/">大数据生态</a>
   </div>
 
 
@@ -311,7 +308,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#线程池" class='tag'>线程池</a>
+  <a href="/tags/#大数据端口" class='tag'>大数据端口</a>
 
 
           
@@ -319,21 +316,26 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-8-阻塞队列/">
+        <a href="/post/大数据-环境配置/">
           <h3 class='post-head'>
-            JAVA并发编程-8-阻塞队列
+            大数据-环境配置
           </h3>
         </a>
         
         <div class="post-content">
           
+            
+              
+                <h5 id="linux的文件和目录的权限规则"><a href="#linux的文件和目录的权限规则" class="headerlink" title="linux的文件和目录的权限规则"></a>linux的文件和目录的权限规则</h5><p>使用<code>ls -l</code>命令可以查看当前目录的文件列表以及权限信息，显示如下</p>
+              
+          
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
+    <a class="article-category-link" href="/categories/大数据生态/">大数据生态</a>
   </div>
 
 
@@ -345,7 +347,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#阻塞队列" class='tag'>阻塞队列</a>
+  <a href="/tags/#大数据环境" class='tag'>大数据环境</a>
 
 
           
@@ -353,21 +355,26 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-7-Atomic/">
+        <a href="/post/虚拟机-Vagrant使用/">
           <h3 class='post-head'>
-            JAVA并发编程-7-Atomic
+            虚拟机-Vagrant使用
           </h3>
         </a>
         
         <div class="post-content">
           
+            
+              
+                <h4 id="什么是Vagrant"><a href="#什么是Vagrant" class="headerlink" title="什么是Vagrant"></a>什么是Vagrant</h4><p>vagrant是一个基于VirtualBox, VMware, AWS等平台的一个构造和管理VM的工具，它提供了一个简单的工作流程，让VM的创建和管理全都自动化。vagrant的配置是基于ruby的</p>
+              
+          
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
+    <a class="article-category-link" href="/categories/虚拟机/">虚拟机</a>
   </div>
 
 
@@ -379,7 +386,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#Atomic" class='tag'>Atomic</a>
+  <a href="/tags/#Vagrant" class='tag'>Vagrant</a>
 
 
           
@@ -387,21 +394,26 @@
       </section>
     
       <section>
-        <a href="/post/JAVA并发编程-6-并发集合/">
+        <a href="/post/大数据-消息队列-数据采集-Kafka/">
           <h3 class='post-head'>
-            JAVA并发编程-6-并发集合
+            大数据-消息队列-数据采集-Kafka
           </h3>
         </a>
         
         <div class="post-content">
           
+            
+              
+                <h4 id="Kafka的基本概念和架构"><a href="#Kafka的基本概念和架构" class="headerlink" title="Kafka的基本概念和架构"></a>Kafka的基本概念和架构</h4><p>Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用</p>
+              
+          
         </div>
         <div class='post-meta'>
-          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月03日</time>
+          <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年06月20日</time>
           
             | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JAVA并发编程/">JAVA并发编程</a>
+    <a class="article-category-link" href="/categories/大数据生态/">大数据生态</a>
   </div>
 
 
@@ -413,7 +425,7 @@
                 <i class="fa fa-tag" aria-hidden="true"></i>
               
              
-  <a href="/tags/#并发集合" class='tag'>并发集合</a>
+  <a href="/tags/#Kafka" class='tag'>Kafka</a>
 
 
           
@@ -439,7 +451,7 @@
           文章分类
         </h1>
         <div class="content">
-          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop/">Hadoop</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Mysql/">Mysql</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Pandas/">Pandas</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li></ul>
+          <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/BI/">BI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hadoop学习/">Hadoop学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hive学习/">Hive学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA学习/">JAVA学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA并发编程/">JAVA并发编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python学习/">Python学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python数据分析/">Python数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Shell编程/">Shell编程</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/分布式/">分布式</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/大数据生态/">大数据生态</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具使用/">工具使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据仓库/">数据仓库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据分析/">数据分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a></li></ul>
         </div>
       </div>
     

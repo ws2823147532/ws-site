@@ -10,7 +10,7 @@
     <link rel="icon" href="/favicon.ico">
   
     
-  <title>hadoop源码学习一 | 努力，奋斗</title>
+  <title>hadoop源码学习 | 努力，奋斗</title>
   <link rel="stylesheet" href="/style.css">
   <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -56,13 +56,13 @@
   <div class="content">
     <article>
         <section class="content markdown-body">
-          <h1>hadoop源码学习一</h1>
+          <h1>hadoop源码学习</h1>
           <div class='post-meta'>
             <i class="fa fa-calendar" aria-hidden="true"></i> <time>2019年07月10日</time>
             
               | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Hadoop/">Hadoop</a>
+    <a class="article-category-link" href="/categories/Hadoop学习/">Hadoop学习</a>
   </div>
 
 
@@ -118,7 +118,7 @@
 <p>线程模型</p>
 </blockquote>
 <p>我们使用以下的代码，来创建一个IPC Server</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">      <span class="comment">// Get RPC server for server side implementation</span></span><br><span class="line">      server = <span class="keyword">new</span> RPC.Builder(conf).setProtocol(TestRpcService<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">              .<span class="title">setNumHandlers</span>(4)  // </span></span><br><span class="line"><span class="class">              .<span class="title">setnumReaders</span>(4)</span></span><br><span class="line"><span class="class">              .<span class="title">setInstance</span>(<span class="title">service</span>).<span class="title">setBindAddress</span>(<span class="title">ADDRESS</span>).<span class="title">setPort</span>(<span class="title">PORT</span>).<span class="title">build</span>()</span>;</span><br><span class="line">server.start()</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">      <span class="comment">// Get RPC server for server side implementation</span></span><br><span class="line">      server = <span class="keyword">new</span> RPC.Builder(conf).setProtocol(TestRpcService<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">              .<span class="title">setNumHandlers</span>(4)  // </span></span><br><span class="line"><span class="class">              .<span class="title">setnumReaders</span>(4)</span></span><br><span class="line"><span class="class">              .<span class="title">setInstance</span>(<span class="title">service</span>).<span class="title">setBindAddress</span>(<span class="title">ADDRESS</span>).<span class="title">setPort</span>(<span class="title">PORT</span>).<span class="title">build</span>()</span>;</span><br><span class="line">server.start()</span><br></pre></td></tr></table></figure>
 <p>启动Server，则会得到如下的线程模型</p>
 <p><img src="/images/hadoop-ipc-server-thread-model.png" alt="image-20200611115215257"></p>
 <h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h4><blockquote>
