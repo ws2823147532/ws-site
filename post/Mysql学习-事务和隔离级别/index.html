@@ -1,84 +1,234 @@
 <!DOCTYPE html>
-<html lang=zh-CN>
-  <head><meta name="generator" content="Hexo 3.9.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="description" content>
-  <meta name="keywords" content>
-  
-    <link rel="icon" href="/favicon.ico">
-  
-    
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="MYSQL事务和隔离级别一、事务事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:  原子性（Atomicity）：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部">
+<meta name="keywords" content="mysql事务和隔离级别">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql学习-事务和隔离级别">
+<meta property="og:url" content="https://shang.at/post/Mysql学习-事务和隔离级别/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="MYSQL事务和隔离级别一、事务事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:  原子性（Atomicity）：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnms749pj30zo0qggre.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnnepde0j31540u0gqk.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqno2ih8oj314s0u044g.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxkk82wj313l0u0grm.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxye5ghj31360u0gq5.jpg">
+<meta property="og:updated_time" content="2020-06-25T01:16:15.635Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql学习-事务和隔离级别">
+<meta name="twitter:description" content="MYSQL事务和隔离级别一、事务事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:  原子性（Atomicity）：事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnms749pj30zo0qggre.jpg">
+
+<link rel="canonical" href="https://shang.at/post/Mysql学习-事务和隔离级别/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
   <title>Mysql学习-事务和隔离级别 | 努力，奋斗</title>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/lib/jquery.fancybox.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
 </head>
 
-<body>
-  <header>
-  <div class="header-container">
-    <a class='logo' href="/">
-      <span>努力，奋斗</span>
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
     </a>
-    <ul class="right-header">
-      
-        <li class="nav-item">
-          
-            <a href="/" class="item-link">首页</a>
-          
-        </li>
-      
-        <li class="nav-item">
-          
-            <a href="/about" class="item-link">关于</a>
-          
-        </li>
-      
-        <li class="nav-item">
-          
-            <a href="/archives" class="item-link">归档</a>
-          
-        </li>
-      
-        <li class="nav-item">
-          
-            <a href="/tags" class="item-link">标签</a>
-          
-        </li>
-      
-    </ul>
-  </div>
-</header>
-
-  <main id='post'>
-  <div class="content">
-    <article>
-        <section class="content markdown-body">
-          <h1>Mysql学习-事务和隔离级别</h1>
-          <div class='post-meta'>
-            <i class="fa fa-calendar" aria-hidden="true"></i> <time>2020年05月13日</time>
-            
-              | <i class="fa fa-folder-open-o" aria-hidden="true"></i> 
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
   </div>
 
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
             
-            
-              | 
-                  <i class="fa fa-tag" aria-hidden="true"></i>
-                
-               
-  <a href="/tags/#mysql事务和隔离级别" class='tag'>mysql事务和隔离级别</a>
 
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-事务和隔离级别/">
 
-            
-          </div>
-          <h1 id="MYSQL事务和隔离级别"><a href="#MYSQL事务和隔离级别" class="headerlink" title="MYSQL事务和隔离级别"></a>MYSQL事务和隔离级别</h1><h2 id="一、事务"><a href="#一、事务" class="headerlink" title="一、事务"></a>一、事务</h2><p>事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:</p>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql学习-事务和隔离级别
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-13 01:31:26" itemprop="dateCreated datePublished" datetime="2020-05-13T01:31:26+08:00">2020-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 09:16:15" itemprop="dateModified" datetime="2020-06-25T09:16:15+08:00">2020-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MYSQL事务和隔离级别"><a href="#MYSQL事务和隔离级别" class="headerlink" title="MYSQL事务和隔离级别"></a>MYSQL事务和隔离级别</h1><h2 id="一、事务"><a href="#一、事务" class="headerlink" title="一、事务"></a>一、事务</h2><p>事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:</p>
 <ul>
 <li>原子性（Atomicity）：<strong>事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行</strong>。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部执行失败。回滚可以用日志来实现，日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</li>
 <li>一致性（Consistent）：<strong>在事务开始和完成时，数据都必须保持一致状态</strong>。这意味着所有相关的数据规则都必须应用于事务的修改，以保持数据的完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。 以转账为例子，A向B转账，假设转账之前这两个用户的钱加起来总共是2000，那么A向B转账之后，不管这两个账户怎么转，A用户的钱和B用户的钱加起来的总额还是2000，这个就是事务的一致性。</li>
@@ -88,8 +238,6 @@
 <blockquote>
 <p>MySQL 默认采用<strong>自动提交模式</strong>。也就是说，如果不显式使用 <code>START TRANSACTION</code> 语句来开始一个事务，那么每个查询都会被当做一个事务自动提交。</p>
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnms749pj30zo0qggre.jpg" alt="image-20200513111933684"></p>
-</blockquote>
-<blockquote>
 <p>这几个特性不是一种平级关系：</p>
 <ul>
 <li>只有满足一致性，事务的执行结果才是正确的。</li>
@@ -132,6 +280,7 @@
 <li>串行化: 顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
 </ul>
 <p>四个级别逐渐增强，每个级别解决一个问题，事务级别越高，性能越差，大多数环境(<code>Read committed</code> 就可以用了)</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -173,151 +322,200 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p><a href="https://github.com/ZXZxin/ZXBlog" target="_blank" rel="noopener">参考</a></p>
 
-        </section>
-    </article>
+    </div>
+
     
-        <!-- disqus 评论框 start -->
-        <div class="comment">
-            <div id="disqus_thread" class="disqus-thread">
-              <i>加载评论框需要翻墙</i>
-            </div>
-        </div>
-        <!-- disqus 评论框 end -->
     
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql事务和隔离级别/" rel="tag"># mysql事务和隔离级别</a>
+          </div>
+
         
-  </div>
-  <aside>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Mysql学习-第三范式/" rel="prev" title="Mysql学习-第三范式">
+      <i class="fa fa-chevron-left"></i> Mysql学习-第三范式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/Java学习-动态代理/" rel="next" title="Java学习-动态代理">
+      Java学习-动态代理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
     
-    <div class="toc-container">
-        <h1>目录</h1>
-        <div class="content">
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MYSQL事务和隔离级别"><span class="toc-number">1.</span> <span class="toc-text">MYSQL事务和隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、事务"><span class="toc-number">1.1.</span> <span class="toc-text">一、事务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、并发一致性问题"><span class="toc-number">1.2.</span> <span class="toc-text">二、并发一致性问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、更新丢失-Lost-Update"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、更新丢失(Lost Update)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、脏读"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、脏读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、不可重复读-Non-Repeatable-Reads"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、不可重复读(Non-Repeatable Reads)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、幻读"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、幻读</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、事务隔离级别"><span class="toc-number">1.3.</span> <span class="toc-text">三、事务隔离级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、读未提交-Read-Uncommitted"><span class="toc-number">1.3.1.</span> <span class="toc-text">1、读未提交 (Read Uncommitted)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、读已提交-Read-Committed"><span class="toc-number">1.3.2.</span> <span class="toc-text">2、读已提交 (Read Committed)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、可重复读-Repeatable-Read"><span class="toc-number">1.3.3.</span> <span class="toc-text">3、可重复读(Repeatable Read)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、串行化-Serializable"><span class="toc-number">1.3.4.</span> <span class="toc-text">4、串行化(Serializable)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、总结"><span class="toc-number">1.3.5.</span> <span class="toc-text">5、总结</span></a></li></ol></li></ol></li></ol>
-        </div>
-    </div>
-    
-  </aside>
-</main>
-
-<!-- disqus 公共JS代码 -->
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = "ws-blog";
-  var disqus_identifier = "https://shang.at/post/Mysql学习-事务和隔离级别/";
-  var disqus_url = "https://shang.at/post/Mysql学习-事务和隔离级别/";
-
-  isAgent(getDisqus)
-
-  // determine user agent in China
-  function isAgent(cb) {
-    var url = '//graph.facebook.com/feed?callback=h';
-    var xhr = new XMLHttpRequest();
-    var called = false;
-    xhr.open('GET', url);
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-      called = true;
-      cb(true);
-      }
-    };
-    xhr.send();
-    // timeout 1s, this facebook API is very fast.
-    setTimeout(function() {
-      if (!called) {
-      xhr.abort();
-      cb(false)
-      }
-    }, 1000);
-  }
-
-  function getDisqus(isAgent) {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; 
-    dsq.async = true
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq)
-  }
-</script>
-<!-- disqus 公共JS代码 end -->
-
-
-
-  <footer>
-  <div class="copyright">
-    <div>
-      &copy; 2020 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a>&nbsp
-    </div>
-    <div>
-      Theme by <a href="https://github.com/lewis-geek/hexo-theme-Aath" target="_blank">Aath</a>
-    </div>
-  </div>
-</footer>
-
-
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script src="/lib/in-view.min.js"></script>
-<script src="/lib/lodash.min.js"></script>
-<script>
-  var isDown = true
-  var oldY = 0
-  inView.offset(50)
-
-  document.body.addEventListener('touchstart', function(){});
+  </article>
   
-  window.addEventListener('scroll', _.throttle(e => {
-    var currentY = window.scrollY
-    if((oldY - currentY) < 0) {
-      isDown = true
-    } else {
-      isDown = false
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    oldY = currentY
-  }, 250))
-
-  $("article img").each(function() {
-      var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
-      $(this).wrapAll(strA);
-  });
-
-  $('.toc-link').each(function() {
-      var href = $(this).attr("href");
-      
-      inView(href).on('exit', () => {
-        if (isDown) {
-          handleActive(href)
-        }
-      })
-
-      inView(href).on('enter', () => {
-        if (!isDown) {
-          handleActive(href)
-        }
-      })
-
-      this.onclick = function(e) {
-        var pos = $(href).offset().top - 10;
-        $("html,body").animate({scrollTop: pos}, 300);
-        setTimeout(() => {
-          handleActive(href)
-        }, 350)
-        return false
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
       }
-  })
-
-  function handleActive(href) {
-    document.querySelectorAll('.toc-link').forEach(elm => {
-      elm.classList.remove('active')
-    })
-    document.querySelector(".toc [href='"+ href +"']").classList.add('active')
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
-<script src="/lib/jquery.fancybox.min.js"></script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
 
-<div id="totop" style="position:fixed;bottom:20px;right:50px;cursor: pointer;">
-    <a title="返回顶部"><img src="/imgs/scrollup.png" /></a>
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MYSQL事务和隔离级别"><span class="nav-number">1.</span> <span class="nav-text">MYSQL事务和隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、事务"><span class="nav-number">1.1.</span> <span class="nav-text">一、事务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、并发一致性问题"><span class="nav-number">1.2.</span> <span class="nav-text">二、并发一致性问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、更新丢失-Lost-Update"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、更新丢失(Lost Update)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、脏读"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、脏读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、不可重复读-Non-Repeatable-Reads"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、不可重复读(Non-Repeatable Reads)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、幻读"><span class="nav-number">1.2.4.</span> <span class="nav-text">4、幻读</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、事务隔离级别"><span class="nav-number">1.3.</span> <span class="nav-text">三、事务隔离级别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、读未提交-Read-Uncommitted"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、读未提交 (Read Uncommitted)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、读已提交-Read-Committed"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、读已提交 (Read Committed)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、可重复读-Repeatable-Read"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、可重复读(Repeatable Read)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、串行化-Serializable"><span class="nav-number">1.3.4.</span> <span class="nav-text">4、串行化(Serializable)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、总结"><span class="nav-number">1.3.5.</span> <span class="nav-text">5、总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
 </div>
-<script src="/js/totop.js"></script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
 
 </body>
 </html>

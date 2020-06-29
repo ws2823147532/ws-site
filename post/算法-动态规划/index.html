@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="动态规划 其本质是动态递推   避免人肉递归。可以尝试画出递归树 找到最近最简方法，将其拆解成可重复解决的问题 如何找到最近最简方法：数学归纳法思维 如何区分DP问题：DP一般会被用来求解最值问题   DP与递归和分治的联系   DP与 递归或者分治没有根本上的却别 共性：找到重复子问题 差异性：DP有最优子结构，中途可以淘汰次优解  实战例题509. 斐波那契数 傻递归 - 自顶向下 画出递归树">
+<meta name="keywords" content="动态规划">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法-动态规划">
+<meta property="og:url" content="https://shang.at/post/算法-动态规划/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="动态规划 其本质是动态递推   避免人肉递归。可以尝试画出递归树 找到最近最简方法，将其拆解成可重复解决的问题 如何找到最近最简方法：数学归纳法思维 如何区分DP问题：DP一般会被用来求解最值问题   DP与递归和分治的联系   DP与 递归或者分治没有根本上的却别 共性：找到重复子问题 差异性：DP有最优子结构，中途可以淘汰次优解  实战例题509. 斐波那契数 傻递归 - 自顶向下 画出递归树">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf7saakd9nj30nm0hn3zw.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa9koughqj30ij0ebjsi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9c76vxnoj31b00ps77e.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9d1sl4wtj30xu0u0n2h.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9gw1sj0kj30xj0u0jx7.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa5gmnx4bj30xx0u044x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa7wqal6mj30ku0degmu.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfacvt7tj7j30m609iq3f.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfcjq9qu41j30j801mq2y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa7xf1ixuj30mq0bkmyr.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf7ru9d1mfj31bg0p8n24.jpg">
+<meta property="og:updated_time" content="2020-06-29T18:16:21.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法-动态规划">
+<meta name="twitter:description" content="动态规划 其本质是动态递推   避免人肉递归。可以尝试画出递归树 找到最近最简方法，将其拆解成可重复解决的问题 如何找到最近最简方法：数学归纳法思维 如何区分DP问题：DP一般会被用来求解最值问题   DP与递归和分治的联系   DP与 递归或者分治没有根本上的却别 共性：找到重复子问题 差异性：DP有最优子结构，中途可以淘汰次优解  实战例题509. 斐波那契数 傻递归 - 自顶向下 画出递归树">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlly1gf7saakd9nj30nm0hn3zw.jpg">
+
+<link rel="canonical" href="https://shang.at/post/算法-动态规划/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法-动态规划 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/算法-动态规划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法-动态规划
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-30 01:54:22 / 修改时间：02:16:21" itemprop="dateCreated datePublished" datetime="2020-06-30T01:54:22+08:00">2020-06-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><blockquote>
+<p>其本质是动态递推</p>
+</blockquote>
+<ol>
+<li>避免人肉递归。可以尝试画出递归树</li>
+<li>找到<strong>最近最简</strong>方法，将其拆解成可重复解决的问题</li>
+<li>如何找到<strong>最近最简方法</strong>：数学归纳法思维</li>
+<li>如何区分DP问题：<code>DP一般会被用来求解最值问题</code></li>
+</ol>
+<blockquote>
+<p>DP与递归和分治的联系</p>
+</blockquote>
+<ol>
+<li>DP与 递归或者分治没有根本上的却别</li>
+<li>共性：找到重复子问题</li>
+<li>差异性：DP有最优子结构，中途可以淘汰次优解</li>
+</ol>
+<h1 id="实战例题"><a href="#实战例题" class="headerlink" title="实战例题"></a>实战例题</h1><h2 id="509-斐波那契数"><a href="#509-斐波那契数" class="headerlink" title="509. 斐波那契数"></a><a href="https://leetcode-cn.com/problems/fibonacci-number/" target="_blank" rel="noopener">509. 斐波那契数</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf7saakd9nj30nm0hn3zw.jpg" alt="image-20200528065512796"></p>
+<p>傻递归 - 自顶向下</p>
+<p>画出递归树</p>
+<p>时间复杂度：每计算一个节点，需要计算其余的两个节点，以此类推下去，这是一个二叉树的结构，所以它的时间复杂度是O(2^n)的</p>
+<p>优化：</p>
+<ul>
+<li><p>加入备忘录</p>
+<p>在傻递归的基础上，加入一个缓存，以达到避免重复子问题的重复计算的问题</p>
+</li>
+<li><p>使用DP的思维解决 - 自底向上</p>
+</li>
+</ul>
+<p>DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>根据数学归纳法：要计算第n个斐波那契数，那么我们只需要计算第n-1和n-2个斐波那契数就可以了</p>
+</li>
+<li><p>状态定义 - 且找到base case</p>
+<p>假设使用a[i]表示第i个斐波那契数，那么f[i] = f[i-1]+f[i-2] 且f[0]=0,f[1]=1</p>
+</li>
+<li><p>DP方程</p>
+<script type="math/tex; mode=display">
+f(n)=\left\{
+\begin{aligned}
+0 &,& n=0 \\
+1 &,& n=1 \\
+f(n-1)+f(n-2) &,& n>1
+\end{aligned}
+\right.</script></li>
+</ol>
+<h2 id="70-爬楼梯"><a href="#70-爬楼梯" class="headerlink" title="70. 爬楼梯"></a><a href="https://leetcode-cn.com/problems/climbing-stairs/" target="_blank" rel="noopener">70. 爬楼梯</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa9koughqj30ij0ebjsi.jpg" alt="image-20200530102415327"></p>
+<p>考虑下变体：</p>
+<ul>
+<li>不止可以上1阶或2阶：可以上1、2、3阶等</li>
+<li>可以上1 2 3阶，且相邻的两个步伐不能相同，该如何设计</li>
+</ul>
+<p>本体：</p>
+<script type="math/tex; mode=display">
+f(n)=\left\{
+\begin{aligned}
+1 &,& n=1 \\
+2 &,& n=2 \\
+f(n-1)+f(n-2) &,& n>2
+\end{aligned}
+\right.</script><p>变体1：</p>
+<script type="math/tex; mode=display">
+f(n)=\left\{
+\begin{aligned}
+1 &,& n=1 \\
+2 &,& n=2 \\
+4 &,& n=3 \\
+f(n-1)+f(n-2)+f(n-3) &,& n>3
+\end{aligned}
+\right.</script><p>变体2：</p>
+<p>定义dp[0…2][i]，</p>
+<p>​    dp[0][i]表示到达i最后一次走了1步；</p>
+<p>​    dp[1][i]表示到达i最后一次走了2步；</p>
+<p>​    dp[2][i]表示到达i最后一次走了3步</p>
+<p>那么</p>
+<p>​    dp[0][i]=dp[1][i-1]+dp[2][i-1]；到当前台阶走了1步，那么前面只能再选最后一次走了2步和3步的</p>
+<p>​    dp[1][i]=dp[0][i-2]+dp[2][i-2]；到当前台阶走了2步，那么前面只能再选最后一次走了1步和3步</p>
+<p>​    dp[2][i]=dp[0][i-3]+dp[1][i-3]    到当前台阶走了3步，那么前面只能再选最后一次走了1步和2步的</p>
+<p>结果为：dp[0][-1]+dp[1][-1]+dp[2][-1]，即到达n的所有步伐的总和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeClimbStairs</span><span class="params">(self, n: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">2</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">3</span>: <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># dp[0][i] 最后一次走了1步到达 i</span></span><br><span class="line">    <span class="comment"># dp[1][i] 最后一次走了2步到达 i</span></span><br><span class="line">    <span class="comment"># dp[2][i] 最后一次走了3步到达 i</span></span><br><span class="line">    dp = [</span><br><span class="line">        [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>] + [<span class="number">0</span>] * (n - <span class="number">3</span>),  <span class="comment"># 最后一次走1步</span></span><br><span class="line">        [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>] + [<span class="number">0</span>] * (n - <span class="number">3</span>),  <span class="comment"># 最后一次走2步</span></span><br><span class="line">        [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>] + [<span class="number">0</span>] * (n - <span class="number">3</span>)   <span class="comment"># 最后一次走3步</span></span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>, n):</span><br><span class="line">        <span class="comment"># 到当前台阶走了1步，那么前面只能再选最后一次走了2步和3步的</span></span><br><span class="line">        dp[<span class="number">0</span>][i] = dp[<span class="number">1</span>][i - <span class="number">1</span>] + dp[<span class="number">2</span>][i - <span class="number">1</span>]  </span><br><span class="line">        <span class="comment"># 到当前台阶走了2步，那么前面只能再选最后一次走了1步和3步的</span></span><br><span class="line">        dp[<span class="number">1</span>][i] = dp[<span class="number">0</span>][i - <span class="number">2</span>] + dp[<span class="number">2</span>][i - <span class="number">2</span>]  </span><br><span class="line">        <span class="comment"># 到当前台阶走了3步，那么前面只能再选最后一次走了1步和2步的</span></span><br><span class="line">        dp[<span class="number">2</span>][i] = dp[<span class="number">0</span>][i - <span class="number">3</span>] + dp[<span class="number">1</span>][i - <span class="number">3</span>]  </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">-1</span>] + dp[<span class="number">1</span>][<span class="number">-1</span>] + dp[<span class="number">2</span>][<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="322-零钱兑换"><a href="#322-零钱兑换" class="headerlink" title="322. 零钱兑换"></a><a href="https://leetcode-cn.com/problems/coin-change/" target="_blank" rel="noopener">322. 零钱兑换</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9c76vxnoj31b00ps77e.jpg" alt="image-20200529150931667"></p>
+<p>略过递归方案，直接上DP</p>
+<p>DP问题三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>根据数学归纳法：已知某金额所需的最少硬币数，可得其他金额的所需最少硬币数</p>
+</li>
+<li><p>状态定义</p>
+<p>假设dp[i]表示，金额为i时需要的最少硬币数，那么因为有coins个硬币可选，所以dp[i]=min(dp[i-k] for k in coins) + 1，加1表示要选择一个面值为k的硬币</p>
+<p>dp初始值为mount+1，因为金额为amout，所需硬币最多为amout个1元硬币，长度为amout+1</p>
+<p>dp[0]=0，表示当金额为0时，需要的硬币数也为0</p>
+<p>最终结果：dp[amout]</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(n) = \left\{
+\begin{aligned}
+0 &,& n=0 \\
+1 &,& n=1 \\
+min(f(n-k))+1 &,& k \in coins \\
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins: List[int], amount: int)</span> -&gt; int:</span></span><br><span class="line"></span><br><span class="line">        dp = [amount + <span class="number">1</span>] * (amount + <span class="number">1</span>)</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, amount + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> coin <span class="keyword">in</span> coins:</span><br><span class="line">                <span class="keyword">if</span> coin &lt;= i:</span><br><span class="line">                    dp[i] = min(dp[i], dp[i - coin] + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[amount] <span class="keyword">if</span> dp[amount] &lt; amount + <span class="number">1</span> <span class="keyword">else</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<h2 id="62-不同路径"><a href="#62-不同路径" class="headerlink" title="62. 不同路径"></a><a href="https://leetcode-cn.com/problems/unique-paths/" target="_blank" rel="noopener">62. 不同路径</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9d1sl4wtj30xu0u0n2h.jpg" alt="image-20200529153859627"></p>
+<p>直接DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>要求从位置(i,j)到END的不同路径数，由于从某个位置出发只能向右或向下走，如果我知道了从(i+1, j)和从(i,j+1)到END的路径数，那么我就能得到<script type="math/tex">path_{i,j}</script>，<script type="math/tex">path_{i,j}</script>=<script type="math/tex">path_{i+1,j}</script>+<script type="math/tex">path_{i,j+1}</script></p>
+</li>
+<li><p>状态定义</p>
+<p>定义dp[m][n]数组，表示棋盘，每个元素表示从该位置出发，到END的不同路径数</p>
+<p>dp[][n]=1，右边界全为1，因为右边界的位置到END，路径数都是1</p>
+<p>dp[m][]=1，下边界全为1，因为下边界的位置到END，路径数都是1</p>
+<p>遍历方向：从END位置开始向上遍历</p>
+<p>最终结果：dp[0][0]</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(x,y) = \left\{
+\begin{aligned}
+1 &,& x=m\\
+1 &,& y=n\\
+f(x+1, y)+f(x, y+1) &,& 0 \leq x < m \& 0 \leq y < n
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="comment"># 初始化dp数组，左边界和右边界都初始化为1</span></span><br><span class="line">        dp = [[<span class="number">1</span> <span class="keyword">if</span> j == m - <span class="number">1</span> <span class="keyword">or</span> i == n - <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> j <span class="keyword">in</span> range(m)] <span class="keyword">for</span> i <span class="keyword">in</span> range(n)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(m - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">                dp[i][j] = dp[i + <span class="number">1</span>][j] + dp[i][j + <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 空间压缩：我们只需要一维的数组就可以存下路径的变化</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="comment"># 初始化dp数组为 1</span></span><br><span class="line">        dp = [<span class="number">1</span>] * m</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(m - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">                dp[j] = dp[j] + dp[j + <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="63-不同路径-II"><a href="#63-不同路径-II" class="headerlink" title="63. 不同路径 II"></a><a href="https://leetcode-cn.com/problems/unique-paths-ii/" target="_blank" rel="noopener">63. 不同路径 II</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf9gw1sj0kj30xj0u0jx7.jpg" alt="image-20200529175152160"></p>
+<p>直接DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>要求从位置(i,j)到END的不同路径数，由于从某个位置出发只能向右或向下走，如果我知道了从(i+1, j)和从(i,j+1)到END的路径数，那么我就能得到<script type="math/tex">path_{i,j}</script>，<script type="math/tex">path_{i,j}</script>=<script type="math/tex">path_{i+1,j}</script>+$$</p>
+</li>
+<li><p>状态定义</p>
+<p>定义dp[m][n]数组，表示棋盘，每个元素表示从该位置出发，到END的不同路径数</p>
+<p>dp[][n]=1，右边界最后一个障碍物之后全为1，最后一个障碍物及之前的位置全为0，因为右边界一旦出现了障碍物，那么在这之前的位置的路径就都被截断了</p>
+<p>dp[m][]=1，下边界最后一个障碍物之后全为1，最后一个障碍物及之前的位置全为0，因为下边界一旦出现了障碍物，那么在这之前的位置的路径就都被截断了</p>
+<p>需要注意的是：棋盘上为1的位置不能走，那个位置的路径数为0</p>
+<p>遍历方向：从END位置开始遍历</p>
+<p>最终结果：dp[0][0]</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(x,y) = \left\{
+\begin{aligned}
+0 &,& x=m\&x\leq lastcol(lastrow表示下边界最后一个障碍物的位置)\\
+0 &,& y=n\&y\leq lastrow(lastrow表示右边界最后一个障碍物的位置)\\
+1 &,& x=m\&x>lastcol(lastrow表示下边界最后一个障碍物的位置)\\
+1 &,& y=n\&y>lastrow(lastrow表示右边界最后一个障碍物的位置)\\
+0 &,& obstacleGrid(x, y)=1\\
+f(x-1, y)+f(x, y-1) &,& 0 \leq x < m \& 0 \leq y < n
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(self, obstacleGrid: List[List[int]])</span> -&gt; int:</span></span><br><span class="line">        m, n = len(obstacleGrid[<span class="number">0</span>]), len(obstacleGrid)</span><br><span class="line">        <span class="comment"># if obstacleGrid[-1][-1] == 1 or obstacleGrid[0][0] == 1: return 0  # 起点和终点为1，直接返回0</span></span><br><span class="line">        <span class="comment"># if n == 1:  # 只有一行</span></span><br><span class="line">        <span class="comment">#     if sum(obstacleGrid[0]) &gt;= 1:  # 行出现了1</span></span><br><span class="line">        <span class="comment">#         return 0</span></span><br><span class="line">        <span class="comment">#     else:</span></span><br><span class="line">        <span class="comment">#         return 1</span></span><br><span class="line">        <span class="comment"># if m == 1:  # 只有一列</span></span><br><span class="line">        <span class="comment">#     if sum(list(chain(*obstacleGrid))) &gt;= 1:  # 列出现了1</span></span><br><span class="line">        <span class="comment">#         return 0</span></span><br><span class="line">        <span class="comment">#     else:</span></span><br><span class="line">        <span class="comment">#         return 1</span></span><br><span class="line">        <span class="comment"># 如果 最后一行或最后一列出现了1，那么1出现的位置及之前的位置和1没有区别</span></span><br><span class="line">        last_row, last_col = <span class="number">-1</span>, <span class="number">-1</span>  <span class="comment"># 标记最后一行(列)出现障碍的位置</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> obstacleGrid[i][<span class="number">-1</span>] == <span class="number">1</span>:</span><br><span class="line">                last_row = i</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(m - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">if</span> obstacleGrid[<span class="number">-1</span>][i] == <span class="number">1</span>:</span><br><span class="line">                last_col = i</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 根据棋盘的最后一行和最后一列初始化 dp数组</span></span><br><span class="line">        <span class="comment"># 包含了 起点和终点为1 的情况</span></span><br><span class="line">        <span class="comment"># 包含了 只有一行和只有一列的情况</span></span><br><span class="line">        dp = [[<span class="number">1</span> <span class="keyword">if</span> i &gt; last_col <span class="keyword">and</span> j == n - <span class="number">1</span> <span class="keyword">or</span> j &gt; last_row <span class="keyword">and</span> i == m - <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(m)] <span class="keyword">for</span> j <span class="keyword">in</span></span><br><span class="line">              range(n)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(m - <span class="number">2</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">                <span class="keyword">if</span> obstacleGrid[i][j] == <span class="number">1</span>:</span><br><span class="line">                    dp[i][j] = <span class="number">0</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i][j] = dp[i + <span class="number">1</span>][j] + dp[i][j + <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># dp空间压缩：实际上我们在进行递推的时候，只需要一维数组就可以</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(self, obstacleGrid: List[List[int]])</span> -&gt; int:</span></span><br><span class="line">        m, n = len(obstacleGrid[<span class="number">0</span>]), len(obstacleGrid)</span><br><span class="line">        dp = [<span class="number">0</span>] * m</span><br><span class="line">        dp[m - <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(m - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">                <span class="keyword">if</span> obstacleGrid[i][j] == <span class="number">1</span>:  <span class="comment"># 当前位置为障碍物</span></span><br><span class="line">                    dp[j] = <span class="number">0</span></span><br><span class="line">                <span class="keyword">elif</span> j &lt; m - <span class="number">1</span>:  <span class="comment"># 因为要使用下一个坐标，这里要检测坐标的合法性，防止指针越界</span></span><br><span class="line">                    dp[j] += dp[j + <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="1143-最长公共子序列"><a href="#1143-最长公共子序列" class="headerlink" title="1143. 最长公共子序列"></a><a href="https://leetcode-cn.com/problems/longest-common-subsequence/" target="_blank" rel="noopener">1143. 最长公共子序列</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa5gmnx4bj30xx0u044x.jpg" alt="image-20200530080158059"></p>
+<p>思维：DP最终会归结到一个状态数组中，所以拿到一个这样的题目后，就往一维状态数组上靠拢，一维搞不定，就尝试用二维数组，再不行就三维…然后依靠数学归纳法进行推导，看是否能根据已知内容的位置 推导出当前位置的值</p>
+<p>直接上DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>abcde和abc的问题可以由下列的二维表格描述，如果要求某个位置的值，只需要知道它之前的某些位置即可</p>
+</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">-</th>
+<th style="text-align:center">a</th>
+<th style="text-align:center">b</th>
+<th style="text-align:center">c</th>
+<th style="text-align:center">d</th>
+<th style="text-align:center">e</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">a</td>
+<td style="text-align:center">LCS(a,a)=1</td>
+<td style="text-align:center">LCS(a,ab)=1</td>
+<td style="text-align:center">LCS(a,abc)=1</td>
+<td style="text-align:center">LCS(a,aabcd)=1</td>
+<td style="text-align:center">LCS(a,abcde)=1</td>
+</tr>
+<tr>
+<td style="text-align:center">c</td>
+<td style="text-align:center">LCS(ac,a)=1</td>
+<td style="text-align:center">LCS(ac,ab)=1</td>
+<td style="text-align:center">LCS(ac,abc)=2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+</tr>
+<tr>
+<td style="text-align:center">e</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">LCS(ace,abcde)=3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li><p>定义状态</p>
+<p>dp[i][j]，i表示第一个字符串的位置编号，j表示第二个字符串的位置编号，整体表示两个子串的最长公共子序列的长度</p>
+<p>dp长度初始化为text1.length+1*text2.length+1，因为至少要包含没有字符的情况</p>
+<p>初始值：dp[0][0]=0</p>
+<p>遍历方向：从前往后。因为base case在前部</p>
+<p>最终结果：dp[text1.length][text2.length]</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(x, y) = \left\{
+\begin{aligned}
+0 &,& x=0\&y=0 \\
+max(f(x-1, y), f(x, y-1)) &,& text1(x)!=text2(y) \\
+f(x-1, y-1)+1 &,& text1(x)=text2(y) \\
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence1</span><span class="params">(self, text1: str, text2: str)</span> -&gt; int:</span></span><br><span class="line">        m, n = len(text1), len(text2)</span><br><span class="line">        dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m + <span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> text1[j - <span class="number">1</span>] == text2[i - <span class="number">1</span>]:  <span class="comment"># 当前位置的两个字符一样，取对角的值再加1(加上自身)</span></span><br><span class="line">                    dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 当前位置的两个字符不一样，取两个字符对应的最大值</span></span><br><span class="line">                    dp[i][j] = max(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[n][m]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># dp空间压缩：发现求当前位置的值，只需要left和last_line的值</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span><span class="params">(self, text1: str, text2: str)</span> -&gt; int:</span></span><br><span class="line">        m, n = len(text1), len(text2)</span><br><span class="line">        <span class="comment"># 当前位置，当前位置的左一位置</span></span><br><span class="line">        curr, left = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        <span class="comment"># 上一行的值</span></span><br><span class="line">        last_line = [<span class="number">0</span>] * (m + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> text1[j - <span class="number">1</span>] == text2[i - <span class="number">1</span>]:  <span class="comment"># 当前位置的两个字符一样，取对角的值再加1(加上自身)</span></span><br><span class="line">                    curr = last_line[j - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 当前位置的两个字符不一样，取两个字符对应的最大值</span></span><br><span class="line">                    curr = max(last_line[j], left)</span><br><span class="line">                <span class="comment"># 根据当前计算的结果 更新上一行，遍历到下一行的时候，正好可以用</span></span><br><span class="line">                <span class="keyword">if</span> j == m:  <span class="comment"># 换行：可以更新当前位置的up位置元素，且把left重置为0</span></span><br><span class="line">                    last_line[j - <span class="number">1</span>], last_line[j], left = left, curr, <span class="number">0</span></span><br><span class="line">                <span class="keyword">else</span>:  <span class="comment"># 不换行：不能更新up位置，因为在同一行中遍历的时候，要使用原始的值</span></span><br><span class="line">                    last_line[j - <span class="number">1</span>], left = left, curr</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> curr</span><br></pre></td></tr></table></figure>
+<h2 id="120-三角形最小路径和"><a href="#120-三角形最小路径和" class="headerlink" title="120. 三角形最小路径和"></a><a href="https://leetcode-cn.com/problems/triangle/" target="_blank" rel="noopener">120. 三角形最小路径和</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa7wqal6mj30ku0degmu.jpg" alt="image-20200530092638716"></p>
+<p>直接DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>要想求得到达当前位置的最小路径和，那么我只需要知道到达当前位置的up和up_left最小路径和即可</p>
+</li>
+<li><p>状态定义</p>
+<p>dp[i][j]，i和j分别表示矩阵的坐标，整体表示到达该坐标的最小路径和</p>
+<p>dp[0][0]为矩阵的第一个元素值</p>
+<p>最终结果：min(dp[-1])</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(x, y) = \left\{
+\begin{aligned}
+matrix(0, 0) &, & x=0\&y=0 \\
+min(f(x-1, y), f(x-1. y-1)) + matrix(x,y) &,& 0\leq x \& 0\leq y
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal1</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span></span><br><span class="line">        m, n = len(triangle[<span class="number">-1</span>]), len(triangle)</span><br><span class="line"></span><br><span class="line">        dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> row] <span class="keyword">for</span> row <span class="keyword">in</span> triangle]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = triangle[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">for</span> j, val <span class="keyword">in</span> enumerate(triangle[i]):</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">0</span>: dp[i][j] = dp[i - <span class="number">1</span>][j] + val</span><br><span class="line">                <span class="keyword">elif</span> j == len(triangle[i]) - <span class="number">1</span>: dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + val</span><br><span class="line">                <span class="keyword">else</span>: dp[i][j] = min(dp[i - <span class="number">1</span>][j], dp[i - <span class="number">1</span>][j - <span class="number">1</span>]) + val</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> min(dp[<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># dp空间压缩</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span></span><br><span class="line">        m, n = len(triangle[<span class="number">-1</span>]), len(triangle)</span><br><span class="line"></span><br><span class="line">        dp = triangle</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">for</span> j, val <span class="keyword">in</span> enumerate(triangle[i]):</span><br><span class="line">                <span class="keyword">if</span> j == <span class="number">0</span>: dp[i][j] = dp[i - <span class="number">1</span>][j] + val</span><br><span class="line">                <span class="keyword">elif</span> j == len(triangle[i]) - <span class="number">1</span>: dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + val</span><br><span class="line">                <span class="keyword">else</span>: dp[i][j] = min(dp[i - <span class="number">1</span>][j], dp[i - <span class="number">1</span>][j - <span class="number">1</span>]) + val</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> min(dp[<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="221-最大正方形"><a href="#221-最大正方形" class="headerlink" title="221. 最大正方形"></a><a href="https://leetcode-cn.com/problems/maximal-square/" target="_blank" rel="noopener">221. 最大正方形</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfacvt7tj7j30m609iq3f.jpg" alt="image-20200530121844939"></p>
+<p>DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>以某个位置(i,j)为右下角的正方形的边长，可以根据当前位置的up、left、left_up三个位置确定出来</p>
+<p>状态定义</p>
+<p>dp[i][j]表示以(i,j)为右下角的正方形的边长，那么如果(i,j)为0，dp[i][j]=0；否则dp[i][j]=min(up,left,up_left)+1</p>
+<p>加1的目的是，至少包含它本身</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfcjq9qu41j30j801mq2y.jpg" alt="image-20200601094644553"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximalSquare</span><span class="params">(self, matrix: List[List[str]])</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> matrix <span class="keyword">or</span> <span class="keyword">not</span> matrix[<span class="number">0</span>]: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        m, n = len(matrix[<span class="number">0</span>]), len(matrix)</span><br><span class="line">        dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br><span class="line">        max_edge = dp[<span class="number">0</span>][<span class="number">0</span>] = int(matrix[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">                <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">or</span> j == <span class="number">0</span>:</span><br><span class="line">                    dp[i][j] = <span class="number">0</span> <span class="keyword">if</span> matrix[i][j] == <span class="string">'0'</span> <span class="keyword">else</span> <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i][j] = <span class="number">0</span> <span class="keyword">if</span> matrix[i][j] == <span class="string">'0'</span> <span class="keyword">else</span> min(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>], dp[i - <span class="number">1</span>][j - <span class="number">1</span>]) + <span class="number">1</span></span><br><span class="line">                max_edge = max(dp[i][j], max_edge)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> max_edge * max_edge</span><br></pre></td></tr></table></figure>
+<h2 id="312-戳气球"><a href="#312-戳气球" class="headerlink" title="312. 戳气球"></a><a href="https://leetcode-cn.com/problems/burst-balloons/" target="_blank" rel="noopener">312. 戳气球</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfa7xf1ixuj30mq0bkmyr.jpg" alt="image-20200530092718495"></p>
+<p>DP三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>当只有一个气球时，只需要戳一次即可</p>
+<p>当有两个气球时，也只需要戳一次</p>
+<p>当有三个气球时，那么肯定要先戳中间那一个</p>
+<p>当有四个气球时，那么就要</p>
+</li>
+<li><p>状态定义</p>
+<p>气球的个数为n</p>
+<p>假设dp[i][j]表示序号在(i,j)之间的获得的硬币最大值，那么我们需要通过遍历(i,j)之间的所有序号，求出dp[i][k]和dp[k][j]，因为dp[i][j]=dp[i][k]+dp[k][j]+k，</p>
+<p>最终结果：dp[0][n+1]</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+<Empty \space Math \space Block></script><h2 id="198-打家劫舍"><a href="#198-打家劫舍" class="headerlink" title="198. 打家劫舍"></a><a href="https://leetcode-cn.com/problems/house-robber/" target="_blank" rel="noopener">198. 打家劫舍</a></h2><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf7ru9d1mfj31bg0p8n24.jpg" alt="image-20200528063944746"></p>
+<p>略过递归方案，直接上DP</p>
+<p>DP问题三步曲</p>
+<ol>
+<li><p>找到重复子问题</p>
+<p>根据数学归纳法：如果已知小偷在第i-1个房间对应的最高金额，那么小偷在第i个房间的对应的最高金额有以下两种情况</p>
+<ul>
+<li>小偷偷了第i-1房间：那么小偷势必不能偷第i个房间，那么这个时候小偷偷的金额应该继承上一个值</li>
+<li>小偷没有偷第i-1房间：那么小偷一定要偷第i个房间(因为是求的最大值)，这个时候小偷偷的金额应该是上一个值加上第i个房间的金额</li>
+</ul>
+</li>
+<li><p>状态定义</p>
+<p>那么我们怎么表示某一个房间偷与不偷呢？此时我们可以考虑在一维的基础之上加一维附加这个状态，用dp[i][0]表示没有偷第i个房间，dp[i][1]表示偷了第i个房间，nums[i]表示第i间房的金额，那么</p>
+<ul>
+<li>计算没有偷i房的时候在i的最大金额：dp[i][0]=max(dp[i-1][0], dp[i-1][1])</li>
+<li>计算偷i房的时候在i的最大金额：dp[i][1]=dp[i-1][0]+nums[i]</li>
+</ul>
+<p>dp的初始值为全为0，长度为n+1，</p>
+<p>第0个元素表示房间数为0时，能偷到的金额为0，</p>
+<p>第n个元素表示到达最后一个房间，能偷到的金额为多少</p>
+<p>遍历从1开始</p>
+<p>最终的结果：max(dp[n][0], dp[n][1])</p>
+</li>
+<li><p>DP方程定义</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(n,0) =\left\{
+\begin{aligned}
+0 &,& n=0 \\
+max(f(n-1, 0), f(n-1, 1)) &,& n>1
+\end{aligned}
+\right.</script><script type="math/tex; mode=display">
+f(n,1) =\left\{
+\begin{aligned}
+0 &,& n=0 \\
+f(n-1, 0)+nums(n) &,& n>1
+\end{aligned}
+\right.</script><script type="math/tex; mode=display">
+res = max(f(n, 0), f(n, 1))</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line"></span><br><span class="line">        n = len(nums)  <span class="comment"># 房间个数</span></span><br><span class="line">        dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">2</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            dp[i][<span class="number">0</span>] = max(dp[i - <span class="number">1</span>][<span class="number">0</span>], dp[i - <span class="number">1</span>][<span class="number">1</span>])  <span class="comment"># 不偷第i间房</span></span><br><span class="line">            dp[i][<span class="number">1</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>] + nums[i - <span class="number">1</span>]  <span class="comment"># 偷第i间房</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> max(dp[n][<span class="number">0</span>], dp[n][<span class="number">1</span>])  <span class="comment"># 返回第i间房 偷与不偷的最大金额</span></span><br></pre></td></tr></table></figure>
+<p>DP问题三步曲-version2</p>
+<blockquote>
+<p>第一个版本中，我们考虑的时候，并不知道小偷有没有偷某个房间，所以加了一个维度表示某个房间偷与不偷的 对应的最大金额</p>
+<p>这个版本中，我们换个思路，可以肯定的是，小偷一定会偷其中一间房，也就是说，如果我们假定某间房必偷的话，那么我们最终的结果应该是所有结果的最大值</p>
+</blockquote>
+<ol>
+<li><p>找到重复子问题</p>
+<p>根据数学归纳法：由于小偷不能偷连续的两间房，那么我们如果要计算第i间房最大金额，该怎么计算呢？这个时候，前一间房要么偷了，要么没偷，如果前一间房没偷，那么看前两间房偷没偷，前两间房如果没偷，那就继续往前推</p>
+</li>
+<li><p>状态定义-DP数组含义及base case</p>
+<p>dp[i]表示当偷到第i间房时的最大金额，不管第i间房偷与不偷，</p>
+<p>dp[i]=max(dp[i-1], dp[i-2]+nums[i])  表示：偷与不偷i-1的时候，在第i间房的最大金额</p>
+<p>dp初始化全为0，长度为n+2</p>
+<p>dp[0], dp[1]表示第1间房前1间、两间的金额都为0</p>
+<p>遍历从2开始</p>
+<p>最终结果：max(dp)</p>
+</li>
+<li><p>DP方程</p>
+</li>
+</ol>
+<script type="math/tex; mode=display">
+f(n) = \left\{
+\begin{aligned}
+0 &,& n=-1 \\
+0 &,& n=0 \\
+max(f(n-1), f(n-2)+nums(n)) &,& n>0
+\end{aligned}
+\right.</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">robnn</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        n = len(nums)</span><br><span class="line"></span><br><span class="line">        dp = [<span class="number">0</span>] * (n + <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n + <span class="number">2</span>):</span><br><span class="line">            dp[i] = max(dp[i - <span class="number">1</span>], dp[i - <span class="number">2</span>] + nums[i - <span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> max(dp)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># ====&gt; 优化，去掉最后的取最大值的函数，且降低空间复杂度</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        n = len(nums)</span><br><span class="line"></span><br><span class="line">        i_2, i_1, res = <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>  <span class="comment"># 前两间房的最大金额，前一间房的最大金额，当前房间的最大金额</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="comment"># dp[i] = max(dp[i - 1], dp[i - 2] + nums[i - 2])</span></span><br><span class="line">            <span class="comment"># 更新偷到当前房间的最大金额</span></span><br><span class="line">            res = max(i_1, i_2 + nums[i])</span><br><span class="line">            <span class="comment"># 上一个res变成前一间房</span></span><br><span class="line">            <span class="comment"># 上一个i_1变成前两间房</span></span><br><span class="line">            i_1, i_2 = res, i_1</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Python学习-python3-6-dict有序且效率更高/" rel="prev" title="Python学习-python3.6-dict有序且效率更高">
+      <i class="fa fa-chevron-left"></i> Python学习-python3.6-dict有序且效率更高
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#动态规划"><span class="nav-number">1.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实战例题"><span class="nav-number">2.</span> <span class="nav-text">实战例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#509-斐波那契数"><span class="nav-number">2.1.</span> <span class="nav-text">509. 斐波那契数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#70-爬楼梯"><span class="nav-number">2.2.</span> <span class="nav-text">70. 爬楼梯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#322-零钱兑换"><span class="nav-number">2.3.</span> <span class="nav-text">322. 零钱兑换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#62-不同路径"><span class="nav-number">2.4.</span> <span class="nav-text">62. 不同路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#63-不同路径-II"><span class="nav-number">2.5.</span> <span class="nav-text">63. 不同路径 II</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1143-最长公共子序列"><span class="nav-number">2.6.</span> <span class="nav-text">1143. 最长公共子序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#120-三角形最小路径和"><span class="nav-number">2.7.</span> <span class="nav-text">120. 三角形最小路径和</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#221-最大正方形"><span class="nav-number">2.8.</span> <span class="nav-text">221. 最大正方形</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#312-戳气球"><span class="nav-number">2.9.</span> <span class="nav-text">312. 戳气球</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#198-打家劫舍"><span class="nav-number">2.10.</span> <span class="nav-text">198. 打家劫舍</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
