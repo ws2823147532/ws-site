@@ -163,6 +163,397 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-运行时线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-运行时线程/" class="post-title-link" itemprop="url">java学习-运行时线程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-11 11:40:56 / 修改时间：11:52:13" itemprop="dateCreated datePublished" datetime="2020-06-11T11:40:56+08:00">2020-06-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>一个Java进程启动之后，至少会创建以下几个线程：</p>
+<ul>
+<li>main</li>
+<li>Finalizer</li>
+<li>Reference Handler</li>
+<li>Signal Dispatcher</li>
+<li>Others: 用户自己创建的线程</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据结构与算法学习笔记-JOIN的算法实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/数据结构与算法学习笔记-JOIN的算法实现/" class="post-title-link" itemprop="url">数据结构与算法学习笔记-JOIN的算法实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-10 14:40:09" itemprop="dateCreated datePublished" datetime="2020-06-10T14:40:09+08:00">2020-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-30 09:32:14" itemprop="dateModified" datetime="2020-06-30T09:32:14+08:00">2020-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="JOIN-INNER-JOIN"><a href="#JOIN-INNER-JOIN" class="headerlink" title="JOIN(INNER JOIN)"></a>JOIN(INNER JOIN)</h5><blockquote>
+<p>内连接：左右两个集合的交集，只保留左右两个集合都有的元素</p>
+<p>内连接的时候会先排序(O($NlogN$))，然后关联两个有序集合(O($N$))</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="LEFT-JOIN"><a href="#LEFT-JOIN" class="headerlink" title="LEFT JOIN"></a>LEFT JOIN</h5><blockquote>
+<p>左外连接：以左集合为主，右集合不存在的元素补null</p>
+</blockquote>
+<h5 id="RIGHT-JOIN"><a href="#RIGHT-JOIN" class="headerlink" title="RIGHT JOIN"></a>RIGHT JOIN</h5><blockquote>
+<p>右外连接：以右集合为主，左集合不存在的元素补null</p>
+</blockquote>
+<h5 id="FULL-JOIN"><a href="#FULL-JOIN" class="headerlink" title="FULL JOIN"></a>FULL JOIN</h5><blockquote>
+<p>全连接：左右两个集合的全集，其中 左集合有但是右集合不存在的元素，右集合对应的字段补null，反之亦然</p>
+</blockquote>
+<h5 id="left-semi"><a href="#left-semi" class="headerlink" title="left_semi"></a>left_semi</h5><blockquote>
+<p>过滤出左集合中和右集合共有的部分，只返回左集合中的rows</p>
+</blockquote>
+<h5 id="left-anti"><a href="#left-anti" class="headerlink" title="left_anti"></a>left_anti</h5><blockquote>
+<p>过滤出左集合中 右集合没有的部分，只返回左集合中的rows</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JDK环境切换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-JDK环境切换/" class="post-title-link" itemprop="url">java学习-JDK环境切换</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-10 13:40:50 / 修改时间：13:47:55" itemprop="dateCreated datePublished" datetime="2020-06-10T13:40:50+08:00">2020-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>近期，JDK版本更新十分频繁，如果要想快速切换JDK版本，可以通过linux的alias命令来简单实现：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> mac环境</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> ~/.bash_profile</span><br><span class="line">export JAVA_8_HOME=$(/usr/libexec/java_home -v 1.8)</span><br><span class="line">export JAVA_9_HOME=$(/usr/libexec/java_home -v 9)</span><br><span class="line">export JAVA_10_HOME=$(/usr/libexec/java_home -v 10)</span><br><span class="line">export JAVA_11_HOME=$(/usr/libexec/java_home -v 11)</span><br><span class="line">export JAVA_HOME=$JAVA_8_HOME</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> ~/.zshrc  注意要放到~/.zshrc文件的最下面</span><br><span class="line"><span class="meta">#</span> multi jdk config</span><br><span class="line">alias jdk8="export PATH=$JAVA_8_HOME/bin:$PATH"</span><br><span class="line">alias jdk9="export PATH=$JAVA_9_HOME/bin:$PATH"</span><br><span class="line">alias jdk10="export PATH=$JAVA_10_HOME/bin:$PATH"</span><br><span class="line">alias jdk11="export PATH=$JAVA_11_HOME/bin:$PATH"</span><br></pre></td></tr></table></figure>
+<p>默认环境为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ java -version</span><br><span class="line">java version "1.8.0_144"</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_144-b01)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.144-b01, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>切换jdk9之后</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ jdk9</span><br><span class="line">➜  ~ java -version</span><br><span class="line">java version "9.0.4"</span><br><span class="line">Java(TM) SE Runtime Environment (build 9.0.4+11)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 9.0.4+11, mixed mode)</span><br></pre></td></tr></table></figure>
+<p>这样就可以在当前的terminal session中使用jdk9的新特性了，比如jshell</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM虚拟机栈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-JVM虚拟机栈/" class="post-title-link" itemprop="url">java学习-JVM虚拟机栈</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-09 15:39:37 / 修改时间：15:40:05" itemprop="dateCreated datePublished" datetime="2020-06-09T15:39:37+08:00">2020-06-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM疑问/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-JVM疑问/" class="post-title-link" itemprop="url">java学习-JVM疑问</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-05 17:01:58" itemprop="dateCreated datePublished" datetime="2020-06-05T17:01:58+08:00">2020-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-09 15:36:50" itemprop="dateModified" datetime="2020-06-09T15:36:50+08:00">2020-06-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在学习JVM的内存模型的时候，我有这样一些疑惑：</p>
+<p>1、我们通常只是定义了堆大小(-Xms初始，-Xmx最大)，虚拟机栈大小(-Xss)。<br>但是我发现这并不能计算出一个java进程占用的全部内存大小。<br>以下是我自己理解的(JDK1.8)：<br>java进程占用的内存<br>​    =JVM管理的内存+非JVM管理的内存<br>​    =线程独立的内存+线程共享的内存<br>​    =n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+堆外内存(off-heap:direct memory)<br>其中：<br>​    JVM管理的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)<br>​    非JVM管理的内存：元空间(metaspace)+堆外内存(off-heap:direct memory)<br>​    线程独立的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数<br>​    线程共享的内存：堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+对外内存(off-heap:direct memory)</p>
+<p>2、在JDK1.7及以前，有个永久代(PermGen)，也就是文中说的方法区。这块区域也被称为非堆内存<br>​    那么在JDK1.8及以后，永久代变成了元空间，到了JVM管理之外了，那么JDK1.8及以后的版本中还有非堆内存(non-heap)的说法吗？如果有的话，是指什么呢？</p>
+<p>3、关于线程独立的这块内存\{n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数}，它是完全独立于其他的内存的吗？<br>​    还是会分享堆内存，受到堆内存大小的限制<br>​    还是说Thread对象是建立在堆内存，然后每个Thread对应的虚拟机栈都是独立的吗？ 换句话说，随着Thread的增加(堆内存充足：还能给新的对象分配内存)，java进程占用的内存会越来越大——-我觉得这肯定不对，但是我却无法解释</p>
+<p>4、我做了一些测试(JDK1.8)：<br>​    4.1、指定很小的堆内存，改变虚拟机栈大小<br>​        4.1.1、-Xms2m -Xmx2m -Xss16m 启动java进程，直到递归调用1,016,085深度，会报StackOverflowError<br>​        4.1.2、-Xms2m -Xmx2m -Xss8m 启动java进程，直到递归调用318,031深度，会报StackOverflowError<br>​    4.2、指定很小的堆内存，如-Xms2m -Xmx2m，最终会报OutOfMemoryError</p>
+<p>我谈一下我的理解，首先，新创建的线程对象肯定是放在堆中的；每个线程独立的虚拟机栈，存放了很多的栈帧，每个栈帧实际上存放了局部变量表(和其他三部分)，每个栈帧对应了一个函数调用，在这个线程中执行的每个函数中的变量可能会存放在堆里面，也有可能会直接在栈上分配内存，因为这里有一个逃逸的概念(仅函数内部使用的局部变量直接在栈上分配内存，不会占用堆内存)。</p>
+<p>所以在我的理解里面，如果虚拟机栈是一个完全独立于堆的内存，那么虚拟机栈就不会受到堆内存大小的限制(比如我上面做的实验：当堆内存远小于虚拟机栈大小，最终报的异常仍然是StackOverflowError，而不是OutOfMemoryError)</p>
+<p>所以我才会想到，如果虚拟机栈是一个完全独立于堆的内存，无限的创建线程，每个线程的虚拟机栈如果都无限接近于-Xss分配的最大限度，那么最终会耗尽系统的所有 内存吧</p>
+<p>我又做了一个实验，就是无限的创建线程，然后在调用start()的时候，报了OutOfMemoryError:unable to create new native thread的异常，看来操作系统在这里是对线程数是有限制的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-基本类型和包装类型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -626,343 +1017,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-12-并发框架-Disruptor/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-12-并发框架-Disruptor/" class="post-title-link" itemprop="url">JAVA并发编程-12-并发框架(Disruptor)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:54:59 / 修改时间：11:00:26" itemprop="dateCreated datePublished" datetime="2020-06-03T10:54:59+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-11-响应式编程-RxJava/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-11-响应式编程-RxJava/" class="post-title-link" itemprop="url">JAVA并发编程-11-响应式编程(RxJava)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:53:44 / 修改时间：16:24:11" itemprop="dateCreated datePublished" datetime="2020-06-03T10:53:44+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-10-协程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-10-协程/" class="post-title-link" itemprop="url">JAVA并发编程-10-协程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:53:19 / 修改时间：16:24:17" itemprop="dateCreated datePublished" datetime="2020-06-03T10:53:19+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-9-线程池/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-9-线程池/" class="post-title-link" itemprop="url">JAVA并发编程-9-线程池</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:52:35 / 修改时间：10:59:46" itemprop="dateCreated datePublished" datetime="2020-06-03T10:52:35+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-8-阻塞队列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-8-阻塞队列/" class="post-title-link" itemprop="url">JAVA并发编程-8-阻塞队列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:52:16 / 修改时间：10:59:37" itemprop="dateCreated datePublished" datetime="2020-06-03T10:52:16+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1032,20 +1086,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-count">102</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1125,6 +1179,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

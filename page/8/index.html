@@ -163,6 +163,687 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-事务和隔离级别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Mysql学习-事务和隔离级别/" class="post-title-link" itemprop="url">Mysql学习-事务和隔离级别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-13 01:31:26" itemprop="dateCreated datePublished" datetime="2020-05-13T01:31:26+08:00">2020-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 09:16:15" itemprop="dateModified" datetime="2020-06-25T09:16:15+08:00">2020-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MYSQL事务和隔离级别"><a href="#MYSQL事务和隔离级别" class="headerlink" title="MYSQL事务和隔离级别"></a>MYSQL事务和隔离级别</h1><h2 id="一、事务"><a href="#一、事务" class="headerlink" title="一、事务"></a>一、事务</h2><p>事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:</p>
+<ul>
+<li>原子性（Atomicity）：<strong>事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行</strong>。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部执行失败。回滚可以用日志来实现，日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</li>
+<li>一致性（Consistent）：<strong>在事务开始和完成时，数据都必须保持一致状态</strong>。这意味着所有相关的数据规则都必须应用于事务的修改，以保持数据的完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。 以转账为例子，A向B转账，假设转账之前这两个用户的钱加起来总共是2000，那么A向B转账之后，不管这两个账户怎么转，A用户的钱和B用户的钱加起来的总额还是2000，这个就是事务的一致性。</li>
+<li>隔离性（Isolation）：数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。 <strong>隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离</strong>。即要达到这么一种效果：对于任意两个并发的事务 T1 和 T2，在事务 T1 看来，T2 要么在 T1 开始之前就已经结束，要么在 T1 结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。</li>
+<li>持久性（Durable）：事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。 　可以通过数据库备份和恢复来实现，在系统发生奔溃时，使用备份的数据库进行数据恢复。</li>
+</ul>
+<blockquote>
+<p>MySQL 默认采用<strong>自动提交模式</strong>。也就是说，如果不显式使用 <code>START TRANSACTION</code> 语句来开始一个事务，那么每个查询都会被当做一个事务自动提交。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnms749pj30zo0qggre.jpg" alt="image-20200513111933684"></p>
+<p>这几个特性不是一种平级关系：</p>
+<ul>
+<li>只有满足一致性，事务的执行结果才是正确的。</li>
+<li>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时要只要能满足原子性，就一定能满足一致性。</li>
+<li>在并发的情况下，多个事务并发执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</li>
+<li>事务满足持久化是为了能应对数据库奔溃的情况。</li>
+</ul>
+</blockquote>
+<h2 id="二、并发一致性问题"><a href="#二、并发一致性问题" class="headerlink" title="二、并发一致性问题"></a>二、并发一致性问题</h2><h3 id="1、更新丢失-Lost-Update"><a href="#1、更新丢失-Lost-Update" class="headerlink" title="1、更新丢失(Lost Update)"></a>1、更新丢失(Lost Update)</h3><p><strong>T1 和 T2 两个事务都对一个数据进行修改，T1 先修改，T2 随后修改，T2 的修改覆盖了 T1 的修改</strong>。</p>
+<p>例如，两个程序员修改同一java文件。每程序员独立地更改其副本，然后保存更改后的副本，这样就覆盖了原始文档。最后保存其更改副本的编辑人员覆盖前一个程序员所做的更改。</p>
+<p><strong>如果在一个程序员完成并提交事务之前，另一个程序员不能访问同一文件，则可避免此问题</strong>。 </p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnnepde0j31540u0gqk.jpg" alt="image-20200513112012076"></p>
+<h3 id="2、脏读"><a href="#2、脏读" class="headerlink" title="2、脏读"></a>2、脏读</h3><p>一句话：事务B读取到了事务A已修改但尚未提交的的数据，还在这个数据基础上做了操作。此时，如果A事务回滚<code>Rollback</code>，B读取的数据无效，不符合一致性要求。</p>
+<p>解决办法: 把数据库的事务隔离级别调整到 <code>READ_COMMITTED</code></p>
+<p><strong>T1 修改一个数据，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据</strong>。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqno2ih8oj314s0u044g.jpg" alt="image-20200513112050855"></p>
+<h3 id="3、不可重复读-Non-Repeatable-Reads"><a href="#3、不可重复读-Non-Repeatable-Reads" class="headerlink" title="3、不可重复读(Non-Repeatable Reads)"></a>3、不可重复读(Non-Repeatable Reads)</h3><p>  在一个事务内，多次读同一个数据。在这个事务还没有结束时，另一个事务也访问该同一数据。那么，在第一个事务的两次读数据之间。由于第二个事务的修改，那么第一个事务读到的数据可能不一样，这样就发生了在一个事务内两次读到的数据是不一样的，因此称为不可重复读，即原始读取不可重复。</p>
+<p> <strong>一句话：一个事务范围内两个相同的查询却返回了不同数据</strong>。</p>
+<p>同时操作，事务1分别读取事务2操作时和提交后的数据，读取的记录内容不一致。<strong>不可重复读是指在同一个事务内，两个相同的查询返回了不同的结果</strong>。</p>
+<p>解决办法: 如果只有在修改事务完全提交之后才可以读取数据，则可以避免该问题。把数据库的事务隔离级别调整到<code>REPEATABLE_READ</code></p>
+<p><strong>T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同</strong>。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxkk82wj313l0u0grm.jpg" alt="image-20200513112958117"></p>
+<h3 id="4、幻读"><a href="#4、幻读" class="headerlink" title="4、幻读"></a>4、幻读</h3><p>一个事务T1按相同的查询条件重新读取以前检索过的数据，却发现其他事务T2插入了满足其查询条件的新数据，这种现象就称为“幻读”。（和可重复读类似，但是事务 T2 的数据操作仅仅是插入和删除，不是修改数据，读取的记录数量前后不一致）</p>
+<p>一句话：事务A 读取到了事务B提交的新增数据，不符合隔离性。 </p>
+<p>解决办法: 如果在操作事务完成数据处理之前，任何其他事务都不可以添加新数据，则可避免该问题。把数据库的事务隔离级别调整到 <code>SERIALIZABLE_READ</code>。</p>
+<p>T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxye5ghj31360u0gq5.jpg" alt="image-20200513113020849"></p>
+<h2 id="三、事务隔离级别"><a href="#三、事务隔离级别" class="headerlink" title="三、事务隔离级别"></a>三、事务隔离级别</h2><p>“脏读”、”不可重复读”和”幻读”，其实都是数据库读一致性问题，<strong>必须由数据库提供一定的事务隔离机制来解决</strong>。</p>
+<p> 数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上 “串行化”进行，这显然与“并发”是矛盾的。同时，不同的应用对读一致性和事务隔离程度的要求也是不同的，比如许多应用对“不可重复读”和“幻读”并不敏感，可能更关心数据并发访问的能力。 </p>
+<p>MYSQL常看当前数据库的事务隔离级别：<code>show variables like &#39;tx_isolation&#39;;</code></p>
+<h3 id="1、读未提交-Read-Uncommitted"><a href="#1、读未提交-Read-Uncommitted" class="headerlink" title="1、读未提交 (Read Uncommitted)"></a>1、读未提交 (Read Uncommitted)</h3><p>最低的隔离等级，<strong>允许其他事务看到没有提交的数据</strong>，会导致脏读。</p>
+<h3 id="2、读已提交-Read-Committed"><a href="#2、读已提交-Read-Committed" class="headerlink" title="2、读已提交 (Read Committed)"></a>2、读已提交 (Read Committed)</h3><p><strong>被读取的数据可以被其他事务修改，这样可能导致不可重复读</strong>。<strong>也就是说，事务读取的时候获取读锁，但是在读完之后立即释放(不需要等事务结束)，而写锁则是事务提交之后才释放</strong>，释放读锁之后，就可能被其他事务修改数据。该等级也是 SQL Server 默认的隔离等级。</p>
+<h3 id="3、可重复读-Repeatable-Read"><a href="#3、可重复读-Repeatable-Read" class="headerlink" title="3、可重复读(Repeatable Read)"></a>3、可重复读(Repeatable Read)</h3><p><strong>所有被 Select 获取的数据都不能被修改，这样就可以避免一个事务前后读取数据不一致的情况</strong>。但是却没有办法控制幻读，因为这个时候其他事务不能更改所选的数据，但是可以增加数据，即前一个事务有读锁但是没有范围锁，为什么叫做可重复读等级呢？那是因为该等级解决了下面的不可重复读问题。(引申：现在主流数据库都使用 MVCC 并发控制，使用之后<code>RR</code>（可重复读）隔离级别下是不会出现幻读的现象。)</p>
+<p>MYSQL默认是<code>REPEATABLE-READ</code>。 </p>
+<h3 id="4、串行化-Serializable"><a href="#4、串行化-Serializable" class="headerlink" title="4、串行化(Serializable)"></a>4、串行化(Serializable)</h3><p>所有事务一个接着一个的执行，这样可以避免幻读 (phantom read)，对于基于锁来实现并发控制的数据库来说，串行化要求在执行范围查询的时候，需要获取范围锁，如果不是基于锁实现并发控制的数据库，则检查到有违反串行操作的事务时，需回滚该事务。</p>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><ul>
+<li>读未提交: <strong>一个事务还没提交时，它做的变更就能被别的事务看到</strong>。</li>
+<li>读提交: 一个事务提交<strong>之后</strong>，它做的变更<strong>才</strong>会被其他事务看到。</li>
+<li>可重复读 : <strong>一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的</strong>。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。</li>
+<li>串行化: 顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
+</ul>
+<p>四个级别逐渐增强，每个级别解决一个问题，事务级别越高，性能越差，大多数环境(<code>Read committed</code> 就可以用了)</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读</td>
+<td>最低级别</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>提交读</td>
+<td>语句级</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td>事务级</td>
+<td>×</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>可串行化</td>
+<td>最高级别,事务级</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a href="https://github.com/ZXZxin/ZXBlog" target="_blank" rel="noopener">参考</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-第三范式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Mysql学习-第三范式/" class="post-title-link" itemprop="url">Mysql学习-第三范式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-13 01:19:15" itemprop="dateCreated datePublished" datetime="2020-05-13T01:19:15+08:00">2020-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 09:16:25" itemprop="dateModified" datetime="2020-06-25T09:16:25+08:00">2020-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="第一范式-1NF"><a href="#第一范式-1NF" class="headerlink" title="第一范式(1NF)"></a>第一范式(1NF)</h4><blockquote>
+<p>数据库表的每一列都是不可分割的基本数据项，同一列中不能有多个值，即实体中的某个属性不能有多个值或者不能有重复的属性</p>
+<p>符合1NF的关系中的每个属性都不可再分</p>
+</blockquote>
+<p>有两点要求：</p>
+<ul>
+<li>schema定义：每个属性不可再分，即字段的含义要明确，同一个字段不应该有多于1个的含义<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm6y05xoj314m08c77c.jpg" alt="image-20200513102942067"></li>
+<li>图中的这种schema在RDBMS中是不可能存在的，也就是无法创建的。可以改成如下的schema:</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm8stpcij313w05c412.jpg" alt="image-20200513103132122"></li>
+</ul>
+</li>
+<li>存储的数据：同一列中不能有多个值<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm622kgkj318s0bcgs2.jpg" alt="image-20200513102837775"></li>
+<li>图中的一个字段里面存了多个值，这种情况在RDBMS中是可以存在的，但是该字段是可再分的，应该。可以将数据分成多条存储，如下图</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqmclbtx1j318k0batey.jpg" alt="image-20200513103510685"></li>
+</ul>
+</li>
+</ul>
+<h4 id="第二范式-2NF"><a href="#第二范式-2NF" class="headerlink" title="第二范式(2NF)"></a>第二范式(2NF)</h4><blockquote>
+<p>满足第一范式</p>
+<p>没有部分依赖</p>
+</blockquote>
+<p>在同一个表中，不能存在某些字段依赖一些键，而另一些字段依赖另外一些键</p>
+<p>员工表的一个候选键是{id，mobile，deptNo}，而deptName依赖于deptNo，同样 name 依赖于 id，因此不是 2NF的。为了满足第二范式的条件，需要将这个表拆分成employee、dept、employee_dept、employee_mobile四个表</p>
+<p>不满足2NF的表，可能存在的问题：修改异常、新增异常、删除异常</p>
+<h4 id="第三范式-3NF"><a href="#第三范式-3NF" class="headerlink" title="第三范式(3NF)"></a>第三范式(3NF)</h4><blockquote>
+<p>满足第二范式</p>
+<p>没有传递依赖</p>
+</blockquote>
+<p>在同一个表中，不要存在字段A依赖字段B，同时字段B依赖字段C，推导出来字段A间接依赖字段C的关系。</p>
+<p>员工表的province、city、district依赖于zip，而zip依赖于id，换句话说，province、city、district传递依赖于id，违反了 3NF 规则。为了满足第三范式的条件，可以将这个表拆分成employee和zip两个表</p>
+<p><em>但是这种关系也不是一定不能存在，视具体的业务而定吧</em></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>假设有一个名为<code>employee</code>的员工表，它有九个属性：<code>id</code>(员工编号)、<code>name</code>(员工名称)、<code>mobile</code>(电话)、<code>zip</code>(邮编)、<code>province</code>(省份)、<code>city</code>(城市)、<code>district</code>(区县)、<code>deptNo</code>(所属部门编号)、<code>deptName</code>(所属部门名称)、表总数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>mobile</th>
+<th>zip</th>
+<th>province</th>
+<th>city</th>
+<th>district</th>
+<th>deptNo</th>
+<th>deptName</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>张三</td>
+    <td>13910000001<br>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001<br>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>102</td>
+<td>李四</td>
+<td>13910000003</td>
+<td>200001</td>
+<td>上海</td>
+<td>上海</td>
+<td>静安区</td>
+<td>D3</td>
+<td>部门3</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D4</td>
+<td>部门4</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D5</td>
+<td>部门 5</td>
+</tr>
+</tbody>
+</table>
+
+<p>将上表改成满足第1范式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>mobile</th>
+<th>zip</th>
+<th>province</th>
+<th>city</th>
+<th>district</th>
+<th>deptNo</th>
+<th>deptName</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>102</td>
+<td>李四</td>
+<td>13910000003</td>
+<td>200001</td>
+<td>上海</td>
+<td>上海</td>
+<td>静安区</td>
+<td>D3</td>
+<td>部门3</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D4</td>
+<td>部门4</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D5</td>
+<td>部门5</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="仍存在的问题"><a href="#仍存在的问题" class="headerlink" title="仍存在的问题"></a>仍存在的问题</h6><ol>
+<li><strong>修改异常</strong>：上表中张三、王五都有多条记录，因为他隶属于两个部门。如果我们要修改王五的地址，必修修改两行记录。假如一个部门得到了王五的新地址并进行了更新，而另一个部门没有，那么此时王五在表中会存在两个不同的地址，导致了数据不一致</li>
+<li><strong>新增异常：</strong>假如一个新员工假如公司，他正处于入职培训阶段，还没有被正式分配到某个部门，如果<code>deptNo</code>字段不允许为空，我们就无法向<code>employee</code>表中新增该员工的数据。</li>
+<li><strong>删除异常：</strong>假设公司撤销了D3部门，那么在删除<code>deptNo</code>为D3的行时，会将李四的信息也一并删除。因为他隶属于D3这一部门。</li>
+</ol>
+<p>为了解决上面的问题，我们可以将上述表设计成满足3NF</p>
+<p>在关系数据库模型设计中，一般需要满足第三范式的要求。如果一个表具有良好的主外键设计，就应该是满足3NF的表。规范化带来的好处是通过减少数据冗余提高更新数据的效率，同时保证数据完整性。然而，我们在实际应用中也要防止过度规范化的问题。规范化程度越高，划分的表就越多，在查询数据时越有可能使用表连接操作。而如果连接的表过多，会影响查询性能。关键的问题是要依据业务需求，仔细权衡数据查询和数据更新关系，指定最合适的规范化程度。不要为了遵循严格的规范化规则而修改业务需求。</p>
+<p><a href="https://www.jianshu.com/p/5a8bb84289a9" target="_blank" rel="noopener">参考</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-函数参数传递/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-函数参数传递/" class="post-title-link" itemprop="url">Python学习-函数参数传递</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-19 12:00:49 / 修改时间：12:26:43" itemprop="dateCreated datePublished" datetime="2020-04-19T12:00:49+08:00">2020-04-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在Python(估计也适用于其他的语言)中，函数参数的传递分为两类 值传递和引用传递，实际上这两类传递类型都是属于变量传值，即：</p>
+<blockquote>
+<p>值传递：将实际参数值复制一份传递到函数内，这样在函数内对参数进行修改，就不会影响到原参数</p>
+<p>引用传递：将实际参数的地址直接传递到函数内，那么在函数内对参数所进行的修改，将可能会影响到原参数</p>
+</blockquote>
+<p>要注意的是，在函数内修改参数，实际上又分为两种情况(仅说引用传递)：</p>
+<blockquote>
+<p>1、对参数(a)重新进行赋值操作(a=new_obj)，此时，实际上修改的已经不是传递给函数的最初的参数(a)了，它已经指向了其他的内存地址，这时再修改a，实际上就和之前的对象没有任何关系了</p>
+<p>2、直接对a进行修改，比如说a.name=’sdd’，这时，原始的对象就会发生变化</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-OrderedDict/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-OrderedDict/" class="post-title-link" itemprop="url">Python学习-OrderedDict</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-16 16:50:57" itemprop="dateCreated datePublished" datetime="2020-04-16T16:50:57+08:00">2020-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-01 17:20:30" itemprop="dateModified" datetime="2020-07-01T17:20:30+08:00">2020-07-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> OrderedDict  <span class="comment"># 记录插入顺序的dict，操作方式和dict一样。</span></span><br><span class="line"><span class="comment"># 是基于dict和双端队列实现，可以用来实现LRUcache</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-bisect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-bisect/" class="post-title-link" itemprop="url">Python学习-bisect</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-16 16:47:50" itemprop="dateCreated datePublished" datetime="2020-04-16T16:47:50+08:00">2020-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-01 17:20:11" itemprop="dateModified" datetime="2020-07-01T17:20:11+08:00">2020-07-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p>这个模块对有序列表提供了支持，使得他们可以在插入新数据仍然保持有序。对于长列表，如果其包含元素的比较操作十分昂贵的话，这可以是对更常见方法的改进</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""Bisection algorithms."""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Insert item x in list a, and keep it sorted assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If x is already in a, insert it to the right of the rightmost x.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line">insort = insort_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_right</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Return the index where to insert item x in list a, assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The return value i is such that all e in a[:i] have e &lt;= x, and all e in</span></span><br><span class="line"><span class="string">    a[i:] have e &gt; x.  So if x already appears in the list, a.insert(x) will</span></span><br><span class="line"><span class="string">    insert just after the rightmost x already there.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; a[mid]: hi = mid</span><br><span class="line">        <span class="keyword">else</span>: lo = mid+<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line">bisect = bisect_right   <span class="comment"># backward compatibility</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insort_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Insert item x in list a, and keep it sorted assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    If x is already in a, insert it to the left of the leftmost x.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    a.insert(lo, x)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bisect_left</span><span class="params">(a, x, lo=<span class="number">0</span>, hi=None)</span>:</span></span><br><span class="line">    <span class="string">"""Return the index where to insert item x in list a, assuming a is sorted.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    The return value i is such that all e in a[:i] have e &lt; x, and all e in</span></span><br><span class="line"><span class="string">    a[i:] have e &gt;= x.  So if x already appears in the list, a.insert(x) will</span></span><br><span class="line"><span class="string">    insert just before the leftmost x already there.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Optional args lo (default 0) and hi (default len(a)) bound the</span></span><br><span class="line"><span class="string">    slice of a to be searched.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> lo &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">'lo must be non-negative'</span>)</span><br><span class="line">    <span class="keyword">if</span> hi <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        hi = len(a)</span><br><span class="line">    <span class="keyword">while</span> lo &lt; hi:</span><br><span class="line">        mid = (lo+hi)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span> a[mid] &lt; x: lo = mid+<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>: hi = mid</span><br><span class="line">    <span class="keyword">return</span> lo</span><br><span class="line"></span><br><span class="line"><span class="comment"># Overwrite above definitions with a fast C implementation</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> _bisect <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">except</span> ImportError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据结构与算法学习笔记-查找算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -288,7 +969,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-27 14:38:15" itemprop="dateModified" datetime="2020-03-27T14:38:15+08:00">2020-03-27</time>
+                <time title="修改时间：2020-07-01 17:12:15" itemprop="dateModified" datetime="2020-07-01T17:12:15+08:00">2020-07-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,7 +977,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                  <a href="/categories/Spark应用/" itemprop="url" rel="index"><span itemprop="name">Spark应用</span></a>
                 </span>
             </span>
 
@@ -604,585 +1285,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-Configuration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark学习笔记-Configuration/" class="post-title-link" itemprop="url">Spark学习笔记-Configuration</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-03 17:32:33" itemprop="dateCreated datePublished" datetime="2019-06-03T17:32:33+08:00">2019-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> submit 参数</p>
-<p>运行时可配置参数：在代码中使用spark.conf.set(‘’， ‘’)的方式设置。运行时设置的参数不会在WebUI中显示</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-队列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Python学习-队列/" class="post-title-link" itemprop="url">Python学习-队列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-03 10:10:48" itemprop="dateCreated datePublished" datetime="2019-06-03T10:10:48+08:00">2019-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-11 10:35:59" itemprop="dateModified" datetime="2020-05-11T10:35:59+08:00">2020-05-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue <span class="comment">#LILO队列</span></span><br><span class="line">q = Queue() <span class="comment">#创建队列对象</span></span><br><span class="line">q.put(<span class="number">0</span>)    <span class="comment">#在队列尾部插入元素</span></span><br><span class="line">q.put(<span class="number">1</span>)</span><br><span class="line">q.put(<span class="number">2</span>)</span><br><span class="line">print(<span class="string">'LILO队列'</span>,q.queue)  <span class="comment">#查看队列中的所有元素</span></span><br><span class="line">print(q.get())  <span class="comment">#返回并删除队列头部元素</span></span><br><span class="line">print(q.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue <span class="comment">#LIFO队列</span></span><br><span class="line">lifoQueue = LifoQueue()</span><br><span class="line">lifoQueue.put(<span class="number">1</span>)</span><br><span class="line">lifoQueue.put(<span class="number">2</span>)</span><br><span class="line">lifoQueue.put(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'LIFO队列'</span>,lifoQueue.queue)</span><br><span class="line">lifoQueue.get() <span class="comment">#返回并删除队列尾部元素</span></span><br><span class="line">lifoQueue.get()</span><br><span class="line">print(lifoQueue.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue <span class="comment">#优先队列</span></span><br><span class="line">priorityQueue = PriorityQueue() <span class="comment">#创建优先队列对象</span></span><br><span class="line">priorityQueue.put(<span class="number">3</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">78</span>)   <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">100</span>)  <span class="comment">#插入元素</span></span><br><span class="line">print(priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.put(<span class="number">1</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">2</span>)    <span class="comment">#插入元素</span></span><br><span class="line">print(<span class="string">'优先级队列:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)</span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'全部被删除后:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque   <span class="comment">#双端队列</span></span><br><span class="line">dequeQueue = deque([<span class="string">'Eric'</span>,<span class="string">'John'</span>,<span class="string">'Smith'</span>])</span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.append(<span class="string">'Tom'</span>)    <span class="comment">#在右侧插入新元素</span></span><br><span class="line">dequeQueue.appendleft(<span class="string">'Terry'</span>)  <span class="comment">#在左侧插入新元素</span></span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.rotate(<span class="number">2</span>)    <span class="comment">#循环右移2次</span></span><br><span class="line">print(<span class="string">'循环右移2次后的队列'</span>,dequeQueue)</span><br><span class="line">dequeQueue.popleft()    <span class="comment">#返回并删除队列最左端元素</span></span><br><span class="line">print(<span class="string">'删除最左端元素后的队列：'</span>,dequeQueue)</span><br><span class="line">dequeQueue.pop()    <span class="comment">#返回并删除队列最右端元素</span></span><br><span class="line">print(<span class="string">'删除最右端元素后的队列：'</span>,dequeQueue)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-广播变量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark学习笔记-广播变量/" class="post-title-link" itemprop="url">Spark学习笔记-广播变量</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-28 16:19:03" itemprop="dateCreated datePublished" datetime="2019-05-28T16:19:03+08:00">2019-05-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Shared-Variables"><a href="#Shared-Variables" class="headerlink" title="Shared Variables"></a>Shared Variables</h2><p>通常，当在远程集群节点上执行传递给Spark操作（例如<code>map</code>or <code>reduce</code>）的函数时，它将在函数中使用的所有变量的单独副本上工作。这些变量将复制到每台计算机，并且远程计算机上的变量的更新不会传播回驱动程序。支持跨任务的通用，读写共享变量效率低下。但是，Spark确实为两种常见的使用模式提供了两种有限类型的<em>共享变量</em>：广播变量和累加器。</p>
-<h2 id="Broadcast"><a href="#Broadcast" class="headerlink" title="Broadcast"></a>Broadcast</h2><p>广播变量允许程序员在每台机器上保留一个只读变量，而不是随副本一起发送它的副本。例如，它们可用于以有效的方式为每个节点提供大输入数据集的副本。Spark还尝试使用有效的广播算法来分发广播变量，以降低通信成本。</p>
-<p>Spark动作通过一组阶段执行，由分布式“shuffle”操作分隔。Spark自动广播每个阶段中任务所需的公共数据。以这种方式广播的数据以序列化形式缓存并在运行每个任务之前反序列化。这意味着显式创建广播变量仅在跨多个阶段的任务需要相同数据或以反序列化形式缓存数据很重要时才有用。</p>
-<p>广播变量是<code>v</code>通过调用从变量创建的<code>SparkContext.broadcast(v)</code>。广播变量是一个包装器<code>v</code>，可以通过调用该<code>value</code> 方法来访问它的值。下面的代码显示了这个：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>broadcastVar = sc.broadcast([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">&lt;pyspark.broadcast.Broadcast object at <span class="number">0x102789f10</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>broadcastVar.value</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-<p>创建广播变量后，应该使用它来代替<code>v</code>群集上运行的任何函数中的值，这样<code>v</code>就不会多次传送到节点。此外，在<code>v</code>广播之后不应修改对象 ，以确保所有节点获得相同的广播变量值（例如，如果稍后将变量发送到新节点）。</p>
-<p><a href="https://spark.apache.org/docs/latest/sql-performance-tuning.html" target="_blank" rel="noopener">Performance Tuning</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">== Physical Plan ==</span><br><span class="line">InMemoryTableScan [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_outstanding_amount_ex_dp90#6075]</span><br><span class="line">   +- InMemoryRelation [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_outstanding_amount_ex_dp90#6075], true, 10000, StorageLevel(disk, 1 replicas)</span><br><span class="line">         +- *(34) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, ((coalesce(nanvl(total_disburse_amount#5203, null), 0.0) - cast(coalesce(total_repay_principal_amount#5974, 0) as double)) - coalesce(nanvl(total_write_off_principal#5986, null), 0.0)) AS total_outstanding_amount_ex_dp90#6075]</span><br><span class="line">            +- SortMergeJoin [bill_create_date#4955], [write_off_date#4776], LeftOuter</span><br><span class="line">               :- *(23) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_disburse_amount#5203, total_repay_principal_amount#5974]</span><br><span class="line">               :  +- SortMergeJoin [bill_create_date#4955], [repay_date#5789], LeftOuter</span><br><span class="line">               :     :- *(6) Sort [bill_create_date#4955 ASC NULLS FIRST], false, 0</span><br><span class="line">               :     :  +- Exchange hashpartitioning(bill_create_date#4955, 200)</span><br><span class="line">               :     :     +- *(5) Project [bill_create_date#4955, week_last_day#5015, month_last_day#5075, total_disburse_amount#5203]</span><br><span class="line">               :     :        +- Window [sum(disburse_amount#5197) windowspecdefinition(1, bill_create_date#4955 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_disburse_amount#5203], [1], [bill_create_date#4955 ASC NULLS FIRST]</span><br><span class="line">               :     :           +- *(4) Sort [1 ASC NULLS FIRST, bill_create_date#4955 ASC NULLS FIRST], false, 0</span><br><span class="line">               :     :              +- Exchange hashpartitioning(1, 200)</span><br><span class="line">               :     :                 +- *(3) HashAggregate(keys=[bill_create_date#4955, week_last_day#5015, month_last_day#5075], functions=[sum(cast(principal#615 as double))])</span><br><span class="line">               :     :                    +- Exchange hashpartitioning(bill_create_date#4955, week_last_day#5015, month_last_day#5075, 200)</span><br><span class="line">               :     :                       +- *(2) HashAggregate(keys=[bill_create_date#4955, week_last_day#5015, month_last_day#5075], functions=[partial_sum(cast(principal#615 as double))])</span><br><span class="line">               :     :                          +- *(2) Project [principal#615, cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) AS bill_create_date#4955, next_day(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), Sun) AS week_last_day#5015, last_day(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date)) AS month_last_day#5075]</span><br><span class="line">               :     :                             +- *(2) BroadcastHashJoin [id#392], [loan_id#609], Inner, BuildRight</span><br><span class="line">               :     :                                :- *(2) Project [id#392]</span><br><span class="line">               :     :                                :  +- *(2) Filter (status#397 IN (COMPLETED,CURRENT,LATE) &amp;&amp; isnotnull(id#392))</span><br><span class="line">               :     :                                :     +- *(2) FileScan parquet [id#392,status#397] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [In(status, [COMPLETED,CURRENT,LATE]), IsNotNull(id)], ReadSchema: struct&lt;id:string,status:string&gt;</span><br><span class="line">               :     :                                +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">               :     :                                   +- *(1) Project [loan_id#609, principal#615, create_time#632L]</span><br><span class="line">               :     :                                      +- *(1) Filter ((cast(from_utc_timestamp(cast(from_unixtime(cast((cast(create_time#632L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) &lt;= 18043) &amp;&amp; isnotnull(loan_id#609))</span><br><span class="line">               :     :                                         +- *(1) FileScan parquet [loan_id#609,principal#615,create_time#632L] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(loan_id)], ReadSchema: struct&lt;loan_id:string,principal:string,create_time:bigint&gt;</span><br><span class="line">               :     +- *(22) Sort [repay_date#5789 ASC NULLS FIRST], false, 0</span><br><span class="line">               :        +- Exchange hashpartitioning(repay_date#5789, 200)</span><br><span class="line">               :           +- *(21) Project [repay_date#5789, total_repay_principal_amount#5974]</span><br><span class="line">               :              +- Window [sum(repay_principal_amount#5970) windowspecdefinition(1, repay_date#5789 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_repay_principal_amount#5974], [1], [repay_date#5789 ASC NULLS FIRST]</span><br><span class="line">               :                 +- *(20) Sort [1 ASC NULLS FIRST, repay_date#5789 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                    +- Exchange hashpartitioning(1, 200)</span><br><span class="line">               :                       +- *(19) HashAggregate(keys=[repay_date#5789], functions=[sum(CASE WHEN (isnull(write_off_date#4776) || (write_off_date#4776 &gt; repay_date#5789)) THEN repaid_principal#684 END)])</span><br><span class="line">               :                          +- Exchange hashpartitioning(repay_date#5789, 200)</span><br><span class="line">               :                             +- *(18) HashAggregate(keys=[repay_date#5789], functions=[partial_sum(CASE WHEN (isnull(write_off_date#4776) || (write_off_date#4776 &gt; repay_date#5789)) THEN repaid_principal#684 END)])</span><br><span class="line">               :                                +- *(18) Project [repaid_principal#684, write_off_date#4776, cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) AS repay_date#5789]</span><br><span class="line">               :                                   +- SortMergeJoin [loan_id#609], [loan_id#5672], LeftOuter</span><br><span class="line">               :                                      :- *(12) Sort [loan_id#609 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                                      :  +- Exchange hashpartitioning(loan_id#609, 200)</span><br><span class="line">               :                                      :     +- *(11) Project [loan_id#609, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :        +- *(11) BroadcastHashJoin [id#608], [bill_id#670], Inner, BuildRight</span><br><span class="line">               :                                      :           :- *(11) Project [id#608, loan_id#609]</span><br><span class="line">               :                                      :           :  +- *(11) BroadcastHashJoin [id#392], [loan_id#609], Inner, BuildRight</span><br><span class="line">               :                                      :           :     :- *(11) Project [id#392]</span><br><span class="line">               :                                      :           :     :  +- *(11) Filter (status#397 IN (COMPLETED,CURRENT,LATE) &amp;&amp; isnotnull(id#392))</span><br><span class="line">               :                                      :           :     :     +- *(11) FileScan parquet [id#392,status#397] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [In(status, [COMPLETED,CURRENT,LATE]), IsNotNull(id)], ReadSchema: struct&lt;id:string,status:string&gt;</span><br><span class="line">               :                                      :           :     +- BroadcastExchange HashedRelationBroadcastMode(List(input[1, string, true]))</span><br><span class="line">               :                                      :           :        +- *(7) Project [id#608, loan_id#609]</span><br><span class="line">               :                                      :           :           +- *(7) Filter (isnotnull(loan_id#609) &amp;&amp; isnotnull(id#608))</span><br><span class="line">               :                                      :           :              +- *(7) FileScan parquet [id#608,loan_id#609] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(loan_id), IsNotNull(id)], ReadSchema: struct&lt;id:string,loan_id:string&gt;</span><br><span class="line">               :                                      :           +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">               :                                      :              +- *(10) Project [bill_id#670, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :                 +- *(10) Filter ((isnotnull(rn#5382) &amp;&amp; (rn#5382 = 1)) &amp;&amp; (cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) &lt;= 18043))</span><br><span class="line">               :                                      :                    +- Window [row_number() windowspecdefinition(bill_id#670, repay_time#692 DESC NULLS LAST, specifiedwindowframe(RowFrame, unboundedpreceding$(), currentrow$())) AS rn#5382], [bill_id#670], [repay_time#692 DESC NULLS LAST]</span><br><span class="line">               :                                      :                       +- *(9) Sort [bill_id#670 ASC NULLS FIRST, repay_time#692 DESC NULLS LAST], false, 0</span><br><span class="line">               :                                      :                          +- Exchange hashpartitioning(bill_id#670, 200)</span><br><span class="line">               :                                      :                             +- *(8) Project [bill_id#670, repaid_principal#684, repay_time#692]</span><br><span class="line">               :                                      :                                +- *(8) Filter isnotnull(bill_id#670)</span><br><span class="line">               :                                      :                                   +- *(8) FileScan parquet [bill_id#670,repaid_principal#684,repay_time#692] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [IsNotNull(bill_id)], ReadSchema: struct&lt;bill_id:string,repaid_principal:decimal(20,0),repay_time:timestamp&gt;</span><br><span class="line">               :                                      +- *(17) Sort [loan_id#5672 ASC NULLS FIRST], false, 0</span><br><span class="line">               :                                         +- *(17) HashAggregate(keys=[loan_id#5672], functions=[first(write_off_date#4705, true)])</span><br><span class="line">               :                                            +- *(17) HashAggregate(keys=[loan_id#5672], functions=[partial_first(write_off_date#4705, true)])</span><br><span class="line">               :                                               +- *(17) Project [loan_id#5672, write_off_date#4705]</span><br><span class="line">               :                                                  +- *(17) BroadcastHashJoin [bill_id#4714], [bill_id#670], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :- *(17) Project [loan_id#5672, write_off_date#4705, bill_id#4714]</span><br><span class="line">               :                                                     :  +- *(17) BroadcastHashJoin [loan_id#5672], [loan_id#4718], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :     :- *(17) Project [loan_id#5672, write_off_date#4705]</span><br><span class="line">               :                                                     :     :  +- *(17) BroadcastHashJoin [loan_id#5672], [loan_id#4708], LeftOuter, BuildRight</span><br><span class="line">               :                                                     :     :     :- *(17) HashAggregate(keys=[loan_id#5672], functions=[min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">               :                                                     :     :     :  +- Exchange hashpartitioning(loan_id#5672, 200)</span><br><span class="line">               :                                                     :     :     :     +- *(13) HashAggregate(keys=[loan_id#5672], functions=[partial_min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">               :                                                     :     :     :        +- *(13) Project [loan_id#5672, (CASE WHEN isnotnull(CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END WHEN isnotnull(CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END ELSE 0 END &gt;= 91) AS is_write_off_bill#4594, date_add(cast(due_date#5686 as date), 91) AS write_off_date#4630]</span><br><span class="line">               :                                                     :     :     :           +- *(13) Filter (CASE WHEN isnotnull(CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 = OVERDUE) THEN datediff(18044, cast(due_date#5686 as date)) END WHEN isnotnull(CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END) THEN CASE WHEN (status#5676 IN (REBALANCED,REPAID) &amp;&amp; (cast(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date) as string) &gt; due_date#5686)) THEN datediff(cast(from_utc_timestamp(cast(from_unixtime(cast((cast(repay_time#5694L as double) / 1000.0) as bigint), yyyy-MM-dd HH:mm:ss, Some(UTC)) as timestamp), Asia/Ho_Chi_Minh) as date), cast(due_date#5686 as date)) END ELSE 0 END &gt;= 91)</span><br><span class="line">               :                                                     :     :     :              +- *(13) FileScan parquet [loan_id#5672,status#5676,due_date#5686,repay_time#5694L] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;loan_id:string,status:string,due_date:string,repay_time:bigint&gt;</span><br><span class="line">               :                                                     :     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">               :                                                     :     :        +- *(14) Project [id#392 AS loan_id#4708]</span><br><span class="line">               :                                                     :     :           +- *(14) FileScan parquet [id#392] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string&gt;</span><br><span class="line">               :                                                     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[1, string, true]))</span><br><span class="line">               :                                                     :        +- *(15) Project [id#4717 AS bill_id#4714, loan_id#4718]</span><br><span class="line">               :                                                     :           +- *(15) FileScan parquet [id#4717,loan_id#4718] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,loan_id:string&gt;</span><br><span class="line">               :                                                     +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">               :                                                        +- *(16) FileScan parquet [bill_id#670] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;bill_id:string&gt;</span><br><span class="line">               +- *(33) Sort [write_off_date#4776 ASC NULLS FIRST], false, 0</span><br><span class="line">                  +- Exchange hashpartitioning(write_off_date#4776, 200)</span><br><span class="line">                     +- *(32) Project [write_off_date#4776, total_write_off_principal#5986]</span><br><span class="line">                        +- Window [sum(write_off_principal#5982) windowspecdefinition(1, write_off_date#4776 ASC NULLS FIRST, specifiedwindowframe(RangeFrame, unboundedpreceding$(), currentrow$())) AS total_write_off_principal#5986], [1], [write_off_date#4776 ASC NULLS FIRST]</span><br><span class="line">                           +- *(31) Sort [1 ASC NULLS FIRST, write_off_date#4776 ASC NULLS FIRST], false, 0</span><br><span class="line">                              +- Exchange hashpartitioning(1, 200)</span><br><span class="line">                                 +- *(30) HashAggregate(keys=[write_off_date#4776], functions=[sum(write_off_principal#4779)])</span><br><span class="line">                                    +- Exchange hashpartitioning(write_off_date#4776, 200)</span><br><span class="line">                                       +- *(29) HashAggregate(keys=[write_off_date#4776], functions=[partial_sum(write_off_principal#4779)])</span><br><span class="line">                                          +- SortAggregate(key=[loan_id#609], functions=[first(write_off_date#4705, true), first(amount#398, true), sum(CASE WHEN (isnotnull(repayment_date#4760) &amp;&amp; (repayment_date#4760 &lt; write_off_date#4705)) THEN repaid_principal#684 ELSE 0 END)])</span><br><span class="line">                                             +- SortAggregate(key=[loan_id#609], functions=[partial_first(write_off_date#4705, true), partial_first(amount#398, true), partial_sum(CASE WHEN (isnotnull(repayment_date#4760) &amp;&amp; (repayment_date#4760 &lt; write_off_date#4705)) THEN repaid_principal#684 ELSE 0 END)])</span><br><span class="line">                                                +- *(28) Sort [loan_id#609 ASC NULLS FIRST], false, 0</span><br><span class="line">                                                   +- *(28) Project [loan_id#609, write_off_date#4705, amount#398, repaid_principal#684, cast(from_utc_timestamp(repay_time#692, Asia/Ho_Chi_Minh) as date) AS repayment_date#4760]</span><br><span class="line">                                                      +- *(28) BroadcastHashJoin [bill_id#4714], [bill_id#670], LeftOuter, BuildRight</span><br><span class="line">                                                         :- *(28) Project [loan_id#609, write_off_date#4705, amount#398, bill_id#4714]</span><br><span class="line">                                                         :  +- *(28) BroadcastHashJoin [loan_id#609], [loan_id#4718], LeftOuter, BuildRight</span><br><span class="line">                                                         :     :- *(28) Project [loan_id#609, write_off_date#4705, amount#398]</span><br><span class="line">                                                         :     :  +- *(28) BroadcastHashJoin [loan_id#609], [loan_id#4708], LeftOuter, BuildRight</span><br><span class="line">                                                         :     :     :- *(28) HashAggregate(keys=[loan_id#609], functions=[min(CASE WHEN is_write_off_bill#4594 THEN write_off_date#4630 END)])</span><br><span class="line">                                                         :     :     :  +- ReusedExchange [loan_id#609, min#6101], Exchange hashpartitioning(loan_id#5672, 200)</span><br><span class="line">                                                         :     :     +- BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[0, string, true]))</span><br><span class="line">                                                         :     :        +- *(25) Project [id#392 AS loan_id#4708, amount#398]</span><br><span class="line">                                                         :     :           +- *(25) FileScan parquet [id#392,amount#398] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;id:string,amount:string&gt;</span><br><span class="line">                                                         :     +- ReusedExchange [bill_id#4714, loan_id#4718], BroadcastExchange HashedRelationBroadcastMode(ArrayBuffer(input[1, string, true]))</span><br><span class="line">                                                         +- BroadcastExchange HashedRelationBroadcastMode(List(input[0, string, true]))</span><br><span class="line">                                                            +- *(27) Project [bill_id#670, repay_time#692, repaid_principal#684]</span><br><span class="line">                                                               +- *(27) FileScan parquet [bill_id#670,repaid_principal#684,repay_time#692] Batched: true, Format: Parquet, Location: InMemoryFileIndex[...], PartitionFilters: [], PushedFilters: [], ReadSchema: struct&lt;bill_id:string,repaid_principal:decimal(20,0),repay_time:timestamp&gt;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据结构学习笔记二-算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/数据结构学习笔记二-算法/" class="post-title-link" itemprop="url">数据结构学习笔记二-算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-05-16 17:54:29 / 修改时间：22:39:58" itemprop="dateCreated datePublished" datetime="2019-05-16T17:54:29+08:00">2019-05-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h2><h2 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h2><h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><h2 id="深度和广度优先搜索"><a href="#深度和广度优先搜索" class="headerlink" title="深度和广度优先搜索"></a>深度和广度优先搜索</h2><h2 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h2><h2 id="贪心算法"><a href="#贪心算法" class="headerlink" title="贪心算法"></a>贪心算法</h2><h2 id="分治算法"><a href="#分治算法" class="headerlink" title="分治算法"></a>分治算法</h2><h2 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h2><h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h2 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h2><h2 id="最短路径"><a href="#最短路径" class="headerlink" title="最短路径"></a>最短路径</h2><h2 id="并行算法"><a href="#并行算法" class="headerlink" title="并行算法"></a>并行算法</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-pivot透视图/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark学习笔记-pivot透视图/" class="post-title-link" itemprop="url">Spark学习笔记-pivot透视图</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-09 10:52:07" itemprop="dateCreated datePublished" datetime="2019-05-09T10:52:07+08:00">2019-05-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df = spark.createDataFrame([</span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xm'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xl'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目1'</span>,<span class="number">100</span>, <span class="string">'xp'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目2'</span>,<span class="number">200</span>, <span class="string">'ch'</span>), </span><br><span class="line">    (<span class="string">'2018-01'</span>,<span class="string">'项目3'</span>,<span class="number">300</span>, <span class="string">'xl'</span>),    </span><br><span class="line">    (<span class="string">'2018-02'</span>,<span class="string">'项目1'</span>,<span class="number">1000</span>, <span class="string">'xp'</span>), </span><br><span class="line">    (<span class="string">'2018-02'</span>,<span class="string">'项目2'</span>,<span class="number">2000</span>, <span class="string">'xl'</span>), </span><br><span class="line">    (<span class="string">'2018-03'</span>,<span class="string">'项目x'</span>,<span class="number">999</span>, <span class="string">'xm'</span>)</span><br><span class="line">], [<span class="string">'date'</span>,<span class="string">'project'</span>,<span class="string">'income'</span>, <span class="string">'saler'</span>])</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.toPandas()</span><br></pre></td></tr></table></figure>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>project</th>
-      <th>income</th>
-      <th>saler</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2018-01</td>
-      <td>项目1</td>
-      <td>100</td>
-      <td>xm</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2018-01</td>
-      <td>项目1</td>
-      <td>100</td>
-      <td>xl</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2018-01</td>
-      <td>项目1</td>
-      <td>100</td>
-      <td>xp</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2018-01</td>
-      <td>项目2</td>
-      <td>200</td>
-      <td>ch</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2018-01</td>
-      <td>项目3</td>
-      <td>300</td>
-      <td>xl</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2018-02</td>
-      <td>项目1</td>
-      <td>1000</td>
-      <td>xp</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>2018-02</td>
-      <td>项目2</td>
-      <td>2000</td>
-      <td>xl</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>2018-03</td>
-      <td>项目x</td>
-      <td>999</td>
-      <td>xm</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="pivot"><a href="#pivot" class="headerlink" title="pivot"></a>pivot</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">df_pivot = df.groupBy(<span class="string">'date'</span>).pivot(</span><br><span class="line">    <span class="string">'project'</span>, [<span class="string">'项目1'</span>, <span class="string">'项目2'</span>, <span class="string">'项目3'</span>, <span class="string">'项目x'</span>]</span><br><span class="line">).agg(</span><br><span class="line">    sum(<span class="string">'income'</span>)</span><br><span class="line">).na.fill(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">df_pivot.toPandas()</span><br></pre></td></tr></table></figure>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>项目1</th>
-      <th>项目2</th>
-      <th>项目3</th>
-      <th>项目x</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2018-03</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>999</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2018-02</td>
-      <td>1000</td>
-      <td>2000</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2018-01</td>
-      <td>300</td>
-      <td>200</td>
-      <td>300</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df.groupBy(<span class="string">'project'</span>).pivot(</span><br><span class="line">    <span class="string">'date'</span></span><br><span class="line">).agg(</span><br><span class="line">    sum(<span class="string">'income'</span>)</span><br><span class="line">).na.fill(<span class="number">0</span>).toPandas()</span><br></pre></td></tr></table></figure>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>project</th>
-      <th>2018-01</th>
-      <th>2018-02</th>
-      <th>2018-03</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>项目2</td>
-      <td>200</td>
-      <td>2000</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>项目x</td>
-      <td>0</td>
-      <td>0</td>
-      <td>999</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>项目1</td>
-      <td>300</td>
-      <td>1000</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>项目3</td>
-      <td>300</td>
-      <td>0</td>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-
-
-
-<h3 id="unpivot"><a href="#unpivot" class="headerlink" title="unpivot"></a>unpivot</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df_pivot.selectExpr(<span class="string">"date"</span>, </span><br><span class="line">                    <span class="string">"stack(4, '项目11', `项目1`, '项目22', `项目2`, '项目33', `项目3`, '项目xx', `项目x`) as (`project`,`income`)"</span>)\</span><br><span class="line">            .filter(<span class="string">"income &gt; 0 "</span>)\</span><br><span class="line">            .orderBy([<span class="string">"date"</span>, <span class="string">"project"</span>])\</span><br><span class="line">            .toPandas()</span><br></pre></td></tr></table></figure>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>project</th>
-      <th>income</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2018-01</td>
-      <td>项目11</td>
-      <td>300</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2018-01</td>
-      <td>项目22</td>
-      <td>200</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2018-01</td>
-      <td>项目33</td>
-      <td>300</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2018-02</td>
-      <td>项目11</td>
-      <td>1000</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2018-02</td>
-      <td>项目22</td>
-      <td>2000</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2018-03</td>
-      <td>项目xx</td>
-      <td>999</td>
-    </tr>
-  </tbody>
-</table>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stack(n, expr1, ..., exprk) 将k个[expr1, ..., exprk]拆解成n rows</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1252,20 +1354,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">89</span>
+        <span class="site-state-item-count">102</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
