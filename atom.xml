@@ -113,6 +113,30 @@
   </entry>
   
   <entry>
+    <title>Spark应用-大数据集的处理</title>
+    <link href="https://shang.at/post/Spark%E5%BA%94%E7%94%A8-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E5%A4%84%E7%90%86/"/>
+    <id>https://shang.at/post/Spark应用-大数据集的处理/</id>
+    <published>2020-07-01T09:12:03.000Z</published>
+    <updated>2020-07-04T23:07:03.757Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a><p>rdd.mapPartitions() 脚本</p><p>toLocalIetator() <a href="https://www.waitingforcode.com/apache-spark/collecting-part-data-driver-rdd-tolocaiIterator/read" target="_blank" rel="noopener">https://www.waitingforcode.com/apache-spark/collecting-part-data-driver-rdd-tolocaiIterator/read</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;简介：&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Spark应用" scheme="https://shang.at/categories/Spark%E5%BA%94%E7%94%A8/"/>
+    
+    
+      <category term="Spark大数据集防止driver OOM" scheme="https://shang.at/tags/Spark%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E9%98%B2%E6%AD%A2driver-OOM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Python学习-类的特殊方法</title>
     <link href="https://shang.at/post/Python%E5%AD%A6%E4%B9%A0-%E7%B1%BB%E7%9A%84%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95/"/>
     <id>https://shang.at/post/Python学习-类的特殊方法/</id>
@@ -448,31 +472,6 @@
     
     
       <category term="Hadoop配置详解" scheme="https://shang.at/tags/Hadoop%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shell编程-常用命令</title>
-    <link href="https://shang.at/post/Shell%E7%BC%96%E7%A8%8B-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
-    <id>https://shang.at/post/Shell编程-常用命令/</id>
-    <published>2020-06-23T08:53:17.000Z</published>
-    <updated>2020-06-24T05:12:06.667Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="文本编辑"><a href="#文本编辑" class="headerlink" title="文本编辑"></a>文本编辑</h4><h5 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h5><h5 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h5><h4 id="Linux上的定时器"><a href="#Linux上的定时器" class="headerlink" title="Linux上的定时器"></a>Linux上的定时器</h4><h5 id="cron"><a href="#cron" class="headerlink" title="cron"></a>cron</h5><h4 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h4><h5 id="xargs"><a href="#xargs" class="headerlink" title="xargs"></a>xargs</h5><h5 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h5><h4 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h4><h5 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h5><h5 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h5><h5 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h5><h4 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h4><h5 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h5>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h4 id=&quot;文本编辑&quot;&gt;&lt;a href=&quot;#文本编辑&quot; class=&quot;headerlink&quot; title=&quot;文本编辑&quot;&gt;&lt;/a&gt;文本编辑&lt;/h4&gt;&lt;h5 id=&quot;sed&quot;&gt;&lt;a href=&quot;#sed&quot; class=&quot;headerlink&quot; title=&quot;sed&quot;&gt;&lt;/a&gt;se
-      
-    
-    </summary>
-    
-      <category term="Shell编程" scheme="https://shang.at/categories/Shell%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="常见命令" scheme="https://shang.at/tags/%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4/"/>
     
   </entry>
   

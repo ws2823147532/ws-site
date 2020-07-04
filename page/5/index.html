@@ -163,6 +163,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-常见异常/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-常见异常/" class="post-title-link" itemprop="url">Java学习-常见异常</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-03 17:31:00" itemprop="dateCreated datePublished" datetime="2020-06-03T17:31:00+08:00">2020-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-12 10:06:08" itemprop="dateModified" datetime="2020-06-12T10:06:08+08:00">2020-06-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="StackOverflowError和OutOfMemoryError的区别-JDK1-8"><a href="#StackOverflowError和OutOfMemoryError的区别-JDK1-8" class="headerlink" title="StackOverflowError和OutOfMemoryError的区别(JDK1.8)"></a>StackOverflowError和OutOfMemoryError的区别(JDK1.8)</h5><p>StackOverflowError：Thrown when a stack overflow occurs because an application recurses too deeply.</p>
+<p>OutOfMemoryError：Thrown when the Java Virtual Machine cannot allocate an object because it is out of memory, and no more memory could be made available by the garbage collector.</p>
+<p>从对这两个Error的注释来看，</p>
+<p>由于应用程序递归过深而在堆栈溢出时会抛出StackOverflowError；同一个函数递归调用时，内存不足</p>
+<p>当Java虚拟机由于内存不足而无法分配对象，并且垃圾回收器无法再提供更多内存时，抛出OutOfMemoryError。创建新的对象(包括虚拟机栈：函数调用(也包括递归调用)时创建虚拟机栈)时，内存不足</p>
+<p>在java应用启动的时候，可以通过-Xss来设置虚拟机栈大小，虚拟机栈默认大小为1024k</p>
+<p>在java里，函数的递归调用受到以下几方面的影响：</p>
+<ol>
+<li>虚拟机栈大小：设置的虚拟机栈</li>
+<li>局部变量表大小</li>
+</ol>
+<p><a href="https://blog.csdn.net/chengyun19830206/article/details/78452321" target="_blank" rel="noopener">https://blog.csdn.net/chengyun19830206/article/details/78452321</a></p>
+<p><a href="https://dzone.com/articles/outofmemoryerror-unable-create" target="_blank" rel="noopener">https://dzone.com/articles/outofmemoryerror-unable-create</a></p>
+<p><a href="https://blog.csdn.net/kylinsoong/article/details/16879653" target="_blank" rel="noopener">https://blog.csdn.net/kylinsoong/article/details/16879653</a></p>
+<p><a href="https://www.jianshu.com/p/c09727dc8f92" target="_blank" rel="noopener">https://www.jianshu.com/p/c09727dc8f92</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-12-并发框架-Disruptor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -764,73 +852,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-3-锁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-3-锁/" class="post-title-link" itemprop="url">JAVA并发编程-3-锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:51:06 / 修改时间：10:58:32" itemprop="dateCreated datePublished" datetime="2020-06-03T10:51:06+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -900,7 +921,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -913,7 +934,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">102</span>
+        <span class="site-state-item-count">103</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
