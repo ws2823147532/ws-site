@@ -163,6 +163,711 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Hadoop学习-源码编译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Hadoop学习-源码编译/" class="post-title-link" itemprop="url">Hadoop学习-源码编译</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-23 18:18:16 / 修改时间：18:19:33" itemprop="dateCreated datePublished" datetime="2020-06-23T18:18:16+08:00">2020-06-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop学习/" itemprop="url" rel="index"><span itemprop="name">Hadoop学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Hadoop学习-集群搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Hadoop学习-集群搭建/" class="post-title-link" itemprop="url">Hadoop学习-集群搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-23 18:17:38" itemprop="dateCreated datePublished" datetime="2020-06-23T18:17:38+08:00">2020-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-26 11:45:57" itemprop="dateModified" datetime="2020-06-26T11:45:57+08:00">2020-06-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop学习/" itemprop="url" rel="index"><span itemprop="name">Hadoop学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> hadoop.sh -&gt; /etc/profile.d/</span><br><span class="line">export HADOOP_PREFIX=/root/hadoop</span><br><span class="line">export HADOOP_YARN_HOME=$&#123;HADOOP_PREFIX&#125;</span><br><span class="line">export HADOOP_CONF_DIR=$&#123;HADOOP_PREFIX&#125;/etc/hadoop</span><br><span class="line">export YARN_LOG_DIR=$&#123;HADOOP_YARN_HOME&#125;/logs</span><br><span class="line">export YARN_IDENT_STRING=root</span><br><span class="line">export HADOOP_MAPRED_IDENT_STRING=root</span><br><span class="line">export PATH=$&#123;HADOOP_PREFIX&#125;/bin:$&#123;HADOOP_PREFIX&#125;/sbin:$&#123;PATH&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- core-site.xml -&gt; path_to_hadoop/etc/hadoop/ --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-common/core-default.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://node4:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///root/data/hadoop/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">description</span>&gt;</span>A base for other temporary directories.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- hdfs-site.xml -&gt; path_to_hadoop/etc/hadoop/ --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///root/data/hadoop/namenode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///root/data/hadoop/datanode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- config secondary namenode --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>node3:50090<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- enable webhdfs --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.webhdfs.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- disable permissions; only for development, of course --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.handler.count<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>5<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.handler.count<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>5<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- yarn-site.xml -&gt; path_to_hadoop/etc/hadoop/ --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- https://hadoop.apache.org/docs/r2.7.3/hadoop-yarn/hadoop-yarn-common/yarn-default.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- enable log aggregation, this is false by default --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log-aggregation-enable<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>node4<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.timeline-service.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>node4<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- mapred-site.xml -&gt; path_to_hadoop/etc/hadoop/ --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- https://hadoop.apache.org/docs/r2.7.3/hadoop-mapreduce-client/hadoop-mapreduce-client-core/mapred-default.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.jobhistory.webapp.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>node3:19888<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h2><p>Step1. 第一次启动HDFS，需要格式化一下hdfs</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span>HADOOP_PREFIX/bin/hdfs namenode -format &lt;cluster-name&gt;</span><br></pre></td></tr></table></figure>
+<p>Step2. 启动</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">start-dfs</span>.sh</span><br><span class="line"><span class="built_in">start-yarn</span>.sh</span><br><span class="line">yarn<span class="literal">-daemon</span>.sh start proxyserver</span><br><span class="line">mr<span class="literal">-jobhistory</span><span class="literal">-daemon</span>.sh start historyserver</span><br></pre></td></tr></table></figure>
+<h2 id="停止流程"><a href="#停止流程" class="headerlink" title="停止流程"></a>停止流程</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">stop-dfs.sh</span><br><span class="line">stop-yarn.sh</span><br><span class="line">yarn-daemon.sh stop proxyserver</span><br><span class="line">mr-jobhistory-daemon.sh stop historyserver</span><br></pre></td></tr></table></figure>
+<h2 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h2><p>Once the Hadoop cluster is up and running check the web-ui of the components as described below:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Daemon</th>
+<th style="text-align:left">Web Interface</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">NameNode</td>
+<td style="text-align:left"><a href="http://nn_host:port/" target="_blank" rel="noopener">http://nn_host:port/</a></td>
+<td style="text-align:left">Default HTTP port is 50070.</td>
+</tr>
+<tr>
+<td style="text-align:left">SecondaryNameNode</td>
+<td style="text-align:left"><a href="http://nn_host:port/" target="_blank" rel="noopener">http://nn_host:port/</a></td>
+<td style="text-align:left">Default HTTP port is 50090.</td>
+</tr>
+<tr>
+<td style="text-align:left">ResourceManager</td>
+<td style="text-align:left"><a href="http://rm_host:port/" target="_blank" rel="noopener">http://rm_host:port/</a></td>
+<td style="text-align:left">Default HTTP port is 8088.</td>
+</tr>
+<tr>
+<td style="text-align:left">YarnWebProxy</td>
+<td style="text-align:left"><a href="http://proxy_host:port/" target="_blank" rel="noopener">http://proxy_host:port/</a></td>
+<td style="text-align:left">no Default HTTP port. 需要自定义</td>
+</tr>
+<tr>
+<td style="text-align:left">MapReduce JobHistory Server</td>
+<td style="text-align:left"><a href="http://jhs_host:port/" target="_blank" rel="noopener">http://jhs_host:port/</a></td>
+<td style="text-align:left">Default HTTP port is 19888.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Hadoop学习-配置详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Hadoop学习-配置详解/" class="post-title-link" itemprop="url">Hadoop学习-配置详解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-23 17:12:52" itemprop="dateCreated datePublished" datetime="2020-06-23T17:12:52+08:00">2020-06-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-26 10:48:44" itemprop="dateModified" datetime="2020-06-26T10:48:44+08:00">2020-06-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop学习/" itemprop="url" rel="index"><span itemprop="name">Hadoop学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>版本：<a href="https://hadoop.apache.org/docs/r2.7.3/" target="_blank" rel="noopener">2.7.3</a></p>
+<h3 id="core-default-xml"><a href="#core-default-xml" class="headerlink" title="core-default.xml"></a>core-default.xml</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fs.defaultFS</code></td>
+<td><code>file:///</code></td>
+<td>定义<code>namenode</code>的URI，改成<code>hdfs://host:port/</code></td>
+</tr>
+<tr>
+<td><code>hadoop.tmp.dir</code></td>
+<td><code>/tmp/hadoop-${user.name}</code></td>
+<td>定义其他临时目录的根目录</td>
+</tr>
+<tr>
+<td><code>io.file.buffer.size</code></td>
+<td><code>4096</code></td>
+<td>读写文件操作时的缓存字节数，必须是硬件上的内存页大小的整数倍</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="hdfs-default-xml"><a href="#hdfs-default-xml" class="headerlink" title="hdfs-default.xml"></a>hdfs-default.xml</h3><h4 id="namenode"><a href="#namenode" class="headerlink" title="namenode"></a>namenode</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.namenode.http(s)-address</code></td>
+<td><code>0.0.0.0:50070(50470)</code></td>
+<td>配置<code>dfs</code>的<code>web ui</code>界面，不建议修改。可以通过<code>http://namenode_hostname:50070</code>访问</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.name.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/name</code></td>
+<td>配置<code>DFS namenode</code>的<code>fsimage</code>文件存放在本次文件系统的路径。如果配置了使用逗号分隔的多个路径，那么namemode会在每个目录下面都冗余的存放一份。</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.edits.dir</code></td>
+<td><code>dfs.namenode.name.dir</code></td>
+<td>配置<code>DFS namenode</code>的<code>edits</code>文件存放在本次文件系统的路径。如果配置了使用逗号分隔的多个路径，那么namemode会在每个目录下面都冗余的存放一份。</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.fs-limits.min-block-size</code></td>
+<td><code>1048576</code>  <code>1m</code></td>
+<td>最小块大小（以字节为单位），由Namenode在创建时强制执行。这样可以防止意外创建具有很小块大小（因此有很多块）的文件，这会降低性能。减少数据块的数量，</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.handler.count</code></td>
+<td><code>10</code></td>
+<td>namenode端服务的线程数，测试时可以配置的小一些，减少内存占用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="datanode"><a href="#datanode" class="headerlink" title="datanode"></a>datanode</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.datanode.data.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/data</code></td>
+<td>文件块的在<code>local filesystem</code>中的存放路径。如果提供的是逗号分隔的目录列表，那么数据将会存储在所有的目录中，(通常目录列表是在不同的设备上)。目录应该被相应的存储类型所标记(HDFS上有四种存储设备：SSD、DISK、ARCHIVE、RAM_DISK)，如果没有指定，默认是DISK。如果目录不存在，那么会自动创建(需要获取目录权限)</td>
+</tr>
+<tr>
+<td><code>dfs.datanode.handler.count</code></td>
+<td><code>10</code></td>
+<td>namenode端服务的线程数，测试时可以配置的小一些，减少内存占用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="secondary-namenode"><a href="#secondary-namenode" class="headerlink" title="secondary namenode"></a>secondary namenode</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.namenode.secondary.http(s)-address</code></td>
+<td><code>0.0.0.0:50090(50091)</code></td>
+<td>配置<code>secondary namenode</code>的http server和端口</td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.dir</code></td>
+<td><code>file://${hadoop.tmp.dir}/dfs/namesecondary</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.edits.dir</code></td>
+<td><code>${dfs.namenode.checkpoint.dir}</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.period</code></td>
+<td><code>3600</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.txns</code></td>
+<td><code>1000000</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.check.period</code></td>
+<td><code>60</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.checkpoint.max-retries</code></td>
+<td><code>3</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>dfs.namenode.num.checkpoints.retained</code></td>
+<td><code>2</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="dfs"><a href="#dfs" class="headerlink" title="dfs"></a>dfs</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default value</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dfs.permissions.enabled</code></td>
+<td><code>true</code></td>
+<td>配置是否启用权限检查，默认是启用的。测试时可以设置为false。当开启状态时，dfs不会检测文件的权限检测。<a href="https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-hdfs/HdfsPermissionsGuide.html" target="_blank" rel="noopener">HDFS Permission</a>HDFS默认启动namenode的user为superuser，这个</td>
+</tr>
+<tr>
+<td><code>dfs.blocksize</code></td>
+<td><code>134217728</code>  <code>128m</code></td>
+<td>单位字节，新文件的block 大小</td>
+</tr>
+<tr>
+<td><code>dfs.hosts</code> / <code>dfs.hosts.exclude</code></td>
+<td></td>
+<td>List of permitted/excluded DataNodes.If necessary, use these files to control the list of allowable datanodes.</td>
+</tr>
+<tr>
+<td><code>dfs.replication</code></td>
+<td><code>3</code></td>
+<td>块副本数</td>
+</tr>
+<tr>
+<td><code>dfs.webhdfs.enabled</code></td>
+<td><code>true</code></td>
+<td>启动namenode和datanode上的WebHHDFS(REST API)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="mapred-default-xml"><a href="#mapred-default-xml" class="headerlink" title="mapred-default.xml"></a>mapred-default.xml</h3><h4 id="MapReduce-Applications"><a href="#MapReduce-Applications" class="headerlink" title="MapReduce Applications"></a>MapReduce Applications</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>mapreduce.framework.name</code></td>
+<td style="text-align:left"><code>yarn</code></td>
+<td style="text-align:left">Execution framework set to Hadoop YARN.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.map.memory.mb</code></td>
+<td style="text-align:left"><code>1536</code></td>
+<td style="text-align:left">Larger resource limit for maps.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.map.java.opts</code></td>
+<td style="text-align:left"><code>-Xmx1024M</code></td>
+<td style="text-align:left">Larger heap-size for child jvms of maps.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.memory.mb</code></td>
+<td style="text-align:left"><code>3072</code></td>
+<td style="text-align:left">Larger resource limit for reduces.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.java.opts</code></td>
+<td style="text-align:left"><code>-Xmx2560M</code></td>
+<td style="text-align:left">Larger heap-size for child jvms of reduces.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.task.io.sort.mb</code></td>
+<td style="text-align:left"><code>100</code></td>
+<td style="text-align:left">Higher memory-limit while sorting data for efficiency.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.task.io.sort.factor</code></td>
+<td style="text-align:left"><code>10</code></td>
+<td style="text-align:left">More streams merged at once while sorting files.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.reduce.shuffle.parallelcopies</code></td>
+<td style="text-align:left"><code>5</code></td>
+<td style="text-align:left">Higher number of parallel copies run by reduces to fetch outputs from very large number of maps.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="MapReduce-JobHistory-Server"><a href="#MapReduce-JobHistory-Server" class="headerlink" title="MapReduce JobHistory Server"></a>MapReduce JobHistory Server</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.address</code></td>
+<td style="text-align:left"><code>0.0.0.0:10020</code></td>
+<td style="text-align:left">MapReduce JobHistory Server IPC host:port</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.webapp.address</code></td>
+<td style="text-align:left"><code>0.0.0.0:19888</code></td>
+<td style="text-align:left">MapReduce JobHistory Server Web UI host:port</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.app.mapreduce.am.staging-dir</code></td>
+<td style="text-align:left"><code>/tmp/hadoop-yarn/staging</code></td>
+<td style="text-align:left">The staging dir used while submitting jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.intermediate-done-dir</code></td>
+<td style="text-align:left"><code>${yarn.app.mapreduce.am.staging-dir}/history/done_intermediate</code></td>
+<td style="text-align:left">Directory where history files are written by MapReduce jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>mapreduce.jobhistory.done-dir</code></td>
+<td style="text-align:left"><code>${yarn.app.mapreduce.am.staging-dir}/history/done</code></td>
+<td style="text-align:left">Directory where history files are managed by the MR JobHistory Server.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="yarn-default-xml"><a href="#yarn-default-xml" class="headerlink" title="yarn-default.xml"></a>yarn-default.xml</h3><h4 id="ResourceManager-and-NodeManager"><a href="#ResourceManager-and-NodeManager" class="headerlink" title="ResourceManager and NodeManager"></a>ResourceManager and NodeManager</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.acl.enable</code></td>
+<td style="text-align:left"><code>false</code></td>
+<td style="text-align:left">是否开启ACLs</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.admin.acl</code></td>
+<td style="text-align:left"><code>*</code></td>
+<td style="text-align:left">ACL to set admins on the cluster. ACLs are of for <em>comma-separated-usersspacecomma-separated-groups</em>. Defaults to special value of <strong>*</strong> which means <em>anyone</em>. Special value of just <em>space</em> means no one has access.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation-enable</code></td>
+<td style="text-align:left"><code>false</code></td>
+<td style="text-align:left">是否启动日志聚合。日志聚合会收集每个container的日志并且在应用完成后将他们移动到HDFS中。具体目录由下面两个选项配置<code>yarn.nodemanager.remote-app-log-dir</code>和<code>yarn.nodemanager.remote-app-log-dir-suffix</code>。用户可以通过<code>Application Timeline Server</code>访问这些日志文件</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8032</code></td>
+<td style="text-align:left">配置RM的URI<br>for clients to submit jobs.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.scheduler.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8030</code></td>
+<td style="text-align:left">资源调度器URI<br>for ApplicationMasters to talk to Scheduler to obtain resources.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.resource-tracker.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8031</code></td>
+<td style="text-align:left">for NodeManagers.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.admin.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8033</code></td>
+<td style="text-align:left">for administrative commands.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.webapp.address</code></td>
+<td style="text-align:left"><code>${yarn.resourcemanager.hostname}:8088</code></td>
+<td style="text-align:left">RM web application</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.hostname</code></td>
+<td style="text-align:left"><code>0.0.0.0</code></td>
+<td style="text-align:left"><code>ResourceManager</code> host.应该改成特定的hostname</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.web-proxy.address</code></td>
+<td style="text-align:left">默认没有配置，会作为RM的一部分运行</td>
+<td style="text-align:left">The address for the web proxy as HOST:PORT, if this is not given then the proxy will run as part of the RM</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.scheduler.class</code></td>
+<td style="text-align:left"><code>org.apache.hadoop.yarn.server.resourcemanager.&lt;br /&gt;scheduler.capacity.CapacityScheduler</code></td>
+<td style="text-align:left">指定RM使用的调度器：<code>CapacityScheduler</code> (recommended), <code>FairScheduler</code> (also recommended), or <code>FifoScheduler</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.scheduler.minimum-allocation-mb</code></td>
+<td style="text-align:left"><code>1024</code></td>
+<td style="text-align:left">In MBs，Minimum limit of memory to allocate to each container request at the <code>ResourceManager</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.scheduler.maximum-allocation-mb</code></td>
+<td style="text-align:left"><code>8192</code></td>
+<td style="text-align:left">In MBs，Maximum limit of memory to allocate to each container request at the <code>Resource Manager</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.resourcemanager.nodes.include-path</code> / <code>yarn.resourcemanager.nodes.exclude-path</code></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">List of permitted/excluded NodeManagers.If necessary, use these files to control the list of allowable NodeManagers.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="NodeManager"><a href="#NodeManager" class="headerlink" title="NodeManager"></a>NodeManager</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.resource.memory-mb</code></td>
+<td style="text-align:left"><code>8192</code></td>
+<td style="text-align:left">Resource i.e. available physical memory, in MB, for given <code>NodeManager</code>.Defines total available resources on the <code>NodeManager</code> to be made available to running containers</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.vmem-pmem-ratio</code></td>
+<td style="text-align:left"><code>2.1</code><br>Maximum ratio by which virtual memory usage of tasks may exceed physical memory</td>
+<td style="text-align:left">The virtual memory usage of each task may exceed its physical memory limit by this ratio. The total amount of virtual memory used by tasks on the NodeManager may exceed its physical memory usage by this ratio.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.local-dirs</code></td>
+<td style="text-align:left"><code>${hadoop.tmp.dir}/nm-local-dir</code><br>Comma-separated list of paths on the local filesystem where intermediate data is written.</td>
+<td style="text-align:left">Multiple paths help spread disk i/o.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.log-dirs</code></td>
+<td style="text-align:left"><code>${yarn.log.dir}/userlogs</code><br>Comma-separated list of paths on the local filesystem where logs are written.</td>
+<td style="text-align:left">Multiple paths help spread disk i/o.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.log.retain-seconds</code></td>
+<td style="text-align:left"><em>10800</em></td>
+<td style="text-align:left">Default time (in seconds) to retain log files on the NodeManager. Only applicable if log-aggregation is disabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.remote-app-log-dir</code></td>
+<td style="text-align:left"><code>/tmp/logs</code></td>
+<td style="text-align:left">HDFS directory where the application logs are moved on application completion. Need to set appropriate permissions. Only applicable if log-aggregation is enabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.remote-app-log-dir-suffix</code></td>
+<td style="text-align:left"><code>logs</code></td>
+<td style="text-align:left">Suffix appended to the remote log dir. Logs will be aggregated to <code>${yarn.nodemanager.remote-app-log-dir}/${user}/${thisParam}</code> Only applicable if log-aggregation is enabled.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.nodemanager.aux-services</code></td>
+<td style="text-align:left"><code>mapreduce_shuffle</code></td>
+<td style="text-align:left">Shuffle service that needs to be set for Map Reduce applications.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="History-Server-Needs-to-be-moved-elsewhere"><a href="#History-Server-Needs-to-be-moved-elsewhere" class="headerlink" title="History Server (Needs to be moved elsewhere)"></a>History Server (Needs to be moved elsewhere)</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Parameter</th>
+<th style="text-align:left">default Value</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation.retain-seconds</code></td>
+<td style="text-align:left"><code>-1</code></td>
+<td style="text-align:left">How long to keep aggregation logs before deleting them. -1 disables. Be careful, set this too small and you will spam the name node.</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>yarn.log-aggregation.retain-check-interval-seconds</code></td>
+<td style="text-align:left"><code>-1</code></td>
+<td style="text-align:left">Time between checks for aggregated log retention. If set to 0 or a negative value then the value is computed as one-tenth of the aggregated log retention time. Be careful, set this too small and you will spam the name node.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Shell编程-常用命令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -922,244 +1627,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/大数据-知识点/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/大数据-知识点/" class="post-title-link" itemprop="url">大数据-知识点</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-20 10:46:39" itemprop="dateCreated datePublished" datetime="2020-06-20T10:46:39+08:00">2020-06-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-22 18:30:39" itemprop="dateModified" datetime="2020-06-22T18:30:39+08:00">2020-06-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/大数据生态/" itemprop="url" rel="index"><span itemprop="name">大数据生态</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><a href>生态管理员-Zookeeper</a></li>
-<li><a href>节点通信-RPC</a></li>
-<li><p><a href>Hadoop</a></p>
-<ul>
-<li><a href>数据存储-HDFS</a></li>
-<li><a href>资源管理-YARN</a></li>
-<li><a href>任务调度-AppMaster：所有第三方的应用可以实现AppMaster，即可将任务跑在YARN上</a></li>
-</ul>
-</li>
-<li><p><a href>数据采集-Flume</a></p>
-</li>
-<li><a href="/post/大数据-消息队列-数据采集-Kafka">消息队列-数据采集-Kafka</a></li>
-<li><a href>数仓-Hive</a></li>
-<li><a href>数据存储-HBase</a></li>
-<li><a href>流批一体-Spark</a></li>
-<li><a href>流批一体-Flink</a></li>
-<li><a href>机器学习-Spark mlib</a></li>
-<li><a href>机器学习-FlinkML</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-底层知识总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-底层知识总结/" class="post-title-link" itemprop="url">java学习-底层知识总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-13 08:20:45 / 修改时间：10:18:33" itemprop="dateCreated datePublished" datetime="2020-06-13T08:20:45+08:00">2020-06-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><p>JVM：Java Virtual Machine</p>
-<p>JMM：Java Memory Model</p>
-<h2 id="1：JVM基础知识"><a href="#1：JVM基础知识" class="headerlink" title="1：JVM基础知识"></a>1：JVM基础知识</h2><ol>
-<li>什么是JVM</li>
-<li>常见的JVM</li>
-</ol>
-<h2 id="2：ClassFileFormat"><a href="#2：ClassFileFormat" class="headerlink" title="2：ClassFileFormat"></a>2：ClassFileFormat</h2><h2 id="3：类编译-加载-初始化"><a href="#3：类编译-加载-初始化" class="headerlink" title="3：类编译-加载-初始化"></a>3：类编译-加载-初始化</h2><p>hashcode<br>锁的信息（2位 四种组合）<br>GC信息（年龄）<br>如果是数组，数组的长度</p>
-<h2 id="4：JMM"><a href="#4：JMM" class="headerlink" title="4：JMM"></a>4：JMM</h2><p>new Cat()<br>pointer -&gt; Cat.class<br>寻找方法的信息</p>
-<h2 id="5：对象"><a href="#5：对象" class="headerlink" title="5：对象"></a>5：对象</h2><p>1：句柄池 （指针池）间接指针，节省内存<br>2：直接指针，访问速度快</p>
-<h2 id="6：GC基础知识"><a href="#6：GC基础知识" class="headerlink" title="6：GC基础知识"></a>6：GC基础知识</h2><p>栈上分配<br>TLAB（Thread Local Allocation Buffer）<br>Old<br>Eden<br>老不死 - &gt; Old</p>
-<h2 id="7：GC常用垃圾回收器"><a href="#7：GC常用垃圾回收器" class="headerlink" title="7：GC常用垃圾回收器"></a>7：GC常用垃圾回收器</h2><p>new Object()<br>markword          8个字节<br>类型指针           8个字节<br>实例变量           0<br>补齐                  0<br>16字节（压缩 非压缩）<br>Object o<br>8个字节<br>JVM参数指定压缩或非压缩</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-class文件格式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-class文件格式/" class="post-title-link" itemprop="url">java学习-class文件格式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-13 08:12:38 / 修改时间：08:18:59" itemprop="dateCreated datePublished" datetime="2020-06-13T08:12:38+08:00">2020-06-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1229,7 +1696,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1242,7 +1709,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">103</span>
+        <span class="site-state-item-count">106</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
