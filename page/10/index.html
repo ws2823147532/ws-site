@@ -163,6 +163,236 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-时间处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-时间处理/" class="post-title-link" itemprop="url">Python学习-时间处理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-06 16:37:46" itemprop="dateCreated datePublished" datetime="2019-06-06T16:37:46+08:00">2019-06-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>关于时间戳的几个概念<br>时间戳，根据1970年1月1日00:00:00开始按秒计算的偏移量。<br>时间元组（struct_time），包含9个元素。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.struct_time(tm_year=<span class="number">2017</span>, tm_mon=<span class="number">10</span>, tm_mday=<span class="number">1</span>, tm_hour=<span class="number">14</span>, tm_min=<span class="number">21</span>, tm_sec=<span class="number">57</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">274</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>时间格式字符串，字符串形式的时间。<br>time模块与时间戳和时间相关的重要函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">time.time() <span class="comment"># 生成当前的时间戳，格式为10位整数的浮点数。</span></span><br><span class="line">time.strftime() <span class="comment"># 根据时间元组生成时间格式化字符串。</span></span><br><span class="line">time.strptime() <span class="comment"># 根据时间格式化字符串生成时间元组。time.strptime()与time.strftime()为互操作。</span></span><br><span class="line">time.localtime() <span class="comment"># 根据时间戳生成当前时区的时间元组。</span></span><br><span class="line">time.mktime() <span class="comment"># 根据时间元组生成时间戳。</span></span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">##生成当前时间的时间戳，只有一个参数即时间戳的位数，默认为10位，输入位数即生成相应位数的时间戳，比如可以生成常用的13位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_timestamp</span><span class="params">(digits = <span class="number">10</span>)</span>:</span></span><br><span class="line">    time_stamp = time.time()</span><br><span class="line">    digits = <span class="number">10</span> ** (digits <span class="number">-10</span>)</span><br><span class="line">    time_stamp = int(round(time_stamp*digits))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间戳规范为10位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_timestamp10</span><span class="params">(time_stamp)</span>:</span></span><br><span class="line">    time_stamp = int (time_stamp* (<span class="number">10</span> ** (<span class="number">10</span>-len(str(time_stamp)))))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将当前时间转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_date</span><span class="params">(format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_stamp = int(time.time())</span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将10位时间戳转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_date</span><span class="params">(time_stamp, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间字符串转换为10位时间戳，时间字符串默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_to_timestamp</span><span class="params">(date, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.strptime(date, format_string)</span><br><span class="line">    time_stamp = int(time.mktime(time_array))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##不同时间格式字符串的转换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_style_transfomation</span><span class="params">(date, format_string1=<span class="string">"%Y-%m-%d %H:%M:%S"</span>,format_string2=<span class="string">"%Y-%m-%d %H-%M-%S"</span>)</span>:</span></span><br><span class="line">    time_array  = time.strptime(date, format_string1)</span><br><span class="line">    str_date = time.strftime(format_string2, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line">print(now_to_date())</span><br><span class="line">print(timestamp_to_date(<span class="number">1506816572</span>))</span><br><span class="line">print(date_to_timestamp(<span class="string">'2017-10-01 08:09:32'</span>))</span><br><span class="line">print(timestamp_to_timestamp10(<span class="number">1506816572546</span>))</span><br><span class="line">print(date_style_transfomation(<span class="string">'2017-10-01 08:09:32'</span>))</span><br></pre></td></tr></table></figure>
+<p>结果为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1506836224000</span><br><span class="line">2017-10-01 13:37:04</span><br><span class="line">2017-10-01 08:09:32</span><br><span class="line">1506816572</span><br><span class="line">1506816572</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-Configuration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Spark学习笔记-Configuration/" class="post-title-link" itemprop="url">Spark学习笔记-Configuration</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-03 17:32:33" itemprop="dateCreated datePublished" datetime="2019-06-03T17:32:33+08:00">2019-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-01 17:10:09" itemprop="dateModified" datetime="2020-07-01T17:10:09+08:00">2020-07-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark学习/" itemprop="url" rel="index"><span itemprop="name">Spark学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p> submit 参数</p>
+<p>运行时可配置参数：在代码中使用spark.conf.set(‘’， ‘’)的方式设置。运行时设置的参数不会在WebUI中显示</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-队列/" class="post-title-link" itemprop="url">Python学习-队列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-03 10:10:48" itemprop="dateCreated datePublished" datetime="2019-06-03T10:10:48+08:00">2019-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-01 17:21:20" itemprop="dateModified" datetime="2020-07-01T17:21:20+08:00">2020-07-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue <span class="comment">#LILO队列</span></span><br><span class="line">q = Queue() <span class="comment">#创建队列对象</span></span><br><span class="line">q.put(<span class="number">0</span>)    <span class="comment">#在队列尾部插入元素</span></span><br><span class="line">q.put(<span class="number">1</span>)</span><br><span class="line">q.put(<span class="number">2</span>)</span><br><span class="line">print(<span class="string">'LILO队列'</span>,q.queue)  <span class="comment">#查看队列中的所有元素</span></span><br><span class="line">print(q.get())  <span class="comment">#返回并删除队列头部元素</span></span><br><span class="line">print(q.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue <span class="comment">#LIFO队列</span></span><br><span class="line">lifoQueue = LifoQueue()</span><br><span class="line">lifoQueue.put(<span class="number">1</span>)</span><br><span class="line">lifoQueue.put(<span class="number">2</span>)</span><br><span class="line">lifoQueue.put(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'LIFO队列'</span>,lifoQueue.queue)</span><br><span class="line">lifoQueue.get() <span class="comment">#返回并删除队列尾部元素</span></span><br><span class="line">lifoQueue.get()</span><br><span class="line">print(lifoQueue.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue <span class="comment">#优先队列</span></span><br><span class="line">priorityQueue = PriorityQueue() <span class="comment">#创建优先队列对象</span></span><br><span class="line">priorityQueue.put(<span class="number">3</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">78</span>)   <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">100</span>)  <span class="comment">#插入元素</span></span><br><span class="line">print(priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.put(<span class="number">1</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">2</span>)    <span class="comment">#插入元素</span></span><br><span class="line">print(<span class="string">'优先级队列:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)</span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'全部被删除后:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque   <span class="comment">#双端队列</span></span><br><span class="line">dequeQueue = deque([<span class="string">'Eric'</span>,<span class="string">'John'</span>,<span class="string">'Smith'</span>])</span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.append(<span class="string">'Tom'</span>)    <span class="comment">#在右侧插入新元素</span></span><br><span class="line">dequeQueue.appendleft(<span class="string">'Terry'</span>)  <span class="comment">#在左侧插入新元素</span></span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.rotate(<span class="number">2</span>)    <span class="comment">#循环右移2次</span></span><br><span class="line">print(<span class="string">'循环右移2次后的队列'</span>,dequeQueue)</span><br><span class="line">dequeQueue.popleft()    <span class="comment">#返回并删除队列最左端元素</span></span><br><span class="line">print(<span class="string">'删除最左端元素后的队列：'</span>,dequeQueue)</span><br><span class="line">dequeQueue.pop()    <span class="comment">#返回并删除队列最右端元素</span></span><br><span class="line">print(<span class="string">'删除最右端元素后的队列：'</span>,dequeQueue)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-广播变量/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -624,7 +854,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 17:10:40" itemprop="dateModified" datetime="2020-07-01T17:10:40+08:00">2020-07-01</time>
+                <time title="修改时间：2020-07-22 18:19:18" itemprop="dateModified" datetime="2020-07-22T18:19:18+08:00">2020-07-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -649,6 +879,7 @@
       
           <ul>
 <li>写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存</li>
+<li>尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储</li>
 <li>没有被明确select的字段依然可以作为filter的条件</li>
 <li>获取周的第一天日期和当前日期位于周的第几天，周的第一天定义不同<ul>
 <li>周日</li>
@@ -1076,245 +1307,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据分析-reduce函数引发的/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/数据分析-reduce函数引发的/" class="post-title-link" itemprop="url">数据分析-reduce函数引发的</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-28 13:35:25" itemprop="dateCreated datePublished" datetime="2019-03-28T13:35:25+08:00">2019-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-04-10 23:36:43" itemprop="dateModified" datetime="2019-04-10T23:36:43+08:00">2019-04-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据分析/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="reduce-in-python"><a href="#reduce-in-python" class="headerlink" title="reduce in python"></a>reduce in python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _functools.reduce</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reduce</span><span class="params">(function, sequence, initial=None)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    reduce(function, sequence[, initial]) -&gt; value</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Apply a function of two arguments cumulatively to the items of a sequence,</span></span><br><span class="line"><span class="string">    from left to right, so as to reduce the sequence to a single value.</span></span><br><span class="line"><span class="string">    For example, reduce(lambda x, y: x+y, [1, 2, 3, 4, 5]) calculates</span></span><br><span class="line"><span class="string">    ((((1+2)+3)+4)+5).  If initial is present, it is placed before the items</span></span><br><span class="line"><span class="string">    of the sequence in the calculation, and serves as a default when the</span></span><br><span class="line"><span class="string">    sequence is empty.</span></span><br><span class="line"><span class="string">    :param function:给定的一个func，func具有两个参数，参数1是临时聚合值，参数2是序列中下一个待聚合的值</span></span><br><span class="line"><span class="string">    :param sequence:待处理的可迭代的序列</span></span><br><span class="line"><span class="string">    :param initial:聚合数据的初始值</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-<p>工作原理：reduce函数对给定的序列遍历调用func函数，每次调用返回一个临时聚合值，直到整个序列遍历结束。如果设置了初始值，那么在第一次执行func函数的时候，会将func的参数1设置为初始值。</p>
-<p>例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(<span class="keyword">lambda</span> x, y: x+y, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="number">15</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(<span class="keyword">lambda</span> x, y: x+y, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="number">100</span>)</span><br><span class="line"><span class="number">115</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reduce(<span class="keyword">lambda</span> x, y: str(x)+str(y), [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="string">''</span>)</span><br><span class="line"><span class="string">'12345'</span></span><br></pre></td></tr></table></figure>
-<p>reduce函数不仅可以完成这种聚合的功能，还可以完成更加复杂的操作，</p>
-<h3 id="reduce-amp-foldLeft-amp-foldRight-amp-reduce-in-scala"><a href="#reduce-amp-foldLeft-amp-foldRight-amp-reduce-in-scala" class="headerlink" title="reduce&amp;foldLeft&amp;foldRight&amp;reduce in scala"></a>reduce&amp;foldLeft&amp;foldRight&amp;reduce in scala</h3><h3 id><a href="#" class="headerlink" title=" "></a> </h3><h3 id="hive的UDAF"><a href="#hive的UDAF" class="headerlink" title="hive的UDAF"></a>hive的UDAF</h3><h3 id="spark的UDAF"><a href="#spark的UDAF" class="headerlink" title="spark的UDAF"></a>spark的UDAF</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/信贷数据统计的相关指标/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/信贷数据统计的相关指标/" class="post-title-link" itemprop="url">信贷数据统计的相关指标</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-22 19:19:47" itemprop="dateCreated datePublished" datetime="2019-03-22T19:19:47+08:00">2019-03-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-03-28 22:24:24" itemprop="dateModified" datetime="2019-03-28T22:24:24+08:00">2019-03-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据分析/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="贷款类型"><a href="#贷款类型" class="headerlink" title="贷款类型"></a>贷款类型</h3><ul>
-<li>等额本息贷款</li>
-</ul>
-<p>根据固定的还款时间，计算出应还的总利息，再加上本金，然后每个月平均等额的还款。</p>
-<ul>
-<li>等额本金贷款</li>
-</ul>
-<p>等额本金相对来说要简单一些，每月所还的本金是相同的，利息由每个月的剩余本金计算得出。</p>
-<ul>
-<li>固定点数贷款</li>
-</ul>
-<p>按照定义，我们在首次还款时先按固定的点数还一部分贷款，然后再按较低的利率还完剩余的贷款。</p>
-<ul>
-<li>双利率贷款</li>
-</ul>
-<p>前x个月以较低的r1利率还款，后m-x个月以较高的r2利率还款（假设还款总月数为m）</p>
-<h3 id="相关指标"><a href="#相关指标" class="headerlink" title="相关指标"></a>相关指标</h3><ul>
-<li>同比增长</li>
-<li>环比增长</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/airflow安装/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/airflow安装/" class="post-title-link" itemprop="url">airflow安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-19 19:24:02" itemprop="dateCreated datePublished" datetime="2019-03-19T19:24:02+08:00">2019-03-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-03-24 09:33:47" itemprop="dateModified" datetime="2019-03-24T09:33:47+08:00">2019-03-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># airflow needs a home, ~/airflow is the default,</span><br><span class="line"># but you can lay foundation somewhere else if you prefer</span><br><span class="line"># (optional)</span><br><span class="line">export AIRFLOW_HOME=~/airflow</span><br><span class="line"></span><br><span class="line"># install from pypi using pip</span><br><span class="line">pip install apache-airflow</span><br><span class="line"></span><br><span class="line"># initialize the database</span><br><span class="line">airflow initdb</span><br><span class="line"></span><br><span class="line"># start the web server, default port is 8080</span><br><span class="line">airflow webserver -p 8080</span><br><span class="line"></span><br><span class="line"># start the scheduler</span><br><span class="line">airflow scheduler</span><br><span class="line"></span><br><span class="line"># visit localhost:8080 in the browser and enable the example dag in the home page</span><br></pre></td></tr></table></figure>
-<h3 id="USE-Mysql"><a href="#USE-Mysql" class="headerlink" title="USE Mysql"></a>USE Mysql</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim $AIRFLOW_HOME/airflow.cfg</span><br><span class="line">	sql_alchemy_conn = mysql+pymysql://root:123456@localhost:3306/airflow</span><br><span class="line">	需要pip install pymysql</span><br></pre></td></tr></table></figure>
-<h3 id="启动失败"><a href="#启动失败" class="headerlink" title="启动失败"></a>启动失败</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ERROR [airflow.models.DagBag] Failed to import: /anaconda3/lib/python3.7/site-packages/airflow/example_dags/example_http_operator.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/site-packages/airflow/models.py&quot;, line 374, in process_file</span><br><span class="line">    m = imp.load_source(mod_name, filepath)</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/imp.py&quot;, line 171, in load_source</span><br><span class="line">    module = _load(spec)</span><br><span class="line">  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 696, in _load</span><br><span class="line">  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 677, in _load_unlocked</span><br><span class="line">  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 728, in exec_module</span><br><span class="line">  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 219, in _call_with_frames_removed</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/site-packages/airflow/example_dags/example_http_operator.py&quot;, line 27, in &lt;module&gt;</span><br><span class="line">    from airflow.operators.http_operator import SimpleHttpOperator</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/site-packages/airflow/operators/http_operator.py&quot;, line 21, in &lt;module&gt;</span><br><span class="line">    from airflow.hooks.http_hook import HttpHook</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/site-packages/airflow/hooks/http_hook.py&quot;, line 23, in &lt;module&gt;</span><br><span class="line">    import tenacity</span><br><span class="line">  File &quot;/anaconda3/lib/python3.7/site-packages/tenacity/__init__.py&quot;, line 352</span><br><span class="line">    from tenacity.async import AsyncRetrying</span><br><span class="line">                      ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
-<p>修复方式：修改from tenacity.async import AsyncRetrying为from tenacity.async_a import AsyncRetrying，同时tenacity包下的async文件名为async_a</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1384,20 +1376,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

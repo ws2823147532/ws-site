@@ -163,6 +163,532 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-动态代理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-动态代理/" class="post-title-link" itemprop="url">Java学习-动态代理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-14 11:34:00" itemprop="dateCreated datePublished" datetime="2020-05-14T11:34:00+08:00">2020-05-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-03 11:01:02" itemprop="dateModified" datetime="2020-06-03T11:01:02+08:00">2020-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-事务和隔离级别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Mysql学习-事务和隔离级别/" class="post-title-link" itemprop="url">Mysql学习-事务和隔离级别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-13 01:31:26" itemprop="dateCreated datePublished" datetime="2020-05-13T01:31:26+08:00">2020-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 09:16:15" itemprop="dateModified" datetime="2020-06-25T09:16:15+08:00">2020-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MYSQL事务和隔离级别"><a href="#MYSQL事务和隔离级别" class="headerlink" title="MYSQL事务和隔离级别"></a>MYSQL事务和隔离级别</h1><h2 id="一、事务"><a href="#一、事务" class="headerlink" title="一、事务"></a>一、事务</h2><p>事务是由一组SQL语句组成的逻辑处理单元，是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。事务具有以下4个属性，通常简称为事务的ACID属性:</p>
+<ul>
+<li>原子性（Atomicity）：<strong>事务是一个原子操作单元，其对数据的修改，要么全都执行，要么全都不执行</strong>。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部执行失败。回滚可以用日志来实现，日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</li>
+<li>一致性（Consistent）：<strong>在事务开始和完成时，数据都必须保持一致状态</strong>。这意味着所有相关的数据规则都必须应用于事务的修改，以保持数据的完整性；事务结束时，所有的内部数据结构（如B树索引或双向链表）也都必须是正确的。 以转账为例子，A向B转账，假设转账之前这两个用户的钱加起来总共是2000，那么A向B转账之后，不管这两个账户怎么转，A用户的钱和B用户的钱加起来的总额还是2000，这个就是事务的一致性。</li>
+<li>隔离性（Isolation）：数据库系统提供一定的隔离机制，保证事务在不受外部并发操作影响的“独立”环境执行。 <strong>隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离</strong>。即要达到这么一种效果：对于任意两个并发的事务 T1 和 T2，在事务 T1 看来，T2 要么在 T1 开始之前就已经结束，要么在 T1 结束之后才开始，这样每个事务都感觉不到有其他事务在并发地执行。</li>
+<li>持久性（Durable）：事务完成之后，它对于数据的修改是永久性的，即使出现系统故障也能够保持。 　可以通过数据库备份和恢复来实现，在系统发生奔溃时，使用备份的数据库进行数据恢复。</li>
+</ul>
+<blockquote>
+<p>MySQL 默认采用<strong>自动提交模式</strong>。也就是说，如果不显式使用 <code>START TRANSACTION</code> 语句来开始一个事务，那么每个查询都会被当做一个事务自动提交。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnms749pj30zo0qggre.jpg" alt="image-20200513111933684"></p>
+<p>这几个特性不是一种平级关系：</p>
+<ul>
+<li>只有满足一致性，事务的执行结果才是正确的。</li>
+<li>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时要只要能满足原子性，就一定能满足一致性。</li>
+<li>在并发的情况下，多个事务并发执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</li>
+<li>事务满足持久化是为了能应对数据库奔溃的情况。</li>
+</ul>
+</blockquote>
+<h2 id="二、并发一致性问题"><a href="#二、并发一致性问题" class="headerlink" title="二、并发一致性问题"></a>二、并发一致性问题</h2><h3 id="1、更新丢失-Lost-Update"><a href="#1、更新丢失-Lost-Update" class="headerlink" title="1、更新丢失(Lost Update)"></a>1、更新丢失(Lost Update)</h3><p><strong>T1 和 T2 两个事务都对一个数据进行修改，T1 先修改，T2 随后修改，T2 的修改覆盖了 T1 的修改</strong>。</p>
+<p>例如，两个程序员修改同一java文件。每程序员独立地更改其副本，然后保存更改后的副本，这样就覆盖了原始文档。最后保存其更改副本的编辑人员覆盖前一个程序员所做的更改。</p>
+<p><strong>如果在一个程序员完成并提交事务之前，另一个程序员不能访问同一文件，则可避免此问题</strong>。 </p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnnepde0j31540u0gqk.jpg" alt="image-20200513112012076"></p>
+<h3 id="2、脏读"><a href="#2、脏读" class="headerlink" title="2、脏读"></a>2、脏读</h3><p>一句话：事务B读取到了事务A已修改但尚未提交的的数据，还在这个数据基础上做了操作。此时，如果A事务回滚<code>Rollback</code>，B读取的数据无效，不符合一致性要求。</p>
+<p>解决办法: 把数据库的事务隔离级别调整到 <code>READ_COMMITTED</code></p>
+<p><strong>T1 修改一个数据，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据</strong>。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqno2ih8oj314s0u044g.jpg" alt="image-20200513112050855"></p>
+<h3 id="3、不可重复读-Non-Repeatable-Reads"><a href="#3、不可重复读-Non-Repeatable-Reads" class="headerlink" title="3、不可重复读(Non-Repeatable Reads)"></a>3、不可重复读(Non-Repeatable Reads)</h3><p>  在一个事务内，多次读同一个数据。在这个事务还没有结束时，另一个事务也访问该同一数据。那么，在第一个事务的两次读数据之间。由于第二个事务的修改，那么第一个事务读到的数据可能不一样，这样就发生了在一个事务内两次读到的数据是不一样的，因此称为不可重复读，即原始读取不可重复。</p>
+<p> <strong>一句话：一个事务范围内两个相同的查询却返回了不同数据</strong>。</p>
+<p>同时操作，事务1分别读取事务2操作时和提交后的数据，读取的记录内容不一致。<strong>不可重复读是指在同一个事务内，两个相同的查询返回了不同的结果</strong>。</p>
+<p>解决办法: 如果只有在修改事务完全提交之后才可以读取数据，则可以避免该问题。把数据库的事务隔离级别调整到<code>REPEATABLE_READ</code></p>
+<p><strong>T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同</strong>。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxkk82wj313l0u0grm.jpg" alt="image-20200513112958117"></p>
+<h3 id="4、幻读"><a href="#4、幻读" class="headerlink" title="4、幻读"></a>4、幻读</h3><p>一个事务T1按相同的查询条件重新读取以前检索过的数据，却发现其他事务T2插入了满足其查询条件的新数据，这种现象就称为“幻读”。（和可重复读类似，但是事务 T2 的数据操作仅仅是插入和删除，不是修改数据，读取的记录数量前后不一致）</p>
+<p>一句话：事务A 读取到了事务B提交的新增数据，不符合隔离性。 </p>
+<p>解决办法: 如果在操作事务完成数据处理之前，任何其他事务都不可以添加新数据，则可避免该问题。把数据库的事务隔离级别调整到 <code>SERIALIZABLE_READ</code>。</p>
+<p>T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqnxye5ghj31360u0gq5.jpg" alt="image-20200513113020849"></p>
+<h2 id="三、事务隔离级别"><a href="#三、事务隔离级别" class="headerlink" title="三、事务隔离级别"></a>三、事务隔离级别</h2><p>“脏读”、”不可重复读”和”幻读”，其实都是数据库读一致性问题，<strong>必须由数据库提供一定的事务隔离机制来解决</strong>。</p>
+<p> 数据库的事务隔离越严格，并发副作用越小，但付出的代价也就越大，因为事务隔离实质上就是使事务在一定程度上 “串行化”进行，这显然与“并发”是矛盾的。同时，不同的应用对读一致性和事务隔离程度的要求也是不同的，比如许多应用对“不可重复读”和“幻读”并不敏感，可能更关心数据并发访问的能力。 </p>
+<p>MYSQL常看当前数据库的事务隔离级别：<code>show variables like &#39;tx_isolation&#39;;</code></p>
+<h3 id="1、读未提交-Read-Uncommitted"><a href="#1、读未提交-Read-Uncommitted" class="headerlink" title="1、读未提交 (Read Uncommitted)"></a>1、读未提交 (Read Uncommitted)</h3><p>最低的隔离等级，<strong>允许其他事务看到没有提交的数据</strong>，会导致脏读。</p>
+<h3 id="2、读已提交-Read-Committed"><a href="#2、读已提交-Read-Committed" class="headerlink" title="2、读已提交 (Read Committed)"></a>2、读已提交 (Read Committed)</h3><p><strong>被读取的数据可以被其他事务修改，这样可能导致不可重复读</strong>。<strong>也就是说，事务读取的时候获取读锁，但是在读完之后立即释放(不需要等事务结束)，而写锁则是事务提交之后才释放</strong>，释放读锁之后，就可能被其他事务修改数据。该等级也是 SQL Server 默认的隔离等级。</p>
+<h3 id="3、可重复读-Repeatable-Read"><a href="#3、可重复读-Repeatable-Read" class="headerlink" title="3、可重复读(Repeatable Read)"></a>3、可重复读(Repeatable Read)</h3><p><strong>所有被 Select 获取的数据都不能被修改，这样就可以避免一个事务前后读取数据不一致的情况</strong>。但是却没有办法控制幻读，因为这个时候其他事务不能更改所选的数据，但是可以增加数据，即前一个事务有读锁但是没有范围锁，为什么叫做可重复读等级呢？那是因为该等级解决了下面的不可重复读问题。(引申：现在主流数据库都使用 MVCC 并发控制，使用之后<code>RR</code>（可重复读）隔离级别下是不会出现幻读的现象。)</p>
+<p>MYSQL默认是<code>REPEATABLE-READ</code>。 </p>
+<h3 id="4、串行化-Serializable"><a href="#4、串行化-Serializable" class="headerlink" title="4、串行化(Serializable)"></a>4、串行化(Serializable)</h3><p>所有事务一个接着一个的执行，这样可以避免幻读 (phantom read)，对于基于锁来实现并发控制的数据库来说，串行化要求在执行范围查询的时候，需要获取范围锁，如果不是基于锁实现并发控制的数据库，则检查到有违反串行操作的事务时，需回滚该事务。</p>
+<h3 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h3><ul>
+<li>读未提交: <strong>一个事务还没提交时，它做的变更就能被别的事务看到</strong>。</li>
+<li>读提交: 一个事务提交<strong>之后</strong>，它做的变更<strong>才</strong>会被其他事务看到。</li>
+<li>可重复读 : <strong>一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的</strong>。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。</li>
+<li>串行化: 顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
+</ul>
+<p>四个级别逐渐增强，每个级别解决一个问题，事务级别越高，性能越差，大多数环境(<code>Read committed</code> 就可以用了)</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读</td>
+<td>最低级别</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>提交读</td>
+<td>语句级</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td>事务级</td>
+<td>×</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>可串行化</td>
+<td>最高级别,事务级</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a href="https://github.com/ZXZxin/ZXBlog" target="_blank" rel="noopener">参考</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-第三范式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Mysql学习-第三范式/" class="post-title-link" itemprop="url">Mysql学习-第三范式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-13 01:19:15" itemprop="dateCreated datePublished" datetime="2020-05-13T01:19:15+08:00">2020-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-25 09:16:25" itemprop="dateModified" datetime="2020-06-25T09:16:25+08:00">2020-06-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="第一范式-1NF"><a href="#第一范式-1NF" class="headerlink" title="第一范式(1NF)"></a>第一范式(1NF)</h4><blockquote>
+<p>数据库表的每一列都是不可分割的基本数据项，同一列中不能有多个值，即实体中的某个属性不能有多个值或者不能有重复的属性</p>
+<p>符合1NF的关系中的每个属性都不可再分</p>
+</blockquote>
+<p>有两点要求：</p>
+<ul>
+<li>schema定义：每个属性不可再分，即字段的含义要明确，同一个字段不应该有多于1个的含义<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm6y05xoj314m08c77c.jpg" alt="image-20200513102942067"></li>
+<li>图中的这种schema在RDBMS中是不可能存在的，也就是无法创建的。可以改成如下的schema:</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm8stpcij313w05c412.jpg" alt="image-20200513103132122"></li>
+</ul>
+</li>
+<li>存储的数据：同一列中不能有多个值<ul>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqm622kgkj318s0bcgs2.jpg" alt="image-20200513102837775"></li>
+<li>图中的一个字段里面存了多个值，这种情况在RDBMS中是可以存在的，但是该字段是可再分的，应该。可以将数据分成多条存储，如下图</li>
+<li><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1geqmclbtx1j318k0batey.jpg" alt="image-20200513103510685"></li>
+</ul>
+</li>
+</ul>
+<h4 id="第二范式-2NF"><a href="#第二范式-2NF" class="headerlink" title="第二范式(2NF)"></a>第二范式(2NF)</h4><blockquote>
+<p>满足第一范式</p>
+<p>没有部分依赖</p>
+</blockquote>
+<p>在同一个表中，不能存在某些字段依赖一些键，而另一些字段依赖另外一些键</p>
+<p>员工表的一个候选键是{id，mobile，deptNo}，而deptName依赖于deptNo，同样 name 依赖于 id，因此不是 2NF的。为了满足第二范式的条件，需要将这个表拆分成employee、dept、employee_dept、employee_mobile四个表</p>
+<p>不满足2NF的表，可能存在的问题：修改异常、新增异常、删除异常</p>
+<h4 id="第三范式-3NF"><a href="#第三范式-3NF" class="headerlink" title="第三范式(3NF)"></a>第三范式(3NF)</h4><blockquote>
+<p>满足第二范式</p>
+<p>没有传递依赖</p>
+</blockquote>
+<p>在同一个表中，不要存在字段A依赖字段B，同时字段B依赖字段C，推导出来字段A间接依赖字段C的关系。</p>
+<p>员工表的province、city、district依赖于zip，而zip依赖于id，换句话说，province、city、district传递依赖于id，违反了 3NF 规则。为了满足第三范式的条件，可以将这个表拆分成employee和zip两个表</p>
+<p><em>但是这种关系也不是一定不能存在，视具体的业务而定吧</em></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>假设有一个名为<code>employee</code>的员工表，它有九个属性：<code>id</code>(员工编号)、<code>name</code>(员工名称)、<code>mobile</code>(电话)、<code>zip</code>(邮编)、<code>province</code>(省份)、<code>city</code>(城市)、<code>district</code>(区县)、<code>deptNo</code>(所属部门编号)、<code>deptName</code>(所属部门名称)、表总数据如下：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>mobile</th>
+<th>zip</th>
+<th>province</th>
+<th>city</th>
+<th>district</th>
+<th>deptNo</th>
+<th>deptName</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>张三</td>
+    <td>13910000001<br>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001<br>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>102</td>
+<td>李四</td>
+<td>13910000003</td>
+<td>200001</td>
+<td>上海</td>
+<td>上海</td>
+<td>静安区</td>
+<td>D3</td>
+<td>部门3</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D4</td>
+<td>部门4</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D5</td>
+<td>部门 5</td>
+</tr>
+</tbody>
+</table>
+
+<p>将上表改成满足第1范式，如下：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>mobile</th>
+<th>zip</th>
+<th>province</th>
+<th>city</th>
+<th>district</th>
+<th>deptNo</th>
+<th>deptName</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D1</td>
+<td>部门1</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000001</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>101</td>
+<td>张三</td>
+<td>13910000002</td>
+<td>100001</td>
+<td>北京</td>
+<td>北京</td>
+<td>海淀区</td>
+<td>D2</td>
+<td>部门2</td>
+</tr>
+<tr>
+<td>102</td>
+<td>李四</td>
+<td>13910000003</td>
+<td>200001</td>
+<td>上海</td>
+<td>上海</td>
+<td>静安区</td>
+<td>D3</td>
+<td>部门3</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D4</td>
+<td>部门4</td>
+</tr>
+<tr>
+<td>103</td>
+<td>王五</td>
+<td>13910000004</td>
+<td>510001</td>
+<td>广东省</td>
+<td>广州</td>
+<td>白云区</td>
+<td>D5</td>
+<td>部门5</td>
+</tr>
+</tbody>
+</table>
+
+<h6 id="仍存在的问题"><a href="#仍存在的问题" class="headerlink" title="仍存在的问题"></a>仍存在的问题</h6><ol>
+<li><strong>修改异常</strong>：上表中张三、王五都有多条记录，因为他隶属于两个部门。如果我们要修改王五的地址，必修修改两行记录。假如一个部门得到了王五的新地址并进行了更新，而另一个部门没有，那么此时王五在表中会存在两个不同的地址，导致了数据不一致</li>
+<li><strong>新增异常：</strong>假如一个新员工假如公司，他正处于入职培训阶段，还没有被正式分配到某个部门，如果<code>deptNo</code>字段不允许为空，我们就无法向<code>employee</code>表中新增该员工的数据。</li>
+<li><strong>删除异常：</strong>假设公司撤销了D3部门，那么在删除<code>deptNo</code>为D3的行时，会将李四的信息也一并删除。因为他隶属于D3这一部门。</li>
+</ol>
+<p>为了解决上面的问题，我们可以将上述表设计成满足3NF</p>
+<p>在关系数据库模型设计中，一般需要满足第三范式的要求。如果一个表具有良好的主外键设计，就应该是满足3NF的表。规范化带来的好处是通过减少数据冗余提高更新数据的效率，同时保证数据完整性。然而，我们在实际应用中也要防止过度规范化的问题。规范化程度越高，划分的表就越多，在查询数据时越有可能使用表连接操作。而如果连接的表过多，会影响查询性能。关键的问题是要依据业务需求，仔细权衡数据查询和数据更新关系，指定最合适的规范化程度。不要为了遵循严格的规范化规则而修改业务需求。</p>
+<p><a href="https://www.jianshu.com/p/5a8bb84289a9" target="_blank" rel="noopener">参考</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-函数参数传递/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -751,236 +1277,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-时间处理/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Python学习-时间处理/" class="post-title-link" itemprop="url">Python学习-时间处理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-06 16:37:46" itemprop="dateCreated datePublished" datetime="2019-06-06T16:37:46+08:00">2019-06-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>关于时间戳的几个概念<br>时间戳，根据1970年1月1日00:00:00开始按秒计算的偏移量。<br>时间元组（struct_time），包含9个元素。 </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.struct_time(tm_year=<span class="number">2017</span>, tm_mon=<span class="number">10</span>, tm_mday=<span class="number">1</span>, tm_hour=<span class="number">14</span>, tm_min=<span class="number">21</span>, tm_sec=<span class="number">57</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">274</span>, tm_isdst=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>时间格式字符串，字符串形式的时间。<br>time模块与时间戳和时间相关的重要函数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">time.time() <span class="comment"># 生成当前的时间戳，格式为10位整数的浮点数。</span></span><br><span class="line">time.strftime() <span class="comment"># 根据时间元组生成时间格式化字符串。</span></span><br><span class="line">time.strptime() <span class="comment"># 根据时间格式化字符串生成时间元组。time.strptime()与time.strftime()为互操作。</span></span><br><span class="line">time.localtime() <span class="comment"># 根据时间戳生成当前时区的时间元组。</span></span><br><span class="line">time.mktime() <span class="comment"># 根据时间元组生成时间戳。</span></span><br></pre></td></tr></table></figure>
-<p>示例</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">##生成当前时间的时间戳，只有一个参数即时间戳的位数，默认为10位，输入位数即生成相应位数的时间戳，比如可以生成常用的13位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_timestamp</span><span class="params">(digits = <span class="number">10</span>)</span>:</span></span><br><span class="line">    time_stamp = time.time()</span><br><span class="line">    digits = <span class="number">10</span> ** (digits <span class="number">-10</span>)</span><br><span class="line">    time_stamp = int(round(time_stamp*digits))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间戳规范为10位时间戳</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_timestamp10</span><span class="params">(time_stamp)</span>:</span></span><br><span class="line">    time_stamp = int (time_stamp* (<span class="number">10</span> ** (<span class="number">10</span>-len(str(time_stamp)))))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##将当前时间转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">now_to_date</span><span class="params">(format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_stamp = int(time.time())</span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将10位时间戳转换为时间字符串，默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timestamp_to_date</span><span class="params">(time_stamp, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.localtime(time_stamp)</span><br><span class="line">    str_date = time.strftime(format_string, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line"><span class="comment">##将时间字符串转换为10位时间戳，时间字符串默认为2017-10-01 13:37:04格式</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_to_timestamp</span><span class="params">(date, format_string=<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span>:</span></span><br><span class="line">    time_array = time.strptime(date, format_string)</span><br><span class="line">    time_stamp = int(time.mktime(time_array))</span><br><span class="line">    <span class="keyword">return</span> time_stamp</span><br><span class="line"></span><br><span class="line"><span class="comment">##不同时间格式字符串的转换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">date_style_transfomation</span><span class="params">(date, format_string1=<span class="string">"%Y-%m-%d %H:%M:%S"</span>,format_string2=<span class="string">"%Y-%m-%d %H-%M-%S"</span>)</span>:</span></span><br><span class="line">    time_array  = time.strptime(date, format_string1)</span><br><span class="line">    str_date = time.strftime(format_string2, time_array)</span><br><span class="line">    <span class="keyword">return</span> str_date</span><br><span class="line"></span><br><span class="line">print(now_to_date())</span><br><span class="line">print(timestamp_to_date(<span class="number">1506816572</span>))</span><br><span class="line">print(date_to_timestamp(<span class="string">'2017-10-01 08:09:32'</span>))</span><br><span class="line">print(timestamp_to_timestamp10(<span class="number">1506816572546</span>))</span><br><span class="line">print(date_style_transfomation(<span class="string">'2017-10-01 08:09:32'</span>))</span><br></pre></td></tr></table></figure>
-<p>结果为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1506836224000</span><br><span class="line">2017-10-01 13:37:04</span><br><span class="line">2017-10-01 08:09:32</span><br><span class="line">1506816572</span><br><span class="line">1506816572</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-Configuration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark学习笔记-Configuration/" class="post-title-link" itemprop="url">Spark学习笔记-Configuration</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-03 17:32:33" itemprop="dateCreated datePublished" datetime="2019-06-03T17:32:33+08:00">2019-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 17:10:09" itemprop="dateModified" datetime="2020-07-01T17:10:09+08:00">2020-07-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark学习/" itemprop="url" rel="index"><span itemprop="name">Spark学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> submit 参数</p>
-<p>运行时可配置参数：在代码中使用spark.conf.set(‘’， ‘’)的方式设置。运行时设置的参数不会在WebUI中显示</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-队列/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Python学习-队列/" class="post-title-link" itemprop="url">Python学习-队列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-06-03 10:10:48" itemprop="dateCreated datePublished" datetime="2019-06-03T10:10:48+08:00">2019-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 17:21:20" itemprop="dateModified" datetime="2020-07-01T17:21:20+08:00">2020-07-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue <span class="comment">#LILO队列</span></span><br><span class="line">q = Queue() <span class="comment">#创建队列对象</span></span><br><span class="line">q.put(<span class="number">0</span>)    <span class="comment">#在队列尾部插入元素</span></span><br><span class="line">q.put(<span class="number">1</span>)</span><br><span class="line">q.put(<span class="number">2</span>)</span><br><span class="line">print(<span class="string">'LILO队列'</span>,q.queue)  <span class="comment">#查看队列中的所有元素</span></span><br><span class="line">print(q.get())  <span class="comment">#返回并删除队列头部元素</span></span><br><span class="line">print(q.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> LifoQueue <span class="comment">#LIFO队列</span></span><br><span class="line">lifoQueue = LifoQueue()</span><br><span class="line">lifoQueue.put(<span class="number">1</span>)</span><br><span class="line">lifoQueue.put(<span class="number">2</span>)</span><br><span class="line">lifoQueue.put(<span class="number">3</span>)</span><br><span class="line">print(<span class="string">'LIFO队列'</span>,lifoQueue.queue)</span><br><span class="line">lifoQueue.get() <span class="comment">#返回并删除队列尾部元素</span></span><br><span class="line">lifoQueue.get()</span><br><span class="line">print(lifoQueue.queue)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> PriorityQueue <span class="comment">#优先队列</span></span><br><span class="line">priorityQueue = PriorityQueue() <span class="comment">#创建优先队列对象</span></span><br><span class="line">priorityQueue.put(<span class="number">3</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">78</span>)   <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">100</span>)  <span class="comment">#插入元素</span></span><br><span class="line">print(priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.put(<span class="number">1</span>)    <span class="comment">#插入元素</span></span><br><span class="line">priorityQueue.put(<span class="number">2</span>)    <span class="comment">#插入元素</span></span><br><span class="line">print(<span class="string">'优先级队列:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)</span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'删除后剩余元素'</span>,priorityQueue.queue)  <span class="comment">#删除后剩余元素</span></span><br><span class="line">priorityQueue.get() <span class="comment">#返回并删除优先级最低的元素</span></span><br><span class="line">print(<span class="string">'全部被删除后:'</span>,priorityQueue.queue)  <span class="comment">#查看优先级队列中的所有元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque   <span class="comment">#双端队列</span></span><br><span class="line">dequeQueue = deque([<span class="string">'Eric'</span>,<span class="string">'John'</span>,<span class="string">'Smith'</span>])</span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.append(<span class="string">'Tom'</span>)    <span class="comment">#在右侧插入新元素</span></span><br><span class="line">dequeQueue.appendleft(<span class="string">'Terry'</span>)  <span class="comment">#在左侧插入新元素</span></span><br><span class="line">print(dequeQueue)</span><br><span class="line">dequeQueue.rotate(<span class="number">2</span>)    <span class="comment">#循环右移2次</span></span><br><span class="line">print(<span class="string">'循环右移2次后的队列'</span>,dequeQueue)</span><br><span class="line">dequeQueue.popleft()    <span class="comment">#返回并删除队列最左端元素</span></span><br><span class="line">print(<span class="string">'删除最左端元素后的队列：'</span>,dequeQueue)</span><br><span class="line">dequeQueue.pop()    <span class="comment">#返回并删除队列最右端元素</span></span><br><span class="line">print(<span class="string">'删除最右端元素后的队列：'</span>,dequeQueue)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1050,20 +1346,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

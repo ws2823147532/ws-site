@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="简介：在Centos上进行开发的环境搭建">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-15T00:13:41.781Z">
+<meta property="og:updated_time" content="2020-07-16T07:05:38.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="操作系统-CentOS7上的开发环境配置">
 <meta name="twitter:description" content="简介：在Centos上进行开发的环境搭建">
@@ -199,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-15 08:13:41" itemprop="dateModified" datetime="2020-07-15T08:13:41+08:00">2020-07-15</time>
+                <time title="修改时间：2020-07-16 15:05:38" itemprop="dateModified" datetime="2020-07-16T15:05:38+08:00">2020-07-16</time>
               </span>
 
           
@@ -217,7 +217,8 @@
 <p>简介：在Centos上进行开发的环境搭建</p>
 </blockquote>
 <a id="more"></a>
-<h1 id="安装必要的软件"><a href="#安装必要的软件" class="headerlink" title="安装必要的软件"></a>安装必要的软件</h1><h2 id="升级-yum源-amp-安装相关依赖包"><a href="#升级-yum源-amp-安装相关依赖包" class="headerlink" title="升级 yum源&amp;安装相关依赖包"></a>升级 yum源&amp;安装相关依赖包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br><span class="line"></span><br><span class="line">yum install -y net-tools rsync mlocate wget vim ntpdate telnet gcc zlib-dev openssl-devel sqlite-devel bzip2-devel binutils qt  make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms</span><br></pre></td></tr></table></figure>
+<p><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/strace.html" target="_blank" rel="noopener">Linux Tools Quick Tutorial</a></p>
+<h1 id="安装必要的软件"><a href="#安装必要的软件" class="headerlink" title="安装必要的软件"></a>安装必要的软件</h1><h2 id="升级-yum源-amp-安装相关依赖包"><a href="#升级-yum源-amp-安装相关依赖包" class="headerlink" title="升级 yum源&amp;安装相关依赖包"></a>升级 yum源&amp;安装相关依赖包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br><span class="line"></span><br><span class="line">yum install -y net-tools rsync mlocate wget vim ntpdate telnet gcc zlib-dev openssl-devel sqlite-devel bzip2-devel binutils qt  make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms strace</span><br></pre></td></tr></table></figure>
 <h2 id="虚拟机软件"><a href="#虚拟机软件" class="headerlink" title="虚拟机软件"></a>虚拟机软件</h2><h3 id="Vagrant"><a href="#Vagrant" class="headerlink" title="Vagrant"></a>Vagrant</h3><p><a href="/post/虚拟机-Vagrant使用">这里查看vagrant的详细使用 </a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.rpm</span><br><span class="line"></span><br><span class="line">rpm -ivh vagrant_2.2.9_x86_64.rpm</span><br></pre></td></tr></table></figure>
 <h3 id="VirualBox"><a href="#VirualBox" class="headerlink" title="VirualBox"></a>VirualBox</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.virtualbox.org/virtualbox/6.1.10/VirtualBox-6.1-6.1.10_138449_el7-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
@@ -340,20 +341,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">117</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
