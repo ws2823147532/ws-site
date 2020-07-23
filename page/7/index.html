@@ -163,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-3-锁/">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java网络编程-零拷贝/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +177,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/JAVA并发编程-3-锁/" class="post-title-link" itemprop="url">JAVA并发编程-3-锁</a>
+            <a href="/post/java网络编程-零拷贝/" class="post-title-link" itemprop="url">java网络编程-零拷贝</a>
         </h2>
 
         <div class="post-meta">
@@ -188,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-03 10:51:06 / 修改时间：10:58:32" itemprop="dateCreated datePublished" datetime="2020-06-03T10:51:06+08:00">2020-06-03</time>
+              <time title="创建时间：2020-06-04 00:32:39 / 修改时间：07:37:38" itemprop="dateCreated datePublished" datetime="2020-06-04T00:32:39+08:00">2020-06-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -196,7 +196,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
                 </span>
             </span>
 
@@ -211,7 +211,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h4 id="什么是零拷贝"><a href="#什么是零拷贝" class="headerlink" title="什么是零拷贝"></a>什么是零拷贝</h4><p>刚才讲阻塞 IO 的时候我讲到，系统内核处理 IO 操作分为两个阶段——等待数据和拷贝数据。等待数据，就是系统内核在等待网卡接收到数据后，把数据写到内核中；而拷贝数据，就是系统内核在获取到数据后，将数据拷贝到用户进程的空间中。以下是具体流程：</p>
+<p><img src="/images/zero-copy.jpg" alt="zero-copy"></p>
+<p>应用进程的每一次写操作，都会把数据写到用户空间的缓冲区中，再由 CPU 将数据拷贝到系统内核的缓冲区中，之后再由 DMA 将这份数据拷贝到网卡中，最后由网卡发送出去。这里我们可以看到，一次写操作数据要拷贝两次才能通过网卡发送出去，而用户进程的读操作则是将整个流程反过来，数据同样会拷贝两次才能让应用程序读取到数据。</p>
+<p>应用进程的一次完整的读写操作，都需要在用户空间与内核空间中来回拷贝，并且每一次拷贝，都需要 CPU 进行一次上下文切换（由用户进程切换到系统内核，或由系统内核切换到用户进程），这样是不是很浪费 CPU 和性能呢？那有没有什么方式，可以减少进程间的数据拷贝，提高数据传输的效率呢？</p>
+<p>这时我们就需要零拷贝（Zero-copy）技术。</p>
+<p>所谓的零拷贝，就是取消用户空间与内核空间之间的数据拷贝操作，应用进程每一次的读写操作，都可以通过一种方式，让应用进程向用户空间写入或者读取数据，就如同直接向内核空间写入或者读取数据一样，再通过 DMA 将内核中的数据拷贝到网卡，或将网卡中的数据 copy 到内核。</p>
+<p>那怎么做到零拷贝？你想一下是不是用户空间与内核空间都将数据写到一个地方，就不需要拷贝了？此时你有没有想到虚拟内存？</p>
+<p><img src="/images/zero-copy1.jpg" alt="zero-copy1"></p>
+<p>零拷贝有两种解决方式，分别是 mmap+write 方式和 sendfile 方式，mmap+write 方式的核心原理就是通过虚拟内存来解决的。</p>
+<h4 id="java中的零拷贝"><a href="#java中的零拷贝" class="headerlink" title="java中的零拷贝"></a>java中的零拷贝</h4><h4 id="Netty中的零拷贝"><a href="#Netty中的零拷贝" class="headerlink" title="Netty中的零拷贝"></a>Netty中的零拷贝</h4><blockquote>
+<p>具体去读Netty的源码再详细补充这里</p>
+</blockquote>
+<p>了解完零拷贝，我们再看看 Netty 中的零拷贝。</p>
+<p>我刚才讲到，RPC 框架在网络通信框架的选型上，我们最优的选择是基于 Reactor 模式实现的框架，如 Java 语言，首选的便是 Netty 框架。那么 Netty 框架是否也有零拷贝机制呢？Netty 框架中的零拷贝和我之前讲的零拷贝又有什么不同呢？</p>
+<p>刚才我讲的零拷贝是操作系统层面上的零拷贝，主要目标是避免用户空间与内核空间之间的数据拷贝操作，可以提升 CPU 的利用率。</p>
+<p>而 Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就是 JVM 上，它的零拷贝主要是偏向于数据操作的优化上。</p>
+<p>那么 Netty 这么做的意义是什么呢？</p>
+<p>回想下[第 02 讲]，在这一讲中我讲解了 RPC 框架如何去设计协议，其中我讲到：在传输过程中，RPC 并不会把请求参数的所有二进制数据整体一下子发送到对端机器上，中间可能会拆分成好几个数据包，也可能会合并其他请求的数据包，所以消息都需要有边界。那么一端的机器收到消息之后，就需要对数据包进行处理，根据边界对数据包进行分割和合并，最终获得一条完整的消息。</p>
+<p>那收到消息后，对数据包的分割和合并，是在用户空间完成，还是在内核空间完成的呢？</p>
+<p>当然是在用户空间，因为对数据包的处理工作都是由应用程序来处理的，那么这里有没有可能存在数据的拷贝操作？可能会存在，当然不是在用户空间与内核空间之间的拷贝，是用户空间内部内存中的拷贝处理操作。Netty 的零拷贝就是为了解决这个问题，在用户空间对数据操作进行优化。</p>
+<p>那么 Netty 是怎么对数据操作进行优化的呢？</p>
+<ul>
+<li>Netty 提供了 CompositeByteBuf 类，它可以将多个 ByteBuf 合并为一个逻辑上的 ByteBuf，避免了各个 ByteBuf 之间的拷贝。</li>
+<li>ByteBuf 支持 slice 操作，因此可以将 ByteBuf 分解为多个共享同一个存储区域的 ByteBuf，避免了内存的拷贝。</li>
+<li>通过 wrap 操作，我们可以将 byte[] 数组、ByteBuf、ByteBuffer 等包装成一个 Netty ByteBuf 对象, 进而避免拷贝操作。</li>
+</ul>
+<p>Netty 框架中很多内部的 ChannelHandler 实现类，都是通过 CompositeByteBuf、slice、wrap 操作来处理 TCP 传输中的拆包与粘包问题的。</p>
+<p>那么 Netty 有没有解决用户空间与内核空间之间的数据拷贝问题的方法呢？</p>
+<p>Netty 的 ByteBuffer 可以采用 Direct Buffers，使用堆外直接内存进行 Socket 的读写操作，最终的效果与我刚才讲解的虚拟内存所实现的效果是一样的。<strong>(mmap方式)</strong></p>
+<p>Netty 还提供 FileRegion 中包装 NIO 的 FileChannel.transferTo() 方法实现了零拷贝，这与 Linux 中的 sendfile 方式在原理上也是一样的。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>零拷贝带来的好处就是避免没必要的 CPU 拷贝，让 CPU 解脱出来去做其他的事，同时也减少了 CPU 在用户空间与内核空间之间的上下文切换，从而提升了网络通信效率与应用程序的整体性能。</p>
+<p>而 Netty 的零拷贝与操作系统的零拷贝是有些区别的，Netty 的零拷贝偏向于用户空间中对数据操作的优化，这对处理 TCP 传输中的拆包粘包问题有着重要的意义，对应用程序处理请求数据与返回数据也有重要的意义。</p>
+<p>在 RPC 框架的开发与使用过程中，我们要深入了解网络通信相关的原理知识，尽量做到零拷贝，如使用 Netty 框架；我们要合理使用 ByteBuf 子类，做到完全零拷贝，提升 RPC 框架的整体性能。</p>
+<p>其他关于零拷贝技术的文章：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/78869158" target="_blank" rel="noopener">Java中的零拷贝</a></p>
+
       
     </div>
 
@@ -230,7 +265,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-2-并发基础/">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM参数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -244,74 +279,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/post/JAVA并发编程-2-并发基础/" class="post-title-link" itemprop="url">JAVA并发编程-2-并发基础</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-03 10:50:55 / 修改时间：10:58:23" itemprop="dateCreated datePublished" datetime="2020-06-03T10:50:55+08:00">2020-06-03</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-1-内存模型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/JAVA并发编程-1-内存模型/" class="post-title-link" itemprop="url">JAVA并发编程-1-内存模型</a>
+            <a href="/post/java学习-JVM参数/" class="post-title-link" itemprop="url">java学习-JVM参数</a>
         </h2>
 
         <div class="post-meta">
@@ -321,327 +289,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-03 10:50:11" itemprop="dateCreated datePublished" datetime="2020-06-03T10:50:11+08:00">2020-06-03</time>
+              <time title="创建时间：2020-06-03 18:36:02" itemprop="dateCreated datePublished" datetime="2020-06-03T18:36:02+08:00">2020-06-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-04 14:39:17" itemprop="dateModified" datetime="2020-06-04T14:39:17+08:00">2020-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark应用-Scheduler/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark应用-Scheduler/" class="post-title-link" itemprop="url">Spark应用-Scheduler</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-01 14:22:50" itemprop="dateCreated datePublished" datetime="2020-06-01T14:22:50+08:00">2020-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 17:11:10" itemprop="dateModified" datetime="2020-07-01T17:11:10+08:00">2020-07-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Spark任务有四种提交方式：</p>
-<ul>
-<li>local</li>
-<li>standalone</li>
-<li>yarn(这里着重讲)</li>
-<li>mesos</li>
-</ul>
-<p>这里涉及到两层的任务调度：</p>
-<h5 id="第一层：schedule-across-applications，应用间的任务调度"><a href="#第一层：schedule-across-applications，应用间的任务调度" class="headerlink" title="第一层：schedule across applications，应用间的任务调度"></a>第一层：schedule across applications，应用间的任务调度</h5><p>Spark的application提交到yarn平台，yarn平台负责Spark application的调度，这里也分为两层：</p>
-<h6 id="第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"><a href="#第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排" class="headerlink" title="第一层：Yarn的队列，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"></a>第一层：<a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">Yarn的队列</a>，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排</h6><p>yarn有三种任务调度模型：</p>
-<ul>
-<li>FIFO scheduler：先入先出调度器，整个Yarn集群只有一个任务队列，所有提交的任务都要等待上一个任务完全执行完才能执行</li>
-</ul>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxdpkawcj30hx0d9wfw.jpg" alt="fifo"></p>
-<ul>
-<li>Capacity scheduler：容量调度器，以Capacity为中心，把资源划分到若干个队列中，各个队列内根据自己的逻辑分配资源。例如下图中队列A可以调度的资源可以占80%，队列B占有剩下的20%，各队列接受相应的作业请求，在自己的资源中分配</li>
-</ul>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxee77bdj30m10f0406.jpg" alt="capacity"></p>
-<ul>
-<li>Fair scheduler：秉承公平性原则，尽可能让各个作业得到的资源平均。先提交的job1马上占满了集群资源，那么作业2提交之后，原本Job1占有的资源拨出一些给作业2，从而达到“公平”<strong>(但是要等到job1的某些task执行完毕之后才能把资源让出来)</strong></li>
-</ul>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gfdxeyu1x4j30hl0cv75n.jpg" alt="fair"></p>
-<h6 id="第二层：Yarn队列内的调度"><a href="#第二层：Yarn队列内的调度" class="headerlink" title="第二层：Yarn队列内的调度"></a>第二层：Yarn队列内的调度</h6><p>当使用FIFO scheduler，自不必说，它只有一个先进先出的队列，也就是队列内部的任务调度；Capacity scheduler会把 集群分成若干个队列，每个队列内部采用FIFO的策略；Fair scheduler可以通过设置，每个Fair Queue内部使用不同的schedulingPolicy，但是会有一个文档级别的默认策略的配置defaultQueueSchedulingPolicy，如果每个Queue没有自己的设置，那么就用defaultQueueSchedulingPolicy</p>
-<h5 id="第二层：schedule-within-application，同一个SparkContext内的job调度"><a href="#第二层：schedule-within-application，同一个SparkContext内的job调度" class="headerlink" title="第二层：schedule within application，同一个SparkContext内的job调度"></a>第二层：schedule within application，同一个SparkContext内的job调度</h5><p><a href="https://bruce.blog.csdn.net/article/details/88349295" target="_blank" rel="noopener">谈Spark下并行执行多个Job的问题</a></p>
-<p><a href="https://www.tuicool.com/articles/r2qA7vm" target="_blank" rel="noopener">一次 Spark SQL 性能提升10倍的经历</a></p>
-<p><a href="https://ieevee.com/tech/2016/07/11/spark-scheduler.html" target="_blank" rel="noopener">Spark调度（一）：Task调度算法，FIFO还是FAIR</a></p>
-<p><a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">理解YARN Scheduler</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/分布式常见思想-Bloomfilter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/分布式常见思想-Bloomfilter/" class="post-title-link" itemprop="url">分布式常见思想-Bloomfilter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-01 09:58:27 / 修改时间：09:58:58" itemprop="dateCreated datePublished" datetime="2020-06-01T09:58:27+08:00">2020-06-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据结构与算法学习笔记-内存不足/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/数据结构与算法学习笔记-内存不足/" class="post-title-link" itemprop="url">数据结构与算法学习笔记-内存不足</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-01 07:35:34" itemprop="dateCreated datePublished" datetime="2020-06-01T07:35:34+08:00">2020-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-02 19:07:58" itemprop="dateModified" datetime="2020-07-02T19:07:58+08:00">2020-07-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>中位数定义：数字排序之后，位于中间的那个数。比如将100亿个数字进行排序，排序之后，位于第50亿个位置的那个数 就是中位数。 </p>
-<p>  ①内存够：内存够还慌什么啊，直接把100亿个全部排序了，你用冒泡都可以…然后找到中间那个就可以了。但是你以为面试官会给你内存？？ </p>
-<p>  ②内存不够：题目说是整数，我们认为是带符号的int,所以4字节，占32位。 </p>
-<p>  假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。 </p>
-<p>  从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中） </p>
-<p>  现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。 </p>
-<p>  现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。 </p>
-<p>  抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。 </p>
-<p>  按照上述思路，直到划分的文件可直接加载进内存时，就可以直接对数字进行快速排序，找出中位数了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-Future/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-Future/" class="post-title-link" itemprop="url">Java学习-Future</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-01 06:44:35" itemprop="dateCreated datePublished" datetime="2020-06-01T06:44:35+08:00">2020-06-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 17:32:37" itemprop="dateModified" datetime="2020-06-03T17:32:37+08:00">2020-06-03</time>
+                <time title="修改时间：2020-06-04 11:30:03" itemprop="dateModified" datetime="2020-06-04T11:30:03+08:00">2020-06-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -664,273 +319,596 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-一些常见的操作/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Python学习-一些常见的操作/" class="post-title-link" itemprop="url">Python学习-一些常见的操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-29 17:15:13" itemprop="dateCreated datePublished" datetime="2020-05-29T17:15:13+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-23 10:20:49" itemprop="dateModified" datetime="2020-06-23T10:20:49+08:00">2020-06-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><ul>
-<li>如何初始化一个一维数组</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line">l = [<span class="number">0</span>]*n</span><br><span class="line">l1 = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如何初始化一个二维数组</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">l = [[<span class="number">0</span>]*m]*n   <span class="comment"># 会有赋值问题：n个[0]*m 实际上都是同一个对象</span></span><br><span class="line">l1 = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]  <span class="comment"># 没有赋值问题</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>如何初始化一个二维数组并且设置右边界和下边界为1(根据实际情况处理)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">dp = [[<span class="number">1</span> <span class="keyword">if</span> i == m - <span class="number">1</span> <span class="keyword">or</span> j == n - <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(m)] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>正序遍历</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>倒序遍历</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>二维数组一维化</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">b=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">c=list(chain(*b))</span><br><span class="line">print(c)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">ab = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">print([i <span class="keyword">for</span> item <span class="keyword">in</span> ab <span class="keyword">for</span> i <span class="keyword">in</span> item])</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">8</span>]]</span><br><span class="line">print(reduce(operator.add, a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">8</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>, <span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">l=[]</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">3</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> a[m]:</span><br><span class="line">        l.append(i)</span><br><span class="line">print(l)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">a= eval(<span class="string">'['</span>+str(a).replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'['</span>,<span class="string">''</span>).replace(<span class="string">']'</span>,<span class="string">''</span>)+<span class="string">']'</span>)</span><br><span class="line">print(a)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatten</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(a, (list, )):</span><br><span class="line">        <span class="keyword">return</span> [a]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        b = []</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> a:</span><br><span class="line">            b += flatten(item)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    a = [[[<span class="number">1</span>,<span class="number">2</span>],<span class="number">3</span>],[<span class="number">4</span>,[<span class="number">5</span>,<span class="number">6</span>]],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">    print(flatten(a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>如何拷贝一个一维数组</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">y = x[:]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>如何拷贝一个二维数组</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line">y = [row[:] <span class="keyword">for</span> row <span class="keyword">in</span> x]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy, deepcopy</span><br><span class="line">y = deepcopy(x)</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">old_array = [[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>]]</span><br><span class="line"><span class="comment"># python2.*</span></span><br><span class="line">new_array = map(list, old_array)</span><br><span class="line"><span class="comment"># python3.*</span></span><br><span class="line">new_array = list(map(list, old_array))</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">arr = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"></span><br><span class="line">deepcopy1d2d = <span class="keyword">lambda</span> lVals: [x <span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, list) <span class="keyword">else</span> x[:] <span class="keyword">for</span> x <span class="keyword">in</span> lVals]</span><br><span class="line"></span><br><span class="line">dst = deepcopy1d2d(arr)</span><br><span class="line"></span><br><span class="line">dst[<span class="number">1</span>][<span class="number">1</span>]=<span class="number">150</span></span><br><span class="line"><span class="keyword">print</span> dst</span><br><span class="line"><span class="keyword">print</span> arr</span><br></pre></td></tr></table></figure>
-<h4 id="ascii码的转换"><a href="#ascii码的转换" class="headerlink" title="ascii码的转换"></a>ascii码的转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取一个字符的ascii码</span></span><br><span class="line">ord(<span class="string">'a'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将ascii码转换成字符</span></span><br><span class="line">chr(<span class="number">97</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存地址</span></span><br><span class="line">a = <span class="number">9</span></span><br><span class="line">id(a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看一个对象内存占用大小(变量所占字节的大小)</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.getsizeof(a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看变量类型</span></span><br><span class="line">type(a)</span><br></pre></td></tr></table></figure>
-<h4 id="进制"><a href="#进制" class="headerlink" title="进制"></a>进制</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 二进制</span></span><br><span class="line">Ob1010</span><br><span class="line"><span class="comment"># 获取一个数字的二进制</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">3</span>)</span><br><span class="line"><span class="string">'0b11'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">-10</span>)</span><br><span class="line"><span class="string">'-0b1010'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 八进制</span></span><br><span class="line"><span class="number">0o176</span></span><br><span class="line"><span class="comment"># 获取一个数字的二进制</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>oct(<span class="number">3</span>)</span><br><span class="line"><span class="string">'0o3'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">-3</span>)</span><br><span class="line"><span class="string">'-0o3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 十进制</span></span><br><span class="line"><span class="number">43</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 十六进制</span></span><br><span class="line"><span class="number">0x12ab</span></span><br><span class="line">hex(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'0x3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 8 16 进制转换成 十进制</span></span><br><span class="line">int(<span class="string">'101010'</span>, <span class="number">2</span>)  <span class="comment"># int('0b101010', 0)</span></span><br><span class="line">int(<span class="string">'37621'</span>, <span class="number">8</span>)  <span class="comment"># int('0o37621', 0)</span></span><br><span class="line">int(<span class="string">'23abcf'</span>, <span class="number">16</span>)  <span class="comment"># int('0x23abcf', 0)</span></span><br></pre></td></tr></table></figure>
-<h4 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;  <span class="comment"># 右移：向右移1位可以看成除以2</span></span><br><span class="line">&lt;&lt;  <span class="comment"># 左移：向左移一位可以看成乘以2</span></span><br><span class="line">&amp;   <span class="comment"># 与</span></span><br><span class="line">|   <span class="comment"># 或</span></span><br><span class="line">~   <span class="comment"># 取反：效果是对n的内部表示的每一位求补</span></span><br><span class="line">^   <span class="comment"># 异或</span></span><br></pre></td></tr></table></figure>
-<h4 id="交换元素"><a href="#交换元素" class="headerlink" title="交换元素"></a>交换元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通常写法</span></span><br><span class="line">a=<span class="number">1</span></span><br><span class="line">b=<span class="number">2</span></span><br><span class="line">a,b = b,a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数组元素交换</span></span><br><span class="line">l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">l[<span class="number">3</span>], l[<span class="number">1</span>] = l[<span class="number">1</span>], l[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但是要同时交换数组和index就不行了</span></span><br><span class="line">i=<span class="number">0</span></span><br><span class="line">i, l[i] = l[i], <span class="number">7</span>  <span class="comment"># 失败：这里不能用这种写法，因为修改了i的值之后，等号前面的self.p[i]就会立刻指向修改后的i的位置。这里和普通的a b交换有区别</span></span><br><span class="line">l[i], i = <span class="number">7</span>, l[i]  <span class="comment"># 等号后面的l[i]实际上是值传递</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-lru-cache/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Python学习-lru-cache/" class="post-title-link" itemprop="url">Python学习-lru_cache</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-05-28 09:48:49 / 修改时间：09:49:40" itemprop="dateCreated datePublished" datetime="2020-05-28T09:48:49+08:00">2020-05-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-Thread/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-Thread/" class="post-title-link" itemprop="url">Java学习-Thread</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-24 19:17:33" itemprop="dateCreated datePublished" datetime="2020-05-24T19:17:33+08:00">2020-05-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-12 09:57:34" itemprop="dateModified" datetime="2020-06-12T09:57:34+08:00">2020-06-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h4><p>进程：每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n个线程。（进程是资源分配的最小单位）<br>线程：同一类线程共享代码和数据空间，每个线程有独立的运行栈和程序计数器(PC)，线程切换开销小。（线程是cpu调度的最小单位）</p>
-<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p>创建、就绪、运行、阻塞、终止</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf4q1vrvkuj30fa0awaal.jpg" alt></p>
+          <h4 id="查看JVM参数"><a href="#查看JVM参数" class="headerlink" title="查看JVM参数"></a>查看JVM参数</h4><p>启动应用的时候分别加以下的参数可以打印相关的参数：</p>
 <ol>
-<li>创建：新创建的一个线程对象</li>
-<li>就绪：线程对象创建成功后，其他的线程调用该对象的start方法。该状态的线程位于可运行线程池内，变的可运行，等待获取CPU的使用权呢</li>
-<li>运行：就绪状态的线程获取了CPU使用权，执行程序代码</li>
-<li>阻塞：阻塞状态是线程因为某种原因放弃了CPU使用权，暂停运行。直到线程再次进入就绪状态，才有机会转到运行状态。阻塞的情况分为以下三种：<ol>
-<li>等待阻塞：运行的线程执行wait方法，JVM会把该线程放入等待池中<strong>(wait会释放持有的锁)</strong></li>
-<li>同步阻塞：运行的线程在获取对象同步锁的时，如果该同步锁被别的线程占用，则JVM会把改线程放入锁池中</li>
-<li>其他阻塞：运行的线程执行sleep或join方法，或者发出了I/O(文件读写、网络请求)请求，JVM会把该线程置为阻塞状态。当sleep状态超时、join等待线程终止或者超时、或者I/O处理完毕时，线程重新转入就绪状态<strong>(sleep不会释放持有的锁)</strong></li>
-</ol>
+<li><p>java -XX:+PrintFlagsInitial  打印所有的JVM初始参数，但是会立刻终止应用</p>
 </li>
-<li>终止：线程执行完了或者因异常推出了run方法，该线程结束生命周期</li>
+<li><p>java -XX:+PrintFlagsFinal  打印所有的设置后的JVM参数，不会终止应用</p>
+</li>
+<li><p>jinfo [options]  pid</p>
+</li>
 </ol>
-<p>线程创建和切换的代价：<a href="https://www.jianshu.com/p/ece1bb5fa88b" target="_blank" rel="noopener">https://www.jianshu.com/p/ece1bb5fa88b</a></p>
+<p>​     jinfo -flags pid 查看指定pid的jvm的所有设置参数</p>
+<ol>
+<li>-XX:+PrintVMOptions 程序运行时，打印虚拟机接受到的命令行显式参数。不会终止应用</li>
+<li>-XX:+PrintCommandLineFlags 打印传递给虚拟机的显式和隐式参数。不会终止应用</li>
+</ol>
+<h4 id="常见的JVM参数"><a href="#常见的JVM参数" class="headerlink" title="常见的JVM参数"></a>常见的JVM参数</h4><ul>
+<li>InitialHeapSize(单位是字节)：初始堆大小，默认是物理内存的1/64，最小为2m(设置了1m，发现PrintFlagsFinal打印出来的是2m)，可以使用-Xms指定，如-Xms64m，只能指定m、g这样的单位</li>
+<li>MaxHeapSize：最大堆大小，默认是物理内存的1/4，最小为2m，可以使用-Xmx指定，如-Xmx64m</li>
+<li>MaxNewSize：</li>
+<li>NewSize：</li>
+<li>OldSize：</li>
+<li>MetaspaceSize：</li>
+<li>MaxMetaspaceSize：</li>
+<li><p>ThreadStackSize(单位是kb)：虚拟机栈大小，默认是1024k，可以使用-Xss指定，如-Xss256k</p>
+</li>
+<li><p>MaxTenuringThreshold：对象晋升到老年代的年龄阈值，默认是15，可以使用-XX:MaxTenuringThreshold指定，如-XX:MaxTenuringThreshold=20</p>
+</li>
+</ul>
+<h4 id="参数调优"><a href="#参数调优" class="headerlink" title="参数调优"></a>参数调优</h4><ol>
+<li>默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到 -Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC 后调整堆的大小。</li>
+</ol>
 
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-常见异常/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-常见异常/" class="post-title-link" itemprop="url">Java学习-常见异常</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-03 17:31:00" itemprop="dateCreated datePublished" datetime="2020-06-03T17:31:00+08:00">2020-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-12 10:06:08" itemprop="dateModified" datetime="2020-06-12T10:06:08+08:00">2020-06-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="StackOverflowError和OutOfMemoryError的区别-JDK1-8"><a href="#StackOverflowError和OutOfMemoryError的区别-JDK1-8" class="headerlink" title="StackOverflowError和OutOfMemoryError的区别(JDK1.8)"></a>StackOverflowError和OutOfMemoryError的区别(JDK1.8)</h5><p>StackOverflowError：Thrown when a stack overflow occurs because an application recurses too deeply.</p>
+<p>OutOfMemoryError：Thrown when the Java Virtual Machine cannot allocate an object because it is out of memory, and no more memory could be made available by the garbage collector.</p>
+<p>从对这两个Error的注释来看，</p>
+<p>由于应用程序递归过深而在堆栈溢出时会抛出StackOverflowError；同一个函数递归调用时，内存不足</p>
+<p>当Java虚拟机由于内存不足而无法分配对象，并且垃圾回收器无法再提供更多内存时，抛出OutOfMemoryError。创建新的对象(包括虚拟机栈：函数调用(也包括递归调用)时创建虚拟机栈)时，内存不足</p>
+<p>在java应用启动的时候，可以通过-Xss来设置虚拟机栈大小，虚拟机栈默认大小为1024k</p>
+<p>在java里，函数的递归调用受到以下几方面的影响：</p>
+<ol>
+<li>虚拟机栈大小：设置的虚拟机栈</li>
+<li>局部变量表大小</li>
+</ol>
+<p><a href="https://blog.csdn.net/chengyun19830206/article/details/78452321" target="_blank" rel="noopener">https://blog.csdn.net/chengyun19830206/article/details/78452321</a></p>
+<p><a href="https://dzone.com/articles/outofmemoryerror-unable-create" target="_blank" rel="noopener">https://dzone.com/articles/outofmemoryerror-unable-create</a></p>
+<p><a href="https://blog.csdn.net/kylinsoong/article/details/16879653" target="_blank" rel="noopener">https://blog.csdn.net/kylinsoong/article/details/16879653</a></p>
+<p><a href="https://www.jianshu.com/p/c09727dc8f92" target="_blank" rel="noopener">https://www.jianshu.com/p/c09727dc8f92</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-12-并发框架-Disruptor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-12-并发框架-Disruptor/" class="post-title-link" itemprop="url">JAVA并发编程-12-并发框架(Disruptor)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:54:59 / 修改时间：11:00:26" itemprop="dateCreated datePublished" datetime="2020-06-03T10:54:59+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-11-响应式编程-RxJava/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-11-响应式编程-RxJava/" class="post-title-link" itemprop="url">JAVA并发编程-11-响应式编程(RxJava)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:53:44 / 修改时间：16:24:11" itemprop="dateCreated datePublished" datetime="2020-06-03T10:53:44+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-10-协程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-10-协程/" class="post-title-link" itemprop="url">JAVA并发编程-10-协程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:53:19 / 修改时间：16:24:17" itemprop="dateCreated datePublished" datetime="2020-06-03T10:53:19+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="https://juejin.im/post/5ed62cabf265da7709526718" target="_blank" rel="noopener">https://juejin.im/post/5ed62cabf265da7709526718</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-9-线程池/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-9-线程池/" class="post-title-link" itemprop="url">JAVA并发编程-9-线程池</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:52:35 / 修改时间：10:59:46" itemprop="dateCreated datePublished" datetime="2020-06-03T10:52:35+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-8-阻塞队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-8-阻塞队列/" class="post-title-link" itemprop="url">JAVA并发编程-8-阻塞队列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:52:16 / 修改时间：10:59:37" itemprop="dateCreated datePublished" datetime="2020-06-03T10:52:16+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-7-Atomic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-7-Atomic/" class="post-title-link" itemprop="url">JAVA并发编程-7-Atomic</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:51:56 / 修改时间：10:59:29" itemprop="dateCreated datePublished" datetime="2020-06-03T10:51:56+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-6-并发集合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/JAVA并发编程-6-并发集合/" class="post-title-link" itemprop="url">JAVA并发编程-6-并发集合</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-03 10:51:41 / 修改时间：10:59:22" itemprop="dateCreated datePublished" datetime="2020-06-03T10:51:41+08:00">2020-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
       
     </div>
 
@@ -948,7 +926,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1014,7 +992,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1027,7 +1005,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">113</span>
+        <span class="site-state-item-count">112</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
