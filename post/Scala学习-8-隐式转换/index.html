@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：一个从类型 S 到类型 T 的隐式转换由一个函数类型 S =&amp;gt; T 的隐式值来定义，或者由一个可转换成所需值的隐式方法来定义。 隐式转换是scala中一个非常重要的特性，但同时也是挺难理解的一个特性。 隐式转换使用不当将会导致很难检查的bug">
+<meta name="keywords" content="Scala隐式转换">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala学习-隐式转换">
+<meta property="og:url" content="https://shang.at/post/Scala学习-8-隐式转换/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：一个从类型 S 到类型 T 的隐式转换由一个函数类型 S =&amp;gt; T 的隐式值来定义，或者由一个可转换成所需值的隐式方法来定义。 隐式转换是scala中一个非常重要的特性，但同时也是挺难理解的一个特性。 隐式转换使用不当将会导致很难检查的bug">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-07-26T11:30:50.773Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scala学习-隐式转换">
+<meta name="twitter:description" content="简介：一个从类型 S 到类型 T 的隐式转换由一个函数类型 S =&amp;gt; T 的隐式值来定义，或者由一个可转换成所需值的隐式方法来定义。 隐式转换是scala中一个非常重要的特性，但同时也是挺难理解的一个特性。 隐式转换使用不当将会导致很难检查的bug">
+
+<link rel="canonical" href="https://shang.at/post/Scala学习-8-隐式转换/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Scala学习-隐式转换 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Scala学习-8-隐式转换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala学习-隐式转换
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-26 16:21:03 / 修改时间：19:30:50" itemprop="dateCreated datePublished" datetime="2020-07-26T16:21:03+08:00">2020-07-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Scala学习/" itemprop="url" rel="index"><span itemprop="name">Scala学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：一个从类型 <code>S</code> 到类型 <code>T</code> 的隐式转换由一个函数类型 <code>S =&gt; T</code> 的隐式值来定义，或者由一个可转换成所需值的隐式方法来定义。</p>
+<p>隐式转换是scala中一个非常重要的特性，但同时也是挺难理解的一个特性。</p>
+<p>隐式转换使用不当将会导致很难检查的bug</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>例如在scala项目使用创建了一个LinkedList对象，我们想要对该对象调用foreach方法，但是却发现调用的时候会报错，没有该方法</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util</span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> list = <span class="keyword">new</span> util.<span class="type">LinkedList</span>[<span class="type">Int</span>]()</span><br><span class="line"></span><br><span class="line">    list.foreach(println)  <span class="comment">// 这里会报：Cannot resolve symbol foreach</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们应该怎么办呢？实际上我们可以有以下几种解决方案 不需要修改LinkedList的源代码(也修改不了)</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>分析一下<code>list.foreach(println)</code>，发现这一句中包含了三个内容：数据集list、遍历行为foreach、处理函数println，那么我们只需要通过某种方案将这三个元素组装好就可以了</p>
+<h4 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h4><p>定义一个foreach函数帮助完成遍历</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> list = <span class="keyword">new</span> util.<span class="type">LinkedList</span>[<span class="type">Int</span>]()</span><br><span class="line">    list.add(<span class="number">3</span>)</span><br><span class="line">    list.add(<span class="number">4</span>)</span><br><span class="line">    list.add(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//    list.foreach(println)</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foreach</span></span>[<span class="type">T</span>](list: util.<span class="type">LinkedList</span>[<span class="type">T</span>], f: (<span class="type">T</span>) =&gt; <span class="type">Unit</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">      <span class="keyword">val</span> iter: util.<span class="type">Iterator</span>[<span class="type">T</span>] = list.iterator()</span><br><span class="line">      <span class="keyword">while</span> (iter.hasNext) f(iter.next())</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    foreach(list, println)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h4><p>通过方案一看似可以满足我们的需求，但是我们不想通过把list当做foreach的参数来完成遍历，我们就想通过调用<code>obj.foreach</code>的形式来完成这个操作。那么我们可以通过定义一个class来包装下list对象，即在新定义的class中提供foreach的方法调用，然后有一个list的属性，那么就可以这样做</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXX</span>[<span class="type">T</span>](<span class="params">list: util.<span class="type">LinkedList</span>[<span class="type">T</span>]</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">foreach</span></span>(f: (<span class="type">T</span>) =&gt; <span class="type">Unit</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> iter: util.<span class="type">Iterator</span>[<span class="type">T</span>] = list.iterator()</span><br><span class="line">    <span class="keyword">while</span> (iter.hasNext) f(iter.next())</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> list = <span class="keyword">new</span> util.<span class="type">LinkedList</span>[<span class="type">Int</span>]()</span><br><span class="line">    list.add(<span class="number">3</span>)</span><br><span class="line">    list.add(<span class="number">4</span>)</span><br><span class="line">    list.add(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> xx = <span class="keyword">new</span> <span class="type">XXX</span>(list)</span><br><span class="line">    xx.foreach(println)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a>方案三</h4><p>方案二中通过一个新的class做到了类似<code>obj.foreach</code>的调用形式，但是我们还不满足，我们不想用其他的对象来调用foreach，就是想直接<code>list.foreach</code>，用list对象本身直接调用，那该怎么办呢？首先在原始的LinkedList类中是没有foreach方法的，我们又不能去修改LinkedList的源码。实际上在scala中为我们提供了一种更加方便快捷的方案，可以在不侵入源码的情况下，给一个对象赋予新的方法。那就是<code>隐式转换(implicit)</code>，实际上scala中的隐式转换在某种程度上与我们上面的两种方案有异曲同工之妙，但是它在编译器层面做了优化，是语言层面的支持，即我们可以通过<code>implicit</code>关键字直接告诉编译器：<strong>我这个对象不存在当前我要调用的方法，但是我有在其他地方定义了一个方法转换，可以让我拥有这个方法</strong>。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> list = <span class="keyword">new</span> util.<span class="type">LinkedList</span>[<span class="type">Int</span>]()</span><br><span class="line">    list.add(<span class="number">3</span>)</span><br><span class="line">    list.add(<span class="number">4</span>)</span><br><span class="line">    list.add(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//隐式转换：  隐式转换方法:接受一个类型，返回另外一个包含特定方法的类型</span></span><br><span class="line">    <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">sdfsdf</span></span>[<span class="type">T</span>](list: util.<span class="type">LinkedList</span>[<span class="type">T</span>]) = &#123;</span><br><span class="line">      <span class="keyword">new</span> <span class="type">XXX</span>(list)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    list.foreach(println)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">XXX</span>[<span class="type">T</span>](<span class="params">list: util.<span class="type">LinkedList</span>[<span class="type">T</span>]</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">foreach</span></span>(f: (<span class="type">T</span>) =&gt; <span class="type">Unit</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> iter: util.<span class="type">Iterator</span>[<span class="type">T</span>] = list.iterator()</span><br><span class="line">    <span class="keyword">while</span> (iter.hasNext) f(iter.next())</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以发现我们使用了一个新的关键字<code>implicit</code>，它修饰了一个函数，并且我们新创建的这个函数，它的名字很特殊，只是一个乱写的字符串，也许你可以猜出来了，这个函数的名字对我们来说没有用处，对的在scala中的隐式转换只关心类型，并不关心名称。但是在实际应用中一定不要如此随便的命名，这里只是做演示。</p>
+<p>implicit关键字如注释中说的那样：<strong>接受一个类型，返回另一个包含特定方法的类型</strong>，但是我们不需要使用新的类型对象来调用foreach，这是因为scala在编译的阶段帮我们做了<em>改写</em>，其执行过程大致如下：</p>
+<ol>
+<li>scala编译器发现list对象并没有foreach方法 但是并不会立马报错</li>
+<li>它回去寻找有没有implicit定义的方法，且方法的参数正好是list对象对应的类型</li>
+<li>如果找到了，那么就可以编译通过；否则就会报错</li>
+</ol>
+<p>总而言之，scala编译器帮助我们完成了list类型的转换，也可以理解成编译器帮我们把代码改写了，但是这一步骤是我们所看不到，所以说是<code>隐式的</code>(个人这么理解)</p>
+<p>方案三介绍的只是scala的一种隐式转换：<strong>隐式转换方法</strong></p>
+<p>除此之外，scala中还有其他隐式转换形式：<strong>隐式转换类</strong>、<strong>隐式转换参数</strong></p>
+<h4 id="隐式转换类"><a href="#隐式转换类" class="headerlink" title="隐式转换类"></a>隐式转换类</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//隐式转换类</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="class"><span class="keyword">class</span> <span class="title">KKK</span>[<span class="type">T</span>](<span class="params">list: util.<span class="type">LinkedList</span>[<span class="type">T</span>]</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foreach</span></span>(f: (<span class="type">T</span>) =&gt; <span class="type">Unit</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">      <span class="keyword">val</span> iter: util.<span class="type">Iterator</span>[<span class="type">T</span>] = list.iterator()</span><br><span class="line">      <span class="keyword">while</span> (iter.hasNext) f(iter.next())</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> list = <span class="keyword">new</span> util.<span class="type">LinkedList</span>[<span class="type">Int</span>]()</span><br><span class="line">    list.add(<span class="number">3</span>)</span><br><span class="line">    list.add(<span class="number">4</span>)</span><br><span class="line">    list.add(<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">    list.foreach(println)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：这里需要注意的是：<code>implicit</code>只能用在类内部或者函数内部，<font color="red">不能使用在top-level的objects上</font>。否则会报如下的错误<code>&#39;implicit&#39; modifier cannot be used for top-level objects</code></p>
+</blockquote>
+<h4 id="隐式转换参数"><a href="#隐式转换参数" class="headerlink" title="隐式转换参数"></a>隐式转换参数</h4><p>最后这一种隐式转换的形式实际上对这个例子没有作用，他是在另外一些使用场景有使用</p>
+<p>方法可以具有 <em>隐式</em> 参数列表，由参数列表开头的 <em>implicit</em> 关键字标记。 如果参数列表中的参数没有像往常一样传递， Scala 将查看它是否可以获得正确类型的隐式值，如果可以，则自动传递。</p>
+<p>implicit如果出现在函数的参数列表中，如<code>def func(implicit name:String)</code>，那么表示在调用func函数的时候，name参数可以不传，也可以传。传与不传的区别如下：</p>
+<ul>
+<li>传：那么直接使用传递的参数，和普通的函数没有任何区别</li>
+<li>不传：这种情况下，必须存在一个隐式的String类型的变量被声明，否则会编译报错</li>
+</ul>
+<p>使用方式如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestImplicit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">implicit</span> <span class="keyword">val</span> str: <span class="type">String</span> = <span class="string">"lisi"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span></span>(<span class="keyword">implicit</span> name: <span class="type">String</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">      println(name)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func   <span class="comment">// 打印 lisi</span></span><br><span class="line">    func(<span class="string">"zhangsan"</span>)  <span class="comment">// 打印 zhangsan</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>隐式转换参数使用的时候需要注意以下几点</p>
+<ol>
+<li><p>如果参数列表中有implicit，那么所有的参数要么都传要么都定义隐式转换变量</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span></span>(<span class="keyword">implicit</span> name: <span class="type">String</span>, age: <span class="type">Int</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">  println(name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同一种类型的隐私转换变量只能定义一个，否则会报错</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">implicit</span> <span class="keyword">val</span> a:<span class="type">String</span> = <span class="string">"wangwu"</span></span><br><span class="line"><span class="keyword">implicit</span> <span class="keyword">val</span> b:<span class="type">String</span> = <span class="string">"lisi"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果有些参数有隐式转换变量定义，但是其他的参数不需要定义，该如何解决呢？</p>
+<p>解决方案：使用scala的<code>函数柯里化(CURRYING)</code>特性</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span></span>(age: <span class="type">Int</span>)(<span class="keyword">implicit</span> name: <span class="type">String</span>): <span class="type">Unit</span> = &#123;</span><br><span class="line">  println(name + <span class="string">" "</span> + age)</span><br><span class="line">&#125;</span><br><span class="line">func(<span class="number">66</span>)(<span class="string">"jkljkl"</span>)</span><br><span class="line">func(<span class="number">66</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="隐式转换的作用域"><a href="#隐式转换的作用域" class="headerlink" title="隐式转换的作用域"></a>隐式转换的作用域</h4><p><a href="https://stackoverflow.com/questions/5512397/passing-scala-math-integral-as-implicit-parameter" target="_blank" rel="noopener">StackOverFlow</a></p>
+<p>隐式转换本身是一种代码查找机制，所以下面会介绍隐式转换的查找范围：<br> -当前代码作用域。最直接的就是隐式定义和当前代码处在同一作用域中。<br> -当第一种解析方式没有找到合适的隐式转换时，编译器会继续在隐式参数类型的隐式作用域里查找。一个类型的隐式作用域指的是与该类型相关联的所有的伴生对象。</p>
+<p><strong>对于一个类型T它的隐式搜索区域包括如下：</strong><br> -假如T是这样定义的：T with A with B with C，那么A, B, C的伴生对象都是T的搜索区域。<br> -如果T是类型参数，那么参数类型和基础类型都是T的搜索部分。比如对于类型List[Foo]，List和Foo都是搜索区域<br> -如果T是一个单例类型p.T，那么p和T都是搜索区域。<br> -如果T是类型注入p#T，那么p和T都是搜索区域。</p>
+<p>所以，只要在上述的任何一个区域中搜索到合适的隐式转换，编译器都可以使编译通过。</p>
+<h4 id="scala中预定义的隐式转换"><a href="#scala中预定义的隐式转换" class="headerlink" title="scala中预定义的隐式转换"></a>scala中预定义的隐式转换</h4><p>scala.Predef：scala的预定义对象，预定义了很多类型 (例如 <code>Pair</code>) 和方法 (例如 <code>assert</code>)，同时也声明了一些隐式转换。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Scala隐式转换/" rel="tag"># Scala隐式转换</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Scala学习-7-偏函数/" rel="prev" title="Scala学习-偏函数">
+      <i class="fa fa-chevron-left"></i> Scala学习-偏函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/Scala学习-9-Iterator设计模式/" rel="next" title="Scala学习-9-Iterator设计模式">
+      Scala学习-9-Iterator设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#现象"><span class="nav-number">1.</span> <span class="nav-text">现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案一"><span class="nav-number">2.1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案二"><span class="nav-number">2.2.</span> <span class="nav-text">方案二</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案三"><span class="nav-number">2.3.</span> <span class="nav-text">方案三</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式转换类"><span class="nav-number">2.4.</span> <span class="nav-text">隐式转换类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式转换参数"><span class="nav-number">2.5.</span> <span class="nav-text">隐式转换参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隐式转换的作用域"><span class="nav-number">2.6.</span> <span class="nav-text">隐式转换的作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scala中预定义的隐式转换"><span class="nav-number">2.7.</span> <span class="nav-text">scala中预定义的隐式转换</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">123</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
