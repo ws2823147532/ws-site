@@ -163,6 +163,169 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-函数式编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-函数式编程/" class="post-title-link" itemprop="url">Java学习-函数式编程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-17 08:38:33" itemprop="dateCreated datePublished" datetime="2020-05-17T08:38:33+08:00">2020-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-03 17:32:49" itemprop="dateModified" datetime="2020-06-03T17:32:49+08:00">2020-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Java8之后加入了一种全新的方式来实现方法(功能)作为参数传递的机制：lambda表达式</p>
+<blockquote>
+<p>像python语言，天生就支持将function作为参数传递给函数.</p>
+</blockquote>
+<p>可以想象，既然是一种实现方法作为参数传递的机制，java是一种面向对象的编程语言，也就是说在java中除了原始数据类型之外，都是对象：</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="meta">@FunctionalInterface</span></span><br><span class="line">&gt; <span class="class"><span class="keyword">interface</span> <span class="title">CharBinaryOperator</span> </span>&#123;</span><br><span class="line">&gt;     <span class="function">String <span class="title">applyAsChar</span><span class="params">(<span class="keyword">char</span> left, <span class="keyword">char</span> right)</span></span>;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; </span><br><span class="line">&gt; CharBinaryOperator charBinaryOperator = (<span class="keyword">char</span> a, <span class="keyword">char</span> b) -&gt; &#123;</span><br><span class="line">&gt;     System.out.println(a);</span><br><span class="line">&gt;     System.out.println(b);</span><br><span class="line">&gt;     <span class="keyword">return</span> String.valueOf(a + b);</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>charBinaryOperator instanceof CharBinaryOperator<ul>
+<li>charBinaryOperator是CharBinaryOperator的一个实例</li>
+</ul>
+</li>
+<li>CharBinaryOperator.class instanceof Class<ul>
+<li>CharBinaryOperator.class是Class的一个实例</li>
+</ul>
+</li>
+<li>Class.class instanceof Class<ul>
+<li>Class.class同时也是Class的一个实例</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>在java中，传递的参数要么是原始数据类型，要么是对象(类型也是对象，所以能够传递)，不能是其他的类型。在JDK8之前，要想将一个功能传递到函数内部(<strong>这一般会被称为函数回调</strong>，是大多数异步编程的常用套路：到达某个时间节点或满足某中情况触发一个操作)，那么就只能<strong>显示的</strong>先定义一个接口，然后创建一个实现了这个接口的类，然后再实例化这个类得到一个对象，最后将这个对象作为参数传入函数，函数内部调用对象实现的方法，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CharBinaryOperator charBinaryOperator1 = <span class="keyword">new</span> CharBinaryOperator() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">applyAsChar</span><span class="params">(<span class="keyword">char</span> a, <span class="keyword">char</span> b)</span> </span>&#123;</span><br><span class="line">        System.out.println(a);</span><br><span class="line">        System.out.println(b);</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(a + b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">charBinaryOperator.applyAsChar(<span class="string">'a'</span>, <span class="string">'b'</span>);</span><br></pre></td></tr></table></figure>
+<p>在JDK8及之后，我们不需要再显示的做这一系列的事情(当然你这么做也不会有问题)。</p>
+<p>在JDK8及之后，所有满足条件的interface都会被解释函数式接口，即都可以通过lambda表达式的形式代替上述流程</p>
+<blockquote>
+<p>什么样的interface才算满足条件呢？</p>
+<p>只声明了一个未实现的函数的interface就可以。在JDK8及以后，interface中定义的函数也可以有默认的实现</p>
+<p>在声明接口的时候，可以使用java.lang.FunctionalInterface注解，表示该interface是一个函数式接口(当然可以不加，compiler会自动判断)</p>
+<p>如果在有多个未实现的函数的interface上加这个注解的时候，编译阶段就会报错：Multiple non-overriding abstract methods found in interface OOXX</p>
+<p>lambda表达式只不过是为了实现这个机制的一种解决方案，可以提高开发效率，同时隐藏了interface的定义细节，<del>compilier完全是按照参数列表来推断当前的lambda表达式是和哪一个interface绑定的</del>(compilier直接找到接口的定义，不是推断的)。如果没有预定义的，那么就会在编译期间报错，所以在java中lambda表达式的使用是有一定的限制的。</p>
+<p>同时，在使用JDK预定义的操作时，在内部是调用了接口内定义的那个具体的函数的，所以对于开发者来说也是透明的，如列表的forEach()函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;     <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span> </span>&#123;</span><br><span class="line">&gt;         Objects.requireNonNull(action);</span><br><span class="line">&gt;         <span class="keyword">for</span> (T t : <span class="keyword">this</span>) &#123;</span><br><span class="line">&gt;             action.accept(t);</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt; <span class="comment">// 我们在使用的时候是这样的</span></span><br><span class="line">&gt;         List&lt;Integer&gt; integers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">&gt;         integers.add(<span class="number">1</span>);</span><br><span class="line">&gt;         integers.forEach(i -&gt; &#123;</span><br><span class="line">&gt;             System.out.println(i);</span><br><span class="line">&gt;         &#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;<br>&gt;<br>&gt;</p>
+<blockquote>
+<p>本质上，还是要先有interface的定义(在JDK中已经预定义了大部分的interface，所以我们才不用自己手动定义，我上面的例子中就是一个没有被预定义的例子)，运行结果也是创建了一个实现了指定接口的对象，然后将对象作为参数传递给函数</p>
+<p>如果我们完全脱离了JDK预定义的操作，那么我们就需要自己定义innterface，并且在我们使用该接口的地方显示的声明方法的使用，但是在外层传递方法参数的调用，我们仍可以使用简洁明了的lambda表达式，无论怎么说，lambda表达式的这种机制极大的方便了开发人员</p>
+</blockquote>
+<p>Lambda 表达式和匿名类之间的区别</p>
+<blockquote>
+<p><code>this</code> 关键字。对于匿名类 <code>this</code> 关键字解析为匿名类，而对于 Lambda 表达式，<code>this</code> 关键字解析为包含写入 Lambda 的类。</p>
+</blockquote>
+<h6 id="JDK中预定义的interface"><a href="#JDK中预定义的interface" class="headerlink" title="JDK中预定义的interface"></a>JDK中预定义的interface</h6><p>在<code>java.util.function</code>可以看到全部的预定义的interface，以下四种是最有代表性的</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9okl2qkj30fg04sjrk.jpg" alt></p>
+<ul>
+<li>Function<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9t81dwtj30ch03kdg0.jpg" alt="image-20200517110913472"><ul>
+<li>R apply(T)</li>
+<li>Function<v, r> compose(Function&lt;? super V, ? extends T&gt; before)</v,></li>
+<li>Function<t, v> andThen(Function&lt;? super R, ? extends V&gt; after)</t,></li>
+<li>Function<t, t> identity()</t,></li>
+</ul>
+</li>
+<li>Consumer<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9v9l0w5j30ae02jglk.jpg" alt="image-20200517111112190"><ul>
+<li>void accept(T)</li>
+<li>Consumer&lt; T&gt; addThen(Consumer&lt;? super T&gt;)</li>
+</ul>
+</li>
+<li>Predicate<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9vnldldj30a804b74d.jpg" alt="image-20200517111135143"><ul>
+<li>boolean test()</li>
+<li>Predicate&lt; T&gt; add(Predicate&lt;? super T&gt;)</li>
+<li>Predicate&lt; T&gt; negate()</li>
+<li>Predicate&lt; T&gt; or(Predicate&lt;? super T&gt;)</li>
+<li>Predicate&lt; T&gt; isEqual(Object) </li>
+</ul>
+</li>
+<li>Supplier<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9ukowqdj303k01uq2r.jpg" alt="image-20200517111031489"><ul>
+<li>T get()</li>
+</ul>
+</li>
+</ul>
+<h1 id="Lambda-表达式的例子"><a href="#Lambda-表达式的例子" class="headerlink" title="Lambda 表达式的例子"></a><a href="https://segmentfault.com/a/1190000009186509" target="_blank" rel="noopener">Lambda 表达式的例子</a></h1><h2 id="1-线程初始化"><a href="#1-线程初始化" class="headerlink" title="1 线程初始化"></a>1 线程初始化</h2><p>线程可以初始化如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Old way</span></span><br><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// New way</span></span><br><span class="line"><span class="keyword">new</span> Thread(</span><br><span class="line">    () -&gt; System.out.println(<span class="string">"Hello world"</span>)</span><br><span class="line">).start();</span><br></pre></td></tr></table></figure>
+<h2 id="2-事件处理"><a href="#2-事件处理" class="headerlink" title="2 事件处理"></a>2 事件处理</h2><p>事件处理可以用 Java 8 使用 Lambda 表达式来完成。以下代码显示了将 <code>ActionListener</code> 添加到 UI 组件的新旧方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Old way</span></span><br><span class="line">button.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// New way</span></span><br><span class="line">button.addActionListener( (e) -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="3-遍例输出（方法引用）"><a href="#3-遍例输出（方法引用）" class="headerlink" title="3 遍例输出（方法引用）"></a>3 遍例输出（方法引用）</h2><p>输出给定数组的所有元素的简单代码。请注意，还有一种使用 Lambda 表达式的方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);</span><br><span class="line"><span class="keyword">for</span> (Integer n : list) &#123;</span><br><span class="line">    System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 -&gt; 的 Lambda 表达式</span></span><br><span class="line">list.forEach(n -&gt; System.out.println(n));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 :: 的 Lambda 表达式</span></span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<h2 id="6-4-逻辑操作"><a href="#6-4-逻辑操作" class="headerlink" title="6.4 逻辑操作"></a>6.4 逻辑操作</h2><p>输出通过逻辑判断的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wuxianjiezh.demo.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Predicate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出所有数字："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"不输出："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出偶数："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出奇数："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n % <span class="number">2</span> == <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出大于 5 的数字："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n &gt; <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">evaluate</span><span class="params">(List&lt;Integer&gt; list, Predicate&lt;Integer&gt; predicate)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Integer n : list) &#123;</span><br><span class="line">            <span class="keyword">if</span> (predicate.test(n)) &#123;</span><br><span class="line">                System.out.print(n + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输出所有数字：1 2 3 4 5 6 7 </span><br><span class="line">不输出：</span><br><span class="line">输出偶数：2 4 6 </span><br><span class="line">输出奇数：1 3 5 7 </span><br><span class="line">输出大于 5 的数字：6 7</span><br></pre></td></tr></table></figure>
+<h2 id="6-4-Stream-API-示例"><a href="#6-4-Stream-API-示例" class="headerlink" title="6.4 Stream API 示例"></a>6.4 Stream API 示例</h2><p><code>java.util.stream.Stream</code>接口 和 Lambda 表达式一样，都是 Java 8 新引入的。所有 <code>Stream</code> 的操作必须以 Lambda 表达式为参数。<code>Stream</code> 接口中带有大量有用的方法，比如 <code>map()</code> 的作用就是将 input Stream 的每个元素，映射成output Stream 的另外一个元素。</p>
+<p>下面的例子，我们将 Lambda 表达式 <code>x -&gt; x*x</code> 传递给 <code>map()</code> 方法，将其应用于流的所有元素。之后，我们使用 <code>forEach</code> 打印列表的所有元素。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">for</span>(Integer n : list) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = n * n;</span><br><span class="line">    System.out.println(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// new way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line">list.stream().map((x) -&gt; x*x).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<p>下面的示例中，我们给定一个列表，然后求列表中每个元素的平方和。这个例子中，我们使用了 <code>reduce()</code> 方法，这个方法的主要作用是把 Stream 元素组合起来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(Integer n : list) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = n * n;</span><br><span class="line">    sum = sum + x;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(sum);</span><br><span class="line"></span><br><span class="line"><span class="comment">// new way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">int</span> sum = list.stream().map(x -&gt; x*x).reduce((x,y) -&gt; x + y).get();</span><br><span class="line">System.out.println(sum);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-集合类/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1348,83 +1511,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark应用之import-spark-implicits/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Spark应用之import-spark-implicits/" class="post-title-link" itemprop="url">Spark应用之import spark.implicits._</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-25 17:10:54" itemprop="dateCreated datePublished" datetime="2020-03-25T17:10:54+08:00">2020-03-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-01 17:12:15" itemprop="dateModified" datetime="2020-07-01T17:12:15+08:00">2020-07-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark应用/" itemprop="url" rel="index"><span itemprop="name">Spark应用</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在初期使用spark的时候，大家都会遇见一个很奇怪的写法<strong><code>import spark.implicits._</code></strong></p>
-<p>这里面包含了四个关键字：<code>import</code>、<code>spark</code>、<code>implicits</code>、<code>_</code></p>
-<p><code>import</code>和<code>_</code>实际上是Scala中包引入的写法，表示引入指定包内的所有成员</p>
-<p>本文主要想记录一下另外两个关键字：<code>spark</code>、<code>implicits</code></p>
-<h4 id="关键字一：spark"><a href="#关键字一：spark" class="headerlink" title="关键字一：spark"></a>关键字一：spark</h4><h4 id="关键字二：implicits"><a href="#关键字二：implicits" class="headerlink" title="关键字二：implicits"></a>关键字二：implicits</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1494,7 +1580,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1507,7 +1593,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1582,6 +1668,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

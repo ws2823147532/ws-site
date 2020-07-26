@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://shang.at/"/>
-  <updated>2020-07-23T04:22:14.421Z</updated>
+  <updated>2020-07-24T10:53:51.375Z</updated>
   <id>https://shang.at/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-暴力递归到动态规划1-4</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9A%B4%E5%8A%9B%E8%A7%84%E5%88%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%921-4/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-暴力规划到动态规划1-4/</id>
+    <title>工具使用-编译工具-maven</title>
+    <link href="https://shang.at/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7-maven/"/>
+    <id>https://shang.at/post/工具使用-编译工具-maven/</id>
+    <published>2020-07-24T10:06:19.000Z</published>
+    <updated>2020-07-24T10:53:51.375Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a><h3 id="maven配置"><a href="#maven配置" class="headerlink" title="maven配置"></a>maven配置</h3><h4 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">settings</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--需要改成自己的maven的本地仓库地址--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>~/.m2/repository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrors</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>alimaven<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>aliyun maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirrors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span>&gt;</span>local private nexus<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.oschina.net/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span>&gt;</span>local private nexus<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.oschina.net/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure><p>localRepository</p><p>​    本地maven仓库路径</p><p>pluginGroups</p><p>proxies</p><p>​    代理设置</p><p>servers</p><p>mirrors</p><p>profiles</p><p>activeProfiles</p><h4 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h4><h3 id="maven的常见命令"><a href="#maven的常见命令" class="headerlink" title="maven的常见命令"></a>maven的常见命令</h3><p>项目编译：<code>mvn clean package -Dmaven.test.skip</code></p><p>使用指定的setting.xml文件：<code>mvn clean package --settings ~/.m2/settings.xml.fast -Dmaven.test.skip</code></p><p>收集项目所依赖的lib：<code>mvn dependency:copy-dependencies -DoutputDirectory=lib</code></p><p>下载源码：<code>mvn dependency:sources</code></p><h3 id="将jar包安装到本地仓库"><a href="#将jar包安装到本地仓库" class="headerlink" title="将jar包安装到本地仓库"></a>将jar包安装到本地仓库</h3><p><code>mvn install:install-file -Dfile=... -DgroupId=... -DartifactId=... -Dversion=... -Dpackaging=jar</code></p><p>如：<code>mvn install:install-file -Dfile=IKAnalyzer2012_FF.jar -DgroupId=org.wltea.ik-analyzer -DartifactId=ik-analyzer -Dversion=5.0.0 -Dpackaging=jar</code></p><h3 id="将jar包发布到私服"><a href="#将jar包发布到私服" class="headerlink" title="将jar包发布到私服"></a>将jar包发布到私服</h3><p><code>mvn deploy:deploy-file -DgroupId=... -DartifactId=... -Dversion=... -Dgenertatepom=true -Dpackaging=jar  -Dfile=...  -Durl=...</code></p><p><code>mvn deploy:deploy-file --settings ~/.m2/settings.xml -DgroupId=sqlline -DartifactId=sqlline -Dversion=1.1.8 -Dgenertatepom=true -Dpackaging=jar  -Dfile=/Users/wangshang/.m2/repository/sqlline/sqlline/1.1.8/sqlline-1.1.8.jar -Durl=... -DrepositoryId=archiva.internal</code></p><p>如果是本地项目打包上传需要到私服，需要在pom.xml文件和maven的settings.xml配置文件中做类似如下的配置：</p><p>pom.xml   配置要上传的私服地址</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>archiva.internal<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Internal Release Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">url</span>&gt;</span>...<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>archiva.snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Internal Snapshot Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>...<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br></pre></td></tr></table></figure><p>settings.xml 配置私服的认证信息</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>archiva.internal<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>...<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>...<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>archiva.snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>...<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>...<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;简介：&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="工具使用" scheme="https://shang.at/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
+    
+    
+      <category term="maven" scheme="https://shang.at/tags/maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据结构与算法-左神学习笔记12-暴力递归到动态规划1-4</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B012-%E6%9A%B4%E5%8A%9B%E8%A7%84%E5%88%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%921-4/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记12-暴力规划到动态规划1-4/</id>
     <published>2020-07-23T04:19:14.000Z</published>
-    <updated>2020-07-23T04:22:14.421Z</updated>
+    <updated>2020-07-23T06:00:30.532Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -41,11 +65,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-动态规划</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-动态规划/</id>
+    <title>数据结构与算法-左神学习笔记11-动态规划</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B011-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记11-动态规划/</id>
     <published>2020-07-23T04:18:52.000Z</published>
-    <updated>2020-07-23T04:22:22.446Z</updated>
+    <updated>2020-07-23T06:00:26.672Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -65,11 +89,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-暴力递归</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-暴力递归/</id>
+    <title>数据结构与算法-左神学习笔记10-暴力递归</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B010-%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记10-暴力递归/</id>
     <published>2020-07-23T04:18:43.000Z</published>
-    <updated>2020-07-23T04:22:11.929Z</updated>
+    <updated>2020-07-23T06:00:24.432Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -89,11 +113,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-并查集&amp;图</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B9%B6%E6%9F%A5%E9%9B%86-%E5%9B%BE/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-并查集-图/</id>
+    <title>数据结构与算法-左神学习笔记9-并查集&amp;图</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B09-%E5%B9%B6%E6%9F%A5%E9%9B%86-%E5%9B%BE/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记9-并查集-图/</id>
     <published>2020-07-23T04:18:31.000Z</published>
-    <updated>2020-07-23T04:22:19.722Z</updated>
+    <updated>2020-07-23T06:00:21.358Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -113,11 +137,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-贪心算法</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-贪心算法/</id>
+    <title>数据结构与算法-左神学习笔记8-贪心算法</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B08-%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记8-贪心算法/</id>
     <published>2020-07-23T04:18:15.000Z</published>
-    <updated>2020-07-23T04:22:35.728Z</updated>
+    <updated>2020-07-23T06:00:18.411Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -137,11 +161,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-二叉树的递归套路</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-二叉树的递归套路/</id>
+    <title>数据结构与算法-左神学习笔记7-二叉树的递归套路</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B07-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记7-二叉树的递归套路/</id>
     <published>2020-07-23T04:18:05.000Z</published>
-    <updated>2020-07-23T04:22:25.021Z</updated>
+    <updated>2020-07-23T06:00:15.894Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -161,11 +185,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-链表相关面试题</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-链表相关面试题/</id>
+    <title>数据结构与算法-左神学习笔记6-链表相关面试题</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B06-%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记6-链表相关面试题/</id>
     <published>2020-07-23T04:17:43.000Z</published>
-    <updated>2020-07-23T04:22:32.905Z</updated>
+    <updated>2020-07-24T10:06:39.139Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -185,11 +209,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-Trie&amp;桶排序&amp;排序总结</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Trie-%E6%A1%B6%E6%8E%92%E5%BA%8F-%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-Trie-桶排序-排序总结/</id>
+    <title>数据结构与算法-左神学习笔记5-Trie&amp;桶排序&amp;排序总结</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B05-Trie-%E6%A1%B6%E6%8E%92%E5%BA%8F-%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记5-Trie-桶排序-排序总结/</id>
     <published>2020-07-23T04:17:29.000Z</published>
-    <updated>2020-07-23T04:22:39.989Z</updated>
+    <updated>2020-07-23T06:00:10.925Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -209,11 +233,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-比较器&amp;堆</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E6%AF%94%E8%BE%83%E5%99%A8-%E5%A0%86/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-比较器-堆/</id>
+    <title>数据结构与算法-左神学习笔记4-比较器&amp;堆</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04-%E6%AF%94%E8%BE%83%E5%99%A8-%E5%A0%86/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记4-比较器-堆/</id>
     <published>2020-07-23T04:17:04.000Z</published>
-    <updated>2020-07-23T04:22:17.032Z</updated>
+    <updated>2020-07-23T06:00:08.521Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -233,11 +257,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-归并&amp;随机快排</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%BD%92%E5%B9%B6-%E9%9A%8F%E6%9C%BA%E5%BF%AB%E6%8E%92/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-归并-随机快排/</id>
+    <title>数据结构与算法-左神学习笔记3-归并&amp;随机快排</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B03-%E5%BD%92%E5%B9%B6-%E9%9A%8F%E6%9C%BA%E5%BF%AB%E6%8E%92/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记3-归并-随机快排/</id>
     <published>2020-07-23T04:16:44.000Z</published>
-    <updated>2020-07-23T04:22:28.632Z</updated>
+    <updated>2020-07-23T06:00:06.044Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -257,11 +281,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-链表&amp;栈&amp;队列&amp;递归&amp;哈希表</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%93%BE%E8%A1%A8-%E6%A0%88-%E9%98%9F%E5%88%97-%E9%80%92%E5%BD%92-%E5%93%88%E5%B8%8C%E8%A1%A8/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-链表-栈-队列-递归-哈希表/</id>
+    <title>数据结构与算法-左神学习笔记2-链表&amp;栈&amp;队列&amp;递归&amp;哈希表</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02-%E9%93%BE%E8%A1%A8-%E6%A0%88-%E9%98%9F%E5%88%97-%E9%80%92%E5%BD%92-%E5%93%88%E5%B8%8C%E8%A1%A8/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记2-链表-栈-队列-递归-哈希表/</id>
     <published>2020-07-23T04:16:10.000Z</published>
-    <updated>2020-07-23T04:16:19.428Z</updated>
+    <updated>2020-07-23T06:00:03.558Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -281,11 +305,11 @@
   </entry>
   
   <entry>
-    <title>数据结构与算法-左神学习笔记-复杂度&amp;对数器&amp;二分法&amp;位运算</title>
-    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%A4%8D%E6%9D%82%E5%BA%A6-%E5%AF%B9%E6%95%B0%E5%99%A8-%E4%BA%8C%E5%88%86%E6%B3%95-%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
-    <id>https://shang.at/post/数据结构与算法-左神学习笔记-复杂度-对数器-二分法-位运算/</id>
+    <title>数据结构与算法-左神学习笔记1-复杂度&amp;对数器&amp;二分法&amp;位运算</title>
+    <link href="https://shang.at/post/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95-%E5%B7%A6%E7%A5%9E%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01-%E5%A4%8D%E6%9D%82%E5%BA%A6-%E5%AF%B9%E6%95%B0%E5%99%A8-%E4%BA%8C%E5%88%86%E6%B3%95-%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
+    <id>https://shang.at/post/数据结构与算法-左神学习笔记1-复杂度-对数器-二分法-位运算/</id>
     <published>2020-07-23T04:15:02.000Z</published>
-    <updated>2020-07-23T04:15:26.265Z</updated>
+    <updated>2020-07-23T06:00:00.766Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a>]]></content>
     
@@ -453,7 +477,7 @@
     <link href="https://shang.at/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-CentOS7%E4%B8%8A%E7%9A%84%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/"/>
     <id>https://shang.at/post/操作系统-CentOS7上的开发环境配置/</id>
     <published>2020-07-13T14:02:29.000Z</published>
-    <updated>2020-07-16T07:05:38.354Z</updated>
+    <updated>2020-07-26T03:24:51.446Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>简介：在Centos上进行开发的环境搭建</p></blockquote><a id="more"></a><p><a href="https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/strace.html" target="_blank" rel="noopener">Linux Tools Quick Tutorial</a></p><h1 id="安装必要的软件"><a href="#安装必要的软件" class="headerlink" title="安装必要的软件"></a>安装必要的软件</h1><h2 id="升级-yum源-amp-安装相关依赖包"><a href="#升级-yum源-amp-安装相关依赖包" class="headerlink" title="升级 yum源&amp;安装相关依赖包"></a>升级 yum源&amp;安装相关依赖包</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum update</span><br><span class="line"></span><br><span class="line">yum install -y net-tools rsync mlocate wget vim ntpdate telnet gcc zlib-dev openssl-devel sqlite-devel bzip2-devel binutils qt  make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms strace</span><br></pre></td></tr></table></figure><h2 id="虚拟机软件"><a href="#虚拟机软件" class="headerlink" title="虚拟机软件"></a>虚拟机软件</h2><h3 id="Vagrant"><a href="#Vagrant" class="headerlink" title="Vagrant"></a>Vagrant</h3><p><a href="/post/虚拟机-Vagrant使用">这里查看vagrant的详细使用 </a></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.rpm</span><br><span class="line"></span><br><span class="line">rpm -ivh vagrant_2.2.9_x86_64.rpm</span><br></pre></td></tr></table></figure><h3 id="VirualBox"><a href="#VirualBox" class="headerlink" title="VirualBox"></a>VirualBox</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.virtualbox.org/virtualbox/6.1.10/VirtualBox-6.1-6.1.10_138449_el7-1.x86_64.rpm</span><br></pre></td></tr></table></figure><p>rpm -ivh VirtualBox-6.1-6.1.10_138449_el7-1.x86_64.rpm 报错如下：libSDL-1.2.so.0()(64bit) 被 VirtualBox-6.1-6.1.10_138449_el7-1.x86_64 需要<br>那么，需要安装SDL，<code>yum install -y SDL</code></p><p>同时要保证安装的kernel-header和kernel的版本一致。安装完kernel之后，需要重启，可以使用<code>uname -r</code> 查看kernel版本</p><h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p><a href="/post/虚拟机-Docker">这里查看Docker的详细使用 </a></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装工具包</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装ali源</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 刷新安装源</span><br><span class="line">yum makecache fast</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 docker-ce</span><br><span class="line">yum -y install docker-ce</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 启动docker</span><br><span class="line">systemctl start docker</span><br><span class="line"><span class="meta">#</span> 停止docker</span><br><span class="line">systemctl stop docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 开机自启动</span><br><span class="line">systemctl enable docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 配置aliyun的容器镜像加速器   </span><br><span class="line"><span class="meta">#</span> 登录aliyun.com 搜索容器镜像服务，进入管理后台，在左侧菜单栏下面可以找到 镜像加速器 选项</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-'EOF'</span><br><span class="line">&#123;</span><br><span class="line">  "registry-mirrors": ["https://oooxxxoox.mirror.aliyuncs.com"]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure><h2 id="实时监控网速"><a href="#实时监控网速" class="headerlink" title="实时监控网速"></a>实时监控网速</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装之前均需要安装epel源，</span><br><span class="line">yum -y install epel-release</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装iftop工具</span><br><span class="line">yum install iftop -y</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 查看开启的网卡</span><br><span class="line">ifconfig </span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 使用iftop监控，会进入一个类似top命令的界面，监控连接的地址以及网速</span><br><span class="line">iftop -i em4</span><br></pre></td></tr></table></figure><h2 id="systemctl命令详解"><a href="#systemctl命令详解" class="headerlink" title="systemctl命令详解"></a>systemctl命令详解</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line">Systemctl是一个系统管理守护进程、工具和库的集合，用于取代System V、service和chkconfig命令，初始进程主要负责控制systemd系统和服务管理器。通过Systemctl –help可以看到该命令主要分为：查询或发送控制命令给systemd服务，管理单元服务的命令，服务文件的相关命令，任务、环境、快照相关命令，systemd服务的配置重载，系统开机关机相关的命令。 </span><br><span class="line"></span><br><span class="line">1. 列出所有可用单元 </span><br><span class="line"><span class="meta">#</span> systemctl list-unit-files</span><br><span class="line"></span><br><span class="line">2. 列出所有运行中单元 </span><br><span class="line"><span class="meta">#</span> systemctl list-units</span><br><span class="line"></span><br><span class="line">3. 列出所有失败单元 </span><br><span class="line"><span class="meta">#</span> systemctl –failed</span><br><span class="line"></span><br><span class="line">4. 检查某个单元（如 crond.service）是否启用 </span><br><span class="line"><span class="meta">#</span> systemctl is-enabledcrond.service </span><br><span class="line"></span><br><span class="line">5. 列出所有服务 </span><br><span class="line"><span class="meta">#</span> systemctl list-unit-files –type=service</span><br><span class="line"></span><br><span class="line">6. Linux中如何启动、重启、停止、重载服务以及检查服务（如 httpd.service）状态 </span><br><span class="line"><span class="meta">#</span> systemctl start httpd.service</span><br><span class="line"><span class="meta">#</span> systemctl restart httpd.service</span><br><span class="line"><span class="meta">#</span> systemctl stop httpd.service</span><br><span class="line"><span class="meta">#</span> systemctl reload httpd.service</span><br><span class="line"><span class="meta">#</span> systemctl status httpd.service</span><br><span class="line"></span><br><span class="line">注意：当我们使用systemctl的start，restart，stop和reload命令时，终端不会输出任何内容，只有status命令可以打印输出。</span><br><span class="line"></span><br><span class="line">7. 如何激活服务并在开机时启用或禁用服务（即系统启动时自动启动mysql.service服务） </span><br><span class="line"><span class="meta">#</span> systemctl is-active mysql.service</span><br><span class="line"><span class="meta">#</span> systemctl enable mysql.service</span><br><span class="line"><span class="meta">#</span> systemctl disable mysql.service</span><br><span class="line"></span><br><span class="line">8. 如何屏蔽（让它不能启动）或显示服务（如ntpdate.service） </span><br><span class="line"><span class="meta">#</span> systemctl mask ntpdate.service</span><br><span class="line">ln -s ‘/dev/null”/etc/systemd/system/ntpdate.service’</span><br><span class="line"><span class="meta">#</span> systemctl unmask ntpdate.service</span><br><span class="line">rm ‘/etc/systemd/system/ntpdate.service’</span><br><span class="line"></span><br><span class="line">9. 使用systemctl命令杀死服务 </span><br><span class="line"><span class="meta">#</span> systemctl killcrond </span><br><span class="line"></span><br><span class="line">10. 列出所有系统挂载点 </span><br><span class="line"><span class="meta">#</span> systemctl list-unit-files –type=mount</span><br><span class="line"></span><br><span class="line">11. 挂载、卸载、重新挂载、重载系统挂载点并检查系统中挂载点状态 </span><br><span class="line"><span class="meta">#</span> systemctl start tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl stop tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl restart tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl reload tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl status tmp.mount</span><br><span class="line"></span><br><span class="line">12. 在启动时激活、启用或禁用挂载点（系统启动时自动挂载） </span><br><span class="line"><span class="meta">#</span> systemctl is-active tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl enable tmp.mount</span><br><span class="line"><span class="meta">#</span> systemctl disable tmp.mount</span><br><span class="line"></span><br><span class="line">13. 在Linux中屏蔽（让它不能启用）或可见挂载点 </span><br><span class="line"><span class="meta">#</span> systemctl mask tmp.mount</span><br><span class="line">ln -s ‘/dev/null”/etc/systemd/system/tmp.mount’</span><br><span class="line"><span class="meta">#</span> systemctl unmask tmp.mount</span><br><span class="line">rm ‘/etc/systemd/system/tmp.mount’</span><br><span class="line"></span><br><span class="line">14. 列出所有可用系统套接口 </span><br><span class="line"><span class="meta">#</span> systemctl list-unit-files –type=socket</span><br><span class="line"></span><br><span class="line">15. 检查某个服务的所有配置细节 </span><br><span class="line"><span class="meta">#</span> systemctl show mysql </span><br><span class="line"></span><br><span class="line">16. 获取某个服务（httpd）的依赖性列表 </span><br><span class="line"><span class="meta">#</span> systemctl list-dependencies httpd.service</span><br><span class="line"></span><br><span class="line">17. 启动救援模式 </span><br><span class="line"><span class="meta">#</span> systemctl rescue</span><br><span class="line"></span><br><span class="line">18. 进入紧急模式 </span><br><span class="line"><span class="meta">#</span> systemctl emergency</span><br><span class="line"></span><br><span class="line">19. 列出当前使用的运行等级 </span><br><span class="line"><span class="meta">#</span> systemctl get-default</span><br><span class="line"></span><br><span class="line">20. 启动运行等级5，即图形模式 </span><br><span class="line"><span class="meta">#</span> systemctl isolate runlevel5.target</span><br><span class="line">或</span><br><span class="line"><span class="meta">#</span> systemctl isolate graphical.target</span><br><span class="line"></span><br><span class="line">21. 启动运行等级3，即多用户模式（命令行） </span><br><span class="line"><span class="meta">#</span> systemctl isolate runlevel3.target</span><br><span class="line">或</span><br><span class="line"><span class="meta">#</span> systemctl isolate multiuser.target</span><br><span class="line"></span><br><span class="line">22. 设置多用户模式或图形模式为默认运行等级 </span><br><span class="line"><span class="meta">#</span> systemctl set-default runlevel3.target</span><br><span class="line"><span class="meta">#</span> systemctl set-default runlevel5.target</span><br><span class="line"></span><br><span class="line">23. 重启、停止、挂起、休眠系统或使系统进入混合睡眠 </span><br><span class="line"><span class="meta">#</span> systemctl reboot</span><br><span class="line"><span class="meta">#</span> systemctl halt</span><br><span class="line"><span class="meta">#</span> systemctl suspend</span><br><span class="line"><span class="meta">#</span> systemctl hibernate</span><br><span class="line"><span class="meta">#</span> systemctl hybrid-sleep</span><br><span class="line"></span><br><span class="line">对于不知运行等级为何物的人，说明如下。</span><br><span class="line">Runlevel 0 : 关闭系统</span><br><span class="line">Runlevel 1 : 救援，维护模式</span><br><span class="line">Runlevel 3 : 多用户，无图形系统</span><br><span class="line">Runlevel 4 : 多用户，无图形系统</span><br><span class="line">Runlevel 5 : 多用户，图形化系统</span><br><span class="line">Runlevel 6 : 关闭并重启机器</span><br></pre></td></tr></table></figure><h2 id="Centos重启与关机"><a href="#Centos重启与关机" class="headerlink" title="Centos重启与关机"></a>Centos重启与关机</h2><p>　Linux centos重启命令：</p><ul><li>　　1、reboot</li><li>　　2、shutdown -r now 立刻重启(root用户使用)</li><li>　　3、shutdown -r 10 过10分钟自动重启(root用户使用)</li><li>　　4、shutdown -r 20:35 在时间为20:35时候重启(root用户使用)</li></ul><p>　　如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启</p><p>　Linux centos关机命令：</p><ul><li>　　1、halt 立刻关机</li><li>　　2、poweroff 立刻关机</li><li>　　3、shutdown -h now 立刻关机(root用户使用)</li><li>　　4、shutdown -h 10 10分钟后自动关机</li></ul><p>　　如果是通过shutdown命令设置关机的话，可以用shutdown -c命令取消重启</p>]]></content>
     
@@ -467,28 +491,6 @@
     
     
       <category term="Centos开发环境" scheme="https://shang.at/tags/Centos%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>操作系统-CentOS7时区设置</title>
-    <link href="https://shang.at/post/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-CentOS7%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE/"/>
-    <id>https://shang.at/post/操作系统-CentOS7时区设置/</id>
-    <published>2020-07-04T14:20:22.000Z</published>
-    <updated>2020-07-04T14:20:44.981Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a><p><a href="https://www.cnblogs.com/zhangeamon/p/5500744.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangeamon/p/5500744.html</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;简介：&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="centos7时区设置" scheme="https://shang.at/tags/centos7%E6%97%B6%E5%8C%BA%E8%AE%BE%E7%BD%AE/"/>
     
   </entry>
   

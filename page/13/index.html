@@ -163,6 +163,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-union方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Spark学习笔记-union方法/" class="post-title-link" itemprop="url">Spark学习笔记-union方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-12 09:53:56" itemprop="dateCreated datePublished" datetime="2019-03-12T09:53:56+08:00">2019-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-01 17:10:57" itemprop="dateModified" datetime="2020-07-01T17:10:57+08:00">2020-07-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark学习/" itemprop="url" rel="index"><span itemprop="name">Spark学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="方法简介"><a href="#方法简介" class="headerlink" title="方法简介"></a>方法简介</h3><p>pyspark.sql.dataframe.DataFrame#union(other)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">union两个df，效果相当于union all(pyspark.sql.dataframe.DataFrame#unionAll在2.0以后就被Deprecated了)。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>union方法的特点是：</p>
+<ul>
+<li>schema会使用前面df的schema，</li>
+<li>只有两个有相同数量列的df才能进行union，</li>
+<li>union的时候会根据列的顺序进行union，与属性名无关</li>
+</ul>
+</blockquote>
+<h3 id="案例测试"><a href="#案例测试" class="headerlink" title="案例测试"></a>案例测试</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line">spark = SparkSession \</span><br><span class="line">        .builder \</span><br><span class="line">        .master(<span class="string">'local[*]'</span>) \</span><br><span class="line">        .enableHiveSupport() \</span><br><span class="line">        .getOrCreate()</span><br><span class="line">        </span><br><span class="line">df1 = spark.createDataFrame([&#123;<span class="string">'name'</span>:<span class="string">'cc'</span>, <span class="string">'age'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name'</span>:<span class="string">'aa'</span>, <span class="string">'age'</span>:<span class="number">25</span>&#125;])</span><br><span class="line"></span><br><span class="line">df1.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: long (nullable = true)</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">df2 = spark.createDataFrame([&#123;<span class="string">'name1'</span>:<span class="string">'bb'</span>, <span class="string">'age1'</span>:<span class="number">2</span>&#125;, &#123;<span class="string">'name1'</span>:<span class="string">'dd'</span>, <span class="string">'age1'</span>:<span class="number">3</span>&#125;])</span><br><span class="line">df2.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age1: long (nullable = true)</span><br><span class="line">     |-- name1: string (nullable = true)</span><br><span class="line">df1.union(df2)</span><br><span class="line">	DataFrame[age: bigint, name: string]</span><br><span class="line">union_df = df1.union(df2)</span><br><span class="line">union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: long (nullable = true)</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">union_df.show()</span><br><span class="line">                                                                                </span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    |  <span class="number">2</span>|  bb|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    +---+----+</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>).union(df2.select(<span class="string">'age1'</span>))</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +----+</span><br><span class="line">    |name|</span><br><span class="line">    +----+</span><br><span class="line">    |  cc|</span><br><span class="line">    |  aa|</span><br><span class="line">    |   <span class="number">2</span>|</span><br><span class="line">    |   <span class="number">3</span>|</span><br><span class="line">    +----+</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>, <span class="string">'age'</span>).union(df2.select(<span class="string">'age1'</span>))</span><br><span class="line">        pyspark.sql.utils.AnalysisException: <span class="string">"Union can only be performed on tables with the 		 same number of columns, but the first table has 2 columns and the second table 			has 1 columns;;\n'Union\n:- Project [name#1, age#0L]\n:  +- LogicalRDD [age#0L, 			name#1], false\n+- Project [age1#4L]\n   +- LogicalRDD [age1#4L, name1#5], false\n"</span></span><br><span class="line">select_union_df = df1.select(<span class="string">'age'</span>).union(df2.select(<span class="string">'name1'</span>))</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +---+</span><br><span class="line">    |age|</span><br><span class="line">    +---+</span><br><span class="line">    | <span class="number">24</span>|</span><br><span class="line">    | <span class="number">25</span>|</span><br><span class="line">    | bb|</span><br><span class="line">    | dd|</span><br><span class="line">    +---+</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- age: string (nullable = true)</span><br><span class="line">select_union_df = df1.select(<span class="string">'name'</span>, <span class="string">'age'</span>).union(df2.select(<span class="string">'age1'</span>, <span class="string">'name1'</span>))</span><br><span class="line">select_union_df.printSchema()</span><br><span class="line">    root</span><br><span class="line">     |-- name: string (nullable = true)</span><br><span class="line">     |-- age: string (nullable = true)</span><br><span class="line">select_union_df.show()</span><br><span class="line">    +----+---+</span><br><span class="line">    |name|age|</span><br><span class="line">    +----+---+</span><br><span class="line">    |  cc| <span class="number">24</span>|</span><br><span class="line">    |  aa| <span class="number">25</span>|</span><br><span class="line">    |   <span class="number">2</span>| bb|</span><br><span class="line">    |   <span class="number">3</span>| dd|</span><br><span class="line">    +----+---+</span><br></pre></td></tr></table></figure>
+<h3 id="其他案例"><a href="#其他案例" class="headerlink" title="其他案例"></a>其他案例</h3><p>要想实现sql中union的效果，需要结合distinct()来使用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">df1 = spark.createDataFrame([&#123;<span class="string">'name'</span>:<span class="string">'cc'</span>, <span class="string">'age'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name'</span>:<span class="string">'aa'</span>, <span class="string">'age'</span>:<span class="number">25</span>&#125;])</span><br><span class="line">df2 = spark.createDataFrame([&#123;<span class="string">'name1'</span>:<span class="string">'cc'</span>, <span class="string">'age1'</span>:<span class="number">24</span>&#125;, &#123;<span class="string">'name1'</span>:<span class="string">'dd'</span>, <span class="string">'age1'</span>:<span class="number">3</span>&#125;])</span><br><span class="line">df1.union(df2).show()</span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    +---+----+</span><br><span class="line">df1.union(df2).distinct().show()</span><br><span class="line">    +---+----+</span><br><span class="line">    |age|name|</span><br><span class="line">    +---+----+</span><br><span class="line">    | <span class="number">24</span>|  cc|</span><br><span class="line">    |  <span class="number">3</span>|  dd|</span><br><span class="line">    | <span class="number">25</span>|  aa|</span><br><span class="line">    +---+----+</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1199,7 +1285,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1212,7 +1298,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1287,6 +1373,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   

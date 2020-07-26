@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="在CentOS7中，有三种定义的主机名:静态的（static）、瞬态的（transient）、灵活的（pretty）。“静态”主机名也称为内核主机名，是系统在启动时从/etc/hostname自动初始化的主机名。“瞬态”主机名是在系统运行时临时分配的主机名，例如，通过DHCP或mDNS服务器分配。静态主机名和瞬态主机名都遵从作为互联网域名同样的字符限制规则。而另一方面，“灵活”主机名则允许使用自由">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-23T04:36:45.901Z">
+<meta property="og:updated_time" content="2020-07-26T03:24:46.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="操作系统-centos7修改hostname">
 <meta name="twitter:description" content="在CentOS7中，有三种定义的主机名:静态的（static）、瞬态的（transient）、灵活的（pretty）。“静态”主机名也称为内核主机名，是系统在启动时从/etc/hostname自动初始化的主机名。“瞬态”主机名是在系统运行时临时分配的主机名，例如，通过DHCP或mDNS服务器分配。静态主机名和瞬态主机名都遵从作为互联网域名同样的字符限制规则。而另一方面，“灵活”主机名则允许使用自由">
@@ -191,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-06-23 12:31:11 / 修改时间：12:36:45" itemprop="dateCreated datePublished" datetime="2020-06-23T12:31:11+08:00">2020-06-23</time>
+              <time title="创建时间：2020-06-23 12:31:11" itemprop="dateCreated datePublished" datetime="2020-06-23T12:31:11+08:00">2020-06-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-26 11:24:46" itemprop="dateModified" datetime="2020-07-26T11:24:46+08:00">2020-07-26</time>
+              </span>
 
           
 
@@ -307,7 +313,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -320,7 +326,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">112</span>
+        <span class="site-state-item-count">113</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -395,6 +401,19 @@
 
 
 
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
 
 
   
