@@ -22,18 +22,18 @@
     var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存 尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储 没有被明确select的字段依然可以作为filter的条件 获取周的第一天日期和当前日期位于周的第几天，周的第一天">
+  <meta name="description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
 <meta name="keywords" content="Spark-tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark学习笔记-tips">
 <meta property="og:url" content="https://shang.at/post/Spark学习笔记-tips/index.html">
 <meta property="og:site_name" content="努力，奋斗">
-<meta property="og:description" content="写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存 尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储 没有被明确select的字段依然可以作为filter的条件 获取周的第一天日期和当前日期位于周的第几天，周的第一天">
+<meta property="og:description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-22T10:19:18.118Z">
+<meta property="og:updated_time" content="2020-08-09T02:10:37.471Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark学习笔记-tips">
-<meta name="twitter:description" content="写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存 尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储 没有被明确select的字段依然可以作为filter的条件 获取周的第一天日期和当前日期位于周的第几天，周的第一天">
+<meta name="twitter:description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
 
 <link rel="canonical" href="https://shang.at/post/Spark学习笔记-tips/">
 
@@ -199,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-22 18:19:18" itemprop="dateModified" datetime="2020-07-22T18:19:18+08:00">2020-07-22</time>
+                <time title="修改时间：2020-08-09 10:10:37" itemprop="dateModified" datetime="2020-08-09T10:10:37+08:00">2020-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -223,15 +223,23 @@
 
       
         <ul>
-<li>写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存</li>
-<li>尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储</li>
-<li>没有被明确select的字段依然可以作为filter的条件</li>
-<li>获取周的第一天日期和当前日期位于周的第几天，周的第一天定义不同<ul>
+<li><p>如何屏蔽Spark的日志：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取SparkContext对象</span></span><br><span class="line"><span class="keyword">val</span> conf: <span class="type">SparkConf</span> = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"test01"</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">sc.setLogLevel(<span class="string">"ERROR"</span>)</span><br><span class="line"><span class="comment">// 或者通过SparkSession也可以获取：</span></span><br><span class="line"><span class="keyword">val</span> sc = sparkSession.sparkContext</span><br><span class="line">sc.setLogLevel(<span class="string">"ERROR"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写spark dataframe的时候，最好用哪些字段就取哪些字段，否则spark会默认把所有字段都读进内存，如果进行cache操作，就会无故占用大量内存</p>
+</li>
+<li><p>尽量不要使用json类型的字段存储数据，因为json字符串会存储大量的无用数据，字段名，最好设计有效的struct结构体来存储</p>
+</li>
+<li><p>没有被明确select的字段依然可以作为filter的条件</p>
+</li>
+<li><p>获取周的第一天日期和当前日期位于周的第几天，周的第一天定义不同</p>
+<ul>
 <li>周日</li>
 <li>周一</li>
 </ul>
 </li>
-<li>Spark Shuffle spill (Memory) and (Disk) on SPARK UI? What do they mean?<ul>
+<li><p>Spark Shuffle spill (Memory) and (Disk) on SPARK UI? What do they mean?</p>
+<ul>
 <li><a href="https://community.hortonworks.com/questions/202809/spark-shuffle-spill-memory.html" target="_blank" rel="noopener">https://community.hortonworks.com/questions/202809/spark-shuffle-spill-memory.html</a></li>
 </ul>
 </li>
@@ -362,7 +370,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">153</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -375,7 +383,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-count">129</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

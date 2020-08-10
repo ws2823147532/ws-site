@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：">
+<meta name="keywords" content="Scala-import">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala学习-0.1-import">
+<meta property="og:url" content="https://shang.at/post/Scala学习-0-1-import/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-05T08:26:32.285Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scala学习-0.1-import">
+<meta name="twitter:description" content="简介：">
+
+<link rel="canonical" href="https://shang.at/post/Scala学习-0-1-import/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Scala学习-0.1-import | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Scala学习-0-1-import/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Scala学习-0.1-import
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-31 08:23:01" itemprop="dateCreated datePublished" datetime="2020-07-31T08:23:01+08:00">2020-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-05 16:26:32" itemprop="dateModified" datetime="2020-08-05T16:26:32+08:00">2020-08-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Scala学习/" itemprop="url" rel="index"><span itemprop="name">Scala学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Scala的import机制总结"><a href="#Scala的import机制总结" class="headerlink" title="Scala的import机制总结"></a>Scala的import机制总结</h1><p>import 主要用于导入各种名字空间（package）或其包含的成员，使它们在声明的作用域里可见。</p>
+<h2 id="1-导入package"><a href="#1-导入package" class="headerlink" title="1 导入package"></a>1 导入package</h2><p>  访问package的成员需要用导入的package名作为前缀，主要用于当package嵌套较多时，可以起到简化及隔离名字空间的作用。</p>
+<p>  当然任何时候使用完整package路径（full package path）都是可以的。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import java.util</span><br><span class="line">new util.ArrayList[String]() // 需要有util作为前缀，省略掉util的父package “java”</span><br><span class="line">new java.util.ArrayList[String] // 通过完整package路径访问</span><br><span class="line"></span><br><span class="line">import java.sql</span><br><span class="line">new sql.Date(new util.Date().getTime) // 使用package名隔离Date类的名字冲突</span><br></pre></td></tr></table></figure>
+<h2 id="2-导入package下所有成员"><a href="#2-导入package下所有成员" class="headerlink" title="2 导入package下所有成员"></a>2 导入package下所有成员</h2><p>  相比Java中使用‘*’，Scala使用’_’表示导入package下所有成员. </p>
+<p>  如：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> map = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>]</span><br><span class="line">&lt;console&gt;:<span class="number">7</span>: error: not found: <span class="class"><span class="keyword">type</span> <span class="title">HashMap</span></span></span><br><span class="line"><span class="class">       <span class="title">val</span> <span class="title">map</span> </span>= <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>]</span><br><span class="line">                     ^</span><br><span class="line">scala&gt; <span class="keyword">import</span> scala.collection.immutable.<span class="type">HashMap</span></span><br><span class="line"><span class="keyword">import</span> scala.collection.immutable.<span class="type">HashMap</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>]</span><br><span class="line">map: scala.collection.immutable.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>()</span><br><span class="line"></span><br><span class="line">scala&gt; map += <span class="string">"itang"</span> -&gt; <span class="number">1</span></span><br><span class="line"></span><br><span class="line">scala&gt; map</span><br><span class="line">res1: scala.collection.immutable.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">Int</span>] = <span class="type">Map</span>(itang -&gt; <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> java.util._</span><br><span class="line">scala&gt; <span class="keyword">new</span> <span class="type">ArrayList</span>[<span class="type">String</span>]()</span><br></pre></td></tr></table></figure>
+<h2 id="3-导入package下特定成员"><a href="#3-导入package下特定成员" class="headerlink" title="3 导入package下特定成员"></a>3 导入package下特定成员</h2><p>  指定package路径及要导入的类等的名称，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> ArrayList[Int]</span><br></pre></td></tr></table></figure>
+<h2 id="4-导入package下特定成员，并重命名"><a href="#4-导入package下特定成员，并重命名" class="headerlink" title="4 导入package下特定成员，并重命名"></a>4 导入package下特定成员，并重命名</h2><p>  在要导入package后使用”{}”,指定要导入的成员，并使用”=&gt;”重命名;如果在一个package下要导入多个成员，则使用逗号分隔.如: </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> java.util.&#123;<span class="type">ArrayList</span> =&gt; <span class="type">JList</span>, <span class="type">HashMap</span> =&gt; <span class="type">JMap</span>&#125;</span><br><span class="line">scala&gt; <span class="keyword">new</span> <span class="type">JList</span>[<span class="type">Int</span>]</span><br><span class="line">res: java.util.<span class="type">ArrayList</span>[<span class="type">Int</span>] = []</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="class"><span class="keyword">type</span> <span class="title">JStringList</span> </span>= <span class="type">JList</span>[<span class="type">String</span>]</span><br><span class="line">defined <span class="class"><span class="keyword">type</span> <span class="title">alias</span> <span class="title">JStringList</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">scala&gt;</span> <span class="title">new</span> <span class="title">JStringList</span></span></span><br><span class="line"><span class="class"><span class="title">res</span></span>: java.util.<span class="type">ArrayList</span>[<span class="type">String</span>] = []</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">new</span> <span class="type">JMap</span>[<span class="type">String</span>, <span class="type">String</span>]</span><br><span class="line">res: java.util.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">String</span>] = &#123;&#125;</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> scala.<span class="type">Option</span>.&#123;empty =&gt; jempty&#125;</span><br><span class="line">scala&gt; jempty</span><br><span class="line">res: <span class="type">Option</span>[<span class="type">Nothing</span>] = <span class="type">None</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-导入package-object的成员"><a href="#5-导入package-object的成员" class="headerlink" title="5 导入package object的成员"></a>5 导入package object的成员</h2><p>  scala中package除了充当命名空间之外，还可以通过package object可定义一些成员，形如：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> test</span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> <span class="class"><span class="keyword">object</span> <span class="title">utils</span> </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">type</span> <span class="title">JStringList</span> </span>= java.util.<span class="type">ArrayList</span>[<span class="type">String</span>]</span><br><span class="line">  <span class="keyword">val</span> <span class="type">Msg</span> = <span class="string">"Hello, World"</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">iw</span></span>(target: <span class="type">Int</span>) = <span class="keyword">new</span> &#123;</span><br><span class="line">	  <span class="function"><span class="keyword">def</span> <span class="title">times</span></span>(proc: =&gt; <span class="type">Any</span>) &#123;</span><br><span class="line">		  <span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line">		  <span class="keyword">while</span> (i &lt; target) &#123;</span><br><span class="line">			  proc</span><br><span class="line">			  i += <span class="number">1</span></span><br><span class="line">		  &#125;</span><br><span class="line">	  &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> test.utils._</span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">tt</span> <span class="keyword">extends</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">  println(<span class="type">Msg</span>)</span><br><span class="line">  <span class="keyword">new</span> <span class="type">JStringList</span></span><br><span class="line">  <span class="number">10.</span>times(println(<span class="string">"hello"</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="6-导入object的成员"><a href="#6-导入object的成员" class="headerlink" title="6 导入object的成员"></a>6 导入object的成员</h2><p>  Scala中是没有Java中类中静态成员的概念，反之，Scala使用object class（对象类型）单例模式</p>
+<p>  <strong>Scala能导入object class的成员，也能导入运行时对象实例的成员</strong>。</p>
+<p>在写spark应用的时候，<code>import spark.implicits._</code>的写法就是这种场景的一种应用，其中spark是SparkSession的对象。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> scala.<span class="type">Option</span>._</span><br><span class="line">scala&gt; empty</span><br><span class="line">res: <span class="type">Option</span>[<span class="type">Nothing</span>] = <span class="type">None</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">name: <span class="type">String</span>, age: <span class="type">Int</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">val</span> <span class="title">a</span> </span>= <span class="keyword">new</span> <span class="type">User</span>(<span class="string">"itang"</span>, <span class="number">18</span>)</span><br><span class="line">println(<span class="string">"%s's age is %d"</span> format (a.name, a.age))</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> a._</span><br><span class="line">println(<span class="string">"%s's age is %d"</span>, name, age) <span class="comment">//output: itang's age is 18</span></span><br></pre></td></tr></table></figure>
+<h2 id="7-import-可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域"><a href="#7-import-可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域" class="headerlink" title="7 import 可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域"></a>7 import 可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域</h2><p>  如一下代码所示：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scala.actors.<span class="type">Actor</span>._</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestPackagePosScope</span> <span class="keyword">extends</span> <span class="title">App</span> </span>&#123;</span><br><span class="line">  actor &#123;</span><br><span class="line">	  println(<span class="string">"Hello"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//new HashSet[String] ///not found type: HashSet</span></span><br><span class="line">  <span class="keyword">import</span> collection.immutable.<span class="type">HashSet</span></span><br><span class="line">  <span class="keyword">new</span> <span class="type">HashSet</span>[<span class="type">String</span>]</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">test1</span></span>() &#123;</span><br><span class="line">	  <span class="keyword">import</span> java.text.&#123; <span class="type">SimpleDateFormat</span> =&gt; <span class="type">Sdf</span> &#125;</span><br><span class="line">	  <span class="keyword">import</span> java.util.<span class="type">Date</span></span><br><span class="line">	  <span class="keyword">new</span> <span class="type">Sdf</span>(<span class="string">"yyyy-MM-dd"</span>).format(<span class="keyword">new</span> <span class="type">Date</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//new Sdf("yyyy-MM-dd").format(new Date) //not found type: Sdf</span></span><br><span class="line">  &#123;</span><br><span class="line">	  <span class="keyword">import</span> java.util._</span><br><span class="line">	  <span class="keyword">val</span> jlist = <span class="keyword">new</span> <span class="type">ArrayList</span>[<span class="type">String</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//val badJlist = new ArrayList[String] // not found type: ArrayList</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <strong>import 使用上像表达式，但它不是表达式也不是函数，它没有返回值，存在于编译时</strong>，如</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> some = <span class="keyword">import</span> java.util._</span><br><span class="line"></span><br><span class="line">&lt;console&gt;:<span class="number">1</span>: error: illegal start of simple expression</span><br><span class="line"></span><br><span class="line">       <span class="keyword">val</span> some = <span class="keyword">import</span> java.util._</span><br></pre></td></tr></table></figure>
+<h2 id="8-scala默认已导入的名字空间及成员"><a href="#8-scala默认已导入的名字空间及成员" class="headerlink" title="8 scala默认已导入的名字空间及成员"></a>8 scala默认已导入的名字空间及成员</h2><p> <strong>scala包下成员默认可见</strong></p>
+<p>  相当与每个编译单元里默认<code>import scala._</code></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="type">Console</span>.println(<span class="string">"hello"</span>) <span class="comment">// scala.Console</span></span><br><span class="line">scala&gt; <span class="type">Seq</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">scala&gt; scala.<span class="type">Seq</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p> 注意到scala也是一个package object，里面定义了很多不同package的下类型别名，如此可以将众多的类型组织到scala名字空间。</p>
+<p>  <strong>java.lang包下成员默认可见</strong></p>
+<p>  相当与每个编译单元里默认<code>import java.lang._</code></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="type">Runtime</span>.getRuntime.availableProcessors <span class="comment">// java.lang.Runtime</span></span><br><span class="line">scala&gt; <span class="type">System</span>.getProperty(<span class="string">"user.home"</span>)</span><br></pre></td></tr></table></figure>
+<p>  <strong>scala.Predef 这个object下成员默认可见</strong>（主要定义全局函数，类型别名，隐式转换等等)</p>
+<p>  相当与每个编译单元里默认<code>import scala.Predef._</code></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; println(<span class="string">"hello"</span>)</span><br><span class="line">scala&gt; scala.<span class="type">Predef</span>.println(<span class="string">"hell"</span>)</span><br><span class="line">scala&gt; <span class="string">"msg"</span> -&gt; <span class="string">"Hello"</span></span><br><span class="line">scala&gt; any2ArrowAssoc(<span class="string">"msg"</span>).-&gt;(<span class="string">"Hello"</span>) <span class="comment">//scala.Predef.any2ArrowAssoc</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Scala-import/" rel="tag"># Scala-import</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Spark学习-Encoder/" rel="prev" title="Spark学习-Encoder">
+      <i class="fa fa-chevron-left"></i> Spark学习-Encoder
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/Scala学习-0-2-泛型/" rel="next" title="Scala学习-0.2-泛型">
+      Scala学习-0.2-泛型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scala的import机制总结"><span class="nav-number">1.</span> <span class="nav-text">Scala的import机制总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-导入package"><span class="nav-number">1.1.</span> <span class="nav-text">1 导入package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-导入package下所有成员"><span class="nav-number">1.2.</span> <span class="nav-text">2 导入package下所有成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-导入package下特定成员"><span class="nav-number">1.3.</span> <span class="nav-text">3 导入package下特定成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-导入package下特定成员，并重命名"><span class="nav-number">1.4.</span> <span class="nav-text">4 导入package下特定成员，并重命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-导入package-object的成员"><span class="nav-number">1.5.</span> <span class="nav-text">5 导入package object的成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-导入object的成员"><span class="nav-number">1.6.</span> <span class="nav-text">6 导入object的成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-import-可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域"><span class="nav-number">1.7.</span> <span class="nav-text">7 import 可以位于表达式的能放的任意位置，而且导入的成员有其“可见”的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-scala默认已导入的名字空间及成员"><span class="nav-number">1.8.</span> <span class="nav-text">8 scala默认已导入的名字空间及成员</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">129</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

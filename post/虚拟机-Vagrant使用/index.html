@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="什么是Vagrantvagrant是一个基于VirtualBox, VMware, AWS等平台的一个构造和管理VM的工具，它提供了一个简单的工作流程，让VM的创建和管理全都自动化。vagrant的配置是基于ruby的 Vagrant是基于Box的，Box是针对Vagrant运行环境的封装 如何使用VagrantStep 1：安装 官网：https://www.vagrantup.com 虚拟机位">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-13T17:07:13.994Z">
+<meta property="og:updated_time" content="2020-08-10T02:35:41.459Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="虚拟机-Vagrant使用">
 <meta name="twitter:description" content="什么是Vagrantvagrant是一个基于VirtualBox, VMware, AWS等平台的一个构造和管理VM的工具，它提供了一个简单的工作流程，让VM的创建和管理全都自动化。vagrant的配置是基于ruby的 Vagrant是基于Box的，Box是针对Vagrant运行环境的封装 如何使用VagrantStep 1：安装 官网：https://www.vagrantup.com 虚拟机位">
@@ -199,7 +199,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-14 01:07:13" itemprop="dateModified" datetime="2020-07-14T01:07:13+08:00">2020-07-14</time>
+                <time title="修改时间：2020-08-10 10:35:41" itemprop="dateModified" datetime="2020-08-10T10:35:41+08:00">2020-08-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,6 +251,7 @@
 <p>NAT : 缺省创建，用于让vm可以通过host转发访问局域网甚至互联网。</p>
 <p>host-only : 只有主机可以访问vm，其他机器无法访问它。</p>
 <p>bridge : 此模式下vm就像局域网中的一台独立的机器，可以被其他机器访问。</p>
+<p>​    设置bridge模式的时候，需要手动指定 bridge，如：<code>master.vm.network :public_network, :bridge=&gt;&#39;em1&#39;, ip: &quot;192.168.0.110&quot;</code>，也可设置静态IP</p>
 </li>
 <li><p>根据vagrantfile的层次，分为：</p>
 <p>configure级：它定义在 Vagrant.configure(“2”) 的下一层次，形如： config.vm.provision …</p>
@@ -286,6 +287,11 @@
 <li>移除box</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box remove centos-7.4-base</span><br></pre></td></tr></table></figure>
+<h6 id="privision"><a href="#privision" class="headerlink" title="privision"></a>privision</h6><p>重新执行provision</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant provision [vm-name] [--provision-with x,y,z]</span><br></pre></td></tr></table></figure>
+<p>执行指定的provision，使用—provision-with 参数，同时在配置Vagrant的时候，需要如下配置：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># type关键字 必须显式写出</span></span><br><span class="line">master.vm.provision <span class="string">'bootstrap_master'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap_master.sh"</span></span><br></pre></td></tr></table></figure>
+<p>那么只执行 bootstrap_master的命令为：<code>vagrant provision master --provision-with bootstrap_master</code></p>
 <h6 id="vagrant-vm"><a href="#vagrant-vm" class="headerlink" title="vagrant vm"></a>vagrant vm</h6><ul>
 <li>初始化</li>
 </ul>
@@ -424,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Vagrant"><span class="nav-number">1.</span> <span class="nav-text">什么是Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何使用Vagrant"><span class="nav-number">2.</span> <span class="nav-text">如何使用Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vagrant常用命令"><span class="nav-number">3.</span> <span class="nav-text">Vagrant常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-help"><span class="nav-number">3.0.1.</span> <span class="nav-text">vagrant help</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-box"><span class="nav-number">3.0.2.</span> <span class="nav-text">vagrant box</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-vm"><span class="nav-number">3.0.3.</span> <span class="nav-text">vagrant vm</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-snapshot"><span class="nav-number">3.0.4.</span> <span class="nav-text">vagrant snapshot</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是Vagrant"><span class="nav-number">1.</span> <span class="nav-text">什么是Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何使用Vagrant"><span class="nav-number">2.</span> <span class="nav-text">如何使用Vagrant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vagrant常用命令"><span class="nav-number">3.</span> <span class="nav-text">Vagrant常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-help"><span class="nav-number">3.0.1.</span> <span class="nav-text">vagrant help</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-box"><span class="nav-number">3.0.2.</span> <span class="nav-text">vagrant box</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#privision"><span class="nav-number">3.0.3.</span> <span class="nav-text">privision</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-vm"><span class="nav-number">3.0.4.</span> <span class="nav-text">vagrant vm</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#vagrant-snapshot"><span class="nav-number">3.0.5.</span> <span class="nav-text">vagrant snapshot</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -438,7 +444,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">153</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -451,7 +457,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">126</span>
+        <span class="site-state-item-count">129</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
