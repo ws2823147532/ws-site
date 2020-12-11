@@ -31,12 +31,10 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="初始化环境1234567891011from pyspark.sql import SparkSessionfrom pyspark.sql.functions import *from pyspark.sql import Windowfrom pyspark.sql.types import StructType, StringType, StructField, IntegerTypesch">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g10643qf18j30de06h3yq.jpg">
-<meta property="og:updated_time" content="2020-07-03T10:37:41.666Z">
+<meta property="og:updated_time" content="2020-12-11T08:30:59.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark学习笔记-窗口函数">
 <meta name="twitter:description" content="初始化环境1234567891011from pyspark.sql import SparkSessionfrom pyspark.sql.functions import *from pyspark.sql import Windowfrom pyspark.sql.types import StructType, StringType, StructField, IntegerTypesch">
-<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1g10643qf18j30de06h3yq.jpg">
 
 <link rel="canonical" href="https://shang.at/post/Spark学习笔记-窗口函数/">
 
@@ -202,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-03 18:37:41" itemprop="dateModified" datetime="2020-07-03T18:37:41+08:00">2020-07-03</time>
+                <time title="修改时间：2020-12-11 16:30:59" itemprop="dateModified" datetime="2020-12-11T16:30:59+08:00">2020-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,7 +234,7 @@
 <li>ROWS between CURRENT ROW | UNBOUNDED PRECEDING | [num] PRECEDING AND  UNBOUNDED FOLLOWING | [num] FOLLOWING| CURRENT ROW</li>
 <li>RANGE between [num] PRECEDING  AND [num] FOLLOWING</li>
 </ul>
-<p>窗口的含义<br><img src="https://ws4.sinaimg.cn/large/006tKfTcly1g10643qf18j30de06h3yq.jpg" alt></p>
+<p>窗口的含义</p>
 <p>ROWS是物理窗口，从行数上控制窗口的尺寸的；<br>RANGE是逻辑窗口，从列值上控制窗口的尺寸</p>
 <p>通常会结合order by子句使用，如果在order by子句后面没有指定窗口子句，则默认为：rows between unbounded preceding and current row</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">spark中关于Window函数的学习</span><br><span class="line"></span><br><span class="line">在spark中涉及Window函数的主要有以下两个类和一个Column的方法</span><br><span class="line">pyspark.sql.column.Column#over   在窗口上应用某一种分析函数</span><br><span class="line">pyspark.sql.window.Window        创建WindowSpec的工具类</span><br><span class="line">    pyspark.sql.window.Window.unboundedPreceding</span><br><span class="line">    pyspark.sql.window.Window.unboundedFollowing</span><br><span class="line">    pyspark.sql.window.Window.currentRow</span><br><span class="line">    pyspark.sql.window.Window#partitionBy</span><br><span class="line">    pyspark.sql.window.Window#orderBy</span><br><span class="line">    pyspark.sql.window.Window#rowsBetween(start, end)</span><br><span class="line">    pyspark.sql.window.Window#rangeBetween(start, end)</span><br><span class="line">pyspark.sql.window.WindowSpec    窗口的规范</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">pyspark.sql.window.Window#rowsBetween(start, end)</span><br><span class="line">定义窗口的边界，[start, end]，在边界处是闭区间</span><br><span class="line">start和end都是相对于当前row的相对位置，例如：</span><br><span class="line">- 0：当前row</span><br><span class="line">- -1：当前行的前1row</span><br><span class="line">- 5：当前行的后5row</span><br><span class="line">- (-1, 5)：窗口的范围为，当前row+当前行的前1row+当前行的后5row = 7rows</span><br></pre></td></tr></table></figure>
@@ -360,20 +358,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">129</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

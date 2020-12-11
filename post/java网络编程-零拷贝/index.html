@@ -33,7 +33,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://shang.at/images/zero-copy.jpg">
 <meta property="og:image" content="https://shang.at/images/zero-copy1.jpg">
-<meta property="og:updated_time" content="2020-06-03T23:37:38.921Z">
+<meta property="og:updated_time" content="2020-12-11T08:18:16.713Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java网络编程-零拷贝">
 <meta name="twitter:description" content="什么是零拷贝刚才讲阻塞 IO 的时候我讲到，系统内核处理 IO 操作分为两个阶段——等待数据和拷贝数据。等待数据，就是系统内核在等待网卡接收到数据后，把数据写到内核中；而拷贝数据，就是系统内核在获取到数据后，将数据拷贝到用户进程的空间中。以下是具体流程：  应用进程的每一次写操作，都会把数据写到用户空间的缓冲区中，再由 CPU 将数据拷贝到系统内核的缓冲区中，之后再由 DMA 将这份数据拷贝到网卡">
@@ -195,10 +195,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-06-04 00:32:39 / 修改时间：07:37:38" itemprop="dateCreated datePublished" datetime="2020-06-04T00:32:39+08:00">2020-06-04</time>
+              <time title="创建时间：2020-06-04 00:32:39" itemprop="dateCreated datePublished" datetime="2020-06-04T00:32:39+08:00">2020-06-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:18:16" itemprop="dateModified" datetime="2020-12-11T16:18:16+08:00">2020-12-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -352,20 +358,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">129</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

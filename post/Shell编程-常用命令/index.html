@@ -31,7 +31,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="文本编辑sedawk磁盘系统df查看磁盘使用量：df -hT du查看各文件夹大小：du -h --max-depth=1 /path Linux上的定时器cron命令xargsexec系统管理tophttps://blog.csdn.net/hsd2012/article/details/51387332 strace strace 命令是一种强大的工具, 能够显示任何由用户空间程式发出的系统调">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-10T04:01:31.362Z">
+<meta property="og:updated_time" content="2020-08-11T01:45:14.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Shell编程-常用命令">
 <meta name="twitter:description" content="文本编辑sedawk磁盘系统df查看磁盘使用量：df -hT du查看各文件夹大小：du -h --max-depth=1 /path Linux上的定时器cron命令xargsexec系统管理tophttps://blog.csdn.net/hsd2012/article/details/51387332 strace strace 命令是一种强大的工具, 能够显示任何由用户空间程式发出的系统调">
@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-10 12:01:31" itemprop="dateModified" datetime="2020-08-10T12:01:31+08:00">2020-08-10</time>
+                <time title="修改时间：2020-08-11 09:45:14" itemprop="dateModified" datetime="2020-08-11T09:45:14+08:00">2020-08-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +229,8 @@
 <h5 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h5><blockquote>
 <p>strace 命令是一种强大的工具, 能够显示任何由用户空间程式发出的系统调用. strace 显示这些调用的参数并返回符号形式的值. strace 从内核接收信息, 而且无需以任何特别的方式来构建内核. strace 的每一行输出包括系统调用名称, 然后是参数和返回值.</p>
 </blockquote>
-<h4 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h4><h5 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h5><h5 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h5><h5 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h5><h4 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h4><h5 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h5><p>RPM 全名是『 RedHat Package Manager </p>
+<h4 id="远程控制"><a href="#远程控制" class="headerlink" title="远程控制"></a>远程控制</h4><h5 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h5><h5 id="scp"><a href="#scp" class="headerlink" title="scp"></a>scp</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 复制某文件(夹) 到远程地址</span><br><span class="line">scp [-r] xxxxx user@host:path</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 如果要求是同一个目录可以直接用如下写法</span><br><span class="line">scp [-r] xxxxx user@host:`pwd`</span><br></pre></td></tr></table></figure>
+<h5 id="rsync"><a href="#rsync" class="headerlink" title="rsync"></a>rsync</h5><h4 id="软件管理"><a href="#软件管理" class="headerlink" title="软件管理"></a>软件管理</h4><h5 id="rpm"><a href="#rpm" class="headerlink" title="rpm"></a>rpm</h5><p>RPM 全名是『 RedHat Package Manager </p>
 <h6 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">rpm -i *.rpm # 安装rpm包</span><br><span class="line"></span><br><span class="line">rpm -ivh *.rmp</span><br><span class="line">选项与参数：</span><br><span class="line">-i ：install 的意思</span><br><span class="line">-v ：察看更细部的安装资讯画面</span><br><span class="line">-h ：以安装资讯列显示安装进度</span><br><span class="line"></span><br><span class="line">范例一：安装 rp-pppoe-3.5-32.1.i386.rpm</span><br><span class="line">rpm -ivh rp-pppoe-3.5-32.1.i386.rpm</span><br><span class="line">Preparing...     ####################################### [100%]</span><br><span class="line">   1:rp-pppoe    ####################################### [100%] </span><br><span class="line"></span><br><span class="line">范例二、一口气安装两个以上的软件时：</span><br><span class="line">rpm -ivh a.i386.rpm b.i386.rpm *.rpm</span><br><span class="line"><span class="meta">#</span> 后面直接接上许多的软件文件！</span><br><span class="line"></span><br><span class="line">范例三、直接由网络上面的某个文件安装，以网址来安装：</span><br><span class="line">rpm -ivh http://website.name/path/pkgname.rpm</span><br></pre></td></tr></table></figure>
 <p>rpm 安装时常用的选项与参数说明</p>
 <div class="table-container">
@@ -402,20 +403,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">129</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

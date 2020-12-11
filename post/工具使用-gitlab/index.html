@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：">
+<meta name="keywords" content="gitlab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工具使用-gitlab">
+<meta property="og:url" content="https://shang.at/post/工具使用-gitlab/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://shang.at/images/image-20200928100739661.png">
+<meta property="og:image" content="https://shang.at/images/image-20200928100754461.png">
+<meta property="og:updated_time" content="2020-12-11T07:57:22.780Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="工具使用-gitlab">
+<meta name="twitter:description" content="简介：">
+<meta name="twitter:image" content="https://shang.at/images/image-20200928100739661.png">
+
+<link rel="canonical" href="https://shang.at/post/工具使用-gitlab/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>工具使用-gitlab | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/工具使用-gitlab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工具使用-gitlab
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-11 14:52:31" itemprop="dateCreated datePublished" datetime="2020-09-11T14:52:31+08:00">2020-09-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 15:57:22" itemprop="dateModified" datetime="2020-12-11T15:57:22+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/工具使用/" itemprop="url" rel="index"><span itemprop="name">工具使用</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="新建repo"><a href="#新建repo" class="headerlink" title="新建repo"></a>新建repo</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Git global setup</span><br><span class="line">git config --global user.name "xxx"</span><br><span class="line">git config --global user.email "xxx@abc.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Create a new repository</span><br><span class="line">git clone git_url</span><br><span class="line">cd atome-id-apaylater-data-warehouse</span><br><span class="line">touch README.md</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m "add README"</span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Push an existing folder</span><br><span class="line">cd existing_folder</span><br><span class="line">git init</span><br><span class="line">git remote add origin git_url</span><br><span class="line">git add .</span><br><span class="line">git commit -m "Initial commit"</span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Push an existing Git repository</span><br><span class="line">cd existing_repo</span><br><span class="line">git remote rename origin old-origin</span><br><span class="line">git remote add origin git_url</span><br><span class="line">git push -u origin --all</span><br><span class="line">git push -u origin --tags</span><br></pre></td></tr></table></figure>
+<h1 id="用rebase-i-汇合提交"><a href="#用rebase-i-汇合提交" class="headerlink" title="用rebase -i 汇合提交"></a>用rebase -i 汇合提交</h1><p>进入一个repo目录，使用<code>git log</code>可以查看每次commit的记录</p>
+<p><img src="/images/image-20200928100739661.png" alt="image-20200928100739661"></p>
+<p>然后使用<code>git rebase -i HEAD~~</code>命令进入汇合提交页面(可以使用vim编辑的状态)</p>
+<p>每次rebase只能把当前的commit合并到前一个commit上，编辑状态如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pick 9a54fd4 添加commit的说明</span><br><span class="line">pick 0d4a808 添加pull的说明</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Rebase 326fc9f..0d4a808 onto d286baa</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> Commands:</span><br><span class="line"><span class="meta">#</span>  p, pick = use commit</span><br><span class="line"><span class="meta">#</span>  r, reword = use commit, but edit the commit message</span><br><span class="line"><span class="meta">#</span>  e, edit = use commit, but stop for amending</span><br><span class="line"><span class="meta">#</span>  s, squash = use commit, but meld into previous commit</span><br><span class="line"><span class="meta">#</span>  f, fixup = like "squash", but discard this commit's log message</span><br><span class="line"><span class="meta">#</span>  x, exec = run command (the rest of the line) using shell</span><br><span class="line"><span class="meta">#</span></span><br><span class="line"><span class="meta">#</span> If you remove a line here THAT COMMIT WILL BE LOST.</span><br><span class="line"><span class="meta">#</span> However, if you remove everything, the rebase will be aborted.</span><br><span class="line"><span class="meta">#</span></span><br></pre></td></tr></table></figure>
+<p>将第二行的<code>pick</code>改成<code>squash</code>保存即可。</p>
+<p>再次使用<code>git log</code>查看commit log</p>
+<p><img src="/images/image-20200928100754461.png" alt="image-20200928100754461"></p>
+<h1 id="git如何删除已经-add-的文件"><a href="#git如何删除已经-add-的文件" class="headerlink" title="git如何删除已经 add 的文件"></a>git如何删除已经 add 的文件</h1><p>使用 <strong>git rm</strong> 命令即可，有两种选择,</p>
+<p>一种是 <strong>git rm —cached “文件路径”</strong>，不删除物理文件，仅将该文件从缓存中删除；</p>
+<p>一种是 <strong>git rm —f  “文件路径”</strong>，不仅将该文件从缓存中删除，还会将物理文件删除（不会回收到垃圾桶）。</p>
+<h1 id="如何如何更新fork的repository"><a href="#如何如何更新fork的repository" class="headerlink" title="如何如何更新fork的repository"></a>如何如何更新fork的repository</h1><p>首先，检查一下当前的配置，看看当前有没有已经设置了上游，这要使用 git remote -v 命令。如下：</p>
+<p>git remote -v  </p>
+<ol>
+<li>origin  <a href="https://github.com/YOUR_USERNAME/YOUR_FORK.git" target="_blank" rel="noopener">https://github.com/YOUR_USERNAME/YOUR_FORK.git</a> (fetch)  </li>
+<li>origin  <a href="https://github.com/YOUR_USERNAME/YOUR_FORK.git" target="_blank" rel="noopener">https://github.com/YOUR_USERNAME/YOUR_FORK.git</a> (push)  </li>
+</ol>
+<p>以上表明，origin这个repository对应的是远端的https开头的这个链接指向的repository，即自己fork出的repository.</p>
+<p>第二步，将原repository设置为自己fork出的repository的上游（upstream）。运用如下的命令：</p>
+<p>$git remote add upstream <a href="https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git" target="_blank" rel="noopener">https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git</a>  </p>
+<p>运用第一步中提到的<a href="http://lib.csdn.net/base/git" target="_blank" rel="noopener">git</a> remove -v命令再次检查一下，结果如下：</p>
+<p>$git remote -v  </p>
+<ol>
+<li>origin    <a href="https://github.com/YOUR_USERNAME/YOUR_FORK.git" target="_blank" rel="noopener">https://github.com/YOUR_USERNAME/YOUR_FORK.git</a> (fetch)  </li>
+<li>origin    <a href="https://github.com/YOUR_USERNAME/YOUR_FORK.git" target="_blank" rel="noopener">https://github.com/YOUR_USERNAME/YOUR_FORK.git</a> (push)  </li>
+<li>upstream  <a href="https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git" target="_blank" rel="noopener">https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git</a> (fetch)  </li>
+<li>upstream  <a href="https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git" target="_blank" rel="noopener">https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git</a> (push)  </li>
+</ol>
+<p>第三步，运行 git fetch upstream 命令，如下：</p>
+<p>$git fetch upstream  </p>
+<ol>
+<li>remote: Counting objects: 75, done.  </li>
+<li>remote: Compressing objects: 100% (53/53), done.  </li>
+<li>remote: Total 62 (delta 27), reused 44 (delta 9)  </li>
+<li>Unpacking objects: 100% (62/62), done.  </li>
+<li>From <a href="https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY" target="_blank" rel="noopener">https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY</a>  </li>
+<li>* [new branch]      master     -&gt; upstream/master  </li>
+</ol>
+<p>以上表明，远程的原repository上确实有一些更新，现在它们已经被download到本地的.git文件夹下了，但是还没有合并到本地的代码中。</p>
+<p>第四步，git checkout master，这是保证切换到本地的repository的master上，如果本来就在，那么这一步不是必须的。</p>
+<p>第五步，运行 git merge upstream/master 命令，将upstream/master上的更新合并到本地的master上，其实就是将第三步中download到.git文件夹下的那些change合并到本地的master中。如下：</p>
+<p>$git merge upstream/master  </p>
+<ol>
+<li>Updating a422352..5fdff0f  </li>
+<li>Fast-forward  </li>
+<li>README                    |    9 ———-  </li>
+<li>README.md                 |    7 ++++++  </li>
+<li>2 files changed, 7 insertions(+), 9 deletions(-)  </li>
+<li>delete mode 100644 README  </li>
+<li>create mode 100644 README.md  </li>
+</ol>
+<p>如果本地没有什么自己独立的更新的话，那么将执行”Fast-forward”的合并。如果本地有自己独立的更新，而又会引起冲突的话，则要解决冲突，再commit.</p>
+<p>关于解决冲突，如果明确所有冲突都是使用upstream/master上的来override自己的，那么可以直接运行如下命令，则无需解决冲突了</p>
+<p>git merge -X theirs upstream/master  </p>
+<p>注意，以上步骤结束后，仅仅是本地的fork出的repository和原repository取得了同步，如果想让远程的fork出的repository也同样取得同步，必须再git push上去。</p>
+<h1 id="submodule"><a href="#submodule" class="headerlink" title="submodule"></a>submodule</h1><h3 id="创建一个repo：test-1"><a href="#创建一个repo：test-1" class="headerlink" title="创建一个repo：test_1"></a>创建一个repo：test_1</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m "1"</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<h3 id="创建一个lib-repo：test-2"><a href="#创建一个lib-repo：test-2" class="headerlink" title="创建一个lib repo：test_2"></a>创建一个lib repo：test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_2.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m &quot;1&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<h3 id="将test-2作为submodule添加到test-1中"><a href="#将test-2作为submodule添加到test-1中" class="headerlink" title="将test_2作为submodule添加到test_1中"></a>将test_2作为submodule添加到test_1中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add git@repo.advai.net:shang.wang/test_2.git test_lib</span><br></pre></td></tr></table></figure>
+<h3 id="提交test-1"><a href="#提交test-1" class="headerlink" title="提交test_1"></a>提交test_1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;2&apos;</span><br><span class="line">git submodule init</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<h3 id="修改test-2"><a href="#修改test-2" class="headerlink" title="修改test_2"></a>修改test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">echo &quot;123445&quot; &gt; test.txt</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;3&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<h3 id="在test-1中更新test-2"><a href="#在test-1中更新test-2" class="headerlink" title="在test_1中更新test_2"></a>在test_1中更新test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">git submodule foreach git pull</span><br></pre></td></tr></table></figure>
+<h3 id="clone一个带有submodule的repo"><a href="#clone一个带有submodule的repo" class="headerlink" title="clone一个带有submodule的repo"></a>clone一个带有submodule的repo</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1、clone父repo的时候直接clonesubmodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git ttttt --recursive</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2、clone完父repo之后，再初始化submodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">cd test_1</span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></table></figure>
+<h3 id="删除submodule"><a href="#删除submodule" class="headerlink" title="删除submodule"></a>删除submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git rm --cached test_lib</span><br><span class="line">rm -rf test_lib</span><br><span class="line">rm .gitmodules</span><br><span class="line"></span><br><span class="line">删除git配置文件config中关于submodule的信息</span><br><span class="line">vim .git/config  找到submodule的部分 删掉</span><br><span class="line"></span><br><span class="line">git commit -a -m 'del submodule'</span><br></pre></td></tr></table></figure>
+<h3 id="查看仓库中的submodule"><a href="#查看仓库中的submodule" class="headerlink" title="查看仓库中的submodule"></a>查看仓库中的submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Linux-使用问答/" rel="prev" title="Linux-使用问答">
+      <i class="fa fa-chevron-left"></i> Linux-使用问答
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/java学习-基础3-对象内存布局/" rel="next" title="java学习-基础3-对象内存布局">
+      java学习-基础3-对象内存布局 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建repo"><span class="nav-number">1.</span> <span class="nav-text">新建repo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用rebase-i-汇合提交"><span class="nav-number">2.</span> <span class="nav-text">用rebase -i 汇合提交</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git如何删除已经-add-的文件"><span class="nav-number">3.</span> <span class="nav-text">git如何删除已经 add 的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何如何更新fork的repository"><span class="nav-number">4.</span> <span class="nav-text">如何如何更新fork的repository</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#submodule"><span class="nav-number">5.</span> <span class="nav-text">submodule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个repo：test-1"><span class="nav-number">5.0.1.</span> <span class="nav-text">创建一个repo：test_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个lib-repo：test-2"><span class="nav-number">5.0.2.</span> <span class="nav-text">创建一个lib repo：test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将test-2作为submodule添加到test-1中"><span class="nav-number">5.0.3.</span> <span class="nav-text">将test_2作为submodule添加到test_1中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交test-1"><span class="nav-number">5.0.4.</span> <span class="nav-text">提交test_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改test-2"><span class="nav-number">5.0.5.</span> <span class="nav-text">修改test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在test-1中更新test-2"><span class="nav-number">5.0.6.</span> <span class="nav-text">在test_1中更新test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clone一个带有submodule的repo"><span class="nav-number">5.0.7.</span> <span class="nav-text">clone一个带有submodule的repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除submodule"><span class="nav-number">5.0.8.</span> <span class="nav-text">删除submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看仓库中的submodule"><span class="nav-number">5.0.9.</span> <span class="nav-text">查看仓库中的submodule</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

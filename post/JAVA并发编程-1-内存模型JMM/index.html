@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
+<meta name="keywords" content="内存模型JMM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA并发编程-1-内存模型JMM">
+<meta property="og:url" content="https://shang.at/post/JAVA并发编程-1-内存模型JMM/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://shang.at/images/image-20200827133335886.png">
+<meta property="og:image" content="https://shang.at/images/image-20200827133600227.png">
+<meta property="og:image" content="https://shang.at/images/image-20200827133837208.png">
+<meta property="og:image" content="https://shang.at/images/image-20200827135021022.png">
+<meta property="og:image" content="https://shang.at/images/image-20200921072258470.png">
+<meta property="og:image" content="https://shang.at/images/image-20200921072722103.png">
+<meta property="og:image" content="https://shang.at/images/image-20200922074104788.png">
+<meta property="og:image" content="https://shang.at/images/image-20200922075433859.png">
+<meta property="og:image" content="https://shang.at/images/image-20200922080054350.png">
+<meta property="og:image" content="https://shang.at/images/image-20200928075314211.png">
+<meta property="og:image" content="https://shang.at/images/image-20200928075352744.png">
+<meta property="og:image" content="https://shang.at/images/image-20200928075525079.png">
+<meta property="og:updated_time" content="2020-12-11T08:17:49.358Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA并发编程-1-内存模型JMM">
+<meta name="twitter:description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
+<meta name="twitter:image" content="https://shang.at/images/image-20200827133335886.png">
+
+<link rel="canonical" href="https://shang.at/post/JAVA并发编程-1-内存模型JMM/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JAVA并发编程-1-内存模型JMM | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-1-内存模型JMM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JAVA并发编程-1-内存模型JMM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-03 10:50:11" itemprop="dateCreated datePublished" datetime="2020-06-03T10:50:11+08:00">2020-06-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:17:49" itemprop="dateModified" datetime="2020-12-11T16:17:49+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA并发编程/" itemprop="url" rel="index"><span itemprop="name">JAVA并发编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="硬件层的并发优化基础"><a href="#硬件层的并发优化基础" class="headerlink" title="硬件层的并发优化基础"></a>硬件层的并发优化基础</h2><p><img src="/images/image-20200827133335886.png" alt="image-20200827133335886"></p>
+<p><img src="/images/image-20200827133600227.png" alt="image-20200827133600227"></p>
+<p>为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加<strong>多级缓存机制</strong>，该机制会利用<strong>局部性原理</strong>(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。</p>
+<p><img src="/images/image-20200827133837208.png" alt="image-20200827133837208"></p>
+<p>其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题：在并发环境下不同的核在做L1和L2缓存的时候，可能会导致两者缓存的数据不一致的问题，即Core1和Core2同时缓存了一个变量x，但是在Core1把它修改了，这个时候Core2的缓存实际桑上就不对了。那么如何进行同步呢？</p>
+<p>硬件层缓存一致性</p>
+<ul>
+<li><p>总线锁：老的CPU</p>
+</li>
+<li><p>数据一致性协议  MESI Cache一致性协议   <strong>是一种缓存锁</strong></p>
+<ul>
+<li><p><img src="/images/image-20200827135021022.png" alt="image-20200827135021022"></p>
+</li>
+<li><p>协议很多</p>
+<p>intel 用MESI，给每个缓存的内容作了一个标记</p>
+<p><strong>M: 被修改（Modified)</strong></p>
+<p>该缓存行只被缓存在该<code>CPU</code>的缓存中，并且是被修改过的（<code>dirty</code>),即与主存中的数据不一致，该缓存行中的内存需要在未来的某个时间点（允许其它<code>CPU</code>读取请主存中相应内存之前）写回（<code>write back</code>）主存。</p>
+<p>当被写回主存之后，该缓存行的状态会变成独享（<code>exclusive</code>)状态。</p>
+<p><strong>E: 独享的（Exclusive)</strong></p>
+<p>该缓存行只被缓存在该<code>CPU</code>的缓存中，它是未被修改过的（<code>clean</code>)，与主存中数据一致。该状态可以在任何时刻当有其它<code>CPU</code>读取该内存时变成共享状态（<code>shared</code>)。</p>
+<p>同样地，当<code>CPU</code>修改该缓存行中内容时，该状态可以变成<code>Modified</code>状态。</p>
+<p><strong>S: 共享的（Shared)</strong></p>
+<p>该状态意味着该缓存行可能被多个<code>CPU</code>缓存，并且各个缓存中的数据与主存数据一致（<code>clean</code>)，当有一个<code>CPU</code>修改该缓存行中，其它<code>CPU</code>中该缓存行可以被作废（变成无效状态（<code>Invalid</code>））。</p>
+<p><strong>I: 无效的（Invalid）</strong></p>
+<p>该缓存是无效的（可能有其它<code>CPU</code>修改了该缓存行）。</p>
+<p><a href="https://www.cnblogs.com/z00377750/p/9180644.html" target="_blank" rel="noopener">https://www.cnblogs.com/z00377750/p/9180644.html</a></p>
+<p>现代CPU的数据一致性实现 = 缓存锁(MESI …) + 总线锁</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="缓存行"><a href="#缓存行" class="headerlink" title="缓存行"></a>缓存行</h3><p>读取缓存以<code>cache line</code>为基本单位，目前64bytes</p>
+<p>位于同一缓存行的两个不同数据，被两个不同CPU锁定，产生互相影响的伪共享问题</p>
+<p>伪共享问题：JUC/c_028_FalseSharing</p>
+<p>使用缓存行的对齐能够提高效率</p>
+<p><img src="/images/image-20200921072258470.png" alt="image-20200921072258470"></p>
+<h3 id="乱序执行"><a href="#乱序执行" class="headerlink" title="乱序执行"></a>乱序执行</h3><p>CPU为了提高指令执行效率，会在一条指令执行过程中（比如去内存读取数据（慢100倍）），他会去同时执行另一条指令，前提是，两条指令没有依赖关系</p>
+<p><a href="https://www.cnblogs.com/liushaodong/p/4777308.html" target="_blank" rel="noopener">https://www.cnblogs.com/liushaodong/p/4777308.html</a></p>
+<p><img src="/images/image-20200921072722103.png" alt="image-20200921072722103"></p>
+<p>写操作也可以合并： 合并写：WC Buffer，Write Combiner Buffer。一般只有4Bytes，位于比L1缓存还高的级别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JUC/029_WriteCombining</span><br><span class="line"></span><br><span class="line">乱序执行的证明：JVM/jmm/Disorder.java</span><br><span class="line"></span><br><span class="line">原始参考：https://preshing.com/20120515/memory-reordering-caught-in-the-act/</span><br></pre></td></tr></table></figure>
+<h3 id="如何保证特定情况下-不乱序"><a href="#如何保证特定情况下-不乱序" class="headerlink" title="如何保证特定情况下 不乱序"></a>如何保证特定情况下 不乱序</h3><h4 id="硬件级别的内存屏障："><a href="#硬件级别的内存屏障：" class="headerlink" title="硬件级别的内存屏障："></a>硬件级别的内存屏障：</h4><p>Intel的CPU的汇编指令</p>
+<p>sfence： save fence</p>
+<p>lfence： load fence</p>
+<p>mfence： modify fence</p>
+<p><img src="/images/image-20200922074104788.png" alt="image-20200922074104788"></p>
+<p>原子指令：如x86上的<code>lock ...</code>指令是一个FullBarrier，执行时会锁住内存子系统来确保执行顺序，甚至跨多个CPU。Sofeware Locks通常是使用了内存屏障或原子指令来实现变量的可见性和保持程序的顺序</p>
+<h4 id="JVM级别的内存屏障"><a href="#JVM级别的内存屏障" class="headerlink" title="JVM级别的内存屏障"></a>JVM级别的内存屏障</h4><p><img src="/images/image-20200922075433859.png" alt="image-20200922075433859"></p>
+<h4 id="volatile的实现细节"><a href="#volatile的实现细节" class="headerlink" title="volatile的实现细节"></a>volatile的实现细节</h4><ol>
+<li>字节码层面</li>
+</ol>
+<p>​    在编译成字节码的时候，被标记字段的accessflags为<code>0x0040</code>，即加了一个volatile的标记</p>
+<ol>
+<li><p>JVM层面</p>
+<p>在volatile变量的读写操作前后会加入不同的内存屏障，保证volatile变量读写操作不会发生乱序</p>
+<p><img src="/images/image-20200922080054350.png" alt="image-20200922080054350"></p>
+</li>
+</ol>
+<ol>
+<li><p>OS和硬件层面</p>
+<p>   <a href="https://blog.csdn.net/qq_26222859/article/details/52235930" target="_blank" rel="noopener">https://blog.csdn.net/qq_26222859/article/details/52235930</a><br>   hsdis - HotSpot Dis Assembler<br>   windows lock 指令实现 | MESI实现</p>
+</li>
+</ol>
+<h4 id="synchronized实现细节"><a href="#synchronized实现细节" class="headerlink" title="synchronized实现细节"></a>synchronized实现细节</h4><ol>
+<li>字节码层面<br>ACC_SYNCHRONIZED<br>monitorenter monitorexit</li>
+<li>JVM层面<br>C C++ 调用了操作系统提供的同步机制</li>
+<li>OS和硬件层面<br>X86 : lock cmpxchg / xxx<br><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">https</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">://blog.csdn.net/21aspnet/article/details/</a><a href="https://blog.csdn.net/21aspnet/article/details/88571740" target="_blank" rel="noopener">88571740</a></li>
+</ol>
+<p>java并发内存模型</p>
+<p><img src="/images/image-20200928075314211.png" alt="image-20200928075314211"></p>
+<p>Happened-Before原则</p>
+<p><img src="/images/image-20200928075352744.png" alt="image-20200928075352744"></p>
+<p>as-is-serial</p>
+<p><img src="/images/image-20200928075525079.png" alt="image-20200928075525079"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/内存模型JMM/" rel="tag"># 内存模型JMM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Spark应用-Scheduler/" rel="prev" title="Spark应用-Scheduler">
+      <i class="fa fa-chevron-left"></i> Spark应用-Scheduler
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/JAVA并发编程-2-并发基础/" rel="next" title="JAVA并发编程-2-并发基础">
+      JAVA并发编程-2-并发基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件层的并发优化基础"><span class="nav-number">1.</span> <span class="nav-text">硬件层的并发优化基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存行"><span class="nav-number">1.1.</span> <span class="nav-text">缓存行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#乱序执行"><span class="nav-number">1.2.</span> <span class="nav-text">乱序执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何保证特定情况下-不乱序"><span class="nav-number">1.3.</span> <span class="nav-text">如何保证特定情况下 不乱序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#硬件级别的内存屏障："><span class="nav-number">1.3.1.</span> <span class="nav-text">硬件级别的内存屏障：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM级别的内存屏障"><span class="nav-number">1.3.2.</span> <span class="nav-text">JVM级别的内存屏障</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile的实现细节"><span class="nav-number">1.3.3.</span> <span class="nav-text">volatile的实现细节</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized实现细节"><span class="nav-number">1.3.4.</span> <span class="nav-text">synchronized实现细节</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

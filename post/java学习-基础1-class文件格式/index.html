@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="什么是JVM？   jvm与java没有关系，任何能翻译成class文件的语言，都能运行在jvm上   JDK JRE JVM  Class File Format样例代码：非常简单，只有一个类型的声明 1234package com.mashibing.jvm.c1_bytecode;public class T0100_ByteCode01 &amp;#123;&amp;#125; 编译完之后，在用IDEA打">
+<meta name="keywords" content="class文件格式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java学习-基础1-class文件格式">
+<meta property="og:url" content="https://shang.at/post/java学习-基础1-class文件格式/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="什么是JVM？   jvm与java没有关系，任何能翻译成class文件的语言，都能运行在jvm上   JDK JRE JVM  Class File Format样例代码：非常简单，只有一个类型的声明 1234package com.mashibing.jvm.c1_bytecode;public class T0100_ByteCode01 &amp;#123;&amp;#125; 编译完之后，在用IDEA打">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://shang.at/images/image-20200823203230554.png">
+<meta property="og:image" content="https://shang.at/images/image-20200823203405025.png">
+<meta property="og:image" content="https://shang.at/images/image-20200823203423735.png">
+<meta property="og:image" content="https://shang.at/images/image-20200823203516842.png">
+<meta property="og:image" content="https://shang.at/images/image-20200823203917301.png">
+<meta property="og:image" content="https://shang.at/images/image-20200823204258258.png">
+<meta property="og:image" content="https://shang.at/images/image-20200824102745209.png">
+<meta property="og:image" content="https://shang.at/images/image-20200825065115617.png">
+<meta property="og:updated_time" content="2020-12-11T08:20:27.279Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java学习-基础1-class文件格式">
+<meta name="twitter:description" content="什么是JVM？   jvm与java没有关系，任何能翻译成class文件的语言，都能运行在jvm上   JDK JRE JVM  Class File Format样例代码：非常简单，只有一个类型的声明 1234package com.mashibing.jvm.c1_bytecode;public class T0100_ByteCode01 &amp;#123;&amp;#125; 编译完之后，在用IDEA打">
+<meta name="twitter:image" content="https://shang.at/images/image-20200823203230554.png">
+
+<link rel="canonical" href="https://shang.at/post/java学习-基础1-class文件格式/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>java学习-基础1-class文件格式 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-基础1-class文件格式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java学习-基础1-class文件格式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-13 08:12:38" itemprop="dateCreated datePublished" datetime="2020-06-13T08:12:38+08:00">2020-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:20:27" itemprop="dateModified" datetime="2020-12-11T16:20:27+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是JVM？"><a href="#什么是JVM？" class="headerlink" title="什么是JVM？"></a>什么是JVM？</h2><p><img src="/images/image-20200823203230554.png" alt="image-20200823203230554"></p>
+<p><img src="/images/image-20200823203405025.png" alt="image-20200823203405025"></p>
+<p><img src="/images/image-20200823203423735.png" alt="image-20200823203423735"></p>
+<p>jvm与java没有关系，任何能翻译成class文件的语言，都能运行在jvm上</p>
+<p><img src="/images/image-20200823203516842.png" alt="image-20200823203516842"></p>
+<p><img src="/images/image-20200823203917301.png" alt="image-20200823203917301"></p>
+<p>JDK JRE JVM</p>
+<p><img src="/images/image-20200823204258258.png" alt="image-20200823204258258"></p>
+<h2 id="Class-File-Format"><a href="#Class-File-Format" class="headerlink" title="Class File Format"></a>Class File Format</h2><p>样例代码：非常简单，只有一个类型的声明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mashibing.jvm.c1_bytecode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T0100_ByteCode01</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译完之后，在用IDEA打开：会发现，被自动加了一个无参的构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by Fernflower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.mashibing.jvm.c1_bytecode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T0100_ByteCode01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">T0100_ByteCode01</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们使用一种能查看二进制文件的软件打开该class文件，(我这里用的是sublime)。会得到如下的16进制显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cafe babe 0000 0034 0010 0a00 0300 0d07</span><br><span class="line">000e 0700 0f01 0006 3c69 6e69 743e 0100</span><br><span class="line">0328 2956 0100 0443 6f64 6501 000f 4c69</span><br><span class="line">6e65 4e75 6d62 6572 5461 626c 6501 0012</span><br><span class="line">4c6f 6361 6c56 6172 6961 626c 6554 6162</span><br><span class="line">6c65 0100 0474 6869 7301 0030 4c63 6f6d</span><br><span class="line">2f6d 6173 6869 6269 6e67 2f6a 766d 2f63</span><br><span class="line">315f 6279 7465 636f 6465 2f54 3031 3030</span><br><span class="line">5f42 7974 6543 6f64 6530 313b 0100 0a53</span><br><span class="line">6f75 7263 6546 696c 6501 0015 5430 3130</span><br><span class="line">305f 4279 7465 436f 6465 3031 2e6a 6176</span><br><span class="line">610c 0004 0005 0100 2e63 6f6d 2f6d 6173</span><br><span class="line">6869 6269 6e67 2f6a 766d 2f63 315f 6279</span><br><span class="line">7465 636f 6465 2f54 3031 3030 5f42 7974</span><br><span class="line">6543 6f64 6530 3101 0010 6a61 7661 2f6c</span><br><span class="line">616e 672f 4f62 6a65 6374 0021 0002 0003</span><br><span class="line">0000 0000 0001 0001 0004 0005 0001 0006</span><br><span class="line">0000 002f 0001 0001 0000 0005 2ab7 0001</span><br><span class="line">b100 0000 0200 0700 0000 0600 0100 0000</span><br><span class="line">0300 0800 0000 0c00 0100 0000 0500 0900</span><br><span class="line">0a00 0000 0100 0b00 0000 0200 0c</span><br></pre></td></tr></table></figure>
+<p>结构如下：class文件就是按照如下的顺序紧凑的拼在一起的</p>
+<ul>
+<li>Magic Number<ul>
+<li>4字节</li>
+<li>魔数</li>
+<li>可以认为是文件类型：以<code>cafe babe</code>开头的文件则为class类型的文件</li>
+<li>class文件的前4个字节：<code>cafe babe</code></li>
+</ul>
+</li>
+<li>Minor Version<ul>
+<li>2字节</li>
+<li>小版本：<code>0000</code></li>
+<li>小数点后的数值</li>
+</ul>
+</li>
+<li>Major Version<ul>
+<li>2字节</li>
+<li>大版本：<code>0034</code></li>
+<li>小数点前的数值</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>class文件的版本号：</p>
+<p>JDK1.7默认为51.0、JDK1.8默认为52.0</p>
+</blockquote>
+<ul>
+<li><p>constant_pool_count</p>
+<ul>
+<li>2字节</li>
+<li>常量池大小</li>
+</ul>
+</li>
+<li><p>constant_pool：长度为constan_pool_count-1的表</p>
+<ul>
+<li><p>根据常量池大小 不是固定的</p>
+</li>
+<li><p>常量池表</p>
+</li>
+<li><p>常量池序号从<strong>#1</strong>开始</p>
+</li>
+<li><p>常量池的每种元素占用的字节数可能是不一样的，但是每个元素的第一个字节表示的是当前元素的类型(<strong>tag</strong>)，然后再根据当前元素的类型可以得到该元素占用的字节数</p>
+<p>一个元素读完之后立即跟着下一个元素，中间没有空闲</p>
+</li>
+<li><p>常量池中每种元素对应的含义</p>
+<ul>
+<li>1 CONSTANT_Utf8_info<ul>
+<li>tag: 1</li>
+<li>Length：utf8字符串占用的字节数</li>
+<li>bytes：长度为length的字符串</li>
+</ul>
+</li>
+<li>3 </li>
+<li>7 CONSTANT_Class_info<ul>
+<li>tag: 7</li>
+<li>Index：2字节 类的全限定名的 常量池索引</li>
+<li>全限定名例子如下：com/mashibing/jvm/c1_bytecode/T0100_ByteCode01</li>
+</ul>
+</li>
+<li>8 CONSTANT_String_info<ul>
+<li>tag：8</li>
+<li>index：2字节 指向字符串字面量的 常量池索引</li>
+</ul>
+</li>
+<li>10 CONSTANT_Methodref_info<ul>
+<li>Tag：10</li>
+<li>index：2字节 指向声明方法的类或者接口描述符CONSTANT_Class_info的常量池索引</li>
+<li>index：2字节 指向字段描述符CONSTANT_NameAndType的常量池索引</li>
+</ul>
+</li>
+<li>12 CONSTANT_NameAndType_info<ul>
+<li>tag：12</li>
+<li>Index：2字节 指向该字段或方法名称的 常量池索引</li>
+<li>index：2字节 指向该字段或方法描述符的 常量池索引</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>access_flags：访问标记</p>
+<ul>
+<li>2字节</li>
+<li>ACC_PUBLIC 0x0001 是否为public类型</li>
+<li>ACC_FINAL 0x0010 是否为final</li>
+<li>ACC_SUPER 0x0020 该标志必须为真，JDK1.0.2之后编译出来的内容必须为真，指明invokespecial指令使用新语义</li>
+<li>ACC_INTERFACE 0x0200 是否为接口</li>
+<li>ACC_ABSTRACT 0x0400 是否为抽象类</li>
+<li>ACC_SYNTHETIC 0x1000编译器自动生成，非用户代码</li>
+<li>ACC_ANNOTATION 0x2000 是否为注解</li>
+<li>ACC_ENUM 0x4000 是否为枚举类型</li>
+</ul>
+</li>
+<li><p>this_class：当前类的名称</p>
+<ul>
+<li>2字节</li>
+<li>index：2字节 指向类型描述符CONSTANT_Class_info的常量池索引</li>
+</ul>
+</li>
+<li><p>super_class：父类的名称</p>
+<ul>
+<li>2字节</li>
+<li>index：2字节 指向类型描述符CONSTANT_Class_info的常量池索引</li>
+</ul>
+</li>
+<li><p>interfaces_count：实现的接口数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>interfaces</p>
+<ul>
+<li>实现的具体接口列表</li>
+</ul>
+</li>
+<li><p>fields_count：字段数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>fields：字段列表</p>
+<ul>
+<li>access_flags 2字节<ul>
+<li>ACC_PUBLIC 0x0001</li>
+<li>ACC_PRIVATE 0x0002</li>
+<li>ACC_PROTECTED 0x0004</li>
+<li>ACC_STATIC 0x0008</li>
+<li>ACC_FINAL 0x0010</li>
+<li>ACC_VOLATILE 0x0040</li>
+<li>ACC_TRANSIENT 0x0080</li>
+<li>ACC_SYNTHETIC 0x1000</li>
+<li>ACC_ENUM 0x4000</li>
+</ul>
+</li>
+<li>name_index 2字节</li>
+<li>decriptor_index  2字节<ul>
+<li>B byte</li>
+<li>C char</li>
+<li>D double</li>
+<li>F float</li>
+<li>I int</li>
+<li>J long</li>
+<li>S short</li>
+<li>Z boolean</li>
+<li>V void</li>
+<li>L Object ： Lcom/mashibing/jvm/Test</li>
+<li>[ 数组<ul>
+<li>一维 [B [Ljava/lang/String</li>
+<li>二维 [[C [[Ljava/lang/String</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>attribubtes_count  2字节</li>
+<li>attributes</li>
+</ul>
+</li>
+<li><p>methods_count：方法数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>methods：方法列表</p>
+<ul>
+<li>access_flag 2字节</li>
+<li>name_index 2字节</li>
+<li>descriptor_index 2字节</li>
+<li>attribute_count 2字节</li>
+<li>attributes</li>
+</ul>
+</li>
+<li><p>attributes_count - u2</p>
+<ul>
+<li>附加属性数量</li>
+</ul>
+</li>
+<li><p>attributes：附加属性列表</p>
+<ul>
+<li>既有预定义的属性，也可以自定义，java虚拟机自动忽略不认识的属性</li>
+<li>code - 方法表 - 该方法编译的字节码指令</li>
+<li>ConstantValue - 字段表 - final关键字定义的常量值</li>
+<li>Deprecated - 类、方法表、字段表</li>
+<li>Exceptions - 方法表</li>
+<li>EnclosingMethod - 类文件 - 局部类或匿名类的外部封装方法</li>
+<li>InnerClass - 类文件 - 内部类列表</li>
+<li>LineNumberTable - Code属性 - java源码的行号与字节码指令的对应关系</li>
+<li>LocalVariableTable - Code属性 - 方法局部变量表</li>
+<li>SourceFile - 类文件 - 源文件名</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/image-20200824102745209.png" alt="image-20200824102745209"></p>
+<p><img src="/images/image-20200825065115617.png" alt="image-20200825065115617"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/class文件格式/" rel="tag"># class文件格式</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Python学习-metaclass实现单例/" rel="prev" title="Python学习-metaclass实现单例">
+      <i class="fa fa-chevron-left"></i> Python学习-metaclass实现单例
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/java学习-底层知识总结/" rel="next" title="java学习-底层知识总结">
+      java学习-底层知识总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是JVM？"><span class="nav-number">1.</span> <span class="nav-text">什么是JVM？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-File-Format"><span class="nav-number">2.</span> <span class="nav-text">Class File Format</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

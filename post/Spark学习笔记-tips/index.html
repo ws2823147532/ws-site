@@ -23,18 +23,18 @@
     var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
+  <meta name="description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 <meta name="keywords" content="Spark-tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark学习笔记-tips">
 <meta property="og:url" content="https://shang.at/post/Spark学习笔记-tips/index.html">
 <meta property="og:site_name" content="努力，奋斗">
-<meta property="og:description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
+<meta property="og:description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-08-09T02:10:37.471Z">
+<meta property="og:updated_time" content="2020-08-31T02:19:01.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark学习笔记-tips">
-<meta name="twitter:description" content="如何屏蔽Spark的日志： 12345678// 获取SparkContext对象val conf: SparkConf = new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;test01&quot;)val sc = new SparkContext(conf)sc.setLogLevel(&quot;ERROR&quot;)// 或者通过SparkSession也可以获取：va">
+<meta name="twitter:description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 
 <link rel="canonical" href="https://shang.at/post/Spark学习笔记-tips/">
 
@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-09 10:10:37" itemprop="dateModified" datetime="2020-08-09T10:10:37+08:00">2020-08-09</time>
+                <time title="修改时间：2020-08-31 10:19:01" itemprop="dateModified" datetime="2020-08-31T10:19:01+08:00">2020-08-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -224,6 +224,17 @@
 
       
         <ul>
+<li><p>使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，</p>
+<ul>
+<li>所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。</li>
+<li>原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，才会触发计算，但是如果选择了<code>overwrite</code>mode，就会把数据truncate掉了，因为这是在Driver端执行的，此时还没有发生计算</li>
+<li>如何解决：<ul>
+<li>必须要用mysql表进行数据存储，那就考虑不要使用spark的jdbc API了</li>
+<li>如果必须要用spark的jdbc api，是没办法做到的。因为truncate操作是在action算子之前就已经完成的。</li>
+</ul>
+</li>
+</ul>
+</li>
 <li><p>如何屏蔽Spark的日志：</p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取SparkContext对象</span></span><br><span class="line"><span class="keyword">val</span> conf: <span class="type">SparkConf</span> = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"test01"</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">sc.setLogLevel(<span class="string">"ERROR"</span>)</span><br><span class="line"><span class="comment">// 或者通过SparkSession也可以获取：</span></span><br><span class="line"><span class="keyword">val</span> sc = sparkSession.sparkContext</span><br><span class="line">sc.setLogLevel(<span class="string">"ERROR"</span>)</span><br></pre></td></tr></table></figure>
 </li>
@@ -371,20 +382,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">129</span>
+        <span class="site-state-item-count">139</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
