@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：">
+<meta name="keywords" content="json数据操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark学习-json数据操作">
+<meta property="og:url" content="https://shang.at/post/Spark学习-json数据操作/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-02-07T08:18:11.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark学习-json数据操作">
+<meta name="twitter:description" content="简介：">
+
+<link rel="canonical" href="https://shang.at/post/Spark学习-json数据操作/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spark学习-json数据操作 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习-json数据操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark学习-json数据操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-07 15:03:49 / 修改时间：16:18:11" itemprop="dateCreated datePublished" datetime="2021-02-07T15:03:49+08:00">2021-02-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark学习/" itemprop="url" rel="index"><span itemprop="name">Spark学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：</p>
+</blockquote>
+<a id="more"></a>
+<p>有以下的<code>json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"status"</span>: <span class="string">"0x0000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"执行成功"</span>,</span><br><span class="line">    <span class="attr">"result"</span>: <span class="string">"通过"</span>,</span><br><span class="line">    <span class="attr">"score"</span>: <span class="string">"0"</span>,</span><br><span class="line">    <span class="attr">"engineName"</span>: <span class="string">"credit_unit_salim"</span>,</span><br><span class="line">    <span class="attr">"versionCode"</span>: <span class="string">"20200702credit_salim"</span>,</span><br><span class="line">    <span class="attr">"versionId"</span>: <span class="number">356307673651200</span>,</span><br><span class="line">    <span class="attr">"engineId"</span>: <span class="number">355251417716736</span>,</span><br><span class="line">    <span class="attr">"outputFields"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"return_reason"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出打回原因"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"null"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"deny_days"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出拒绝天数"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"deny_reason"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出拒绝原因"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"null"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"decision"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出决策"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"forward_manual"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"limit"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出授信额度"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"cash_limit"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"现金贷款额度"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"inputFields"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"indo_id_check"</span>: <span class="string">"DEDY DWI SETYAWAN"</span>,</span><br><span class="line">            <span class="attr">"indo_identical_accuracy_ktp"</span>: <span class="string">"-2.0"</span>,</span><br><span class="line">            <span class="attr">"indo_mobile_number_approving"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_name_diff_id_check"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_name_diff_ocr"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_approving"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_diff_employee_nik"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_diff_ocr"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_ocr_name"</span>: <span class="string">"DEDY DWI SEVYAWAN"</span>,</span><br><span class="line">            <span class="attr">"indo_ocr_nik"</span>: <span class="string">"3525051812850002"</span>,</span><br><span class="line">            <span class="attr">"indo_reject_his_nik"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_reject_his_tel"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"同一个申请下return次数"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"outputFieldInfo"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"输出打回原因"</span>: <span class="string">"null"</span>,</span><br><span class="line">            <span class="attr">"输出拒绝天数"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"输出拒绝原因"</span>: <span class="string">"null"</span>,</span><br><span class="line">            <span class="attr">"输出决策"</span>: <span class="string">"forward_manual"</span>,</span><br><span class="line">            <span class="attr">"输出授信额度"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"现金贷款额度"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="sql版本取json中的array，array的每个元素作为一个map结构"><a href="#sql版本取json中的array，array的每个元素作为一个map结构" class="headerlink" title="sql版本取json中的array，array的每个元素作为一个map结构"></a>sql版本取json中的array，array的每个元素作为一个map结构</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">select</span></span><br><span class="line"><span class="string">    from_json(data, 'array&lt;map&lt;string,string&gt;&gt;') r</span></span><br><span class="line"><span class="string">from (</span></span><br><span class="line"><span class="string">	select json_tuple(json, 'inputFields') data</span></span><br><span class="line"><span class="string">) t</span></span><br><span class="line"><span class="string">"""</span>).printSchema()</span><br><span class="line"></span><br><span class="line">root</span><br><span class="line"> |-- r: array (nullable = true)</span><br><span class="line"> |    |-- element: map (containsNull = true)</span><br><span class="line"> |    |    |-- key: string</span><br><span class="line"> |    |    |-- value: string (valueContainsNull = true)</span><br></pre></td></tr></table></figure>
+<p><code>array&lt;map&lt;string,string&gt;&gt;</code>这个是如何得来的呢？是这样的，可以使用<code>schema_of_json</code>函数来获取一个json的结构是怎样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">select schema_of_json(json)</span></span><br><span class="line"><span class="string">"""</span>).toPandas()</span><br><span class="line"></span><br><span class="line"><span class="comment">#array&lt;struct&lt;indo_id_check:string,indo_identical_accuracy_ktp:string,indo_mobile_number_approving:string,indo_name_diff_id_check:string,indo_name_diff_ocr:string,indo_nik_approving:string,indo_nik_diff_employee_nik:string,indo_nik_diff_ocr:string,indo_ocr_name:string,indo_ocr_nik:string,indo_reject_his_nik:string,indo_reject_his_tel:string,同一个申请下return次数:string&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但是通过上述方式得到的结果不能直接拿来用，需要做一些变形：如果array的每个元素的字段都是固定的，那么可以将array的元素定义为一个<code>struct</code>，但是我们的需求中的数据，array的每个元素的字段是不固定的，且我们没有将其字段都穷举出来，所以我们就把它定义为一个map类型的，后续将它使用explode_outer展开再进行处理。通过查询spark的api，可以知道MapType的构造方法需要两个参数，分别为key的Type和value的Type，这里我们直接使用最通用的String类型代替了</p>
+<h5 id="pyspark"><a href="#pyspark" class="headerlink" title="pyspark"></a>pyspark</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> *</span><br><span class="line">schema = ArrayType(MapType(StringType(), StringType()))</span><br><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).toPandas()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string">-- from atome_id_mysql_snapshot_ruleengine.t_result_catalog limit 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'item'</span>, explode(<span class="string">'items'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'keys'</span>, map_keys(<span class="string">'item'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'values'</span>, map_values(<span class="string">'item'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'k_v'</span>, arrays_zip(<span class="string">'keys'</span>, <span class="string">'values'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'kv'</span>, explode_outer(<span class="string">'k_v'</span>)</span><br><span class="line">).printSchema()</span><br><span class="line"></span><br><span class="line">root</span><br><span class="line"> |-- items: array (nullable = true)</span><br><span class="line"> |    |-- element: map (containsNull = true)</span><br><span class="line"> |    |    |-- key: string</span><br><span class="line"> |    |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- item: map (nullable = true)</span><br><span class="line"> |    |-- key: string</span><br><span class="line"> |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- keys: array (nullable = true)</span><br><span class="line"> |    |-- element: string (containsNull = true)</span><br><span class="line"> |-- values: array (nullable = true)</span><br><span class="line"> |    |-- element: string (containsNull = true)</span><br><span class="line"> |-- k_v: array (nullable = true)</span><br><span class="line"> |    |-- element: struct (containsNull = false)</span><br><span class="line"> |    |    |-- keys: string (nullable = true)</span><br><span class="line"> |    |    |-- values: string (nullable = true)</span><br><span class="line"> |-- kv: struct (nullable = true)</span><br><span class="line"> |    |-- keys: string (nullable = true)</span><br><span class="line"> |    |-- values: string (nullable = true)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">df = spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'item'</span>, explode(<span class="string">'items'</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># df.printSchema()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># df.select(expr("posexplode(d)")).printSchema</span></span><br><span class="line">df.select(expr(<span class="string">'explode(item)'</span>)).toPandas()  <span class="comment"># 将map 展开  posexplode会多一个pos的字段</span></span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>indo_id_check</td>
+<td>DEDY DWI SETYAWAN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>indo_identical_accuracy_ktp</td>
+<td>-2.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>indo_mobile_number_approving</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>indo_name_diff_id_check</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>indo_name_diff_ocr</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>indo_nik_approving</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>indo_nik_diff_employee_nik</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>indo_nik_diff_ocr</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>indo_ocr_name</td>
+<td>DEDY DWI SEVYAWAN</td>
+</tr>
+<tr>
+<td>9</td>
+<td>indo_ocr_nik</td>
+<td>3525051812850002</td>
+</tr>
+<tr>
+<td>10</td>
+<td>indo_reject_his_nik</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>indo_reject_his_tel</td>
+<td>0</td>
+</tr>
+<tr>
+<td>12</td>
+<td>同一个申请下return次数</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a href="https://blog.csdn.net/wang_wbq/article/details/79678168" target="_blank" rel="noopener">Spark SQL集合数据类型array\map的取值方式</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/json数据操作/" rel="tag"># json数据操作</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/操作系统/" rel="prev" title="操作系统">
+      <i class="fa fa-chevron-left"></i> 操作系统
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/机器学习-数据探索流程/" rel="next" title="机器学习-数据探索流程">
+      机器学习-数据探索流程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#sql版本取json中的array，array的每个元素作为一个map结构"><span class="nav-number">1.</span> <span class="nav-text">sql版本取json中的array，array的每个元素作为一个map结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#pyspark"><span class="nav-number">1.1.</span> <span class="nav-text">pyspark</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">172</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

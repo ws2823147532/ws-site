@@ -31,7 +31,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="简介：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-07-26T13:34:23.114Z">
+<meta property="og:updated_time" content="2020-12-17T06:46:46.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scala学习-集合">
 <meta name="twitter:description" content="简介：">
@@ -192,10 +192,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-07-26 16:19:27 / 修改时间：21:34:23" itemprop="dateCreated datePublished" datetime="2020-07-26T16:19:27+08:00">2020-07-26</time>
+              <time title="创建时间：2020-07-26 16:19:27" itemprop="dateCreated datePublished" datetime="2020-07-26T16:19:27+08:00">2020-07-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-17 14:46:46" itemprop="dateModified" datetime="2020-12-17T14:46:46+08:00">2020-12-17</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -223,6 +229,28 @@
 <a id="more"></a>
 <p>在scala中分为两种集合类型：immutable(不可变的)、mutable(可变的)</p>
 <p>默认创建出来的集合类如：</p>
+<p>immutable的API都是创建一个新的对象返回</p>
+<p>mutable的API具有add set put等操作，可以修改对象内容</p>
+<p>scala中的队列和栈：</p>
+<h2 id="1-使用队列"><a href="#1-使用队列" class="headerlink" title="1.使用队列"></a>1.使用队列</h2><p>队列是一种那个先进先出的队列。<br>1)创建一个队列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; ``import` `scala.collection.mutable.Queue``import` `scala.collection.mutable.Queue` `scala&gt; var fruits = Queue[String]()``fruits: scala.collection.mutable.Queue[String] = Queue()` `scala&gt; fruits += ``&quot;apple&quot;``res66: scala.collection.mutable.Queue[String] = Queue(apple)` `scala&gt; fruits += (``&quot;orange&quot;``,``&quot;banana&quot;``)``res67: scala.collection.mutable.Queue[String] = Queue(apple, orange, banana)` `scala&gt; fruits ++= List(``&quot;cherry&quot;``,``&quot;cocount&quot;``)``res68: scala.collection.mutable.Queue[String] = Queue(apple, orange, banana, cherry, cocount)` `scala&gt; fruits.enqueue(``&quot;pine&quot;``)` `scala&gt; fruits``res70: scala.collection.mutable.Queue[String] = Queue(apple, orange, banana, cherry, cocount, pine)`</span><br></pre></td></tr></table></figure>
+<p>2)dequeue每次从队列头部删除一个元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; val next = fruits.dequeue``next: String = apple` `scala&gt; fruits``res72: scala.collection.mutable.Queue[String] = Queue(orange, banana, cherry, cocount, pine)`</span><br></pre></td></tr></table></figure>
+<p>3)dequeueFirst和dequeueAll方法可以从队列中删除多个元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; var fruits = Queue[String]()``fruits: scala.collection.mutable.Queue[String] = Queue()` `scala&gt; fruits ++= List(``&quot;cherry&quot;``,``&quot;cocount&quot;``)``res76: scala.collection.mutable.Queue[String] = Queue(cherry, cocount)` `scala&gt; fruits ++= List(``&quot;orange&quot;``,``&quot;apple&quot;``)``res77: scala.collection.mutable.Queue[String] = Queue(cherry, cocount, orange, apple)` `scala&gt; fruits.dequeueFirst(_.startsWith(``&quot;a&quot;``))``res79: Option[String] = Some(apple)` `scala&gt; fruits``res80: scala.collection.mutable.Queue[String] = Queue(cherry, cocount, orange)` `scala&gt; fruits.dequeueAll(_.length &gt; ``6``)``res81: scala.collection.mutable.Seq[String] = ArrayBuffer(cocount)` `scala&gt; fruits``res82: scala.collection.mutable.Queue[String] = Queue(cherry, orange)`</span><br></pre></td></tr></table></figure>
+<h2 id="2-使用栈"><a href="#2-使用栈" class="headerlink" title="2.使用栈"></a>2.使用栈</h2><p>栈是一种后进先出的数据结构。用push方法将元素入栈，用pop方法将元素出栈。<br>1)创建一个任意数据类型空的可变栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; ``import` `scala.collection.mutable.Stack``import` `scala.collection.mutable.Stack` `scala&gt; var ints = Stack[Int]()``ints: scala.collection.mutable.Stack[Int] = Stack()`</span><br></pre></td></tr></table></figure>
+<p>2)在创建时给栈初始元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; val ints = Stack(``1``,``2``,``3``)``ints: scala.collection.mutable.Stack[Int] = Stack(``1``, ``2``, ``3``)`</span><br></pre></td></tr></table></figure>
+<p>3)用push方法向栈中填充元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; var fruits = Stack[String]()``fruits: scala.collection.mutable.Stack[String] = Stack()` `scala&gt; fruits.push(``&quot;apple&quot;``)``res2: scala.collection.mutable.Stack[String] = Stack(apple)` `scala&gt; fruits.push(``&quot;apple&quot;``,``&quot;orange&quot;``,``&quot;banana&quot;``)``res3: scala.collection.mutable.Stack[String] = Stack(banana, orange, apple, appl`</span><br></pre></td></tr></table></figure>
+<p>4)用pop方法将元素出栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; val next = fruits.pop``next: String = banana` `scala&gt; fruits``res4: scala.collection.mutable.Stack[String] = Stack(orange, apple, apple)`</span><br></pre></td></tr></table></figure>
+<p>5)用top方法查看下一个元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; fruits.top``res5: String = orange` `scala&gt; fruits``res6: scala.collection.mutable.Stack[String] = Stack(orange, apple, apple)`</span><br></pre></td></tr></table></figure>
+<p>6)用clear清空一个可变栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`scala&gt; fruits.clear` `scala&gt; fruits``res8: scala.collection.mutable.Stack[String] = Stack()`</span><br></pre></td></tr></table></figure>
+<p>　　<a href="https://www.cnblogs.com/zhaohadoopone/p/9534996.html#" target="_blank" rel="noopener">https://www.cnblogs.com/zhaohadoopone/p/9534996.html#</a>)</p>
 
     </div>
 
@@ -306,6 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-使用队列"><span class="nav-number">1.</span> <span class="nav-text">1.使用队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用栈"><span class="nav-number">2.</span> <span class="nav-text">2.使用栈</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -319,20 +348,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">146</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -359,7 +388,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

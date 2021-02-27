@@ -33,7 +33,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://shang.at/images/image-20200928100739661.png">
 <meta property="og:image" content="https://shang.at/images/image-20200928100754461.png">
-<meta property="og:updated_time" content="2020-12-11T07:57:22.780Z">
+<meta property="og:updated_time" content="2020-12-22T15:18:08.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工具使用-gitlab">
 <meta name="twitter:description" content="简介：">
@@ -203,7 +203,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 15:57:22" itemprop="dateModified" datetime="2020-12-11T15:57:22+08:00">2020-12-11</time>
+                <time title="修改时间：2020-12-22 23:18:08" itemprop="dateModified" datetime="2020-12-22T23:18:08+08:00">2020-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,7 +230,34 @@
 <p>简介：</p>
 </blockquote>
 <a id="more"></a>
+<p>Local repo：就是存在你本地的仓库；Remote repo：就是保存在远端的仓库，两者的内容在某些时候是不一样的，需要手动去保持一致</p>
+<p>local和remote的关系：第一次从remote将仓库克隆到本地的时候，本地的repo和远端的一模一样，如果你在本地创建了新的分支，那么在你执行git push之前，remote repo是没有你创建的分支的。同样的如果有其他人创建了分支并且push到了remote repo，你本地也是不知道的，这个时候就需要执行git fetch去更新你本地的repo。</p>
 <h1 id="新建repo"><a href="#新建repo" class="headerlink" title="新建repo"></a>新建repo</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> Git global setup</span><br><span class="line">git config --global user.name "xxx"</span><br><span class="line">git config --global user.email "xxx@abc.com"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Create a new repository</span><br><span class="line">git clone git_url</span><br><span class="line">cd atome-id-apaylater-data-warehouse</span><br><span class="line">touch README.md</span><br><span class="line">git add README.md</span><br><span class="line">git commit -m "add README"</span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Push an existing folder</span><br><span class="line">cd existing_folder</span><br><span class="line">git init</span><br><span class="line">git remote add origin git_url</span><br><span class="line">git add .</span><br><span class="line">git commit -m "Initial commit"</span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> Push an existing Git repository</span><br><span class="line">cd existing_repo</span><br><span class="line">git remote rename origin old-origin</span><br><span class="line">git remote add origin git_url</span><br><span class="line">git push -u origin --all</span><br><span class="line">git push -u origin --tags</span><br></pre></td></tr></table></figure>
+<h1 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h1><p>查看本地分支：git branch</p>
+<p>查看全部分支：git branch -a</p>
+<p>删除本地分支：git branch -d branchName</p>
+<p>强制删除本地分支：git branch -D branchName</p>
+<p>切换分支：git checkout branchName</p>
+<p>基于当前分支创建一个新的分支：git checkout -b newBranch</p>
+<p>暂存本地修改（修改了本地文件，但是又不想提交。慎用）：git stash</p>
+<p>释放 暂存的本地修改：git stash pop</p>
+<p>查看local repo 的状态：git status</p>
+<p>将修改的文件添加到local repo（tracked）：git add . 或git add 文件名</p>
+<p>将修改的文件提交到local repo：git commit -m ‘msg’</p>
+<p>合并分支：git merge</p>
+<p>更新本地repo：git fetch</p>
+<p><a href="https://www.cnblogs.com/runnerjack/p/9342362.html" target="_blank" rel="noopener">git pull与git fetch的更详细的解读</a></p>
+<p>工作中常用的操作步骤：</p>
+<ol>
+<li>创建自己的分支</li>
+<li>开发代码</li>
+<li>执行 git add和git commit命令，将修改提交到local的分支中（这个时候remote是没有这个分支的）</li>
+<li>切回master分支，更新master代码</li>
+<li>切回自己的分支，将master分支merge到自己的分支，顺便解决冲突（冲突是两个人同时修改同一个文件的时候可能会发生的，一般很少会发生冲突）</li>
+<li>可能需要继续执行git add 和 git commit</li>
+<li>将本地分支推到remote：git push</li>
+<li>到web端提交MR</li>
+</ol>
 <h1 id="用rebase-i-汇合提交"><a href="#用rebase-i-汇合提交" class="headerlink" title="用rebase -i 汇合提交"></a>用rebase -i 汇合提交</h1><p>进入一个repo目录，使用<code>git log</code>可以查看每次commit的记录</p>
 <p><img src="/images/image-20200928100739661.png" alt="image-20200928100739661"></p>
 <p>然后使用<code>git rebase -i HEAD~~</code>命令进入汇合提交页面(可以使用vim编辑的状态)</p>
@@ -286,15 +313,42 @@
 <p>关于解决冲突，如果明确所有冲突都是使用upstream/master上的来override自己的，那么可以直接运行如下命令，则无需解决冲突了</p>
 <p>git merge -X theirs upstream/master  </p>
 <p>注意，以上步骤结束后，仅仅是本地的fork出的repository和原repository取得了同步，如果想让远程的fork出的repository也同样取得同步，必须再git push上去。</p>
-<h1 id="submodule"><a href="#submodule" class="headerlink" title="submodule"></a>submodule</h1><h3 id="创建一个repo：test-1"><a href="#创建一个repo：test-1" class="headerlink" title="创建一个repo：test_1"></a>创建一个repo：test_1</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m "1"</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-<h3 id="创建一个lib-repo：test-2"><a href="#创建一个lib-repo：test-2" class="headerlink" title="创建一个lib repo：test_2"></a>创建一个lib repo：test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_2.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m &quot;1&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
-<h3 id="将test-2作为submodule添加到test-1中"><a href="#将test-2作为submodule添加到test-1中" class="headerlink" title="将test_2作为submodule添加到test_1中"></a>将test_2作为submodule添加到test_1中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add git@repo.advai.net:shang.wang/test_2.git test_lib</span><br></pre></td></tr></table></figure>
-<h3 id="提交test-1"><a href="#提交test-1" class="headerlink" title="提交test_1"></a>提交test_1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;2&apos;</span><br><span class="line">git submodule init</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
-<h3 id="修改test-2"><a href="#修改test-2" class="headerlink" title="修改test_2"></a>修改test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">echo &quot;123445&quot; &gt; test.txt</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;3&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
-<h3 id="在test-1中更新test-2"><a href="#在test-1中更新test-2" class="headerlink" title="在test_1中更新test_2"></a>在test_1中更新test_2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">git submodule foreach git pull</span><br></pre></td></tr></table></figure>
-<h3 id="clone一个带有submodule的repo"><a href="#clone一个带有submodule的repo" class="headerlink" title="clone一个带有submodule的repo"></a>clone一个带有submodule的repo</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1、clone父repo的时候直接clonesubmodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git ttttt --recursive</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2、clone完父repo之后，再初始化submodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">cd test_1</span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></table></figure>
-<h3 id="删除submodule"><a href="#删除submodule" class="headerlink" title="删除submodule"></a>删除submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git rm --cached test_lib</span><br><span class="line">rm -rf test_lib</span><br><span class="line">rm .gitmodules</span><br><span class="line"></span><br><span class="line">删除git配置文件config中关于submodule的信息</span><br><span class="line">vim .git/config  找到submodule的部分 删掉</span><br><span class="line"></span><br><span class="line">git commit -a -m 'del submodule'</span><br></pre></td></tr></table></figure>
-<h3 id="查看仓库中的submodule"><a href="#查看仓库中的submodule" class="headerlink" title="查看仓库中的submodule"></a>查看仓库中的submodule</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule</span><br></pre></td></tr></table></figure>
+<h1 id="submodule"><a href="#submodule" class="headerlink" title="submodule"></a>submodule</h1><ol>
+<li>创建一个repo：test_1</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m "1"</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<ol>
+<li>创建一个lib repo：test_2</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone git@repo.advai.net:shang.wang/test_2.git</span><br><span class="line">touch README.md</span><br><span class="line">git commit -m &quot;1&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<ol>
+<li>将test_2作为submodule添加到test_1中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule add git@repo.advai.net:shang.wang/test_2.git test_lib</span><br></pre></td></tr></table></figure>
+<ol>
+<li>提交test_1</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;2&apos;</span><br><span class="line">git submodule init</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<ol>
+<li>修改test_2</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">echo &quot;123445&quot; &gt; test.txt</span><br><span class="line">git add .</span><br><span class="line">git commit -m &apos;3&apos;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在test_1中更新test_2</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd test_2</span><br><span class="line">git submodule foreach git pull</span><br></pre></td></tr></table></figure>
+<ol>
+<li>clone一个带有submodule的repo</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1、clone父repo的时候直接clonesubmodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git ttttt --recursive</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2、clone完父repo之后，再初始化submodule</span><br><span class="line">git clone git@repo.advai.net:shang.wang/test_1.git</span><br><span class="line">cd test_1</span><br><span class="line">git submodule init</span><br><span class="line">git submodule update</span><br></pre></td></tr></table></figure>
+<ol>
+<li>删除submodule</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cd test_1</span><br><span class="line">git rm --cached test_lib</span><br><span class="line">rm -rf test_lib</span><br><span class="line">rm .gitmodules</span><br><span class="line"></span><br><span class="line">删除git配置文件config中关于submodule的信息</span><br><span class="line">vim .git/config  找到submodule的部分 删掉</span><br><span class="line"></span><br><span class="line">git commit -a -m 'del submodule'</span><br></pre></td></tr></table></figure>
+<ol>
+<li>查看仓库中的submodule</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git submodule</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -378,7 +432,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建repo"><span class="nav-number">1.</span> <span class="nav-text">新建repo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用rebase-i-汇合提交"><span class="nav-number">2.</span> <span class="nav-text">用rebase -i 汇合提交</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git如何删除已经-add-的文件"><span class="nav-number">3.</span> <span class="nav-text">git如何删除已经 add 的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何如何更新fork的repository"><span class="nav-number">4.</span> <span class="nav-text">如何如何更新fork的repository</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#submodule"><span class="nav-number">5.</span> <span class="nav-text">submodule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个repo：test-1"><span class="nav-number">5.0.1.</span> <span class="nav-text">创建一个repo：test_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个lib-repo：test-2"><span class="nav-number">5.0.2.</span> <span class="nav-text">创建一个lib repo：test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将test-2作为submodule添加到test-1中"><span class="nav-number">5.0.3.</span> <span class="nav-text">将test_2作为submodule添加到test_1中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交test-1"><span class="nav-number">5.0.4.</span> <span class="nav-text">提交test_1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改test-2"><span class="nav-number">5.0.5.</span> <span class="nav-text">修改test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在test-1中更新test-2"><span class="nav-number">5.0.6.</span> <span class="nav-text">在test_1中更新test_2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clone一个带有submodule的repo"><span class="nav-number">5.0.7.</span> <span class="nav-text">clone一个带有submodule的repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除submodule"><span class="nav-number">5.0.8.</span> <span class="nav-text">删除submodule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看仓库中的submodule"><span class="nav-number">5.0.9.</span> <span class="nav-text">查看仓库中的submodule</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#新建repo"><span class="nav-number">1.</span> <span class="nav-text">新建repo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用操作"><span class="nav-number">2.</span> <span class="nav-text">常用操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用rebase-i-汇合提交"><span class="nav-number">3.</span> <span class="nav-text">用rebase -i 汇合提交</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git如何删除已经-add-的文件"><span class="nav-number">4.</span> <span class="nav-text">git如何删除已经 add 的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何如何更新fork的repository"><span class="nav-number">5.</span> <span class="nav-text">如何如何更新fork的repository</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#submodule"><span class="nav-number">6.</span> <span class="nav-text">submodule</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -392,20 +446,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">146</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -432,7 +486,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

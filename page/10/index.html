@@ -164,6 +164,1171 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/大数据-环境配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/大数据-环境配置/" class="post-title-link" itemprop="url">大数据-环境配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-20 18:01:00" itemprop="dateCreated datePublished" datetime="2020-06-20T18:01:00+08:00">2020-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:02:30" itemprop="dateModified" datetime="2020-12-11T16:02:30+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据生态/" itemprop="url" rel="index"><span itemprop="name">大数据生态</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h5 id="linux的文件和目录的权限规则"><a href="#linux的文件和目录的权限规则" class="headerlink" title="linux的文件和目录的权限规则"></a>linux的文件和目录的权限规则</h5><p>使用<code>ls -l</code>命令可以查看当前目录的文件列表以及权限信息，显示如下</p>
+<p>drwxr-xr-x</p>
+<h5 id="linux安装rpm包"><a href="#linux安装rpm包" class="headerlink" title="linux安装rpm包"></a>linux安装rpm包</h5><h5 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 生成密钥 公钥</span><br><span class="line">sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 将公钥拷贝到目标机器</span><br><span class="line">ssh-copy-id user@tartget_hostame</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 这样之后就可以在节点之间 免密登录了</span><br><span class="line">ssh user@tartget_hostame</span><br><span class="line">ssh tartget_hostame # 如果当前登录的用户和target的用户名一致，则不需要加user@</span><br></pre></td></tr></table></figure>
+<p>注意，如果执行ssh-copy-id 输入密码后仍报错(<code>Permission denied (publickey,gssapi-keyex,gssapi-with-mic)</code>)，可以尝试按照如下方案解决：</p>
+<p>进入target机器，进入<code>cd /etc/ssh/sshd_config</code>，然后修改为<code>PasswordAuthentication yes</code>，最后重启sshd服务<code>service sshd restart</code>即可</p>
+<h5 id="同步时钟"><a href="#同步时钟" class="headerlink" title="同步时钟"></a>同步时钟</h5><p>ntpdate cn.pool.ntp.org  或  ntpdate ntp[1-7].aliyun.com</p>
+<p>clock -w</p>
+<h3 id="开源大数据平台"><a href="#开源大数据平台" class="headerlink" title="开源大数据平台"></a>开源大数据平台</h3><p><a href="https://www.cloudera.com/downloads.html" target="_blank" rel="noopener">Cloudera</a></p>
+<p>Ambari+HDP</p>
+<p>CM+CDH</p>
+<h4 id="搭建CM-CDH大数据平台"><a href="#搭建CM-CDH大数据平台" class="headerlink" title="搭建CM+CDH大数据平台"></a>搭建CM+CDH大数据平台</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>配置</th>
+<th>mysql</th>
+<th>cloudera-scm-server</th>
+<th>cloudera-scm-agent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>node100</td>
+<td>2G 2cores</td>
+<td>✅</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>master</td>
+<td>16G 8cores</td>
+<td></td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>node111</td>
+<td>8G 6cores</td>
+<td></td>
+<td></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>node112</td>
+<td>8G 6cores</td>
+<td></td>
+<td></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>node113</td>
+<td>8G 6cores</td>
+<td></td>
+<td></td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>1、准备一个数据库节点</p>
+<p>使用vagrant创建一个虚拟机，vagrant配置文件如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line"></span><br><span class="line">  config.vm.hostname = <span class="string">"node100"</span> </span><br><span class="line">  config.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">    v.name = <span class="string">"node100"</span></span><br><span class="line">    v.memory = <span class="number">2024</span></span><br><span class="line">    v.cpus = <span class="number">2</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  config.vm.network <span class="symbol">:private_network</span>, <span class="symbol">ip:</span> <span class="string">"10.211.55.109"</span></span><br><span class="line"></span><br><span class="line">  config.vm.provision <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"mysql.sh"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>对应的mysql.sh如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">sudo yum -y update</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line">sudo yum install -y net-tools rsync mlocate wget vim ntpdate telnet gcc zlib-dev openssl-devel sqlite-devel bzip2-devel binutils qt  make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms strace</span><br><span class="line"></span><br><span class="line">if [ -z $(rpm -qa | grep 'mysql-community-server') ]; then</span><br><span class="line">    wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm</span><br><span class="line">    rpm -ivh mysql57-community-release-el7-9.noarch.rpm</span><br><span class="line">    yum install -y mysql-community-server</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>2、设置mysql密码和配置mysql可以远程连接</p>
+<ol>
+<li><p>启动mysql：<code>service mysqld start</code> or <code>systemctl start mysqld.service</code></p>
+<p>设置开机自启动：<code>systemctl enable mysqld.service</code></p>
+</li>
+<li><p>检查状态：<code>service mysqld status</code> or <code>systemctl stop mysqld.service</code></p>
+</li>
+<li><p>查看初始密码：<code>grep &#39;temporary password&#39; /var/log/mysqld.log</code></p>
+</li>
+<li><p>重置root密码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 登录mysql</span><br><span class="line">mysql -uroot -p</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 修改密码</span><br><span class="line">ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!';</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 刷新</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置远程连接：</p>
+<p>修改/etc/my.cnf中的bind-address=0.0.0.0</p>
+<p><code>update user set host = &#39;%&#39; where user = &#39;root&#39;;</code></p>
+<ol>
+<li>创建一个用户</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 创建新用户</span><br><span class="line">create user 'cdh' identified by '!Cdh1234';</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 授权</span><br><span class="line">grant all privileges on *.* to 'cdh'@'%' with grant option;</span><br><span class="line"><span class="meta">#</span> *.* 前边的*号指的是数据库，后面的*号指的是表，*.*的意思就是任意数据库下的任意表</span><br><span class="line"><span class="meta">#</span> 'root'@'%'，'root'用户名，'%'任意的主机名。</span><br><span class="line"><span class="meta">#</span> 这条配置信息就是说，允许任意节点以root身份登录，并且可以访问mysql里的任意库下的任意表</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 刷新</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>3、安装cm+cdh</p>
+<p>使用Vagrant创建四个虚拟机：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># master 节点</span></span><br><span class="line">  config.vm.define <span class="symbol">:master</span> <span class="keyword">do</span> <span class="params">|master|</span></span><br><span class="line">    master.vm.hostname = <span class="string">"master"</span></span><br><span class="line">    master.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">      v.name = <span class="string">"master"</span></span><br><span class="line">      v.memory = <span class="number">16384</span>  <span class="comment"># 16G</span></span><br><span class="line">      v.cpus = <span class="number">8</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    master.vm.network <span class="symbol">:public_network</span>, <span class="symbol">:bridge=&gt;<span class="string">'em1'</span></span>, <span class="symbol">ip:</span> <span class="string">"192.168.0.110"</span></span><br><span class="line">    master.vm.provision <span class="string">'bootstrap_master'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap_master.sh"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># node 节点</span></span><br><span class="line">  (<span class="number">1</span>..<span class="number">3</span>).each <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">    config.vm.define <span class="string">"node11<span class="subst">#&#123;i&#125;</span>"</span> <span class="keyword">do</span> <span class="params">|node|</span></span><br><span class="line">      node.vm.hostname = <span class="string">"node11<span class="subst">#&#123;i&#125;</span>"</span> </span><br><span class="line">      node.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">        v.name = <span class="string">"node11<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">        v.memory = <span class="number">8096</span>  <span class="comment"># 8G</span></span><br><span class="line">        v.cpus = <span class="number">6</span> </span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">      node.vm.network <span class="symbol">:public_network</span>, <span class="symbol">:bridge=&gt;<span class="string">'em1'</span></span>, <span class="symbol">ip:</span> <span class="string">"192.168.0.11<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">    <span class="keyword">end</span> </span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  config.vm.provision <span class="string">'java'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"java.sh"</span></span><br><span class="line">  config.vm.provision <span class="string">'sshd'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"sshd.sh"</span></span><br><span class="line"></span><br><span class="line">  config.vm.provision <span class="string">'bootstrap'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap.sh"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>boostrap.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line">sudo yum -y update</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line">sudo yum install -y net-tools rsync mlocate wget vim ntpdate telnet gcc zlib-dev openssl-devel \</span><br><span class="line">    sqlite-devel bzip2-devel binutils  make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms strace \</span><br><span class="line">    bind-utils psmisc cyrus-sasl-plain cyrus-sasl-gssapi redhat-lsb httpd mod_ssl python-psycopg2 MySQL-python postgresql-libs</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> sshkey</span><br><span class="line">if [ ! -f "~/.ssh/id_rsa" ]; then</span><br><span class="line">    sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> set hosts</span><br><span class="line">echo '127.0.0.1' &gt; /etc/hosts</span><br><span class="line">echo '192.168.0.109 node100' &gt;&gt; /etc/hosts</span><br><span class="line"></span><br><span class="line">echo '192.168.0.110 master' &gt;&gt; /etc/hosts</span><br><span class="line"></span><br><span class="line">echo '192.168.0.111 node111' &gt;&gt; /etc/hosts</span><br><span class="line">echo '192.168.0.112 node112' &gt;&gt; /etc/hosts</span><br><span class="line">echo '192.168.0.113 node113' &gt;&gt; /etc/hosts</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> set system timezone</span><br><span class="line">timedatectl set-timezone Asia/Shanghai</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 时钟同步</span><br><span class="line">ntpdate ntp1.aliyun.com</span><br><span class="line">clock -w</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> set mysql driver</span><br><span class="line">mkdir -p /usr/share/java/</span><br><span class="line">cp /vagrant/components/mysql-connector-java-5.1.49.jar /usr/share/java/mysql-connector-java.jar</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> cdh</span><br><span class="line">if [ ! -f "/opt/cloudera/parcel-repo/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel" ]; then</span><br><span class="line">    mkdir -p /opt/cloudera/parcel-repo</span><br><span class="line">    cp /vagrant/components/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel /opt/cloudera/parcel-repo/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel</span><br><span class="line">    cp /vagrant/components/manifest.json /opt/cloudera/parcel-repo/manifest.json</span><br><span class="line">    cd /opt/cloudera/parcel-repo &amp;&amp; sha1sum CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel | awk '&#123; print $1 &#125;' &gt; CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel.sha</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> cm:daemons</span><br><span class="line">if [ -z $(rpm -qa | grep 'cloudera-manager-daemons') ]; then</span><br><span class="line">    rpm -i /vagrant/components/cloudera-manager-daemons-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span> cm:agent</span><br><span class="line">if [ -z $(rpm -qa | grep 'cloudera-manager-agent') ]; then</span><br><span class="line">    rpm -i /vagrant/components/cloudera-manager-agent-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 修改cm agent的配置文件，server_host=master，否则会找不到 server</span><br><span class="line">sed -i 's/server_host=localhost/server_host=master/g' /etc/cloudera-scm-agent/config.ini</span><br></pre></td></tr></table></figure>
+<p>Bootstrap_master.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"><span class="meta">#</span> 安装mysql client</span><br><span class="line"><span class="meta">#</span> if [ -z $(rpm -qa | grep 'mysql-community-client') ]; then</span><br><span class="line"><span class="meta">#</span>     wget https://repo.mysql.com//mysql80-community-release-el7-3.noarch.rpm</span><br><span class="line"><span class="meta">#</span>     rpm -ivh mysql80-community-release-el7-3.noarch.rpm</span><br><span class="line"><span class="meta">#</span>     yum install -y mysql-community-client</span><br><span class="line"><span class="meta">#</span> fi</span><br><span class="line"></span><br><span class="line">if [ -z $(rpm -qa | grep 'mysql-community-client') ]; then</span><br><span class="line">    wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm</span><br><span class="line">    rpm -ivh mysql57-community-release-el7-9.noarch.rpm</span><br><span class="line">    yum install -y mysql-community-client mysql-connector-java</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> cm:daemons</span><br><span class="line">if [ -z $(rpm -qa | grep 'cloudera-manager-daemons') ]; then</span><br><span class="line">    rpm -i /vagrant/components/cloudera-manager-daemons-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span> cm:agent</span><br><span class="line">if [ -z $(rpm -qa | grep 'cloudera-manager-agent') ]; then</span><br><span class="line">    rpm -i /vagrant/components/cloudera-manager-agent-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span> cm:server</span><br><span class="line">if [ -z $(rpm -qa | grep 'cloudera-manager-server') ]; then</span><br><span class="line">    rpm -i /vagrant/components/cloudera-manager-server-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> cdh</span><br><span class="line">if [ ! -f "/opt/cloudera/parcel-repo/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel" ]; then</span><br><span class="line">    cp /vagrant/components/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel /opt/cloudera/parcel-repo/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel</span><br><span class="line">    cp /vagrant/components/manifest.json /opt/cloudera/parcel-repo/manifest.json</span><br><span class="line">    cd /opt/cloudera/parcel-repo &amp;&amp; sha1sum CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel | awk '&#123; print $1 &#125;' &gt; CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel.sha</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql -hnode100 -uroot -p!Aa147258 &lt; /vagrant/cdh.sql</span><br></pre></td></tr></table></figure>
+<p>Sshd.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 设置ssh 连接</span><br><span class="line"><span class="meta">#</span> open PasswordAuthentication</span><br><span class="line">sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line">sed -i 's/PasswordAuthentication no/#PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> restart sshd</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<p>Java.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if [ -z $(rpm -qa | grep 'jdk1.8-1.8.0') ]; then</span><br><span class="line">    rpm -qa | grep jdk | xargs rpm -e</span><br><span class="line">    rpm -i /vagrant/components/jdk-8u191-linux-x64.rpm</span><br><span class="line"></span><br><span class="line">    cp /vagrant/conf/java.sh /etc/profile.d/</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>Cdh.sql   初始化相关数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> scm <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'scm'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> scm.* <span class="keyword">TO</span> <span class="string">'scm'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> amon <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'amon'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> amon.* <span class="keyword">TO</span> <span class="string">'amon'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> rman <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'rman'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> rman.* <span class="keyword">TO</span> <span class="string">'rman'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> hue <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'hue'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> hue.* <span class="keyword">TO</span> <span class="string">'hue'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> metastore <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'hive'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> metastore.* <span class="keyword">TO</span> <span class="string">'hive'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> sentry <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'sentry'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> sentry.* <span class="keyword">TO</span> <span class="string">'sentry'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="keyword">nav</span> <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'nav'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> nav.* <span class="keyword">TO</span> <span class="string">'nav'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> navms <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'navms'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> navms.* <span class="keyword">TO</span> <span class="string">'navms'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> oozie <span class="keyword">DEFAULT</span> <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8 <span class="keyword">DEFAULT</span> <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="string">'oozie'</span> <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'!Cdh1234'</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">privileges</span> <span class="keyword">ON</span> oozie.* <span class="keyword">TO</span> <span class="string">'oozie'</span>@<span class="string">'%'</span> <span class="keyword">with</span> <span class="keyword">grant</span> <span class="keyword">option</span>;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>下载cm，建议使用迅雷下载    —— 我是将下载的文件放到了components文件夹下，vagrant启动的时候直接安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/cloudera-manager-daemons-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">wget https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/cloudera-manager-agent-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">wget https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/cloudera-manager-server-6.2.0-968826.el7.x86_64.rpm</span><br><span class="line">wget https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/cloudera-manager-server-db-2-6.2.0-968826.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>设置 Cloudera Manager 数据库：<code>/opt/cloudera/cm/schema/scm_prepare_database.sh --host node100 mysql scm scm</code>  </p>
+<p>需要使用<code>--host</code>指定mysql主机位置，否则默认是<code>localhost</code>，在<code>scm_prepare_database.sh</code>中有配置</p>
+</li>
+<li><p>下载cdh，建议使用迅雷下载   —— 我是将下载的文件放到了components文件夹下，vagrant启动的时候将他们复制到<code>/opt/cloudera/parcel-repo</code>，CM会自动到该目录下找到对应的文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/cloudera/parcel-repo</span><br><span class="line">wget https://archive.cloudera.com/cdh6/6.2.0/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel</span><br><span class="line">wget https://archive.cloudera.com/cdh6/6.2.0/parcels/manifest.json</span><br><span class="line"></span><br><span class="line">sha1sum CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel | awk '&#123; print $1 &#125;' &gt; CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel.sha</span><br></pre></td></tr></table></figure>
+<ol>
+<li>启动Cloudera Manager Server：<code>systemctl start cloudera-scm-server</code></li>
+</ol>
+<p>查看启动日志：<code>tail -f /var/log/cloudera-scm-server/cloudera-scm-server.log</code></p>
+</li>
+</ol>
+<p>4、CM设置过程：</p>
+<ol>
+<li>登录：用户名密码都是admin</li>
+</ol>
+<p><img src="/images/image-20200810160722585.png" alt="image-20200810160722585"></p>
+<ol>
+<li>欢迎页</li>
+</ol>
+<p><img src="/images/image-20200810160818238.png" alt="image-20200810160818238"></p>
+<ol>
+<li>下一步，勾选协议</li>
+</ol>
+<p><img src="/images/image-20200810160845271.png" alt="image-20200810160845271"></p>
+<ol>
+<li>选择套餐</li>
+</ol>
+<p><img src="/images/image-20200810160921035.png" alt="image-20200810160921035"></p>
+<ol>
+<li>安装</li>
+</ol>
+<p><img src="/images/image-20200810160959622.png" alt="image-20200810160959622"></p>
+<ol>
+<li>设置集群名称</li>
+</ol>
+<p><img src="/images/image-20200810161031303.png" alt="image-20200810161031303"></p>
+<ol>
+<li>选择集群节点</li>
+</ol>
+<p><img src="/images/image-20200810161131255.png" alt="image-20200810161131255"></p>
+<ol>
+<li>设置仓库</li>
+</ol>
+<p><img src="/images/image-20200810161218267.png" alt="image-20200810161218267"></p>
+<ol>
+<li>jdk设置，不要勾选</li>
+</ol>
+<p><img src="/images/image-20200810161301449.png" alt="image-20200810161301449"></p>
+<ol>
+<li>认证设置</li>
+</ol>
+<p><img src="/images/image-20200810161532270.png" alt="image-20200810161532270"></p>
+<ol>
+<li>安装Agent</li>
+</ol>
+<p><img src="/images/image-20200810172150477.png" alt="image-20200810172150477"></p>
+<p>在这一步，卡了很久，agent总是安装失败：遇到了两个问题：</p>
+<p>​    a. agent找不到server，agent的配置错误，需要修改agent的配置文件：<code>sed -i &#39;s/server_host=localhost/server_host=master/g&#39; /etc/cloudera-scm-agent/config.ini</code></p>
+<p>​    b. 改完之后，发现还是找不到，总是去localhost找，经过查询，发现需要执行以下命令：<code>mv /usr/bin/host /usr/bin/host.back</code>，估计是CM做了缓存，需要清掉错误的缓存</p>
+<ol>
+<li>安装Parcels，</li>
+</ol>
+<p><img src="/images/image-20200810172823648.png" alt="image-20200810172823648"></p>
+<ol>
+<li>初始化完成</li>
+</ol>
+<p><img src="/images/image-20200810174617844.png" alt="image-20200810174617844"></p>
+<ol>
+<li>集群配置：我选择了自定义</li>
+</ol>
+<p><img src="/images/image-20200810174917399.png" alt="image-20200810174917399"></p>
+<p><img src="/images/image-20200810174942690.png" alt="image-20200810174942690"></p>
+<ol>
+<li>分配角色</li>
+</ol>
+<p><img src="/images/image-20200810175530968.png" alt="image-20200810175530968"></p>
+<ol>
+<li>设置数据库</li>
+</ol>
+<p><img src="/images/image-20200810175909898.png" alt="image-20200810175909898"></p>
+<ol>
+<li>Review Changes</li>
+</ol>
+<pre><code>遇到的问题：
+
+1. Command failed to run because service HDFS has an invalid configuration. Review and correct its configuration. First error: HDFS service not configured for High Availability must have a SecondaryNameNode，解决方案：进入下面的界面，点击add role instances，把snn加上
+</code></pre><p><img src="/images/image-20200810184642472.png" alt="image-20200810184642472"></p>
+<pre><code> 2. Namenode format失败：点击这里手动format
+</code></pre><p><img src="/images/image-20200810190922126.png" alt="image-20200810190922126"></p>
+<p><a href="https://blog.csdn.net/Post_Yuan/article/details/54967508" target="_blank" rel="noopener">CDH 系统优化之关闭透明大页面及设置swappiness</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/虚拟机-Vagrant使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/虚拟机-Vagrant使用/" class="post-title-link" itemprop="url">虚拟机-Vagrant使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-20 11:48:16" itemprop="dateCreated datePublished" datetime="2020-06-20T11:48:16+08:00">2020-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-10 10:35:41" itemprop="dateModified" datetime="2020-08-10T10:35:41+08:00">2020-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/虚拟机/" itemprop="url" rel="index"><span itemprop="name">虚拟机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="什么是Vagrant"><a href="#什么是Vagrant" class="headerlink" title="什么是Vagrant"></a>什么是Vagrant</h4><p>vagrant是一个基于VirtualBox, VMware, AWS等平台的一个构造和管理VM的工具，它提供了一个简单的工作流程，让VM的创建和管理全都自动化。vagrant的配置是基于ruby的</p>
+<p>Vagrant是基于Box的，Box是针对Vagrant运行环境的封装</p>
+<h4 id="如何使用Vagrant"><a href="#如何使用Vagrant" class="headerlink" title="如何使用Vagrant"></a>如何使用Vagrant</h4><p>Step 1：安装</p>
+<p>官网：<a href="https://www.vagrantup.com" target="_blank" rel="noopener">https://www.vagrantup.com</a></p>
+<p>虚拟机位置：/root/.vagrant.d/</p>
+<p>Step 2：初始化环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir vm-workspace</span><br><span class="line">cd vm-workspace</span><br><span class="line">vagrant init</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> box下载很慢的时候，可以先下载box，然后通过命令安装box</span><br><span class="line">wget https://vagrantcloud.com/centos/boxes/7/versions/2004.01/providers/virtualbox.box</span><br><span class="line">vagrant box add --name centos/7 virtualbox.box</span><br></pre></td></tr></table></figure>
+<p>Step 3：配置Vagrantfile</p>
+<blockquote>
+<p>经过vagrant init之后，会在vm-workspace下生成一个Vagrantfile，内容如下(删除了注释)</p>
+</blockquote>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>配置文件简介：</p>
+<ul>
+<li>2 是指当前配置的Vagrant config的版本，目前Vagrant只支持两个版本 1和2，这里我不用改，用2就可以</li>
+<li>config 就是配置对象，我们可以对他进行配置</li>
+<li>do … end 是ruby的语法，就是一个代码块</li>
+</ul>
+<p>下面是创建了</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- mode: ruby -*-</span></span><br><span class="line"><span class="comment"># vi: set ft=ruby :</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 指定了配置的版本</span></span><br><span class="line">Vagrant.configure(<span class="string">"2"</span>) <span class="keyword">do</span> <span class="params">|config|</span></span><br><span class="line">  <span class="comment"># 指定 box为 centos/7</span></span><br><span class="line">  config.vm.box = <span class="string">"centos/7"</span></span><br><span class="line">  <span class="comment"># 使用define定义vm的配置节点：一个配置节点就是一个虚拟机。</span></span><br><span class="line">  <span class="comment"># 这里表示：在config中配置一个master的vm，该vm的配置对象命名为master，下面可以对该配置进行配置</span></span><br><span class="line">  config.vm.define <span class="symbol">:master</span> <span class="keyword">do</span> <span class="params">|master|</span></span><br><span class="line">    <span class="comment"># 配置master的hostname为master</span></span><br><span class="line">    master.vm.hostname = <span class="string">"master"</span></span><br><span class="line">    <span class="comment"># 定义 虚机容器提供者配置，这里使用virtualbox。打开virtualbox后，可以在里面看到对应的vm实例</span></span><br><span class="line">    master.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">      v.name = <span class="string">"master"</span>  <span class="comment"># vm的名称</span></span><br><span class="line">      v.memory = <span class="number">1024</span>    <span class="comment"># vm的内存</span></span><br><span class="line">      v.cpus = <span class="number">1</span>         <span class="comment"># vm可以使用的CPU个数</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment"># 配置master vm使用host-only网络模式，ip为10.211.55.100</span></span><br><span class="line">    master.vm.network <span class="symbol">:private_network</span>, <span class="symbol">ip:</span> <span class="string">"10.211.55.100"</span></span><br><span class="line">    <span class="comment"># 配置vagrant 启动vm的时候，需要执行的命令或脚本</span></span><br><span class="line">    <span class="comment"># master.vm.provision :shell, path: "bootstrap_master.sh"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 再次循环给vm创建3个配置节点，即再创建3个虚拟机</span></span><br><span class="line">  (<span class="number">1</span>..<span class="number">3</span>).each <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">    config.vm.define <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span> <span class="keyword">do</span> <span class="params">|node|</span></span><br><span class="line">      node.vm.hostname = <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">      node.vm.provider <span class="symbol">:virtualbox</span> <span class="keyword">do</span> <span class="params">|v|</span></span><br><span class="line">        v.name = <span class="string">"node<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">        v.memory = <span class="number">1024</span></span><br><span class="line">        v.cpus = <span class="number">1</span></span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">      node.vm.network <span class="symbol">:private_network</span>, <span class="symbol">ip:</span> <span class="string">"10.211.55.10<span class="subst">#&#123;i&#125;</span>"</span></span><br><span class="line">      <span class="comment"># node.vm.provision :shell, path: "bootstrap_master.sh"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># config.vm.synced_folder "" ""  # vagrant默认会把当前工作目录挂载在vm的/vagrant目录下</span></span><br><span class="line">  config.vm.provision <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap.sh"</span></span><br><span class="line">  config.vm.provision <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"sshd.sh"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bootstrap.sh:虚拟机初始化的过程，并且配置java、sshkey、hosts</span><br><span class="line">sudo yum -y update</span><br><span class="line">sudo yum -y upgrade</span><br><span class="line">sudo yum groupinstall -y development</span><br><span class="line">sudo yum install -y java-1.8.0-openjdk net-tools rsync mlocate wget vim \</span><br><span class="line">	gcc zlib-dev openssl-devel sqlite-devel bzip2-devel python-devel</span><br><span class="line"><span class="meta">#</span> set Java</span><br><span class="line">echo 'export JAVA_HOME=/usr/lib/jvm/jre' &gt;&gt; /etc/profile.d/java.sh</span><br><span class="line">echo 'export PATH=/usr/lib/jvm/jre/bin:$PATH' &gt;&gt; /etc/profile.d/java.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> sshkey</span><br><span class="line">sudo ssh-keygen -t rsa -f ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> set hosts</span><br><span class="line">echo '10.211.55.100 node0' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.101 node1' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.102 node2' &gt;&gt; /etc/hosts</span><br><span class="line">echo '10.211.55.102 node3' &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> sshd.sh: centos/7下的ssh 默认没有开启PasswordAuthentication，所以单独使用这个脚本开启一下</span><br><span class="line"><span class="meta">#</span> 免去后面配置免密登录的时候，再去修改</span><br><span class="line"><span class="meta">#</span> open PasswordAuthentication</span><br><span class="line">sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line">sed -i 's/PasswordAuthentication no/#PasswordAuthentication yes/g' /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> restart sshd</span><br><span class="line">service sshd restart</span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<ol>
+<li><p>Vagrant的网络连接方式有三种：</p>
+<p>NAT : 缺省创建，用于让vm可以通过host转发访问局域网甚至互联网。</p>
+<p>host-only : 只有主机可以访问vm，其他机器无法访问它。</p>
+<p>bridge : 此模式下vm就像局域网中的一台独立的机器，可以被其他机器访问。</p>
+<p>​    设置bridge模式的时候，需要手动指定 bridge，如：<code>master.vm.network :public_network, :bridge=&gt;&#39;em1&#39;, ip: &quot;192.168.0.110&quot;</code>，也可设置静态IP</p>
+</li>
+<li><p>根据vagrantfile的层次，分为：</p>
+<p>configure级：它定义在 Vagrant.configure(“2”) 的下一层次，形如： config.vm.provision …</p>
+<p>vm级：它定义在 config.vm.define :master do |master| 的下一层次，master.vm.provision …</p>
+<p>执行的顺序是先执行configure级任务，再执行vm级任务，即便configure级任务在vm定义的下面才定义</p>
+</li>
+</ol>
+<p>Step 4：启动Vagrant</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<p>Step 5：连接vm</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh node0</span><br></pre></td></tr></table></figure>
+<p>Step 6：切换到root用户</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su</span><br><span class="line">password默认是vagrant</span><br></pre></td></tr></table></figure>
+<p>至此，就可以使用vm了。</p>
+<p>有一个非常有用的命令：<code>vagrant rsync-auto</code>。因为我们可能会经常性的修改共享文件夹，这个命令可以触发共享文件夹的同步，而不需要执行<code>vagrant reload</code>来同步共享文件夹，该命令会重启VM</p>
+<h4 id="Vagrant常用命令"><a href="#Vagrant常用命令" class="headerlink" title="Vagrant常用命令"></a>Vagrant常用命令</h4><h6 id="vagrant-help"><a href="#vagrant-help" class="headerlink" title="vagrant help"></a>vagrant help</h6><ul>
+<li>vagrant help</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant help</span><br></pre></td></tr></table></figure>
+<ul>
+<li>vagrant [command] -h</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box -h</span><br></pre></td></tr></table></figure>
+<h6 id="vagrant-box"><a href="#vagrant-box" class="headerlink" title="vagrant box"></a>vagrant box</h6><ul>
+<li>添加box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add --name centos-7.4-base centos-7.4-base.box</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>移除box</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box remove centos-7.4-base</span><br></pre></td></tr></table></figure>
+<h6 id="privision"><a href="#privision" class="headerlink" title="privision"></a>privision</h6><p>重新执行provision</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant provision [vm-name] [--provision-with x,y,z]</span><br></pre></td></tr></table></figure>
+<p>执行指定的provision，使用—provision-with 参数，同时在配置Vagrant的时候，需要如下配置：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># type关键字 必须显式写出</span></span><br><span class="line">master.vm.provision <span class="string">'bootstrap_master'</span>, <span class="symbol">type:</span> <span class="symbol">:shell</span>, <span class="symbol">path:</span> <span class="string">"bootstrap_master.sh"</span></span><br></pre></td></tr></table></figure>
+<p>那么只执行 bootstrap_master的命令为：<code>vagrant provision master --provision-with bootstrap_master</code></p>
+<h6 id="vagrant-vm"><a href="#vagrant-vm" class="headerlink" title="vagrant vm"></a>vagrant vm</h6><ul>
+<li>初始化</li>
+</ul>
+<p>如果自己编写Vagrantfile，不需要这一步</p>
+<p>这一步会把config.vm.box写入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init centos-7.4-base</span><br></pre></td></tr></table></figure>
+<ul>
+<li>启动虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看状态</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant status</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ssh</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>暂停虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant suspend</span><br></pre></td></tr></table></figure>
+<ul>
+<li>恢复虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant resume</span><br></pre></td></tr></table></figure>
+<ul>
+<li>关闭虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant halt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>销毁虚拟机</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant destroy</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更新Vagrantfile，刷新容器</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+<h6 id="vagrant-snapshot"><a href="#vagrant-snapshot" class="headerlink" title="vagrant snapshot"></a>vagrant snapshot</h6><p>使用虚拟机快照命令需要先启动虚拟机</p>
+<ul>
+<li>保存虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot save snap1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>list虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>恢复虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot restore snap1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除虚拟机快照</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant snapshot delete snap1</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/大数据-消息队列-数据采集-Kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/大数据-消息队列-数据采集-Kafka/" class="post-title-link" itemprop="url">大数据-消息队列-数据采集-Kafka</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-20 11:14:01" itemprop="dateCreated datePublished" datetime="2020-06-20T11:14:01+08:00">2020-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:03:37" itemprop="dateModified" datetime="2020-12-11T16:03:37+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据生态/" itemprop="url" rel="index"><span itemprop="name">大数据生态</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="Kafka的基本概念和架构"><a href="#Kafka的基本概念和架构" class="headerlink" title="Kafka的基本概念和架构"></a>Kafka的基本概念和架构</h4><p>Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用</p>
+<ul>
+<li><p>系统间解耦</p>
+<p><img src="/images/image-20201207140006482.png" alt="image-20201207140006482"></p>
+<p>将分支业务与主业务的耦合性解除：用户注册时只需要等待调用注册服务的时间，后续我们通知用户注册成功的时间是和主业务流程解耦的，发送短信的时间不在用户等待的范围内；同时短信服务发生了异常也不会影响到用户的注册服务</p>
+</li>
+<li><p>异步通信</p>
+<p>上面的例子同样也解释了异步通信</p>
+</li>
+<li><p>削峰填谷</p>
+<p><img src="/images/image-20201207140756238.png" alt="image-20201207140756238"></p>
+<p>在一些数据产生比较大的场景，MQ可以在流计算前和入库前起到一个缓冲的作用</p>
+</li>
+</ul>
+<h4 id="Message-Queue"><a href="#Message-Queue" class="headerlink" title="Message Queue"></a>Message Queue</h4><p>消息队列是一种在分布式和大数据开发中不可或缺的中间件。在分布式开发或者大数据开发中通常使用消息队列进行缓冲、系统解耦和削峰填谷等业务场景，常见的消息队列工作模式大致会分为两大类：</p>
+<ul>
+<li>至多一次：消息生产者将数据写入消息系统，然后由消费者负责去拉取消息服务器中的消息，一旦消息被确认消费后，由消息服务器主动删除队列中的数据，这种消费方式一般只允许被一个消费者消费，并且队列中的数据不允许被重复消费</li>
+<li><strong>没有限制</strong>[Kafka]：同上诉不同，生产者发布完数据之后，该消息可以被多个消费者同时消费，并且同一个消费者可以多次消费消息服务器中的同一个记录，主要是因为消息服务器一般可以长时间存储海量消息</li>
+</ul>
+<p><img src="/images/image-20201207142614204.png" alt="image-20201207142614204"></p>
+<h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4><p>kafka集群以Topic的形式负责分类集群中的Record，每一个Record属于一个Topic。每个Topic底层都会对应一组分区的日志用于持久化Topic中的Record。同时在kafka集群中，Topic的每一个日志分区都一定会有1个Broker担当该分区的Leader，其他Broker担当该分区的follower，Leader负责分区数据的读写操作。follower负责同步该分区的数据。这样如果分区的Leader宕机，该分区的其他follower会选取出新的leader继续负责该分区数据的读写。其中集群中的Leader的监控和Topic的部分元数据是存储在Zookeeper中</p>
+<p><img src="/images/image-20201207143641230.png" alt="image-20201207143641230"></p>
+<p><img src="/images/image-20201207143809399.png" alt="image-20201207143809399"></p>
+<h4 id="kafka逻辑上概念"><a href="#kafka逻辑上概念" class="headerlink" title="kafka逻辑上概念"></a>kafka逻辑上概念</h4><p>kafka中所有的消息时通过Topic为单位进行管理，每个kafka中的topic通常会有多个订阅者，负责订阅发送到该Topic中的数据。kafka负责管理集群中每个Topic的一组日志分区数据。</p>
+<p>生产者将数据发布到相应的Topic。负责选择将哪个记录发送到Topic的哪个partition。例如，可以<em>round-robin</em>方式完成此操作，然而这种选择仅仅是为了数据负载。也可以根据某些语义分区功能(例如基于记录中的key)进行此操作</p>
+<p>每组日志分区是一个有序的不可变的日志序列<strong>(分区有序，全局无序，但是可以通过组织key来保证消费的数据是有序的)</strong>，分区中的每一个Record都被分配了唯一的序列编号，称为<strong>offset</strong>，kafka集群会持久化所有发布到Topic中的Record信息，该Topic的持久化时间是通过配置文件执行的，默认是168小时</p>
+<p><code>log.retention.hours=168</code> 7*24 一周的缓存时间</p>
+<p>kafka底层会定期的检查日志文件，然后将过期的数据从log中移除，由于kafka使用<strong>硬盘存储(零拷贝)</strong>日志文件，因此使用kafka长时间缓存一些日志文件是不存在问题的</p>
+<p><img src="/images/image-20201207145951452.png" alt="image-20201207145951452"></p>
+<p>在消费者消费Topic中数据的是时候，每个消费者会维护本次消费对应分区的偏移量，消费者会在消费完一个批次的数据之后，会将本次消费的偏移量提交给kafka集群，因此对于每个消费者而言，可以随意的控制消费者的偏移量。因此在kafka中消费者可以从一个Topic分区中的任意位置读取队列数据，由于每个消费者独立控制了自己的消费偏移量，因此多个消费者之间彼此相互独立。</p>
+<p>kafka中对Topic实现日志分区有以下的目的：</p>
+<ul>
+<li>首先，它们允许日志扩展到超出单个服务器所能容纳的大小。每个单独的分区都必须适合托管它的服务器，但是一个Topic可能存在很多分区，因此它可以处理任意数量的数据  <font color="red">—- 如果数据后期发生增长，直接增加分区数就可以吗?</font></li>
+<li>其次，每个服务器充当其他某些分区的Leader，也可能充当其他分区的Follower，因此集群中负载得到了很好的平衡</li>
+</ul>
+<p><img src="/images/image-20201207152929571.png" alt="image-20201207152929571"></p>
+<h4 id="逻辑概念"><a href="#逻辑概念" class="headerlink" title="逻辑概念"></a>逻辑概念</h4><ul>
+<li><p>Producer：生产消息的客户端</p>
+</li>
+<li><p>Consumer：消费消息的客户端</p>
+<ul>
+<li><p>Consumer Group：同一个ConsumerGroup中的Consumer往往是一个服务的多个实例，用来提高消费的效率，也就是说同一个CG中的多个C不能重复消费消息；不同CG往往代表了多种不同的服务，他们处理不同的业务，所以，不同的CG中的C对于消息的处理是相互独立的，如CG2中的C2可以重复的消费在CG1中的C1已经消费过的消息</p>
+<blockquote>
+<p>消费者使用Consumer Group名称标记自己，并且发布到Topic的每条记录都会传递到每个订阅Consumer Group中的一个消费者实例。</p>
+<p>如果所有Consumer实例都具有相同的Consumer Group，那么Topic中的记录会在该ConsumerGroup中的Consumer实例进行均分消费；</p>
+<p>如果所有Consumer实例具有不同的ConsumerGroup，则每条记录将广播到所有Consumer Group进程。</p>
+<p>更常见的是，我们发现Topic具有少量的Consumer Group，每个Consumer Group可以理解为一个“逻辑的订阅者”。每个Consumer Group均由许多Consumer实例组成，以实现<code>可伸缩性和容错能力</code>。这无非就是发布-订阅模型，其中订阅者是<code>消费者的集群</code>而不是单个进程。这种消费方式Kafka会将Topic按照分区的方式均分给一个Consumer Group下的实例，如果ConsumerGroup下有新的成员介入，则新介入的Consumer实例会去接管ConsumerGroup内其他消费者负责的某些分区，同样如果一下ConsumerGroup下的有其他Consumer实例宕机，则由该ConsumerGroup中其他Consumer实例接管。</p>
+<p>消费者组内的消费者数量一般不能大于Topic中的分区数，如果大于了，那么多出来的消费者会分不到分区而消费不到消息</p>
+</blockquote>
+<p><img src="/images/kafka消费者组.png" height="300" width="400"></p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Tocpic：一组Record可以作为一个Topic在集群中被管理</p>
+<ul>
+<li>Record：Producer生产的每一条消息就是一个Record，每一个Record只能属于一个Topic</li>
+</ul>
+<blockquote>
+<p>由于Kafka的Topic的分区策略，因此Kafka仅提供分区中记录的有序性，也就意味着相同Topic的不同分区记录之间无顺序。因为针对于绝大多数的大数据应用和使用场景， 使用分区内部有序或者使用key进行分区策略已经足够满足绝大多数应用场景。但是，如果您需要记录全局有序，则可以通过只有一个分区Topic来实现，尽管这将意味着每个ConsumerGroup只有一个Consumer进程</p>
+</blockquote>
+</li>
+<li><p>Partition：每个Topic会有<code>num.partitions(默认)</code>个分区，每个Topic在创建的时候，也可以被指定分区的个数。</p>
+<blockquote>
+<p>Kafka中对Topic实现日志分区的有以下目的：</p>
+<ol>
+<li>支持集群存储的横向扩容。如果单一服务器的资源不够用，那么增加集群节点即可</li>
+<li>每个服务器充当其某些分区的Leader，也可能充当其他分区的Follwer，因此群集中的负载得到了很好的平衡。</li>
+<li>同一个Topic 多个分区可以提高Consumer消费的并行度</li>
+</ol>
+<p>在kafka中同一个partition的record是严格有序的，但是不同partition的record并不是严格有序的。也就是说，kafka只能保证partition内部record的有序消费</p>
+</blockquote>
+<ul>
+<li>Duplicate(副本)：每个分区会有<code>--replication-factor</code>个副本，是在Topic被创建的时候指定的</li>
+</ul>
+</li>
+<li><p>offset (非常重要的一个概念)  <font color="red">— 待补充</font></p>
+<blockquote>
+<p>在kafka中对于消息的生产和消费都是通过offset控制的。同一个partition的消息record的offset是递增的，消费者消费的时候，也是消费的指定的offset之后的消息。</p>
+<p>消费者会定期的上传自己消费的offset给kafka server</p>
+</blockquote>
+</li>
+<li><p>Segments  <font color="red">— 待补充</font></p>
+</li>
+</ul>
+<h4 id="架构上的概念"><a href="#架构上的概念" class="headerlink" title="架构上的概念"></a>架构上的概念</h4><ul>
+<li>Broker：Kafka集群内的主机节点被称为broker，broker可能是某个partition的Leader，也可能是另外一个partition的follower</li>
+<li>Leader：kafka采用主从的架构，每个partition都有自己的leader。每个partition的leader负责消息的读写</li>
+<li>Follower：partition的从节点，主要用来同步该分区的数据，当leader宕机之后，可以用来竞选leader</li>
+<li>ISR：</li>
+</ul>
+<h4 id="kafka高性能之道-顺序写-amp-MMAP"><a href="#kafka高性能之道-顺序写-amp-MMAP" class="headerlink" title="kafka高性能之道-顺序写&amp;MMAP"></a>kafka高性能之道-顺序写&amp;MMAP</h4><p>kafka的特性之一就是高吞吐量，但是kafka的消息是保存或缓存在磁盘上的，一般认为在磁盘上读写数据是会降低性能的，但是kafka即使是普通的服务器，也可以轻松支持百万/s级的写入请求，超出了大部分的消息中间件，这种特性也使得kafka在祺智处理等海量数据场景广泛应用，kafka会把收到的消息都顺序写入磁盘中，防止丢失数据。为了优化写入速度kafka采用了两个技术：顺序写入和MMFile</p>
+<p>因为硬盘是机械机构，每次读写都会寻址-&gt;写入，其中寻址是一个机械操作，它是最耗时的，所以硬盘最讨厌随机IO，最喜欢顺序IO。为了提高读写硬盘的速度，kafka就是使用的顺序IO，这样省去了大量的内存开销以及节省了IO寻址的时间。但是单纯的使用顺序写入，kafka的写入性能也不可能和内存进行对比，因此kafka的数据并不是实时的写入硬盘的</p>
+<p>kafka充分利用了现代操作系统分页存储的特性来利用内存提高IO效率。Memory Mapped Files也称为内存映射文件，在64位的操作系统中一般可以表示20G的数据文件，它的工作原理是直接利用操作系统的Page实现文件到物理内存的直接映射。完成MMP映射后，用户堆内存的所有操作会被操作系统自动刷新到磁盘上，极大地降低了IO使用率</p>
+<p><img src="/images/image-20201207163254474.png" alt="image-20201207163254474"></p>
+<h4 id="kafka高性能之道-消费消息-零拷贝"><a href="#kafka高性能之道-消费消息-零拷贝" class="headerlink" title="kafka高性能之道-消费消息-零拷贝"></a>kafka高性能之道-消费消息-零拷贝</h4><p>kafka服务器在响应客户端读取的时候，底层使用ZeroCopy技术，直接将磁盘无序拷贝到用户控件，而是直接将数据通过内核空间传递输出，数据并没有抵达用户空间</p>
+<p>传统IO操作步骤</p>
+<ol>
+<li>用户进程调用read等系统调用向操作系统发送IO请求，请求读取数据到自己的内存缓冲区中，自己进入阻塞状态</li>
+<li>操作系统收到请求后，进一步将IO请求发送磁盘</li>
+<li>磁盘驱动器收到内核IO请求，把数据从磁盘读取到驱动器的缓冲区，此时不占用CPU。当驱动器缓冲区被读满后，向内核发起中断信号告知自己缓冲区已满</li>
+<li>内核收到中断，使用CPU时间将磁盘驱动器缓存中的数据拷贝到内核缓冲区。</li>
+<li>如果内核缓冲区的数据少于用户申请的读取的数据，重复步骤3和4，直到内核缓冲区的数据足够多为止</li>
+<li>将数据从内核缓冲区拷贝到用户缓冲区，同时从系统调用中返回，IO任务结束</li>
+</ol>
+<p><img src="/images/image-20201208095325068.png" alt="image-20201208095325068"></p>
+<p>DMA读取  - Direct Memory Access 直接存储器访问</p>
+<ol>
+<li>用户进程调用read等系统调用向操作系统发送IO请求，请求读取数据到自己的内存缓冲区中，自己进入阻塞状态</li>
+<li>操作系统收到请求后，进一步将IO请求发送给DMA，然后让CPU干别的活</li>
+<li>DMA进一步将IO请求发送给磁盘</li>
+<li>磁盘驱动器收到DMA的IO请求，把数据从磁盘读取到驱动器的缓存中，当驱动器的缓冲区被读满后，想DMA发起中断信号告知自己的缓冲区已满</li>
+<li>DMA收到磁盘驱动器的新号，将磁盘驱动器的缓存中的数据拷贝到内核缓冲区。此时不占用CPU，这个时候如果内核缓冲区的数据少于用户申请的读取的数据，内核就会一直重复步骤3和4，知道内核缓冲区的数据足够多位置</li>
+<li>当DMA读取了足够多的数据，就会发送中断信号给CPU</li>
+<li>CPU收到DMA的中断信号，知道数据已经准备好，于是将数据从内核空间拷贝到用户空间，系统调用返回</li>
+</ol>
+<p>DMA与传统IO中断模式相比：DMA模式下，DMA就是CPU的一个代理，他负责了一部分的拷贝工作，从而减轻了CPU的负担，DMA的优点就是：中断少，CPU负担低</p>
+<p><img src="/images/image-20201208095432823.png" alt="image-20201208095432823"></p>
+<p><img src="/images/image-20201208095554424.png" alt="image-20201208095554424"></p>
+<p><img src="/images/image-20201208095634307.png" alt="image-20201208095634307"></p>
+<p>网络IO的两种方案对比：</p>
+<ul>
+<li>一般方案<ol>
+<li>文件在磁盘中被拷贝到内核缓冲区</li>
+<li>数据再从内核缓冲区拷贝到用户空间</li>
+<li>数据再从用户空间拷贝到socket的相关缓冲区</li>
+<li>数据从socket相关缓冲区拷贝到相关协议引擎发送出去</li>
+</ol>
+</li>
+<li>Zero拷贝<ol>
+<li>文件在磁盘中数据被拷贝到内核缓冲区</li>
+<li>数据从内核缓冲区直接拷贝到socket相关缓冲区</li>
+<li>数据从socket缓冲区拷贝到相关协议引擎发送出去</li>
+</ol>
+</li>
+</ul>
+<h4 id="kafka的基本使用"><a href="#kafka的基本使用" class="headerlink" title="kafka的基本使用"></a>kafka的基本使用</h4><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><ul>
+<li>启动kafka</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-server-start.sh -daemon config/server.properties</span><br></pre></td></tr></table></figure>
+<ul>
+<li>关闭kafka</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/kafka-server-stop.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--create \</span><br><span class="line">--topic topic01 \</span><br><span class="line">--partitions 3 \</span><br><span class="line">--replication-factor 3</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看topic列表</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看topic详情</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--describe \</span><br><span class="line">--topic topic01</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--create \</span><br><span class="line">--topic topic03 \</span><br><span class="line">--partitions 1 \</span><br><span class="line">--replication-factor 1</span><br><span class="line"></span><br><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--alter \</span><br><span class="line">--topic topic03 \</span><br><span class="line">--partitions 2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--delete \</span><br><span class="line">--topic topic03</span><br></pre></td></tr></table></figure>
+<ul>
+<li>消费者订阅topic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-consumer.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--topic topic01 \</span><br><span class="line">--group g1 \</span><br><span class="line">--property print.key=true \</span><br><span class="line">--property print.value=true \</span><br><span class="line">--property key.separator=,</span><br></pre></td></tr></table></figure>
+<ul>
+<li>消费者组</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">kafka-consumer-groups.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--list</span><br><span class="line"></span><br><span class="line">kafka-consumer-groups.sh \</span><br><span class="line">--bootstrap-server node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--describe \</span><br><span class="line">--group g1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生产者生产消息</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-producer.sh \</span><br><span class="line">--broker-list node1:9092,node2:9092,node3:9092 \</span><br><span class="line">--topic topic01</span><br></pre></td></tr></table></figure>
+<h5 id="API"><a href="#API" class="headerlink" title="API"></a>API</h5><h6 id="基本API"><a href="#基本API" class="headerlink" title="基本API"></a>基本API</h6><h6 id="高级API"><a href="#高级API" class="headerlink" title="高级API"></a>高级API</h6><h4 id="架构进阶"><a href="#架构进阶" class="headerlink" title="架构进阶"></a>架构进阶</h4><h5 id="高性能分析之零拷贝-amp-源码分析"><a href="#高性能分析之零拷贝-amp-源码分析" class="headerlink" title="高性能分析之零拷贝&amp;源码分析"></a>高性能分析之零拷贝&amp;源码分析</h5><h5 id="数据同步机制"><a href="#数据同步机制" class="headerlink" title="数据同步机制"></a>数据同步机制</h5><h4 id="kafka与其他软件的集成"><a href="#kafka与其他软件的集成" class="headerlink" title="kafka与其他软件的集成"></a>kafka与其他软件的集成</h4><h5 id="与Flume的集成"><a href="#与Flume的集成" class="headerlink" title="与Flume的集成"></a>与Flume的集成</h5><h5 id="与SpringBoot的集成"><a href="#与SpringBoot的集成" class="headerlink" title="与SpringBoot的集成"></a>与SpringBoot的集成</h5><h5 id="在大数据流计算中的应用"><a href="#在大数据流计算中的应用" class="headerlink" title="在大数据流计算中的应用"></a>在大数据流计算中的应用</h5><h4 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h4><p>Kafka中的leader监控和topic的元数据，都是存在zk中</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/大数据-知识点/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/大数据-知识点/" class="post-title-link" itemprop="url">大数据-知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-20 10:46:39" itemprop="dateCreated datePublished" datetime="2020-06-20T10:46:39+08:00">2020-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-22 18:30:39" itemprop="dateModified" datetime="2020-06-22T18:30:39+08:00">2020-06-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/大数据生态/" itemprop="url" rel="index"><span itemprop="name">大数据生态</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><a href>生态管理员-Zookeeper</a></li>
+<li><a href>节点通信-RPC</a></li>
+<li><p><a href>Hadoop</a></p>
+<ul>
+<li><a href>数据存储-HDFS</a></li>
+<li><a href>资源管理-YARN</a></li>
+<li><a href>任务调度-AppMaster：所有第三方的应用可以实现AppMaster，即可将任务跑在YARN上</a></li>
+</ul>
+</li>
+<li><p><a href>数据采集-Flume</a></p>
+</li>
+<li><a href="/post/大数据-消息队列-数据采集-Kafka">消息队列-数据采集-Kafka</a></li>
+<li><a href>数仓-Hive</a></li>
+<li><a href>数据存储-HBase</a></li>
+<li><a href>流批一体-Spark</a></li>
+<li><a href>流批一体-Flink</a></li>
+<li><a href>机器学习-Spark mlib</a></li>
+<li><a href>机器学习-FlinkML</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-底层知识总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-底层知识总结/" class="post-title-link" itemprop="url">java学习-底层知识总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-13 08:20:45 / 修改时间：10:18:33" itemprop="dateCreated datePublished" datetime="2020-06-13T08:20:45+08:00">2020-06-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h1><p>JVM：Java Virtual Machine</p>
+<p>JMM：Java Memory Model</p>
+<h2 id="1：JVM基础知识"><a href="#1：JVM基础知识" class="headerlink" title="1：JVM基础知识"></a>1：JVM基础知识</h2><ol>
+<li>什么是JVM</li>
+<li>常见的JVM</li>
+</ol>
+<h2 id="2：ClassFileFormat"><a href="#2：ClassFileFormat" class="headerlink" title="2：ClassFileFormat"></a>2：ClassFileFormat</h2><h2 id="3：类编译-加载-初始化"><a href="#3：类编译-加载-初始化" class="headerlink" title="3：类编译-加载-初始化"></a>3：类编译-加载-初始化</h2><p>hashcode<br>锁的信息（2位 四种组合）<br>GC信息（年龄）<br>如果是数组，数组的长度</p>
+<h2 id="4：JMM"><a href="#4：JMM" class="headerlink" title="4：JMM"></a>4：JMM</h2><p>new Cat()<br>pointer -&gt; Cat.class<br>寻找方法的信息</p>
+<h2 id="5：对象"><a href="#5：对象" class="headerlink" title="5：对象"></a>5：对象</h2><p>1：句柄池 （指针池）间接指针，节省内存<br>2：直接指针，访问速度快</p>
+<h2 id="6：GC基础知识"><a href="#6：GC基础知识" class="headerlink" title="6：GC基础知识"></a>6：GC基础知识</h2><p>栈上分配<br>TLAB（Thread Local Allocation Buffer）<br>Old<br>Eden<br>老不死 - &gt; Old</p>
+<h2 id="7：GC常用垃圾回收器"><a href="#7：GC常用垃圾回收器" class="headerlink" title="7：GC常用垃圾回收器"></a>7：GC常用垃圾回收器</h2><p>new Object()<br>markword          8个字节<br>类型指针           8个字节<br>实例变量           0<br>补齐                  0<br>16字节（压缩 非压缩）<br>Object o<br>8个字节<br>JVM参数指定压缩或非压缩</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-基础1-class文件格式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/java学习-基础1-class文件格式/" class="post-title-link" itemprop="url">java学习-基础1-class文件格式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-13 08:12:38" itemprop="dateCreated datePublished" datetime="2020-06-13T08:12:38+08:00">2020-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-11 16:20:27" itemprop="dateModified" datetime="2020-12-11T16:20:27+08:00">2020-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是JVM？"><a href="#什么是JVM？" class="headerlink" title="什么是JVM？"></a>什么是JVM？</h2><p><img src="/images/image-20200823203230554.png" alt="image-20200823203230554"></p>
+<p><img src="/images/image-20200823203405025.png" alt="image-20200823203405025"></p>
+<p><img src="/images/image-20200823203423735.png" alt="image-20200823203423735"></p>
+<p>jvm与java没有关系，任何能翻译成class文件的语言，都能运行在jvm上</p>
+<p><img src="/images/image-20200823203516842.png" alt="image-20200823203516842"></p>
+<p><img src="/images/image-20200823203917301.png" alt="image-20200823203917301"></p>
+<p>JDK JRE JVM</p>
+<p><img src="/images/image-20200823204258258.png" alt="image-20200823204258258"></p>
+<h2 id="Class-File-Format"><a href="#Class-File-Format" class="headerlink" title="Class File Format"></a>Class File Format</h2><p>样例代码：非常简单，只有一个类型的声明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mashibing.jvm.c1_bytecode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T0100_ByteCode01</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译完之后，在用IDEA打开：会发现，被自动加了一个无参的构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// Source code recreated from a .class file by IntelliJ IDEA</span></span><br><span class="line"><span class="comment">// (powered by Fernflower decompiler)</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.mashibing.jvm.c1_bytecode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T0100_ByteCode01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">T0100_ByteCode01</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们使用一种能查看二进制文件的软件打开该class文件，(我这里用的是sublime)。会得到如下的16进制显示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cafe babe 0000 0034 0010 0a00 0300 0d07</span><br><span class="line">000e 0700 0f01 0006 3c69 6e69 743e 0100</span><br><span class="line">0328 2956 0100 0443 6f64 6501 000f 4c69</span><br><span class="line">6e65 4e75 6d62 6572 5461 626c 6501 0012</span><br><span class="line">4c6f 6361 6c56 6172 6961 626c 6554 6162</span><br><span class="line">6c65 0100 0474 6869 7301 0030 4c63 6f6d</span><br><span class="line">2f6d 6173 6869 6269 6e67 2f6a 766d 2f63</span><br><span class="line">315f 6279 7465 636f 6465 2f54 3031 3030</span><br><span class="line">5f42 7974 6543 6f64 6530 313b 0100 0a53</span><br><span class="line">6f75 7263 6546 696c 6501 0015 5430 3130</span><br><span class="line">305f 4279 7465 436f 6465 3031 2e6a 6176</span><br><span class="line">610c 0004 0005 0100 2e63 6f6d 2f6d 6173</span><br><span class="line">6869 6269 6e67 2f6a 766d 2f63 315f 6279</span><br><span class="line">7465 636f 6465 2f54 3031 3030 5f42 7974</span><br><span class="line">6543 6f64 6530 3101 0010 6a61 7661 2f6c</span><br><span class="line">616e 672f 4f62 6a65 6374 0021 0002 0003</span><br><span class="line">0000 0000 0001 0001 0004 0005 0001 0006</span><br><span class="line">0000 002f 0001 0001 0000 0005 2ab7 0001</span><br><span class="line">b100 0000 0200 0700 0000 0600 0100 0000</span><br><span class="line">0300 0800 0000 0c00 0100 0000 0500 0900</span><br><span class="line">0a00 0000 0100 0b00 0000 0200 0c</span><br></pre></td></tr></table></figure>
+<p>结构如下：class文件就是按照如下的顺序紧凑的拼在一起的</p>
+<ul>
+<li>Magic Number<ul>
+<li>4字节</li>
+<li>魔数</li>
+<li>可以认为是文件类型：以<code>cafe babe</code>开头的文件则为class类型的文件</li>
+<li>class文件的前4个字节：<code>cafe babe</code></li>
+</ul>
+</li>
+<li>Minor Version<ul>
+<li>2字节</li>
+<li>小版本：<code>0000</code></li>
+<li>小数点后的数值</li>
+</ul>
+</li>
+<li>Major Version<ul>
+<li>2字节</li>
+<li>大版本：<code>0034</code></li>
+<li>小数点前的数值</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>class文件的版本号：</p>
+<p>JDK1.7默认为51.0、JDK1.8默认为52.0</p>
+</blockquote>
+<ul>
+<li><p>constant_pool_count</p>
+<ul>
+<li>2字节</li>
+<li>常量池大小</li>
+</ul>
+</li>
+<li><p>constant_pool：长度为constan_pool_count-1的表</p>
+<ul>
+<li><p>根据常量池大小 不是固定的</p>
+</li>
+<li><p>常量池表</p>
+</li>
+<li><p>常量池序号从<strong>#1</strong>开始</p>
+</li>
+<li><p>常量池的每种元素占用的字节数可能是不一样的，但是每个元素的第一个字节表示的是当前元素的类型(<strong>tag</strong>)，然后再根据当前元素的类型可以得到该元素占用的字节数</p>
+<p>一个元素读完之后立即跟着下一个元素，中间没有空闲</p>
+</li>
+<li><p>常量池中每种元素对应的含义</p>
+<ul>
+<li>1 CONSTANT_Utf8_info<ul>
+<li>tag: 1</li>
+<li>Length：utf8字符串占用的字节数</li>
+<li>bytes：长度为length的字符串</li>
+</ul>
+</li>
+<li>3 </li>
+<li>7 CONSTANT_Class_info<ul>
+<li>tag: 7</li>
+<li>Index：2字节 类的全限定名的 常量池索引</li>
+<li>全限定名例子如下：com/mashibing/jvm/c1_bytecode/T0100_ByteCode01</li>
+</ul>
+</li>
+<li>8 CONSTANT_String_info<ul>
+<li>tag：8</li>
+<li>index：2字节 指向字符串字面量的 常量池索引</li>
+</ul>
+</li>
+<li>10 CONSTANT_Methodref_info<ul>
+<li>Tag：10</li>
+<li>index：2字节 指向声明方法的类或者接口描述符CONSTANT_Class_info的常量池索引</li>
+<li>index：2字节 指向字段描述符CONSTANT_NameAndType的常量池索引</li>
+</ul>
+</li>
+<li>12 CONSTANT_NameAndType_info<ul>
+<li>tag：12</li>
+<li>Index：2字节 指向该字段或方法名称的 常量池索引</li>
+<li>index：2字节 指向该字段或方法描述符的 常量池索引</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>access_flags：访问标记</p>
+<ul>
+<li>2字节</li>
+<li>ACC_PUBLIC 0x0001 是否为public类型</li>
+<li>ACC_FINAL 0x0010 是否为final</li>
+<li>ACC_SUPER 0x0020 该标志必须为真，JDK1.0.2之后编译出来的内容必须为真，指明invokespecial指令使用新语义</li>
+<li>ACC_INTERFACE 0x0200 是否为接口</li>
+<li>ACC_ABSTRACT 0x0400 是否为抽象类</li>
+<li>ACC_SYNTHETIC 0x1000编译器自动生成，非用户代码</li>
+<li>ACC_ANNOTATION 0x2000 是否为注解</li>
+<li>ACC_ENUM 0x4000 是否为枚举类型</li>
+</ul>
+</li>
+<li><p>this_class：当前类的名称</p>
+<ul>
+<li>2字节</li>
+<li>index：2字节 指向类型描述符CONSTANT_Class_info的常量池索引</li>
+</ul>
+</li>
+<li><p>super_class：父类的名称</p>
+<ul>
+<li>2字节</li>
+<li>index：2字节 指向类型描述符CONSTANT_Class_info的常量池索引</li>
+</ul>
+</li>
+<li><p>interfaces_count：实现的接口数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>interfaces</p>
+<ul>
+<li>实现的具体接口列表</li>
+</ul>
+</li>
+<li><p>fields_count：字段数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>fields：字段列表</p>
+<ul>
+<li>access_flags 2字节<ul>
+<li>ACC_PUBLIC 0x0001</li>
+<li>ACC_PRIVATE 0x0002</li>
+<li>ACC_PROTECTED 0x0004</li>
+<li>ACC_STATIC 0x0008</li>
+<li>ACC_FINAL 0x0010</li>
+<li>ACC_VOLATILE 0x0040</li>
+<li>ACC_TRANSIENT 0x0080</li>
+<li>ACC_SYNTHETIC 0x1000</li>
+<li>ACC_ENUM 0x4000</li>
+</ul>
+</li>
+<li>name_index 2字节</li>
+<li>decriptor_index  2字节<ul>
+<li>B byte</li>
+<li>C char</li>
+<li>D double</li>
+<li>F float</li>
+<li>I int</li>
+<li>J long</li>
+<li>S short</li>
+<li>Z boolean</li>
+<li>V void</li>
+<li>L Object ： Lcom/mashibing/jvm/Test</li>
+<li>[ 数组<ul>
+<li>一维 [B [Ljava/lang/String</li>
+<li>二维 [[C [[Ljava/lang/String</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>attribubtes_count  2字节</li>
+<li>attributes</li>
+</ul>
+</li>
+<li><p>methods_count：方法数量</p>
+<ul>
+<li>2字节</li>
+</ul>
+</li>
+<li><p>methods：方法列表</p>
+<ul>
+<li>access_flag 2字节</li>
+<li>name_index 2字节</li>
+<li>descriptor_index 2字节</li>
+<li>attribute_count 2字节</li>
+<li>attributes</li>
+</ul>
+</li>
+<li><p>attributes_count - u2</p>
+<ul>
+<li>附加属性数量</li>
+</ul>
+</li>
+<li><p>attributes：附加属性列表</p>
+<ul>
+<li>既有预定义的属性，也可以自定义，java虚拟机自动忽略不认识的属性</li>
+<li>code - 方法表 - 该方法编译的字节码指令</li>
+<li>ConstantValue - 字段表 - final关键字定义的常量值</li>
+<li>Deprecated - 类、方法表、字段表</li>
+<li>Exceptions - 方法表</li>
+<li>EnclosingMethod - 类文件 - 局部类或匿名类的外部封装方法</li>
+<li>InnerClass - 类文件 - 内部类列表</li>
+<li>LineNumberTable - Code属性 - java源码的行号与字节码指令的对应关系</li>
+<li>LocalVariableTable - Code属性 - 方法局部变量表</li>
+<li>SourceFile - 类文件 - 源文件名</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/image-20200824102745209.png" alt="image-20200824102745209"></p>
+<p><img src="/images/image-20200825065115617.png" alt="image-20200825065115617"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-metaclass实现单例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -499,550 +1664,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM虚拟机栈/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-JVM虚拟机栈/" class="post-title-link" itemprop="url">java学习-JVM虚拟机栈</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-06-09 15:39:37 / 修改时间：15:40:05" itemprop="dateCreated datePublished" datetime="2020-06-09T15:39:37+08:00">2020-06-09</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM疑问/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-JVM疑问/" class="post-title-link" itemprop="url">java学习-JVM疑问</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-05 17:01:58" itemprop="dateCreated datePublished" datetime="2020-06-05T17:01:58+08:00">2020-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-09 15:36:50" itemprop="dateModified" datetime="2020-06-09T15:36:50+08:00">2020-06-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在学习JVM的内存模型的时候，我有这样一些疑惑：</p>
-<p>1、我们通常只是定义了堆大小(-Xms初始，-Xmx最大)，虚拟机栈大小(-Xss)。<br>但是我发现这并不能计算出一个java进程占用的全部内存大小。<br>以下是我自己理解的(JDK1.8)：<br>java进程占用的内存<br>​    =JVM管理的内存+非JVM管理的内存<br>​    =线程独立的内存+线程共享的内存<br>​    =n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+堆外内存(off-heap:direct memory)<br>其中：<br>​    JVM管理的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)+堆内存(heap)+非堆内存(non-heap)<br>​    非JVM管理的内存：元空间(metaspace)+堆外内存(off-heap:direct memory)<br>​    线程独立的内存：n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数<br>​    线程共享的内存：堆内存(heap)+非堆内存(non-heap)+元空间(metaspace)+对外内存(off-heap:direct memory)</p>
-<p>2、在JDK1.7及以前，有个永久代(PermGen)，也就是文中说的方法区。这块区域也被称为非堆内存<br>​    那么在JDK1.8及以后，永久代变成了元空间，到了JVM管理之外了，那么JDK1.8及以后的版本中还有非堆内存(non-heap)的说法吗？如果有的话，是指什么呢？</p>
-<p>3、关于线程独立的这块内存\{n*(虚拟机栈内存+程序计数器内存+本地方法栈内存)，n是线程数}，它是完全独立于其他的内存的吗？<br>​    还是会分享堆内存，受到堆内存大小的限制<br>​    还是说Thread对象是建立在堆内存，然后每个Thread对应的虚拟机栈都是独立的吗？ 换句话说，随着Thread的增加(堆内存充足：还能给新的对象分配内存)，java进程占用的内存会越来越大——-我觉得这肯定不对，但是我却无法解释</p>
-<p>4、我做了一些测试(JDK1.8)：<br>​    4.1、指定很小的堆内存，改变虚拟机栈大小<br>​        4.1.1、-Xms2m -Xmx2m -Xss16m 启动java进程，直到递归调用1,016,085深度，会报StackOverflowError<br>​        4.1.2、-Xms2m -Xmx2m -Xss8m 启动java进程，直到递归调用318,031深度，会报StackOverflowError<br>​    4.2、指定很小的堆内存，如-Xms2m -Xmx2m，最终会报OutOfMemoryError</p>
-<p>我谈一下我的理解，首先，新创建的线程对象肯定是放在堆中的；每个线程独立的虚拟机栈，存放了很多的栈帧，每个栈帧实际上存放了局部变量表(和其他三部分)，每个栈帧对应了一个函数调用，在这个线程中执行的每个函数中的变量可能会存放在堆里面，也有可能会直接在栈上分配内存，因为这里有一个逃逸的概念(仅函数内部使用的局部变量直接在栈上分配内存，不会占用堆内存)。</p>
-<p>所以在我的理解里面，如果虚拟机栈是一个完全独立于堆的内存，那么虚拟机栈就不会受到堆内存大小的限制(比如我上面做的实验：当堆内存远小于虚拟机栈大小，最终报的异常仍然是StackOverflowError，而不是OutOfMemoryError)</p>
-<p>所以我才会想到，如果虚拟机栈是一个完全独立于堆的内存，无限的创建线程，每个线程的虚拟机栈如果都无限接近于-Xss分配的最大限度，那么最终会耗尽系统的所有 内存吧</p>
-<p>我又做了一个实验，就是无限的创建线程，然后在调用start()的时候，报了OutOfMemoryError:unable to create new native thread的异常，看来操作系统在这里是对线程数是有限制的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-基本类型和包装类型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-基本类型和包装类型/" class="post-title-link" itemprop="url">java学习-基本类型和包装类型</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-04 11:37:10" itemprop="dateCreated datePublished" datetime="2020-06-04T11:37:10+08:00">2020-06-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 16:19:27" itemprop="dateModified" datetime="2020-12-11T16:19:27+08:00">2020-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="/images/baozhuangleixing.png" alt="image-20200604141908424"></p>
-<p>Java 的每个基本类型都对应了一个包装类型，比如说 int 的包装类型为 Integer，double 的包装类型为 Double。基本类型和包装类型的区别主要有以下 4 点。</p>
-<h3 id="01、包装类型可以为-null，而基本类型不可以"><a href="#01、包装类型可以为-null，而基本类型不可以" class="headerlink" title="01、包装类型可以为 null，而基本类型不可以"></a>01、包装类型可以为 null，而基本类型不可以</h3><p>别小看这一点区别，它使得包装类型可以应用于 POJO 中，而基本类型则不行。</p>
-<p>POJO 是什么呢？这里稍微说明一下。</p>
-<p>POJO 的英文全称是 <code>Plain Ordinary Java Object</code>，翻译一下就是，简单无规则的 Java 对象，只有属性字段以及 setter 和 getter 方法，示例如下。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Writer</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> Integer age;</span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(Integer age)</span> </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line"><span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>和 POJO 类似的，还有数据传输对象 DTO（Data Transfer Object，泛指用于展示层与服务层之间的数据传输对象）、视图对象 VO（View Object，把某个页面的数据封装起来）、持久化对象 PO（Persistant Object，可以看成是与数据库中的表映射的 Java 对象）。</p>
-<p>那为什么 POJO 的属性必须要用包装类型呢？</p>
-<p>《阿里巴巴 Java 开发手册》上有详细的说明，我们来大声朗读一下（预备，起）。</p>
-<blockquote>
-<p>数据库的查询结果可能是 null，如果使用基本类型的话，因为要自动拆箱（将包装类型转为基本类型，比如说把 Integer 对象转换成 int 值），就会抛出 <code>NullPointerException</code> 的异常。</p>
-</blockquote>
-<h3 id="02、包装类型可用于泛型，而基本类型不可以"><a href="#02、包装类型可用于泛型，而基本类型不可以" class="headerlink" title="02、包装类型可用于泛型，而基本类型不可以"></a>02、包装类型可用于泛型，而基本类型不可以</h3><p>泛型不能使用基本类型，因为使用基本类型时会编译出错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;int&gt; list = new ArrayList&lt;&gt;(); // 提示 Syntax error, insert &quot;Dimensions&quot; to complete ReferenceType</span><br><span class="line">List&lt;Integer&gt; list = new ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
-<p>为什么呢？因为泛型在编译时会进行类型擦除，最后只保留原始类型，而原始类型只能是 Object 类及其子类——基本类型是个特例。</p>
-<h3 id="03、基本类型比包装类型更高效"><a href="#03、基本类型比包装类型更高效" class="headerlink" title="03、基本类型比包装类型更高效"></a>03、基本类型比包装类型更高效</h3><p>基本类型在栈中直接存储的具体数值，而包装类型则存储的是堆中的引用。</p>
-<p><img src="http://www.itwanger.com/assets/images/2019/11/java-int-integer-1.png" alt="img"></p>
-<p>很显然，相比较于基本类型而言，包装类型需要占用更多的内存空间。假如没有基本类型的话，对于数值这类经常使用到的数据来说，每次都要通过 new 一个包装类型就显得非常笨重。</p>
-<h3 id="03、两个包装类型的值可以相同，但却不相等"><a href="#03、两个包装类型的值可以相同，但却不相等" class="headerlink" title="03、两个包装类型的值可以相同，但却不相等"></a>03、两个包装类型的值可以相同，但却不相等</h3><p>两个包装类型的值可以相同，但却不相等——这句话怎么理解呢？来看一段代码就明明白白了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Integer chenmo = <span class="keyword">new</span> Integer(<span class="number">10</span>);</span><br><span class="line">Integer wanger = <span class="keyword">new</span> Integer(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(chenmo == wanger); <span class="comment">// false</span></span><br><span class="line">System.out.println(chenmo.equals(wanger )); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-<p>两个包装类型在使用“==”进行判断的时候，判断的是其指向的地址是否相等。chenmo 和 wanger 两个变量使用了 new 关键字，导致它们在“==”的时候输出了 false。</p>
-<p>而 <code>chenmo.equals(wanger)</code> 的输出结果为 true，是因为 equals 方法内部比较的是两个 int 值是否相等。源码如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">private final int value;</span><br><span class="line"></span><br><span class="line">public int intValue() &#123;</span><br><span class="line">return value;</span><br><span class="line">&#125;</span><br><span class="line">public boolean equals(Object obj) &#123;</span><br><span class="line">if (obj instanceof Integer) &#123;</span><br><span class="line">return value == ((Integer)obj).intValue();</span><br><span class="line">&#125;</span><br><span class="line">return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>瞧，虽然 chenmo 和 wanger 的值都是 10，但他们并不相等。换句话说就是：<strong>将“==”操作符应用于包装类型比较的时候，其结果很可能会和预期的不符</strong>。</p>
-<h3 id="04、自动装箱和自动拆箱"><a href="#04、自动装箱和自动拆箱" class="headerlink" title="04、自动装箱和自动拆箱"></a>04、自动装箱和自动拆箱</h3><p>既然有了基本类型和包装类型，肯定有些时候要在它们之间进行转换。把基本类型转换成包装类型的过程叫做装箱（boxing）。反之，把包装类型转换成基本类型的过程叫做拆箱（unboxing）。</p>
-<p>在 Java SE5 之前，开发人员要手动进行装拆箱，比如说：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer chenmo = <span class="keyword">new</span> Integer(<span class="number">10</span>);  <span class="comment">// 手动装箱</span></span><br><span class="line"><span class="keyword">int</span> wanger = chenmo.intValue();  <span class="comment">// 手动拆箱</span></span><br></pre></td></tr></table></figure>
-<p>Java SE5 为了减少开发人员的工作，提供了自动装箱与自动拆箱的功能。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer chenmo  = <span class="number">10</span>;  <span class="comment">// 自动装箱</span></span><br><span class="line"><span class="keyword">int</span> wanger = chenmo;     <span class="comment">// 自动拆箱</span></span><br></pre></td></tr></table></figure>
-<p>上面这段代码使用 JAD 反编译后的结果如下所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Integer chenmo = Integer.valueOf(<span class="number">10</span>);</span><br><span class="line"><span class="keyword">int</span> wanger = chenmo.intValue();</span><br></pre></td></tr></table></figure>
-<p>也就是说，自动装箱是通过 <code>Integer.valueOf()</code> 完成的；自动拆箱是通过 <code>Integer.intValue()</code> 完成的。理解了原理之后，我们再来看一道老马当年给我出的面试题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1）基本类型和包装类型</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line">Integer b = <span class="number">100</span>;</span><br><span class="line">System.out.println(a == b);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2）两个包装类型</span></span><br><span class="line">Integer c = <span class="number">100</span>;</span><br><span class="line">Integer d = <span class="number">100</span>;</span><br><span class="line">System.out.println(c == d);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3）</span></span><br><span class="line">c = <span class="number">200</span>;</span><br><span class="line">d = <span class="number">200</span>;</span><br><span class="line">System.out.println(c == d);</span><br></pre></td></tr></table></figure>
-<p>答案是什么呢？有举手要回答的吗？答对的奖励一朵小红花哦。</p>
-<p>第一段代码，基本类型和包装类型进行 == 比较，这时候 b 会自动拆箱，直接和 a 比较值，所以结果为 true。</p>
-<p>第二段代码，两个包装类型都被赋值为了 100，这时候会进行自动装箱，那 == 的结果会是什么呢？</p>
-<p>我们之前的结论是：将“==”操作符应用于包装类型比较的时候，其结果很可能会和预期的不符。那结果是 false？但这次的结果却是 true，是不是感觉很意外？</p>
-<p>第三段代码，两个包装类型重新被赋值为了 200，这时候仍然会进行自动装箱，那 == 的结果会是什么呢？</p>
-<p>吃了第二段代码的亏后，是不是有点怀疑人生了，这次结果是 true 还是 false 呢？扔个硬币吧，哈哈。我先告诉你结果吧，false。</p>
-<p>为什么？为什么？为什么呢？</p>
-<p>事情到了这一步，必须使出杀手锏了——分析源码吧。</p>
-<p>之前我们已经知道了，自动装箱是通过 <code>Integer.valueOf()</code> 完成的，那我们就来看看这个方法的源码吧。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line"><span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>难不成是 IntegerCache 在作怪？你猜对了！</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCache</span> </span>&#123;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> low = -<span class="number">128</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> high;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> Integer cache[];</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line"><span class="comment">// high value may be configured by property</span></span><br><span class="line"><span class="keyword">int</span> h = <span class="number">127</span>;</span><br><span class="line"><span class="keyword">int</span> i = parseInt(integerCacheHighPropValue);</span><br><span class="line">i = Math.max(i, <span class="number">127</span>);</span><br><span class="line">h = Math.min(i, Integer.MAX_VALUE - (-low) -<span class="number">1</span>);</span><br><span class="line">high = h;</span><br><span class="line"></span><br><span class="line">cache = <span class="keyword">new</span> Integer[(high - low) + <span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> j = low;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; cache.length; k++)</span><br><span class="line">cache[k] = <span class="keyword">new</span> Integer(j++);</span><br><span class="line"></span><br><span class="line"><span class="comment">// range [-128, 127] must be interned (JLS7 5.1.7)</span></span><br><span class="line"><span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>大致瞟一下这段代码你就全明白了。-128 到 127 之间的数会从 IntegerCache 中取，然后比较，所以第二段代码（100 在这个范围之内）的结果是 true，而第三段代码（200 不在这个范围之内，所以 new 出来了两个 Integer 对象）的结果是 false。</p>
-<p>看完上面的分析之后，我希望大家记住一点：<strong>当需要进行自动装箱时，如果数字在 -128 至 127 之间时，会直接使用缓存中的对象，而不是重新创建一个对象</strong>。</p>
-<p>自动装拆箱是一个很好的功能，大大节省了我们开发人员的精力，但也会引发一些麻烦，比如下面这段代码，性能就很差。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> t1 = System.currentTimeMillis();</span><br><span class="line">Long sum = <span class="number">0L</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Integer.MAX_VALUE;i++) &#123;</span><br><span class="line">	sum += i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> t2 = System.currentTimeMillis();</span><br><span class="line">System.out.println(t2-t1);</span><br></pre></td></tr></table></figure>
-<p>sum 由于被声明成了包装类型 Long 而不是基本类型 long，所以 <code>sum += i</code> 进行了大量的拆装箱操作（sum 先拆箱和 i 相加，然后再装箱赋值给 sum），导致这段代码运行完花费的时间足足有 2986 毫秒；如果把 sum 换成基本类型 long，时间就仅有 554 毫秒，完全不一个等量级啊。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM-heap-non-heap-off-heap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-JVM-heap-non-heap-off-heap/" class="post-title-link" itemprop="url">java学习-JVM-heap-non-heap-off-heap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-04 06:50:26" itemprop="dateCreated datePublished" datetime="2020-06-04T06:50:26+08:00">2020-06-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java网络编程-零拷贝/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java网络编程-零拷贝/" class="post-title-link" itemprop="url">java网络编程-零拷贝</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-04 00:32:39" itemprop="dateCreated datePublished" datetime="2020-06-04T00:32:39+08:00">2020-06-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 16:18:16" itemprop="dateModified" datetime="2020-12-11T16:18:16+08:00">2020-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="什么是零拷贝"><a href="#什么是零拷贝" class="headerlink" title="什么是零拷贝"></a>什么是零拷贝</h4><p>刚才讲阻塞 IO 的时候我讲到，系统内核处理 IO 操作分为两个阶段——等待数据和拷贝数据。等待数据，就是系统内核在等待网卡接收到数据后，把数据写到内核中；而拷贝数据，就是系统内核在获取到数据后，将数据拷贝到用户进程的空间中。以下是具体流程：</p>
-<p><img src="/images/zero-copy.jpg" alt="zero-copy"></p>
-<p>应用进程的每一次写操作，都会把数据写到用户空间的缓冲区中，再由 CPU 将数据拷贝到系统内核的缓冲区中，之后再由 DMA 将这份数据拷贝到网卡中，最后由网卡发送出去。这里我们可以看到，一次写操作数据要拷贝两次才能通过网卡发送出去，而用户进程的读操作则是将整个流程反过来，数据同样会拷贝两次才能让应用程序读取到数据。</p>
-<p>应用进程的一次完整的读写操作，都需要在用户空间与内核空间中来回拷贝，并且每一次拷贝，都需要 CPU 进行一次上下文切换（由用户进程切换到系统内核，或由系统内核切换到用户进程），这样是不是很浪费 CPU 和性能呢？那有没有什么方式，可以减少进程间的数据拷贝，提高数据传输的效率呢？</p>
-<p>这时我们就需要零拷贝（Zero-copy）技术。</p>
-<p>所谓的零拷贝，就是取消用户空间与内核空间之间的数据拷贝操作，应用进程每一次的读写操作，都可以通过一种方式，让应用进程向用户空间写入或者读取数据，就如同直接向内核空间写入或者读取数据一样，再通过 DMA 将内核中的数据拷贝到网卡，或将网卡中的数据 copy 到内核。</p>
-<p>那怎么做到零拷贝？你想一下是不是用户空间与内核空间都将数据写到一个地方，就不需要拷贝了？此时你有没有想到虚拟内存？</p>
-<p><img src="/images/zero-copy1.jpg" alt="zero-copy1"></p>
-<p>零拷贝有两种解决方式，分别是 mmap+write 方式和 sendfile 方式，mmap+write 方式的核心原理就是通过虚拟内存来解决的。</p>
-<h4 id="java中的零拷贝"><a href="#java中的零拷贝" class="headerlink" title="java中的零拷贝"></a>java中的零拷贝</h4><h4 id="Netty中的零拷贝"><a href="#Netty中的零拷贝" class="headerlink" title="Netty中的零拷贝"></a>Netty中的零拷贝</h4><blockquote>
-<p>具体去读Netty的源码再详细补充这里</p>
-</blockquote>
-<p>了解完零拷贝，我们再看看 Netty 中的零拷贝。</p>
-<p>我刚才讲到，RPC 框架在网络通信框架的选型上，我们最优的选择是基于 Reactor 模式实现的框架，如 Java 语言，首选的便是 Netty 框架。那么 Netty 框架是否也有零拷贝机制呢？Netty 框架中的零拷贝和我之前讲的零拷贝又有什么不同呢？</p>
-<p>刚才我讲的零拷贝是操作系统层面上的零拷贝，主要目标是避免用户空间与内核空间之间的数据拷贝操作，可以提升 CPU 的利用率。</p>
-<p>而 Netty 的零拷贝则不大一样，他完全站在了用户空间上，也就是 JVM 上，它的零拷贝主要是偏向于数据操作的优化上。</p>
-<p>那么 Netty 这么做的意义是什么呢？</p>
-<p>回想下[第 02 讲]，在这一讲中我讲解了 RPC 框架如何去设计协议，其中我讲到：在传输过程中，RPC 并不会把请求参数的所有二进制数据整体一下子发送到对端机器上，中间可能会拆分成好几个数据包，也可能会合并其他请求的数据包，所以消息都需要有边界。那么一端的机器收到消息之后，就需要对数据包进行处理，根据边界对数据包进行分割和合并，最终获得一条完整的消息。</p>
-<p>那收到消息后，对数据包的分割和合并，是在用户空间完成，还是在内核空间完成的呢？</p>
-<p>当然是在用户空间，因为对数据包的处理工作都是由应用程序来处理的，那么这里有没有可能存在数据的拷贝操作？可能会存在，当然不是在用户空间与内核空间之间的拷贝，是用户空间内部内存中的拷贝处理操作。Netty 的零拷贝就是为了解决这个问题，在用户空间对数据操作进行优化。</p>
-<p>那么 Netty 是怎么对数据操作进行优化的呢？</p>
-<ul>
-<li>Netty 提供了 CompositeByteBuf 类，它可以将多个 ByteBuf 合并为一个逻辑上的 ByteBuf，避免了各个 ByteBuf 之间的拷贝。</li>
-<li>ByteBuf 支持 slice 操作，因此可以将 ByteBuf 分解为多个共享同一个存储区域的 ByteBuf，避免了内存的拷贝。</li>
-<li>通过 wrap 操作，我们可以将 byte[] 数组、ByteBuf、ByteBuffer 等包装成一个 Netty ByteBuf 对象, 进而避免拷贝操作。</li>
-</ul>
-<p>Netty 框架中很多内部的 ChannelHandler 实现类，都是通过 CompositeByteBuf、slice、wrap 操作来处理 TCP 传输中的拆包与粘包问题的。</p>
-<p>那么 Netty 有没有解决用户空间与内核空间之间的数据拷贝问题的方法呢？</p>
-<p>Netty 的 ByteBuffer 可以采用 Direct Buffers，使用堆外直接内存进行 Socket 的读写操作，最终的效果与我刚才讲解的虚拟内存所实现的效果是一样的。<strong>(mmap方式)</strong></p>
-<p>Netty 还提供 FileRegion 中包装 NIO 的 FileChannel.transferTo() 方法实现了零拷贝，这与 Linux 中的 sendfile 方式在原理上也是一样的。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>零拷贝带来的好处就是避免没必要的 CPU 拷贝，让 CPU 解脱出来去做其他的事，同时也减少了 CPU 在用户空间与内核空间之间的上下文切换，从而提升了网络通信效率与应用程序的整体性能。</p>
-<p>而 Netty 的零拷贝与操作系统的零拷贝是有些区别的，Netty 的零拷贝偏向于用户空间中对数据操作的优化，这对处理 TCP 传输中的拆包粘包问题有着重要的意义，对应用程序处理请求数据与返回数据也有重要的意义。</p>
-<p>在 RPC 框架的开发与使用过程中，我们要深入了解网络通信相关的原理知识，尽量做到零拷贝，如使用 Netty 框架；我们要合理使用 ByteBuf 子类，做到完全零拷贝，提升 RPC 框架的整体性能。</p>
-<p>其他关于零拷贝技术的文章：</p>
-<p><a href="https://zhuanlan.zhihu.com/p/78869158" target="_blank" rel="noopener">Java中的零拷贝</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/java学习-JVM参数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/java学习-JVM参数/" class="post-title-link" itemprop="url">java学习-JVM参数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-03 18:36:02" itemprop="dateCreated datePublished" datetime="2020-06-03T18:36:02+08:00">2020-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-04 11:30:03" itemprop="dateModified" datetime="2020-06-04T11:30:03+08:00">2020-06-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="查看JVM参数"><a href="#查看JVM参数" class="headerlink" title="查看JVM参数"></a>查看JVM参数</h4><p>启动应用的时候分别加以下的参数可以打印相关的参数：</p>
-<ol>
-<li><p>java -XX:+PrintFlagsInitial  打印所有的JVM初始参数，但是会立刻终止应用</p>
-</li>
-<li><p>java -XX:+PrintFlagsFinal  打印所有的设置后的JVM参数，不会终止应用</p>
-</li>
-<li><p>jinfo [options]  pid</p>
-</li>
-</ol>
-<p>​     jinfo -flags pid 查看指定pid的jvm的所有设置参数</p>
-<ol>
-<li>-XX:+PrintVMOptions 程序运行时，打印虚拟机接受到的命令行显式参数。不会终止应用</li>
-<li>-XX:+PrintCommandLineFlags 打印传递给虚拟机的显式和隐式参数。不会终止应用</li>
-</ol>
-<h4 id="常见的JVM参数"><a href="#常见的JVM参数" class="headerlink" title="常见的JVM参数"></a>常见的JVM参数</h4><ul>
-<li>InitialHeapSize(单位是字节)：初始堆大小，默认是物理内存的1/64，最小为2m(设置了1m，发现PrintFlagsFinal打印出来的是2m)，可以使用-Xms指定，如-Xms64m，只能指定m、g这样的单位</li>
-<li>MaxHeapSize：最大堆大小，默认是物理内存的1/4，最小为2m，可以使用-Xmx指定，如-Xmx64m</li>
-<li>MaxNewSize：</li>
-<li>NewSize：</li>
-<li>OldSize：</li>
-<li>MetaspaceSize：</li>
-<li>MaxMetaspaceSize：</li>
-<li><p>ThreadStackSize(单位是kb)：虚拟机栈大小，默认是1024k，可以使用-Xss指定，如-Xss256k</p>
-</li>
-<li><p>MaxTenuringThreshold：对象晋升到老年代的年龄阈值，默认是15，可以使用-XX:MaxTenuringThreshold指定，如-XX:MaxTenuringThreshold=20</p>
-</li>
-</ul>
-<h4 id="参数调优"><a href="#参数调优" class="headerlink" title="参数调优"></a>参数调优</h4><ol>
-<li>默认空余堆内存小于40%时，JVM就会增大堆直到-Xmx的最大限制；空余堆内存大于70%时，JVM会减少堆直到 -Xms的最小限制。因此服务器一般设置-Xms、-Xmx相等以避免在每次GC 后调整堆的大小。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1108,20 +1733,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">146</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1148,7 +1773,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：">
+<meta name="keywords" content="mysql优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql学习-优化案例">
+<meta property="og:url" content="https://shang.at/post/Mysql学习-优化案例/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://shang.at/images/image-20201218102716562.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218102815012.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218102840583.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218102853587.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218102918820.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218102941301.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218103012729.png">
+<meta property="og:image" content="https://shang.at/images/image-20201218103034250.png">
+<meta property="og:updated_time" content="2021-02-18T09:03:56.877Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql学习-优化案例">
+<meta name="twitter:description" content="简介：">
+<meta name="twitter:image" content="https://shang.at/images/image-20201218102716562.png">
+
+<link rel="canonical" href="https://shang.at/post/Mysql学习-优化案例/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Mysql学习-优化案例 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Mysql学习-优化案例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mysql学习-优化案例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-18 10:22:47" itemprop="dateCreated datePublished" datetime="2020-12-18T10:22:47+08:00">2020-12-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-18 17:03:56" itemprop="dateModified" datetime="2021-02-18T17:03:56+08:00">2021-02-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index"><span itemprop="name">Mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：</p>
+</blockquote>
+<a id="more"></a>
+<p>在进行优化案例之前，先看一下几个概念：索引、聚集索引、普通索引、回表查询、索引覆盖</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>数据库表结构：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span> (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span> primary <span class="keyword">key</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    sex <span class="built_in">varchar</span>(<span class="number">5</span>),</span><br><span class="line">    <span class="keyword">index</span>(<span class="keyword">name</span>)</span><br><span class="line">)<span class="keyword">engine</span>=<span class="keyword">innodb</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>多查询了一个属性，为何检索过程完全不同？</strong></p>
+<p>　　<strong>什么是回表查询？</strong></p>
+<p>　　<strong>什么是索引覆盖？</strong></p>
+<p>　　<strong>如何实现索引覆盖？</strong></p>
+<p><strong>哪些场景，可以利用索引覆盖来优化SQL？</strong></p>
+<p>这些，这是今天要分享的内容。</p>
+<p><em>画外音：本文试验基于MySQL5.6-InnoDB。</em></p>
+<p><strong>一、什么是回表查询？</strong></p>
+<p>这先要从InnoDB的索引实现说起，InnoDB有两大类索引：</p>
+<ul>
+<li>聚集索引(clustered index)</li>
+<li>普通索引(secondary index)</li>
+</ul>
+<p><strong>InnoDB聚集索引和普通索引有什么差异？</strong></p>
+<p>InnoDB<strong>聚集索引</strong>的叶子节点存储行记录，因此， InnoDB必须要有，且只有一个聚集索引：</p>
+<p>（1）如果表定义了PK，则PK就是聚集索引；</p>
+<p>（2）如果表没有定义PK，则第一个not NULL unique列是聚集索引；</p>
+<p>（3）否则，InnoDB会创建一个隐藏的row-id作为聚集索引；</p>
+<p><em>画外音：所以PK查询非常快，直接定位行记录。</em></p>
+<p>InnoDB<strong>普通索引</strong>的叶子节点存储主键值。</p>
+<p>　<em>画外音：注意，不是存储行记录头指针，MyISAM的索引叶子节点存储记录指针。</em></p>
+<p>举个栗子，不妨设有表：</p>
+<p>　　<em>t(id PK, name KEY, sex, flag);</em></p>
+<p><em>画外音：id是聚集索引，name是普通索引。</em></p>
+<p>表中有四条记录：</p>
+<p>　　<em>1, shenjian, m, A</em></p>
+<p>　　<em>3, zhangsan, m, A</em></p>
+<p>　　<em>5, lisi, m, A</em></p>
+<p>　　<em>9, wangwu, f, B</em></p>
+<p><img src="/images/image-20201218102716562.png" alt="image-20201218102716562"></p>
+<p>两个B+树索引分别如上图：</p>
+<p>　　（1）id为PK，聚集索引，叶子节点存储行记录；</p>
+<p>　　（2）name为KEY，普通索引，叶子节点存储PK值，即id；</p>
+<p>既然从普通索引无法直接定位行记录，那<strong>普通索引的查询过程是怎么样的呢？</strong></p>
+<p>通常情况下，需要扫码两遍索引树。</p>
+<p>例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'lisi'</span></span><br></pre></td></tr></table></figure>
+<p><strong>是如何执行的呢？</strong></p>
+<p><img src="/images/image-20201218102815012.png" alt="image-20201218102815012"></p>
+<p>如<strong>粉红色</strong>路径，需要扫码两遍索引树：</p>
+<p>（1）先通过普通索引定位到主键值id=5；</p>
+<p>（2）在通过聚集索引定位到行记录；</p>
+<p>这就是所谓的<strong>回表查询</strong>，先定位主键值，再定位行记录，它的性能较扫一遍索引树更低。</p>
+<p><strong>二、什么是索引覆盖(Covering index)？</strong></p>
+<p>额，楼主并没有在MySQL的官网找到这个概念。</p>
+<p><em>画外音：治学严谨吧？</em></p>
+<p>借用一下SQL-Server官网的说法。</p>
+<p><img src="/images/image-20201218102840583.png" alt="image-20201218102840583"></p>
+<p>MySQL官网，类似的说法出现在explain查询计划优化章节，即explain的输出结果Extra字段为<strong>Using index</strong>时，能够触发索引覆盖。</p>
+<p><img src="/images/image-20201218102853587.png" alt="image-20201218102853587"></p>
+<p>不管是SQL-Server官网，还是MySQL官网，都表达了：只需要在一棵索引树上就能获取SQL所需的所有列数据，无需回表，速度更快。</p>
+<p><strong>三、如何实现索引覆盖？</strong></p>
+<p>常见的方法是：将被查询的字段，建立到联合索引里去。</p>
+<p>仍是之前中的例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span> (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span> primary <span class="keyword">key</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    sex <span class="built_in">varchar</span>(<span class="number">5</span>),</span><br><span class="line">    <span class="keyword">index</span>(<span class="keyword">name</span>)</span><br><span class="line">)<span class="keyword">engine</span>=<span class="keyword">innodb</span>;</span><br></pre></td></tr></table></figure>
+<p>第一个SQL语句：　　</p>
+<p><img src="/images/image-20201218102918820.png" alt="image-20201218102918820"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'shenjian'</span></span><br></pre></td></tr></table></figure>
+<p>能够命中name索引，索引叶子节点存储了主键id，通过name的索引树即可获取id和name，无需回表，符合索引覆盖，效率较高。</p>
+<p><em>画外音，Extra：<strong>Using index</strong>。</em></p>
+<p>第二个SQL语句：                 </p>
+<p><img src="/images/image-20201218102941301.png" alt="image-20201218102941301"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,sex <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'shenjian'</span></span><br></pre></td></tr></table></figure>
+<p>能够命中name索引，索引叶子节点存储了主键id，但sex字段必须回表查询才能获取到，不符合索引覆盖，需要再次通过id值扫码聚集索引获取sex字段，效率会降低。</p>
+<p><em>画外音，Extra：<strong>Using index condition</strong>。</em></p>
+<p>如果把(name)单列索引升级为联合索引(name, sex)就不同了。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">user</span> (</span><br><span class="line">    <span class="keyword">id</span> <span class="built_in">int</span> primary <span class="keyword">key</span>,</span><br><span class="line">    <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">    sex <span class="built_in">varchar</span>(<span class="number">5</span>),</span><br><span class="line">    <span class="keyword">index</span>(<span class="keyword">name</span>, sex)</span><br><span class="line">)<span class="keyword">engine</span>=<span class="keyword">innodb</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/image-20201218103012729.png" alt="image-20201218103012729"></p>
+<p>可以看到：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,name... <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'shenjian'</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,sex ... <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'shenjian'</span></span><br></pre></td></tr></table></figure>
+<p>都能够命中索引覆盖，无需回表。</p>
+<p><em>画外音，Extra：<strong>Using index</strong>。</em></p>
+<p><strong>四、哪些场景可以利用索引覆盖来优化SQL？</strong></p>
+<p><strong>场景1：全表count查询优化</strong></p>
+<p><img src="/images/image-20201218103034250.png" alt="image-20201218103034250"></p>
+<p>原表为：</p>
+<p><em>user(PK id, name, sex)；</em></p>
+<p>直接：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">name</span>) <span class="keyword">from</span> <span class="keyword">user</span>;</span><br></pre></td></tr></table></figure>
+<p>不能利用索引覆盖。</p>
+<p>添加索引：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">key</span>(<span class="keyword">name</span>);</span><br></pre></td></tr></table></figure>
+<p>就能够利用索引覆盖提效。</p>
+<p><strong>场景2：列查询回表优化</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,sex ... <span class="keyword">where</span> <span class="keyword">name</span>=<span class="string">'shenjian'</span></span><br></pre></td></tr></table></figure>
+<p>这个例子不再赘述，将单列索引(name)升级为联合索引(name, sex)，即可避免回表。</p>
+<p><strong>场景3：分页查询</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,sex ... <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">limit</span> <span class="number">500</span>,<span class="number">100</span></span><br></pre></td></tr></table></figure>
+<p>将单列索引(name)升级为联合索引(name, sex)，也可以避免回表。</p>
+<h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql优化/" rel="tag"># mysql优化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Mysql学习-索引/" rel="prev" title="Mysql学习-索引">
+      <i class="fa fa-chevron-left"></i> Mysql学习-索引
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/大数据-zookeeper/" rel="next" title="大数据-zookeeper">
+      大数据-zookeeper <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化案例"><span class="nav-number">2.</span> <span class="nav-text">优化案例</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">172</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

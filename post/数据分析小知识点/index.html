@@ -31,7 +31,7 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="总结一下在数据分析中需要注意的一些tips，持续更新  Tip1 时区在进行跨境业务处理的时候，时区的控制是十分必要的。平时对于国内的业务，部署在国内的服务器，使用的时区一般都是北京时间(北京时间是UTC+8:00时区的时间，而UTC时间指UTC+0:00时区的时间)，在数据库中一般存储相对于unix epoch (1970-01-01 00:00:00 UTC)的毫秒时间戳，做某个地区的数据统">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-03T02:17:49.591Z">
+<meta property="og:updated_time" content="2021-02-26T09:10:16.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据分析小知识点">
 <meta name="twitter:description" content="总结一下在数据分析中需要注意的一些tips，持续更新  Tip1 时区在进行跨境业务处理的时候，时区的控制是十分必要的。平时对于国内的业务，部署在国内的服务器，使用的时区一般都是北京时间(北京时间是UTC+8:00时区的时间，而UTC时间指UTC+0:00时区的时间)，在数据库中一般存储相对于unix epoch (1970-01-01 00:00:00 UTC)的毫秒时间戳，做某个地区的数据统">
@@ -200,7 +200,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-08-03 10:17:49" itemprop="dateModified" datetime="2019-08-03T10:17:49+08:00">2019-08-03</time>
+                <time title="修改时间：2021-02-26 17:10:16" itemprop="dateModified" datetime="2021-02-26T17:10:16+08:00">2021-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -228,6 +228,7 @@
 </blockquote>
 <h3 id="Tip1-时区"><a href="#Tip1-时区" class="headerlink" title="Tip1 时区"></a>Tip1 时区</h3><p>在进行跨境业务处理的时候，时区的控制是十分必要的。平时对于国内的业务，部署在国内的服务器，使用的时区一般都是北京时间(北京时间是UTC+8:00时区的时间，而UTC时间指UTC+0:00时区的时间)，在数据库中一般存储相对于unix epoch (1970-01-01 00:00:00 UTC)的毫秒时间戳，做某个地区的数据统计时，需要将时间戳转换成当地的时间(即加一个时区的属性)</p>
 <p><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431937554888869fb52b812243dda6103214cd61d0c2000" target="_blank" rel="noopener">https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001431937554888869fb52b812243dda6103214cd61d0c2000</a></p>
+<p>mysql数据库中 datetime类型的字段是没有时区信息的，只是一个日期时间的字符串，如果使用者提前不知道存入的数据是什么时区，那么这个字段就没有任何意义。</p>
 <h3 id="Tip-2-Excel函数"><a href="#Tip-2-Excel函数" class="headerlink" title="Tip 2 Excel函数"></a>Tip 2 Excel函数</h3><ul>
 <li>去重计数：SUMPRODUCT(1/COUNTIF(A2:A20,A2:A20))</li>
 <li>VLOOKUP(要查找的值,查找返回,返回查找到的第几列,是否精确查找[1])</li>
@@ -331,20 +332,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">146</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -371,7 +372,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -164,6 +164,503 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/分布式常见思想-Bloomfilter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/分布式常见思想-Bloomfilter/" class="post-title-link" itemprop="url">分布式常见思想-Bloomfilter</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-01 09:58:27 / 修改时间：09:58:58" itemprop="dateCreated datePublished" datetime="2020-06-01T09:58:27+08:00">2020-06-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数据结构与算法学习笔记-内存不足/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/数据结构与算法学习笔记-内存不足/" class="post-title-link" itemprop="url">数据结构与算法学习笔记-内存不足</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-01 07:35:34" itemprop="dateCreated datePublished" datetime="2020-06-01T07:35:34+08:00">2020-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-02 19:07:58" itemprop="dateModified" datetime="2020-07-02T19:07:58+08:00">2020-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index"><span itemprop="name">数据结构与算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>中位数定义：数字排序之后，位于中间的那个数。比如将100亿个数字进行排序，排序之后，位于第50亿个位置的那个数 就是中位数。 </p>
+<p>  ①内存够：内存够还慌什么啊，直接把100亿个全部排序了，你用冒泡都可以…然后找到中间那个就可以了。但是你以为面试官会给你内存？？ </p>
+<p>  ②内存不够：题目说是整数，我们认为是带符号的int,所以4字节，占32位。 </p>
+<p>  假设100亿个数字保存在一个大文件中，依次读一部分文件到内存(不超过内存的限制)，将每个数字用二进制表示，比较二进制的最高位(第32位，符号位，0是正，1是负)，如果数字的最高位为0，则将这个数字写入 file_0文件中；如果最高位为 1，则将该数字写入file_1文件中。 </p>
+<p>  从而将100亿个数字分成了两个文件，假设 file_0文件中有 60亿 个数字，file_1文件中有 40亿 个数字。那么中位数就在 file_0 文件中，并且是 file_0 文件中所有数字排序之后的第 10亿 个数字。（file_1中的数都是负数，file_0中的数都是正数，也即这里一共只有40亿个负数，那么排序之后的第50亿个数一定位于file_0中） </p>
+<p>  现在，我们只需要处理 file_0 文件了（不需要再考虑file_1文件）。对于 file_0 文件，同样采取上面的措施处理：将file_0文件依次读一部分到内存(不超内存限制)，将每个数字用二进制表示，比较二进制的 次高位（第31位），如果数字的次高位为0，写入file_0_0文件中；如果次高位为1，写入file_0_1文件 中。 </p>
+<p>  现假设 file_0_0文件中有30亿个数字，file_0_1中也有30亿个数字，则中位数就是：file_0_0文件中的数字从小到大排序之后的第10亿个数字。 </p>
+<p>  抛弃file_0_1文件，继续对 file_0_0文件 根据 次次高位(第30位) 划分，假设此次划分的两个文件为：file_0_0_0中有5亿个数字，file_0_0_1中有25亿个数字，那么中位数就是 file_0_0_1文件中的所有数字排序之后的 第 5亿 个数。 </p>
+<p>  按照上述思路，直到划分的文件可直接加载进内存时，就可以直接对数字进行快速排序，找出中位数了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-Future/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-Future/" class="post-title-link" itemprop="url">Java学习-Future</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-01 06:44:35" itemprop="dateCreated datePublished" datetime="2020-06-01T06:44:35+08:00">2020-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-03 17:32:37" itemprop="dateModified" datetime="2020-06-03T17:32:37+08:00">2020-06-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-一些常见的操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-一些常见的操作/" class="post-title-link" itemprop="url">Python学习-一些常见的操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-29 17:15:13" itemprop="dateCreated datePublished" datetime="2020-05-29T17:15:13+08:00">2020-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-19 16:33:57" itemprop="dateModified" datetime="2021-02-19T16:33:57+08:00">2021-02-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h4><p>把global语句放到函数的开头</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><ul>
+<li>如何初始化一个一维数组</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line">l = [<span class="number">0</span>]*n</span><br><span class="line">l1 = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如何初始化一个二维数组</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">l = [[<span class="number">0</span>]*m]*n   <span class="comment"># 会有赋值问题：n个[0]*m 实际上都是同一个对象</span></span><br><span class="line">l1 = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]  <span class="comment"># 没有赋值问题</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如何初始化一个二维数组并且设置右边界和下边界为1(根据实际情况处理)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m, n = <span class="number">10</span>, <span class="number">7</span></span><br><span class="line">dp = [[<span class="number">1</span> <span class="keyword">if</span> i == m - <span class="number">1</span> <span class="keyword">or</span> j == n - <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(m)] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>正序遍历</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>倒序遍历</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">n=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组的元素拼接</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[str(x)+y+str(z) <span class="keyword">for</span> x <span class="keyword">in</span> (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) <span class="keyword">for</span> y <span class="keyword">in</span> (<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>) <span class="keyword">for</span> z <span class="keyword">in</span> (<span class="string">'0'</span>,<span class="string">'9'</span>)]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>二维数组一维化</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">b=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">c=list(chain(*b))</span><br><span class="line">print(c)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">ab = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">print([i <span class="keyword">for</span> item <span class="keyword">in</span> ab <span class="keyword">for</span> i <span class="keyword">in</span> item])</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> operator</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">8</span>]]</span><br><span class="line">print(reduce(operator.add, a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">8</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>, <span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">l=[]</span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">3</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> a[m]:</span><br><span class="line">        l.append(i)</span><br><span class="line">print(l)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">a=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">8</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">a= eval(<span class="string">'['</span>+str(a).replace(<span class="string">' '</span>,<span class="string">''</span>).replace(<span class="string">'['</span>,<span class="string">''</span>).replace(<span class="string">']'</span>,<span class="string">''</span>)+<span class="string">']'</span>)</span><br><span class="line">print(a)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatten</span><span class="params">(a)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(a, (list, )):</span><br><span class="line">        <span class="keyword">return</span> [a]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        b = []</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> a:</span><br><span class="line">            b += flatten(item)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    a = [[[<span class="number">1</span>,<span class="number">2</span>],<span class="number">3</span>],[<span class="number">4</span>,[<span class="number">5</span>,<span class="number">6</span>]],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line">    print(flatten(a))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>如何拷贝一个一维数组</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">y = x[:]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如何拷贝一个二维数组</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line">y = [row[:] <span class="keyword">for</span> row <span class="keyword">in</span> x]</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">x=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">6</span>]]</span><br><span class="line"><span class="keyword">from</span> copy <span class="keyword">import</span> copy, deepcopy</span><br><span class="line">y = deepcopy(x)</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">old_array = [[<span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>]]</span><br><span class="line"><span class="comment"># python2.*</span></span><br><span class="line">new_array = map(list, old_array)</span><br><span class="line"><span class="comment"># python3.*</span></span><br><span class="line">new_array = list(map(list, old_array))</span><br><span class="line"><span class="comment">### --------------------------------------------------------------------------------</span></span><br><span class="line">arr = [[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"></span><br><span class="line">deepcopy1d2d = <span class="keyword">lambda</span> lVals: [x <span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, list) <span class="keyword">else</span> x[:] <span class="keyword">for</span> x <span class="keyword">in</span> lVals]</span><br><span class="line"></span><br><span class="line">dst = deepcopy1d2d(arr)</span><br><span class="line"></span><br><span class="line">dst[<span class="number">1</span>][<span class="number">1</span>]=<span class="number">150</span></span><br><span class="line"><span class="keyword">print</span> dst</span><br><span class="line"><span class="keyword">print</span> arr</span><br></pre></td></tr></table></figure>
+<h4 id="set的操作"><a href="#set的操作" class="headerlink" title="set的操作"></a>set的操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = t | s          <span class="comment"># t 和 s的并集  </span></span><br><span class="line">  </span><br><span class="line">b = t &amp; s          <span class="comment"># t 和 s的交集  </span></span><br><span class="line">  </span><br><span class="line">c = t – s          <span class="comment"># 求差集（项在t中，但不在s中）  </span></span><br><span class="line">  </span><br><span class="line">d = t ^ s          <span class="comment"># 对称差集（项在t或s中，但不会同时出现在二者中）</span></span><br></pre></td></tr></table></figure>
+<h4 id="ascii码的转换"><a href="#ascii码的转换" class="headerlink" title="ascii码的转换"></a>ascii码的转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取一个字符的ascii码</span></span><br><span class="line">ord(<span class="string">'a'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将ascii码转换成字符</span></span><br><span class="line">chr(<span class="number">97</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存地址</span></span><br><span class="line">a = <span class="number">9</span></span><br><span class="line">id(a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看一个对象内存占用大小(变量所占字节的大小)</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.getsizeof(a)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看变量类型</span></span><br><span class="line">type(a)</span><br></pre></td></tr></table></figure>
+<h4 id="进制"><a href="#进制" class="headerlink" title="进制"></a>进制</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 二进制</span></span><br><span class="line">Ob1010</span><br><span class="line"><span class="comment"># 获取一个数字的二进制</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">3</span>)</span><br><span class="line"><span class="string">'0b11'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">-10</span>)</span><br><span class="line"><span class="string">'-0b1010'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 八进制</span></span><br><span class="line"><span class="number">0o176</span></span><br><span class="line"><span class="comment"># 获取一个数字的二进制</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>oct(<span class="number">3</span>)</span><br><span class="line"><span class="string">'0o3'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">-3</span>)</span><br><span class="line"><span class="string">'-0o3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 十进制</span></span><br><span class="line"><span class="number">43</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 十六进制</span></span><br><span class="line"><span class="number">0x12ab</span></span><br><span class="line">hex(<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'0x3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 8 16 进制转换成 十进制</span></span><br><span class="line">int(<span class="string">'101010'</span>, <span class="number">2</span>)  <span class="comment"># int('0b101010', 0)</span></span><br><span class="line">int(<span class="string">'37621'</span>, <span class="number">8</span>)  <span class="comment"># int('0o37621', 0)</span></span><br><span class="line">int(<span class="string">'23abcf'</span>, <span class="number">16</span>)  <span class="comment"># int('0x23abcf', 0)</span></span><br></pre></td></tr></table></figure>
+<h4 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;  <span class="comment"># 右移：向右移1位可以看成除以2</span></span><br><span class="line">&lt;&lt;  <span class="comment"># 左移：向左移一位可以看成乘以2</span></span><br><span class="line">&amp;   <span class="comment"># 与</span></span><br><span class="line">|   <span class="comment"># 或</span></span><br><span class="line">~   <span class="comment"># 取反：效果是对n的内部表示的每一位求补</span></span><br><span class="line">^   <span class="comment"># 异或</span></span><br></pre></td></tr></table></figure>
+<h4 id="交换元素"><a href="#交换元素" class="headerlink" title="交换元素"></a>交换元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通常写法</span></span><br><span class="line">a=<span class="number">1</span></span><br><span class="line">b=<span class="number">2</span></span><br><span class="line">a,b = b,a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数组元素交换</span></span><br><span class="line">l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">l[<span class="number">3</span>], l[<span class="number">1</span>] = l[<span class="number">1</span>], l[<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 但是要同时交换数组和index就不行了</span></span><br><span class="line">i=<span class="number">0</span></span><br><span class="line">i, l[i] = l[i], <span class="number">7</span>  <span class="comment"># 失败：这里不能用这种写法，因为修改了i的值之后，等号前面的self.p[i]就会立刻指向修改后的i的位置。这里和普通的a b交换有区别</span></span><br><span class="line">l[i], i = <span class="number">7</span>, l[i]  <span class="comment"># 等号后面的l[i]实际上是值传递</span></span><br></pre></td></tr></table></figure>
+<h4 id="整数的最大值和最小值"><a href="#整数的最大值和最小值" class="headerlink" title="整数的最大值和最小值"></a>整数的最大值和最小值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">max_value = sys.maxsize</span><br><span class="line">min_value = -sys.maxsize - <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">max_value = float(<span class="string">'inf'</span>)</span><br><span class="line">min_value = float(<span class="string">'-inf'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="string"><a href="#string" class="headerlink" title="string"></a>string</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string   <span class="comment"># 导入string这个模块</span></span><br><span class="line">print(string.digits)  <span class="comment"># 输出包含数字0~9的字符串</span></span><br><span class="line">print(string.ascii_letters)  <span class="comment"># 包含所有字母(大写或小写)的字符串</span></span><br><span class="line">print(string.ascii_lowercase)  <span class="comment"># 包含所有小写字母的字符串</span></span><br><span class="line">print(string.ascii_uppercase)  <span class="comment"># 包含所有大写字母的字符串</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">##############</span></span><br><span class="line"><span class="number">0123456789</span></span><br><span class="line">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line">abcdefghijklmnopqrstuvwxyz</span><br><span class="line">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print([chr(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">65</span>, <span class="number">91</span>)])  <span class="comment"># 所有大写字母</span></span><br><span class="line">print([chr(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">97</span>, <span class="number">123</span>)])  <span class="comment"># 所有小写字母</span></span><br><span class="line">print([chr(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">48</span>, <span class="number">58</span>)])   <span class="comment"># 所有数字</span></span><br><span class="line"></span><br><span class="line"><span class="comment">####################</span></span><br><span class="line">[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>, <span class="string">'H'</span>, <span class="string">'I'</span>, <span class="string">'J'</span>, <span class="string">'K'</span>, <span class="string">'L'</span>, <span class="string">'M'</span>, <span class="string">'N'</span>, <span class="string">'O'</span>, <span class="string">'P'</span>, <span class="string">'Q'</span>, <span class="string">'R'</span>, <span class="string">'S'</span>, <span class="string">'T'</span>, <span class="string">'U'</span>, <span class="string">'V'</span>, <span class="string">'W'</span>, <span class="string">'X'</span>, <span class="string">'Y'</span>, <span class="string">'Z'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'f'</span>, <span class="string">'g'</span>, <span class="string">'h'</span>, <span class="string">'i'</span>, <span class="string">'j'</span>, <span class="string">'k'</span>, <span class="string">'l'</span>, <span class="string">'m'</span>, <span class="string">'n'</span>, <span class="string">'o'</span>, <span class="string">'p'</span>, <span class="string">'q'</span>, <span class="string">'r'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>, <span class="string">'u'</span>, <span class="string">'v'</span>, <span class="string">'w'</span>, <span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>]</span><br><span class="line">[<span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="f-string"><a href="#f-string" class="headerlink" title="f-string"></a>f-string</h4><p><a href="https://blog.csdn.net/sunxb10/article/details/81036693" target="_blank" rel="noopener">https://blog.csdn.net/sunxb10/article/details/81036693</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Python学习-lru-cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Python学习-lru-cache/" class="post-title-link" itemprop="url">Python学习-lru_cache</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-28 09:48:49 / 修改时间：09:49:40" itemprop="dateCreated datePublished" datetime="2020-05-28T09:48:49+08:00">2020-05-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-Thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/post/Java学习-Thread/" class="post-title-link" itemprop="url">Java学习-Thread</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-24 19:17:33" itemprop="dateCreated datePublished" datetime="2020-05-24T19:17:33+08:00">2020-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-12 09:57:34" itemprop="dateModified" datetime="2020-06-12T09:57:34+08:00">2020-06-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h4><p>进程：每个进程都有独立的代码和数据空间（进程上下文），进程间的切换会有较大的开销，一个进程包含1–n个线程。（进程是资源分配的最小单位）<br>线程：同一类线程共享代码和数据空间，每个线程有独立的运行栈和程序计数器(PC)，线程切换开销小。（线程是cpu调度的最小单位）</p>
+<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p>创建、就绪、运行、阻塞、终止</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gf4q1vrvkuj30fa0awaal.jpg" alt></p>
+<ol>
+<li>创建：新创建的一个线程对象</li>
+<li>就绪：线程对象创建成功后，其他的线程调用该对象的start方法。该状态的线程位于可运行线程池内，变的可运行，等待获取CPU的使用权呢</li>
+<li>运行：就绪状态的线程获取了CPU使用权，执行程序代码</li>
+<li>阻塞：阻塞状态是线程因为某种原因放弃了CPU使用权，暂停运行。直到线程再次进入就绪状态，才有机会转到运行状态。阻塞的情况分为以下三种：<ol>
+<li>等待阻塞：运行的线程执行wait方法，JVM会把该线程放入等待池中<strong>(wait会释放持有的锁)</strong></li>
+<li>同步阻塞：运行的线程在获取对象同步锁的时，如果该同步锁被别的线程占用，则JVM会把改线程放入锁池中</li>
+<li>其他阻塞：运行的线程执行sleep或join方法，或者发出了I/O(文件读写、网络请求)请求，JVM会把该线程置为阻塞状态。当sleep状态超时、join等待线程终止或者超时、或者I/O处理完毕时，线程重新转入就绪状态<strong>(sleep不会释放持有的锁)</strong></li>
+</ol>
+</li>
+<li>终止：线程执行完了或者因异常推出了run方法，该线程结束生命周期</li>
+</ol>
+<p>线程创建和切换的代价：<a href="https://www.jianshu.com/p/ece1bb5fa88b" target="_blank" rel="noopener">https://www.jianshu.com/p/ece1bb5fa88b</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-并发编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -701,741 +1198,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-NIO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-NIO/" class="post-title-link" itemprop="url">Java学习-NIO</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-20 02:46:53" itemprop="dateCreated datePublished" datetime="2020-05-20T02:46:53+08:00">2020-05-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 17:33:10" itemprop="dateModified" datetime="2020-06-03T17:33:10+08:00">2020-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://www.cnblogs.com/duanxz/p/6782783.html" target="_blank" rel="noopener">Java NIO系列教程（六） 多路复用器Selector</a></p>
-<p>ServerSocketChannel：一个面向流的侦听套接字 通道。用于监听是否有新的连接到来，可以调用accept函数获取到来的连接(SocketChannel)</p>
-<p>SocketChannel：一个面向流的连接套接字 通道。用于从连接中读取数据，和向连接写入数据</p>
-<p>Selector：选择器，可以管理一批注册的通道集合的信息和它们的就绪状态(OP_CONNECT|OP_ACCEPT|OP_READ|OP_WRITE)</p>
-<p>SelectionKey：选择键封装了特定的<strong>通道</strong>与<strong>特定的选择器</strong>的注册关系，一个key就代表了一个channel</p>
-<p>SelectableChannel可以被注册到Selector对象上，然后调用Selector.select()方法可以更新SelectionKeys(即处于某种就绪状态的通道集合)，然后我们就可以遍历这些通过处理相应的事件。比如连接就绪的通道，我们会把他们注册成读状态，等待它读就绪；连接读就绪，我们就可以从中读取数据；连接写就绪，我们就可以向连接写数据</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-线程安全的集合类/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-线程安全的集合类/" class="post-title-link" itemprop="url">Java学习-线程安全的集合类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-17 23:16:15" itemprop="dateCreated datePublished" datetime="2020-05-17T23:16:15+08:00">2020-05-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-Iterator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-Iterator/" class="post-title-link" itemprop="url">Java学习-Iterator</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-17 15:27:13" itemprop="dateCreated datePublished" datetime="2020-05-17T15:27:13+08:00">2020-05-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 17:33:04" itemprop="dateModified" datetime="2020-06-03T17:33:04+08:00">2020-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在看Iterator之前，先看一个早期版本的迭代器java.util.Enumeration</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Enumeration</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasMoreElements</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">E <span class="title">nextElement</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* NOTE: The functionality of this interface is duplicated by the Iterator</span><br><span class="line">* interface.  In addition, Iterator adds an optional remove operation, and</span><br><span class="line">* has shorter method names.  New implementations should consider using</span><br><span class="line">* Iterator in preference to Enumeration.</span><br></pre></td></tr></table></figure>
-<p>现在来看Iterator：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"remove"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEachRemaining</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> E&gt; action)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        <span class="keyword">while</span> (hasNext())</span><br><span class="line">            action.accept(next());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注意的点：</p>
-<ul>
-<li>Iterator在好的设计下可以在遍历的过程中对列表进行增加和删除和修改元素</li>
-<li>Iterator在遍历的过程只能进行一遍，即遍历完的对象不能再次遍历，<ul>
-<li>因为大多数Iterator在实现的过程中都是维护了了cursor指针，这个指针一般只会增加，不会减少</li>
-<li>同时大都没有充值cursor指针的接口</li>
-<li>关键是看Iterator的设计如何</li>
-</ul>
-</li>
-</ul>
-<p>例如下面的ListIterator</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ListIterator</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasPrevious</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">E <span class="title">previous</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">nextIndex</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">previousIndex</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(E e)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ListIterator在原来的Iterator的基础上扩展了，使之可以往前遍历，同时可以修改和增加元素</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-函数式编程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-函数式编程/" class="post-title-link" itemprop="url">Java学习-函数式编程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-17 08:38:33" itemprop="dateCreated datePublished" datetime="2020-05-17T08:38:33+08:00">2020-05-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 17:32:49" itemprop="dateModified" datetime="2020-06-03T17:32:49+08:00">2020-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Java8之后加入了一种全新的方式来实现方法(功能)作为参数传递的机制：lambda表达式</p>
-<blockquote>
-<p>像python语言，天生就支持将function作为参数传递给函数.</p>
-</blockquote>
-<p>可以想象，既然是一种实现方法作为参数传递的机制，java是一种面向对象的编程语言，也就是说在java中除了原始数据类型之外，都是对象：</p>
-<blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="meta">@FunctionalInterface</span></span><br><span class="line">&gt; <span class="class"><span class="keyword">interface</span> <span class="title">CharBinaryOperator</span> </span>&#123;</span><br><span class="line">&gt;     <span class="function">String <span class="title">applyAsChar</span><span class="params">(<span class="keyword">char</span> left, <span class="keyword">char</span> right)</span></span>;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt; </span><br><span class="line">&gt; CharBinaryOperator charBinaryOperator = (<span class="keyword">char</span> a, <span class="keyword">char</span> b) -&gt; &#123;</span><br><span class="line">&gt;     System.out.println(a);</span><br><span class="line">&gt;     System.out.println(b);</span><br><span class="line">&gt;     <span class="keyword">return</span> String.valueOf(a + b);</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-<ul>
-<li>charBinaryOperator instanceof CharBinaryOperator<ul>
-<li>charBinaryOperator是CharBinaryOperator的一个实例</li>
-</ul>
-</li>
-<li>CharBinaryOperator.class instanceof Class<ul>
-<li>CharBinaryOperator.class是Class的一个实例</li>
-</ul>
-</li>
-<li>Class.class instanceof Class<ul>
-<li>Class.class同时也是Class的一个实例</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>在java中，传递的参数要么是原始数据类型，要么是对象(类型也是对象，所以能够传递)，不能是其他的类型。在JDK8之前，要想将一个功能传递到函数内部(<strong>这一般会被称为函数回调</strong>，是大多数异步编程的常用套路：到达某个时间节点或满足某中情况触发一个操作)，那么就只能<strong>显示的</strong>先定义一个接口，然后创建一个实现了这个接口的类，然后再实例化这个类得到一个对象，最后将这个对象作为参数传入函数，函数内部调用对象实现的方法，如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CharBinaryOperator charBinaryOperator1 = <span class="keyword">new</span> CharBinaryOperator() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">applyAsChar</span><span class="params">(<span class="keyword">char</span> a, <span class="keyword">char</span> b)</span> </span>&#123;</span><br><span class="line">        System.out.println(a);</span><br><span class="line">        System.out.println(b);</span><br><span class="line">        <span class="keyword">return</span> String.valueOf(a + b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">charBinaryOperator.applyAsChar(<span class="string">'a'</span>, <span class="string">'b'</span>);</span><br></pre></td></tr></table></figure>
-<p>在JDK8及之后，我们不需要再显示的做这一系列的事情(当然你这么做也不会有问题)。</p>
-<p>在JDK8及之后，所有满足条件的interface都会被解释函数式接口，即都可以通过lambda表达式的形式代替上述流程</p>
-<blockquote>
-<p>什么样的interface才算满足条件呢？</p>
-<p>只声明了一个未实现的函数的interface就可以。在JDK8及以后，interface中定义的函数也可以有默认的实现</p>
-<p>在声明接口的时候，可以使用java.lang.FunctionalInterface注解，表示该interface是一个函数式接口(当然可以不加，compiler会自动判断)</p>
-<p>如果在有多个未实现的函数的interface上加这个注解的时候，编译阶段就会报错：Multiple non-overriding abstract methods found in interface OOXX</p>
-<p>lambda表达式只不过是为了实现这个机制的一种解决方案，可以提高开发效率，同时隐藏了interface的定义细节，<del>compilier完全是按照参数列表来推断当前的lambda表达式是和哪一个interface绑定的</del>(compilier直接找到接口的定义，不是推断的)。如果没有预定义的，那么就会在编译期间报错，所以在java中lambda表达式的使用是有一定的限制的。</p>
-<p>同时，在使用JDK预定义的操作时，在内部是调用了接口内定义的那个具体的函数的，所以对于开发者来说也是透明的，如列表的forEach()函数</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt;     <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span> </span>&#123;</span><br><span class="line">&gt;         Objects.requireNonNull(action);</span><br><span class="line">&gt;         <span class="keyword">for</span> (T t : <span class="keyword">this</span>) &#123;</span><br><span class="line">&gt;             action.accept(t);</span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt; <span class="comment">// 我们在使用的时候是这样的</span></span><br><span class="line">&gt;         List&lt;Integer&gt; integers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">&gt;         integers.add(<span class="number">1</span>);</span><br><span class="line">&gt;         integers.forEach(i -&gt; &#123;</span><br><span class="line">&gt;             System.out.println(i);</span><br><span class="line">&gt;         &#125;);</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>&gt;<br>&gt;<br>&gt;</p>
-<blockquote>
-<p>本质上，还是要先有interface的定义(在JDK中已经预定义了大部分的interface，所以我们才不用自己手动定义，我上面的例子中就是一个没有被预定义的例子)，运行结果也是创建了一个实现了指定接口的对象，然后将对象作为参数传递给函数</p>
-<p>如果我们完全脱离了JDK预定义的操作，那么我们就需要自己定义innterface，并且在我们使用该接口的地方显示的声明方法的使用，但是在外层传递方法参数的调用，我们仍可以使用简洁明了的lambda表达式，无论怎么说，lambda表达式的这种机制极大的方便了开发人员</p>
-</blockquote>
-<p>Lambda 表达式和匿名类之间的区别</p>
-<blockquote>
-<p><code>this</code> 关键字。对于匿名类 <code>this</code> 关键字解析为匿名类，而对于 Lambda 表达式，<code>this</code> 关键字解析为包含写入 Lambda 的类。</p>
-</blockquote>
-<h6 id="JDK中预定义的interface"><a href="#JDK中预定义的interface" class="headerlink" title="JDK中预定义的interface"></a>JDK中预定义的interface</h6><p>在<code>java.util.function</code>可以看到全部的预定义的interface，以下四种是最有代表性的</p>
-<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9okl2qkj30fg04sjrk.jpg" alt></p>
-<ul>
-<li>Function<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9t81dwtj30ch03kdg0.jpg" alt="image-20200517110913472"><ul>
-<li>R apply(T)</li>
-<li>Function<v, r> compose(Function&lt;? super V, ? extends T&gt; before)</v,></li>
-<li>Function<t, v> andThen(Function&lt;? super R, ? extends V&gt; after)</t,></li>
-<li>Function<t, t> identity()</t,></li>
-</ul>
-</li>
-<li>Consumer<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9v9l0w5j30ae02jglk.jpg" alt="image-20200517111112190"><ul>
-<li>void accept(T)</li>
-<li>Consumer&lt; T&gt; addThen(Consumer&lt;? super T&gt;)</li>
-</ul>
-</li>
-<li>Predicate<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9vnldldj30a804b74d.jpg" alt="image-20200517111135143"><ul>
-<li>boolean test()</li>
-<li>Predicate&lt; T&gt; add(Predicate&lt;? super T&gt;)</li>
-<li>Predicate&lt; T&gt; negate()</li>
-<li>Predicate&lt; T&gt; or(Predicate&lt;? super T&gt;)</li>
-<li>Predicate&lt; T&gt; isEqual(Object) </li>
-</ul>
-</li>
-<li>Supplier<img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev9ukowqdj303k01uq2r.jpg" alt="image-20200517111031489"><ul>
-<li>T get()</li>
-</ul>
-</li>
-</ul>
-<h1 id="Lambda-表达式的例子"><a href="#Lambda-表达式的例子" class="headerlink" title="Lambda 表达式的例子"></a><a href="https://segmentfault.com/a/1190000009186509" target="_blank" rel="noopener">Lambda 表达式的例子</a></h1><h2 id="1-线程初始化"><a href="#1-线程初始化" class="headerlink" title="1 线程初始化"></a>1 线程初始化</h2><p>线程可以初始化如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Old way</span></span><br><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).start();</span><br><span class="line"></span><br><span class="line"><span class="comment">// New way</span></span><br><span class="line"><span class="keyword">new</span> Thread(</span><br><span class="line">    () -&gt; System.out.println(<span class="string">"Hello world"</span>)</span><br><span class="line">).start();</span><br></pre></td></tr></table></figure>
-<h2 id="2-事件处理"><a href="#2-事件处理" class="headerlink" title="2 事件处理"></a>2 事件处理</h2><p>事件处理可以用 Java 8 使用 Lambda 表达式来完成。以下代码显示了将 <code>ActionListener</code> 添加到 UI 组件的新旧方式：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Old way</span></span><br><span class="line">button.addActionListener(<span class="keyword">new</span> ActionListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">actionPerformed</span><span class="params">(ActionEvent e)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// New way</span></span><br><span class="line">button.addActionListener( (e) -&gt; &#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello world"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="3-遍例输出（方法引用）"><a href="#3-遍例输出（方法引用）" class="headerlink" title="3 遍例输出（方法引用）"></a>3 遍例输出（方法引用）</h2><p>输出给定数组的所有元素的简单代码。请注意，还有一种使用 Lambda 表达式的方式。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);</span><br><span class="line"><span class="keyword">for</span> (Integer n : list) &#123;</span><br><span class="line">    System.out.println(n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 -&gt; 的 Lambda 表达式</span></span><br><span class="line">list.forEach(n -&gt; System.out.println(n));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 :: 的 Lambda 表达式</span></span><br><span class="line">list.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-<h2 id="6-4-逻辑操作"><a href="#6-4-逻辑操作" class="headerlink" title="6.4 逻辑操作"></a>6.4 逻辑操作</h2><p>输出通过逻辑判断的数据。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.wuxianjiezh.demo.lambda;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.function.Predicate;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出所有数字："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"不输出："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出偶数："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n % <span class="number">2</span> == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出奇数："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n % <span class="number">2</span> == <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        System.out.print(<span class="string">"输出大于 5 的数字："</span>);</span><br><span class="line">        evaluate(list, (n) -&gt; n &gt; <span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">evaluate</span><span class="params">(List&lt;Integer&gt; list, Predicate&lt;Integer&gt; predicate)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Integer n : list) &#123;</span><br><span class="line">            <span class="keyword">if</span> (predicate.test(n)) &#123;</span><br><span class="line">                System.out.print(n + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输出所有数字：1 2 3 4 5 6 7 </span><br><span class="line">不输出：</span><br><span class="line">输出偶数：2 4 6 </span><br><span class="line">输出奇数：1 3 5 7 </span><br><span class="line">输出大于 5 的数字：6 7</span><br></pre></td></tr></table></figure>
-<h2 id="6-4-Stream-API-示例"><a href="#6-4-Stream-API-示例" class="headerlink" title="6.4 Stream API 示例"></a>6.4 Stream API 示例</h2><p><code>java.util.stream.Stream</code>接口 和 Lambda 表达式一样，都是 Java 8 新引入的。所有 <code>Stream</code> 的操作必须以 Lambda 表达式为参数。<code>Stream</code> 接口中带有大量有用的方法，比如 <code>map()</code> 的作用就是将 input Stream 的每个元素，映射成output Stream 的另外一个元素。</p>
-<p>下面的例子，我们将 Lambda 表达式 <code>x -&gt; x*x</code> 传递给 <code>map()</code> 方法，将其应用于流的所有元素。之后，我们使用 <code>forEach</code> 打印列表的所有元素。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">for</span>(Integer n : list) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = n * n;</span><br><span class="line">    System.out.println(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// new way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line">list.stream().map((x) -&gt; x*x).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
-<p>下面的示例中，我们给定一个列表，然后求列表中每个元素的平方和。这个例子中，我们使用了 <code>reduce()</code> 方法，这个方法的主要作用是把 Stream 元素组合起来。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// old way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(Integer n : list) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = n * n;</span><br><span class="line">    sum = sum + x;</span><br><span class="line">&#125;</span><br><span class="line">System.out.println(sum);</span><br><span class="line"></span><br><span class="line"><span class="comment">// new way</span></span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>);</span><br><span class="line"><span class="keyword">int</span> sum = list.stream().map(x -&gt; x*x).reduce((x,y) -&gt; x + y).get();</span><br><span class="line">System.out.println(sum);</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-集合类/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/Java学习-集合类/" class="post-title-link" itemprop="url">Java学习-集合类</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-17 07:27:00" itemprop="dateCreated datePublished" datetime="2020-05-17T07:27:00+08:00">2020-05-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 17:32:54" itemprop="dateModified" datetime="2020-06-03T17:32:54+08:00">2020-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JAVA学习/" itemprop="url" rel="index"><span itemprop="name">JAVA学习</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>[TOC]</p>
-<h4 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gev3hd1fgnj30ye0u0jws.jpg" alt></p>
-<blockquote>
-<p>注：这里只列举了单一线线程使用的集合对象(Vector除外)</p>
-</blockquote>
-<p>JVAV中列表类集合，按照数据的存储方式可以分为两大类：基于数组和基于链表。两种方式各有好处，需要根据实际业务场景做出选择。</p>
-<ul>
-<li><p>数组</p>
-<ul>
-<li>优点<ul>
-<li>支持随机访问，给定下标的访问是O(1)的时间复杂度</li>
-</ul>
-</li>
-<li>缺点<ul>
-<li>内存必须是连续的，否则会申请空间失败</li>
-<li>查找、插入、扩容、删除都是O(n)的时间复杂度</li>
-<li>有容量的限制，增加节点时，可能会因为数组大小不够导致扩容，扩容的时间复杂度是O(n)的</li>
-</ul>
-</li>
-<li>使用注意<ul>
-<li>最好能够预估数据的最大容量，可以预先设计capacity，尽量避免扩容操作</li>
-<li>但是在特别的使用场景下，基于数组的实现效率会更好，比如下面要说的ArrayDeque</li>
-</ul>
-</li>
-<li>具体实现<ul>
-<li>ArrayList</li>
-<li>Vector</li>
-<li>Stack</li>
-<li>ArrayDeque</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>链表</p>
-<ul>
-<li><p>优点</p>
-<ul>
-<li>内存不用是连续的</li>
-<li>插入、删除都是O(1)的时间复杂度</li>
-<li>没有容量的限制，按理说限制就是JVAV堆的大小限制</li>
-</ul>
-</li>
-<li><p>缺点</p>
-<ul>
-<li>查找是O(n)的时间复杂度</li>
-</ul>
-</li>
-<li><p>使用</p>
-<ul>
-<li>单独使用链表的时候，还挺少的，毕竟一个没有附加特性的链表结构，仅仅只能够做到新增和删除的时间复杂度为O(1)，但是查询却需要O(n)，并且还需要额外的空间存储链表结构。数组可以通过预估容量的方式尽量减少扩容的操作，对比发现，使用基于数组的集合性价比更高</li>
-</ul>
-</li>
-<li><p>具体实现</p>
-<ul>
-<li><p>LinkList</p>
-</li>
-<li><p>LinkList在定位低index个元素的时候，有个优化的点可以学习</p>
-</li>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Node&lt;E&gt; <span class="title">node</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// assert isElementIndex(index);</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (index &lt; (size &gt;&gt; <span class="number">1</span>)) &#123;</span><br><span class="line">        Node&lt;E&gt; x = first;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; index; i++)</span><br><span class="line">            x = x.next;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;E&gt; x = last;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">1</span>; i &gt; index; i--)</span><br><span class="line">            x = x.prev;</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>总结：可以发现，基于数组和基于链表的集合实现方式，想要从他们中查询到具体的元素，时间复杂度都是O(n)的，这是因为，这里仅仅考虑了数据的存储方式，并没有额外的信息给出来，所以是没有办法加速查询的。要想实现加速查询，那么就必须在这基础上增加新的特性：</p>
-</blockquote>
-<ul>
-<li>数组<ul>
-<li>有序性：可以借助有序性使用二分查找，把查找时间复杂度降到O(log n)</li>
-</ul>
-</li>
-<li>链表<ul>
-<li>建立树结构：<ul>
-<li>二叉搜索树：前序遍历就是正向排序，可以把查询的时间复杂度降到O(log n)，但是要维护二叉搜索，尽量保证他是平衡的(但是这个的时间复杂度是O(1)的)</li>
-<li>堆：查找最大(最小)值是O(1)的时间复杂度</li>
-</ul>
-</li>
-<li>升维：比如跳表，就是在有序的链表上建立多级索引来实现加速查询的，可以把查找时间复杂度降到O(log n)，但是在新增和删除节点时需要维护多级索引(但是这个的时间复杂度是O(1)的)</li>
-</ul>
-</li>
-</ul>
-<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevgxzxj4uj30iw0ij0uy.jpg" alt="image-20200517151558262"></p>
-<p>接口信息如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Method</th>
-<th>Return</th>
-<th>Comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Insert</td>
-<td>add(E)</td>
-<td>boolean</td>
-<td>向队列加入元素，如果空间不足，会触发扩容</td>
-</tr>
-<tr>
-<td>Insert</td>
-<td>add(int, E)</td>
-<td>void</td>
-<td>向指定位置插入元素，可能会抛IndexOutOfBoundsException</td>
-</tr>
-<tr>
-<td>Remove</td>
-<td>remove(Object)</td>
-<td>boolean</td>
-<td>移除指定的元素，没有的话返回false，有的话返回true</td>
-</tr>
-<tr>
-<td>Remove</td>
-<td>remove(int)</td>
-<td>E</td>
-<td>移除指定index的元素，可能会抛IndexOutOfBoundsException</td>
-</tr>
-<tr>
-<td>Examine</td>
-<td>get(int)</td>
-<td>E</td>
-<td>返回指定index的元素，可能会抛IndexOutOfBoundsException</td>
-</tr>
-<tr>
-<td>Update</td>
-<td>set(int, E)</td>
-<td>E</td>
-<td>更新指定index的元素，可能会抛IndexOutOfBoundsException</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>在List的源码中发现多处这样的代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 只返回第一个遇到的o，当o为null的时候，o.equals会报错</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (o == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (elementData[i]==<span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">            <span class="keyword">if</span> (o.equals(elementData[i]))</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>详看扩容操作</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">   	ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">   	elementData[size++] = e;</span><br><span class="line">   	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DEFAULT_CAPACITY=10</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">           minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       ensureExplicitCapacity(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       modCount++;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// overflow-conscious code</span></span><br><span class="line">       <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">           grow(minCapacity);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// overflow-conscious code</span></span><br><span class="line">       <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">       <span class="comment">// newCapacity = int(1.5*oldCapacity)</span></span><br><span class="line">       <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = minCapacity;</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">       <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">       elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">   &#125;</span><br><span class="line">	</span><br><span class="line"><span class="comment">// 整形溢出：Integer.MAX_VALUE + 8&lt;0</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hugeCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError();</span><br><span class="line">       <span class="keyword">return</span> (minCapacity &gt; MAX_ARRAY_SIZE) ?</span><br><span class="line">           Integer.MAX_VALUE :</span><br><span class="line">           MAX_ARRAY_SIZE;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevjdx0lvfj305o056aa0.jpg" alt="image-20200517164030856"></p>
-<p>设计了一套支持队列操作的接口，如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Method</th>
-<th>Return</th>
-<th>Comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Insert</td>
-<td>add(E)</td>
-<td>boolean</td>
-<td>向队列添加一个元素，如果没有空间会抛出IllegalStateException</td>
-</tr>
-<tr>
-<td>Insert</td>
-<td>offer(E)</td>
-<td>boolean</td>
-<td>向队列添加一个元素，如果没有空间会返回false</td>
-</tr>
-<tr>
-<td>Remove</td>
-<td>remove()</td>
-<td>E</td>
-<td>移除并返回头结点，如果队列为空的话，会抛NoSuchElementException</td>
-</tr>
-<tr>
-<td>Remove</td>
-<td>poll()</td>
-<td>E</td>
-<td>移除并返回头结点，如果队列为空的话，会返回null</td>
-</tr>
-<tr>
-<td>Examine</td>
-<td>element()</td>
-<td>E</td>
-<td>返回头结点，如果队列为空的话，会抛NoSuchElementException</td>
-</tr>
-<tr>
-<td>Examine</td>
-<td>peek()</td>
-<td>E</td>
-<td>返回头结点，如果队列为空的话，会返回null</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevjrosqnyj30g80i8dhk.jpg" alt="image-20200517165344428"></p>
-<h4 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h4><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlly1gevk1e2lppj306v04s0sp.jpg" alt="image-20200517170304083"></p>
-<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>通常使用ArrayDeque来作为先进先出的Queue，后进先出的Stack</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/分布式服务框架-IPC-RPC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="王尚">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="努力，奋斗">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/post/分布式服务框架-IPC-RPC/" class="post-title-link" itemprop="url">分布式服务框架-IPC&RPC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-05-14 11:38:18" itemprop="dateCreated datePublished" datetime="2020-05-14T11:38:18+08:00">2020-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-03 06:35:24" itemprop="dateModified" datetime="2020-06-03T06:35:24+08:00">2020-06-03</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1501,20 +1267,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">139</span>
+        <span class="site-state-item-count">146</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1541,7 +1307,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
