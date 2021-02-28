@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://shang.at/"/>
-  <updated>2021-02-27T08:06:13.658Z</updated>
+  <updated>2021-02-28T02:38:26.144Z</updated>
   <id>https://shang.at/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>机器学习-特征工程与相关性分析</title>
+    <link href="https://shang.at/post/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B%E4%B8%8E%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90/"/>
+    <id>https://shang.at/post/机器学习-特征工程与相关性分析/</id>
+    <published>2021-02-28T02:37:26.000Z</published>
+    <updated>2021-02-28T02:38:26.144Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>简介：</p></blockquote><a id="more"></a><p><img src="/images/特征工程与相关性分析.png" alt="特征工程与相关性分析"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;简介：&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="机器学习" scheme="https://shang.at/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="https://shang.at/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>机器学习-数据探索流程</title>
@@ -453,26 +477,6 @@
     
       &lt;blockquote&gt;
 &lt;p&gt;简介：&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>工具使用-编译工具-sbt</title>
-    <link href="https://shang.at/post/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7-sbt/"/>
-    <id>https://shang.at/post/工具使用-编译工具-sbt/</id>
-    <published>2020-08-09T15:07:24.000Z</published>
-    <updated>2020-09-07T07:35:35.398Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>简介：使用sbt编译Scala项目</p></blockquote><a id="more"></a><p><em>SBT</em> 是Scala 的构建工具，全称是Simple Build Tool， 类似Maven 或Gradle。</p><h3 id="搭建一个SBT项目"><a href="#搭建一个SBT项目" class="headerlink" title="搭建一个SBT项目"></a>搭建一个SBT项目</h3><p>目录结构：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">这是一个SBT项目的最简单的结构：</span><br><span class="line">atome-sg-apaylater-nightly-data-warehouse/</span><br><span class="line">data-warehouse-core/</span><br><span class="line">src/</span><br><span class="line">main/</span><br><span class="line">scala/</span><br><span class="line">java/</span><br><span class="line">resources/</span><br><span class="line">test/</span><br><span class="line">prject/</span><br><span class="line">build.properties</span><br><span class="line">plugins.sbt</span><br><span class="line">build.sbt</span><br></pre></td></tr></table></figure><p>java语言和scala语言都是基于class的，都可以运行在JVM上，故在项目可以同时使用java语言和scala语言。</p><p>下面罗列一下相关的配置文件：</p><blockquote><p>build.sbt</p></blockquote><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sbt.<span class="type">Keys</span>.dependencyOverrides</span><br><span class="line"></span><br><span class="line"><span class="comment">// https://docs.aws.amazon.com/emr/latest/ReleaseGuide/images/emr-releases-5x.png</span></span><br><span class="line"><span class="keyword">val</span> emrMajorVersion = <span class="string">"5.24"</span></span><br><span class="line"><span class="keyword">val</span> scalaFullVersion = <span class="string">"2.11.12"</span></span><br><span class="line"><span class="keyword">val</span> scalaMajorVersion = <span class="string">"2.11"</span></span><br><span class="line"><span class="keyword">val</span> sparkVersion = <span class="string">"2.4.2"</span></span><br><span class="line"><span class="keyword">val</span> hadoopVersion = <span class="string">"2.8.5"</span></span><br><span class="line"><span class="keyword">val</span> dataConsolidationRootVersion = <span class="string">"1.0.0"</span></span><br><span class="line"><span class="keyword">val</span> dataConsolidationCoreVersion = <span class="string">"1.0.0"</span></span><br><span class="line"><span class="keyword">val</span> dataOrganization = <span class="string">"ai.advance"</span></span><br><span class="line"><span class="keyword">val</span> pureconfigVersion = <span class="string">"0.10.0"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> commonSetting = <span class="type">Seq</span>(</span><br><span class="line">  compileOrder := <span class="type">CompileOrder</span>.<span class="type">JavaThenScala</span>,</span><br><span class="line">  libraryDependencies ++= <span class="type">Seq</span>(</span><br><span class="line">    <span class="string">"org.scalatest"</span> %% <span class="string">"scalatest"</span> % <span class="string">"3.2.0-SNAP10"</span> % <span class="string">"test"</span>,</span><br><span class="line">    <span class="string">"org.scalamock"</span> %% <span class="string">"scalamock-scalatest-support"</span> % <span class="string">"3.6.0"</span> % <span class="string">"test"</span></span><br><span class="line">  )</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> assemblySetting = <span class="type">Seq</span>(</span><br><span class="line">  assemblyOption in assembly := (assemblyOption in assembly).value.copy(includeScala = <span class="literal">false</span>),</span><br><span class="line">  assemblyJarName in assembly := <span class="string">s"<span class="subst">$&#123;name.value&#125;</span>_<span class="subst">$scalaMajorVersion</span>-<span class="subst">$&#123;version.value&#125;</span>-emr_<span class="subst">$&#123;emrMajorVersion&#125;</span>.jar"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">lazy</span> <span class="keyword">val</span> core =</span><br><span class="line">  (project in file(<span class="string">"data-warehouse-core"</span>)).settings(</span><br><span class="line">    commonSetting</span><br><span class="line">  ).settings(</span><br><span class="line">    name := <span class="string">"atome-sg-apaylater-nightly-data-warehouse"</span>,</span><br><span class="line">    organization := dataOrganization,</span><br><span class="line">    version := dataConsolidationCoreVersion,</span><br><span class="line">    scalaVersion := scalaFullVersion,</span><br><span class="line">    test in assembly := &#123;&#125;,</span><br><span class="line">    libraryDependencies ++= <span class="type">Seq</span>(</span><br><span class="line">      <span class="string">"org.apache.spark"</span> % <span class="string">s"spark-core_<span class="subst">$&#123;scalaMajorVersion&#125;</span>"</span> % sparkVersion % <span class="string">"provided"</span>,</span><br><span class="line">      <span class="string">"org.apache.spark"</span> % <span class="string">s"spark-sql_<span class="subst">$&#123;scalaMajorVersion&#125;</span>"</span> % sparkVersion % <span class="string">"provided"</span>,</span><br><span class="line">      <span class="string">"org.scalacheck"</span> %% <span class="string">"scalacheck"</span> % <span class="string">"1.13.5"</span> % <span class="string">"provided"</span>,</span><br><span class="line">      <span class="string">"mysql"</span> % <span class="string">"mysql-connector-java"</span> % <span class="string">"5.1.38"</span> % <span class="string">"provided"</span>,</span><br><span class="line">      <span class="string">"com.github.pureconfig"</span> %% <span class="string">"pureconfig"</span> % pureconfigVersion % <span class="string">"provided"</span>,</span><br><span class="line">      <span class="string">"com.typesafe.play"</span> %% <span class="string">"play-json"</span> % <span class="string">"2.6.9"</span> % <span class="string">"provided"</span></span><br><span class="line">    ),</span><br><span class="line">    dependencyOverrides += <span class="string">"com.fasterxml.jackson.core"</span> % <span class="string">"jackson-databind"</span> % <span class="string">"2.6.7"</span> % <span class="string">"provided"</span></span><br><span class="line">  ).settings(</span><br><span class="line">    assemblySetting</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line"><span class="keyword">lazy</span> <span class="keyword">val</span> root = (project in file(<span class="string">"."</span>)).</span><br><span class="line">  settings(</span><br><span class="line">    name := <span class="string">"data-warehouse-root"</span>,</span><br><span class="line">    organization := dataOrganization,</span><br><span class="line">    version := dataConsolidationRootVersion,</span><br><span class="line">    scalaVersion := scalaFullVersion</span><br><span class="line">  ).disablePlugins(sbtassembly.<span class="type">AssemblyPlugin</span>)</span><br><span class="line">  .aggregate(core)</span><br></pre></td></tr></table></figure><blockquote><p>build.properties</p></blockquote><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbt.version = <span class="number">0.13</span><span class="number">.18</span></span><br></pre></td></tr></table></figure><blockquote><p>plugins.sbt</p></blockquote><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logLevel := <span class="type">Level</span>.<span class="type">Warn</span></span><br><span class="line">addSbtPlugin(<span class="string">"com.eed3si9n"</span> % <span class="string">"sbt-assembly"</span> % <span class="string">"0.14.6"</span>)</span><br></pre></td></tr></table></figure><p>其中最主要的配置文件是build.sbt，</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;
-&lt;p&gt;简介：使用sbt编译Scala项目&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
