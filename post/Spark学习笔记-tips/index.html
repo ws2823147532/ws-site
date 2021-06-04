@@ -20,14 +20,14 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ws2823147532.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 <meta name="keywords" content="Spark-tips">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark学习笔记-tips">
-<meta property="og:url" content="https://shang.at/post/Spark学习笔记-tips/index.html">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/post/Spark学习笔记-tips/index.html">
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 <meta property="og:locale" content="zh-CN">
@@ -36,7 +36,7 @@
 <meta name="twitter:title" content="Spark学习笔记-tips">
 <meta name="twitter:description" content="使用jdbc保存数据的时候，需要注意一个重要的问题：如果是基于原始的数据更改一些内容，然后覆盖原来的表，那么原始的表数据会被 truncate，  所以在同一个spark session中你如果先调用了读取和overwrite操作，那么请注意了，在真正读取数据之前，数据就会被truncate掉，所以原始数据无法被保存。 原因是spark的rdd是不保存数据的，自由真正调用action算子的时候，">
 
-<link rel="canonical" href="https://shang.at/post/Spark学习笔记-tips/">
+<link rel="canonical" href="https://ws2823147532.github.io/ws-site/post/Spark学习笔记-tips/">
 
 
 <script id="page-configurations">
@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Spark学习笔记-tips/">
+    <link itemprop="mainEntityOfPage" href="https://ws2823147532.github.io/ws-site/post/Spark学习笔记-tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

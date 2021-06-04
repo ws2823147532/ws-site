@@ -20,36 +20,36 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ws2823147532.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
 <meta name="keywords" content="内存模型JMM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAVA并发编程-1-内存模型JMM">
-<meta property="og:url" content="https://shang.at/post/JAVA并发编程-1-内存模型JMM/index.html">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/post/JAVA并发编程-1-内存模型JMM/index.html">
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://shang.at/images/image-20200827133335886.png">
-<meta property="og:image" content="https://shang.at/images/image-20200827133600227.png">
-<meta property="og:image" content="https://shang.at/images/image-20200827133837208.png">
-<meta property="og:image" content="https://shang.at/images/image-20200827135021022.png">
-<meta property="og:image" content="https://shang.at/images/image-20200921072258470.png">
-<meta property="og:image" content="https://shang.at/images/image-20200921072722103.png">
-<meta property="og:image" content="https://shang.at/images/image-20200922074104788.png">
-<meta property="og:image" content="https://shang.at/images/image-20200922075433859.png">
-<meta property="og:image" content="https://shang.at/images/image-20200922080054350.png">
-<meta property="og:image" content="https://shang.at/images/image-20200928075314211.png">
-<meta property="og:image" content="https://shang.at/images/image-20200928075352744.png">
-<meta property="og:image" content="https://shang.at/images/image-20200928075525079.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200827133335886.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200827133600227.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200827133837208.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200827135021022.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200921072258470.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200921072722103.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200922074104788.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200922075433859.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200922080054350.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200928075314211.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200928075352744.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20200928075525079.png">
 <meta property="og:updated_time" content="2020-12-11T08:17:49.358Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA并发编程-1-内存模型JMM">
 <meta name="twitter:description" content="硬件层的并发优化基础  为了解决CPU速度和内存、磁盘的速度的差异(从上图可以看出，差异是很大的)带来的资源应用不均衡的问题，在硬件层是做了很多优化的，其中一个就是增加多级缓存机制，该机制会利用局部性原理(访问某个数据，那么它附近的数据将很有可能被访问)，将最近被访问的数据做一层缓存，那么下次再次访问该数据的时候，速度会快很多。  其中L1和L2级缓存是与CPU核绑定的，那么这就有可能导致一个问题">
-<meta name="twitter:image" content="https://shang.at/images/image-20200827133335886.png">
+<meta name="twitter:image" content="https://ws2823147532.github.io/images/image-20200827133335886.png">
 
-<link rel="canonical" href="https://shang.at/post/JAVA并发编程-1-内存模型JMM/">
+<link rel="canonical" href="https://ws2823147532.github.io/ws-site/post/JAVA并发编程-1-内存模型JMM/">
 
 
 <script id="page-configurations">
@@ -183,7 +183,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/JAVA并发编程-1-内存模型JMM/">
+    <link itemprop="mainEntityOfPage" href="https://ws2823147532.github.io/ws-site/post/JAVA并发编程-1-内存模型JMM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

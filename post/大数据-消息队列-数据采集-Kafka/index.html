@@ -20,37 +20,37 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ws2823147532.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Kafka的基本概念和架构Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用  系统间解耦  将分支业务与主业务的耦合性解除：用户注册时只需要等待调用注册服务的时间，后续我们通知用户注册成功的时间是和主业务流程解耦的，发送短信的时间不在用户等待的范围内；同时短信服务发生了异常也不会影响到用户的注册">
 <meta name="keywords" content="Kafka">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大数据-消息队列-数据采集-Kafka">
-<meta property="og:url" content="https://shang.at/post/大数据-消息队列-数据采集-Kafka/index.html">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/post/大数据-消息队列-数据采集-Kafka/index.html">
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="Kafka的基本概念和架构Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用  系统间解耦  将分支业务与主业务的耦合性解除：用户注册时只需要等待调用注册服务的时间，后续我们通知用户注册成功的时间是和主业务流程解耦的，发送短信的时间不在用户等待的范围内；同时短信服务发生了异常也不会影响到用户的注册">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://shang.at/images/image-20201207140006482.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207140756238.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207142614204.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207143641230.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207143809399.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207145951452.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207152929571.png">
-<meta property="og:image" content="https://shang.at/images/kafka消费者组.png">
-<meta property="og:image" content="https://shang.at/images/image-20201207163254474.png">
-<meta property="og:image" content="https://shang.at/images/image-20201208095325068.png">
-<meta property="og:image" content="https://shang.at/images/image-20201208095432823.png">
-<meta property="og:image" content="https://shang.at/images/image-20201208095554424.png">
-<meta property="og:image" content="https://shang.at/images/image-20201208095634307.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207140006482.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207140756238.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207142614204.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207143641230.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207143809399.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207145951452.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207152929571.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/kafka消费者组.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201207163254474.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201208095325068.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201208095432823.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201208095554424.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20201208095634307.png">
 <meta property="og:updated_time" content="2020-12-11T08:03:37.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据-消息队列-数据采集-Kafka">
 <meta name="twitter:description" content="Kafka的基本概念和架构Apache Kafka是Apache软件基金会的开源的流处理平台，该平台提供了消息的订阅与发布的消息队列，一般用作系统间解耦、异步通信、削峰填谷等作用  系统间解耦  将分支业务与主业务的耦合性解除：用户注册时只需要等待调用注册服务的时间，后续我们通知用户注册成功的时间是和主业务流程解耦的，发送短信的时间不在用户等待的范围内；同时短信服务发生了异常也不会影响到用户的注册">
-<meta name="twitter:image" content="https://shang.at/images/image-20201207140006482.png">
+<meta name="twitter:image" content="https://ws2823147532.github.io/images/image-20201207140006482.png">
 
-<link rel="canonical" href="https://shang.at/post/大数据-消息队列-数据采集-Kafka/">
+<link rel="canonical" href="https://ws2823147532.github.io/ws-site/post/大数据-消息队列-数据采集-Kafka/">
 
 
 <script id="page-configurations">
@@ -184,7 +184,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/大数据-消息队列-数据采集-Kafka/">
+    <link itemprop="mainEntityOfPage" href="https://ws2823147532.github.io/ws-site/post/大数据-消息队列-数据采集-Kafka/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">

@@ -20,68 +20,68 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"ws2823147532.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="简介：">
 <meta name="keywords" content="IO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向">
-<meta property="og:url" content="https://shang.at/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/index.html">
+<meta property="og:url" content="https://ws2823147532.github.io/ws-site/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/index.html">
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="简介：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://shang.at/images/image-20210203085028082.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207080612507.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209163609323.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207080955646.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207083602507.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207083648829.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207083719398.png">
-<meta property="og:image" content="https://shang.at/images/image-20210207083741766.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165158345.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165937062.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165957899.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209170018035.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165722724.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165823985.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165845476.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165911461.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209165432796.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209170823581.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209170902462.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209170942506.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209171144618.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209171333356.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209171352509.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209171518677.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209171716683.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209173141491.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209174906291.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209175012204.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209175027312.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209175157453.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209175238595.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209175517461.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209180140925.png">
-<meta property="og:image" content="https://shang.at/images/image-20210209180204257.png">
-<meta property="og:image" content="https://shang.at/images/image-20210210105038777.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218175644597.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218175659479.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218175727311.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218175741765.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218175800013.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218174225245.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218181937557.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218182221922.png">
-<meta property="og:image" content="https://shang.at/images/image-20210218185801683.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210203085028082.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207080612507.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209163609323.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207080955646.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207083602507.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207083648829.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207083719398.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210207083741766.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165158345.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165937062.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165957899.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209170018035.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165722724.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165823985.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165845476.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165911461.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209165432796.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209170823581.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209170902462.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209170942506.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209171144618.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209171333356.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209171352509.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209171518677.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209171716683.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209173141491.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209174906291.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209175012204.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209175027312.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209175157453.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209175238595.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209175517461.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209180140925.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210209180204257.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210210105038777.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218175644597.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218175659479.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218175727311.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218175741765.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218175800013.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218174225245.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218181937557.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218182221922.png">
+<meta property="og:image" content="https://ws2823147532.github.io/images/image-20210218185801683.png">
 <meta property="og:updated_time" content="2021-02-18T10:58:08.047Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向">
 <meta name="twitter:description" content="简介：">
-<meta name="twitter:image" content="https://shang.at/images/image-20210203085028082.png">
+<meta name="twitter:image" content="https://ws2823147532.github.io/images/image-20210203085028082.png">
 
-<link rel="canonical" href="https://shang.at/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/">
+<link rel="canonical" href="https://ws2823147532.github.io/ws-site/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/">
 
 
 <script id="page-configurations">
@@ -215,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shang.at/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/">
+    <link itemprop="mainEntityOfPage" href="https://ws2823147532.github.io/ws-site/post/Java学习-IO学习1-虚拟文件系统-文件描述符-IO重定向/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
