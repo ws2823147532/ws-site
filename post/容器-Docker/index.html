@@ -31,10 +31,17 @@
 <meta property="og:site_name" content="努力，奋斗">
 <meta property="og:description" content="简介：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-12-04T08:06:26.924Z">
+<meta property="og:image" content="https://shang.at/images/image-20210520154502638.png">
+<meta property="og:image" content="https://shang.at/images/008i3skNly1gqoxwfpa7kj307p05jdh2.png">
+<meta property="og:image" content="https://shang.at/images/image-20210520155035535.png">
+<meta property="og:image" content="https://shang.at/images/image-20210520191116093.png">
+<meta property="og:image" content="https://shang.at/images/image-20210520191226898.png">
+<meta property="og:image" content="https://shang.at/images/image-20210520192137259.png">
+<meta property="og:updated_time" content="2021-05-20T11:39:16.441Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="容器-Docker">
 <meta name="twitter:description" content="简介：">
+<meta name="twitter:image" content="https://shang.at/images/image-20210520154502638.png">
 
 <link rel="canonical" href="https://shang.at/post/容器-Docker/">
 
@@ -200,7 +207,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-04 16:06:26" itemprop="dateModified" datetime="2020-12-04T16:06:26+08:00">2020-12-04</time>
+                <time title="修改时间：2021-05-20 19:39:16" itemprop="dateModified" datetime="2021-05-20T19:39:16+08:00">2021-05-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -243,7 +250,68 @@
 <p>➜  ~ docker exec -it a98b84585114 /bin/bash    进入一个运行中容器bash命令行</p>
 <p>➜  ~ docker run -d —link selenium-hub:hub selenium/node-chrome  启动容器并链接到指定的容器</p>
 <p>➜  ~ docker run -d —link selenium-hub:hub -e NODE_MAX_INSTANCES=5 -e NODE_MAX_SESSION=5 selenium/node-chrome  启动容器并链接到指定的容器，指定环境变量</p>
-
+<h1 id="容器化技术介绍"><a href="#容器化技术介绍" class="headerlink" title="容器化技术介绍"></a>容器化技术介绍</h1><h2 id="物理机时代"><a href="#物理机时代" class="headerlink" title="物理机时代"></a>物理机时代</h2><p><img src="/images/image-20210520154502638.png" alt="image-20210520154502638"></p>
+<ul>
+<li>部署非常慢</li>
+<li>成本很高</li>
+<li>资源浪费</li>
+<li>难于扩展与迁移</li>
+<li>受制于硬件</li>
+</ul>
+<h2 id="虚拟机时代"><a href="#虚拟机时代" class="headerlink" title="虚拟机时代"></a>虚拟机时代</h2><p><img src="/images/008i3skNly1gqoxwfpa7kj307p05jdh2.png" alt="image-20210520154742833"></p>
+<ul>
+<li><p>多部署</p>
+</li>
+<li><p>资源池</p>
+</li>
+<li><p>资源隔离</p>
+</li>
+<li><p>很容易扩展</p>
+</li>
+<li><p>VM需要安装操作系统</p>
+</li>
+</ul>
+<h2 id="容器化时代"><a href="#容器化时代" class="headerlink" title="容器化时代"></a>容器化时代</h2><p><img src="/images/image-20210520155035535.png" alt="image-20210520155035535"></p>
+<h1 id="初识Docker"><a href="#初识Docker" class="headerlink" title="初识Docker"></a>初识Docker</h1><p>Docker是一个平台，其上承载了容器</p>
+<p>开源的应用容器引擎，基于 Go 语言开发</p>
+<p>容器是<code>完全使用沙箱机制</code>,创建和销毁容器开销极低</p>
+<p>Docker就是容器化技术的代名词</p>
+<p>Docker也具备一定虚拟化职能，利用Docker不仅可以创建容器，还能向本地的物理机申请CPU、内存等计算资源</p>
+<h3 id="标准化的应用打包"><a href="#标准化的应用打包" class="headerlink" title="标准化的应用打包"></a>标准化的应用打包</h3><p>提供了一种标准化的应用打包方式，一个镜像文件包含了一个应用运行所需要的所有信息，开箱即用，同时他还描述了运行这些应用需要哪些硬件上的要求，比如CPU、内存、硬盘</p>
+<h1 id="阿里云Docker镜像加速"><a href="#阿里云Docker镜像加速" class="headerlink" title="阿里云Docker镜像加速"></a>阿里云Docker镜像加速</h1><h2 id="Docker的基本概念"><a href="#Docker的基本概念" class="headerlink" title="Docker的基本概念"></a>Docker的基本概念</h2><p><img src="/images/image-20210520191116093.png" alt="image-20210520191116093"></p>
+<p>Docker引擎包含三个部分：</p>
+<p><img src="/images/image-20210520191226898.png" alt="image-20210520191226898"></p>
+<ul>
+<li>Server - docker daemon：容器的管理</li>
+<li>Rest API - 基于HTTP协议</li>
+<li>Client - docker cli</li>
+</ul>
+<p>server和client可以不在同一个节点上 - CS模式</p>
+<h2 id="容器与镜像"><a href="#容器与镜像" class="headerlink" title="容器与镜像"></a>容器与镜像</h2><ul>
+<li>镜像：是一个<code>文件</code>，是只读的，不可运行，提供了运行程序<code>完整的软硬件资源</code>，是应用程序的集装箱</li>
+<li>容器：是镜像的实例，由Docker负责创建，容器之间彼此隔离</li>
+</ul>
+<h2 id="Docker的执行流程"><a href="#Docker的执行流程" class="headerlink" title="Docker的执行流程"></a>Docker的执行流程</h2><p><img src="/images/image-20210520192137259.png" alt="image-20210520192137259"></p>
+<ul>
+<li>Client：客户端，用户提交命令的地方</li>
+<li>Docker Host<ul>
+<li>Docker daemon：Docker的守护进程，管理该节点上的镜像与容器</li>
+<li>Images：镜像文件</li>
+<li>Containers：运行的容器实例</li>
+</ul>
+</li>
+<li>Registry：注册中心，远程仓库，保存了各种各样的镜像文件</li>
+</ul>
+<h2 id="Docker常用命令"><a href="#Docker常用命令" class="headerlink" title="Docker常用命令"></a>Docker常用命令</h2><ul>
+<li>docker pull 镜像名&lt;:tags&gt; - 从远程仓库抽取镜像</li>
+<li>docker images - 查看本地镜像</li>
+<li>docker run 镜像名&lt;:tags&gt; - 创建容器，启动应用</li>
+<li>docker ps - 查看正在运行中的镜像</li>
+<li>docker rm &lt;-f&gt; 容器id - 删除容器</li>
+<li>docker rmi &lt;-f&gt; 镜像名&lt;:tags&gt; - 删除镜像</li>
+</ul>
+<p><a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>:</p>
+<h2 id="Docker宿主机与容器通信"><a href="#Docker宿主机与容器通信" class="headerlink" title="Docker宿主机与容器通信"></a>Docker宿主机与容器通信</h2>
     </div>
 
     
@@ -326,6 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#容器化技术介绍"><span class="nav-number">1.</span> <span class="nav-text">容器化技术介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#物理机时代"><span class="nav-number">1.1.</span> <span class="nav-text">物理机时代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机时代"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟机时代</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器化时代"><span class="nav-number">1.3.</span> <span class="nav-text">容器化时代</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初识Docker"><span class="nav-number">2.</span> <span class="nav-text">初识Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化的应用打包"><span class="nav-number">2.0.1.</span> <span class="nav-text">标准化的应用打包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#阿里云Docker镜像加速"><span class="nav-number">3.</span> <span class="nav-text">阿里云Docker镜像加速</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的基本概念"><span class="nav-number">3.1.</span> <span class="nav-text">Docker的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器与镜像"><span class="nav-number">3.2.</span> <span class="nav-text">容器与镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker的执行流程"><span class="nav-number">3.3.</span> <span class="nav-text">Docker的执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker常用命令"><span class="nav-number">3.4.</span> <span class="nav-text">Docker常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker宿主机与容器通信"><span class="nav-number">3.5.</span> <span class="nav-text">Docker宿主机与容器通信</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -339,7 +408,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">194</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -352,7 +421,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-count">148</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

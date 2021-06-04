@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"shang.at","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简介：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数仓项目及Spark分享">
+<meta property="og:url" content="https://shang.at/post/数仓项目及Spark分享/index.html">
+<meta property="og:site_name" content="努力，奋斗">
+<meta property="og:description" content="简介：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://shang.at/images/image-20210524151041975.png">
+<meta property="og:image" content="https://shang.at/images/image-20210527114056176.png">
+<meta property="og:image" content="https://shang.at/images/image-20210507102816939.png">
+<meta property="og:image" content="https://shang.at/images/image-20210514100450527.png">
+<meta property="og:image" content="https://shang.at/images/image-20210508002913034.png">
+<meta property="og:image" content="https://shang.at/images/image-20210426110056121.png">
+<meta property="og:image" content="https://shang.at/images/image-20210531104119809.png">
+<meta property="og:image" content="https://shang.at/images/scala_iterator.jpg">
+<meta property="og:image" content="https://shang.at/images/image-20210601120513748.png">
+<meta property="og:image" content="https://shang.at/images/image-20210531103244533.png">
+<meta property="og:image" content="https://shang.at/images/image-20210506095928300.png">
+<meta property="og:image" content="https://shang.at/images/image-20210601121530393.png">
+<meta property="og:updated_time" content="2021-06-03T07:55:58.085Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数仓项目及Spark分享">
+<meta name="twitter:description" content="简介：">
+<meta name="twitter:image" content="https://shang.at/images/image-20210524151041975.png">
+
+<link rel="canonical" href="https://shang.at/post/数仓项目及Spark分享/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数仓项目及Spark分享 | 努力，奋斗</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">努力，奋斗</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">记录学习</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://shang.at/post/数仓项目及Spark分享/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="王尚">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="努力，奋斗">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数仓项目及Spark分享
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-06 09:48:39" itemprop="dateCreated datePublished" datetime="2021-05-06T09:48:39+08:00">2021-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-03 15:55:58" itemprop="dateModified" datetime="2021-06-03T15:55:58+08:00">2021-06-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>简介：</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="【讲】项目介绍"><a href="#【讲】项目介绍" class="headerlink" title="【讲】项目介绍"></a><font color="red">【讲】</font>项目介绍</h1><h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><p>项目架构 - 模板方法的设计模式 - 框架的通用设计模式 - 主体流程进行限制，暴露必要的方法给用户实现，用户只需要关注具体的业务逻辑，无须关心其他的执行细节</p>
+<h2 id="数仓项目"><a href="#数仓项目" class="headerlink" title="数仓项目"></a>数仓项目</h2><p>几个角色抽象 - APP、Task、Target、Datasource<br>它们的关系 - 就是执行的具体细节</p>
+<p>依赖管理：解析和执行</p>
+<p>执行流程：业务逻辑 -&gt; （合并小文件）[判断是否分区] write to parquet</p>
+<h2 id="项目优化点"><a href="#项目优化点" class="headerlink" title="项目优化点"></a>项目优化点</h2><ol>
+<li><p>利用spark FIFO的队列模型提高资源利用率(多线程并发提交job)，避免了一次仅提交一个Job带来的</p>
+<p>资源浪费：如果是一次仅提交一个Job，那么就目前的项目架构来说，相当于人为的将所有任务都串行起来了，一个Job的执行可能只需要极少的资源，但是这种模式又没有其他的Job可以运行，那么大部分时间集群的资源是处于空闲状态的，因此就会造成一种资源的浪费。</p>
+<p>时间消耗：原因是如果是一次仅提交一个Job，那么每次提交Job，都要经历spark集群启动的过程，这一过程是很耗时的，在目前的情况中，spark集群启动的过程可能比一个Job运行的时间还要长。</p>
+<p>潜在的问题：一个Job的失败会导致后续所有未执行Job的失败，但是这个问题对于批处理来说，并不是一个很大的问题，因为可以直接重跑一次批处理就可以了，并不会造成太大的问题。但是这种情况的出现还是会对其下游的任务造成一定的影响，会延迟下游任务的执行。</p>
+<p>造成这类问题的主要原因有两种：</p>
+<p>​    代码的bug：代码上线前应该充分测试，上线之后立即执行一次确保没有问题</p>
+<p>​    系统问题：由于数据越来越大，可能有些问题会逐渐的显露出来，比如一些内存溢出问题(下面就会介绍一些类似的问题：比如autoBroadcast造成的OOM以及coalesce造成的OOM)</p>
+<blockquote>
+<p> Flink如何实现并发提交任务 - application mode &amp; executeAsync()</p>
+</blockquote>
+</li>
+<li><p>非分区表小文件自动合并 - 根据hive matestore记录数据大小进行估算最后的文件数 - 最终的文件数实际上就是最后一个stage的分区数</p>
+<blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; DESCRIBE EXTENDED databaseName.tableName</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>缓存管理 - 打算优化的点 - 不同的表可能会依赖了同样的基础表，希望是可以只读取一次原始表，后续再次使用该表则使用cache的数据 - 缓存管理、缓存释放 - 在目前不改动业务代码的情况下很难实现 - 进一步思考中</p>
+</li>
+</ol>
+<h1 id="【讲】任务调度"><a href="#【讲】任务调度" class="headerlink" title="【讲】任务调度"></a><font color="red">【讲】</font>任务调度</h1><h2 id="spark的Scheduler"><a href="#spark的Scheduler" class="headerlink" title="spark的Scheduler"></a>spark的Scheduler</h2><p><a href="https://spark.apache.org/docs/latest/job-scheduling.html" target="_blank" rel="noopener">官方的解释</a></p>
+<p>关于spark任务调度，实际上分为两层（以下针对基于yarn部署的spark集群）。第一层是yarn的资源调度层，第二层是spark的应用调度层，因此分为以下两个方面介绍：</p>
+<h3 id="Scheduling-Across-Applications"><a href="#Scheduling-Across-Applications" class="headerlink" title="Scheduling Across Applications"></a><a href="https://spark.apache.org/docs/latest/job-scheduling.html#scheduling-across-applications" target="_blank" rel="noopener">Scheduling Across Applications</a></h3><p>应用级别的调度</p>
+<p>该级别的调度是基于yarn这样的一个统一的资源调度平台进行的，所有基于yarn运行的应用都要遵循同样的调度策略，详细<a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">理解Yarn Scheduler</a>，可以阅读一下这篇博客。这里只是简单的介绍一下：</p>
+<p>假设我们通过spark-submit以cluster模式提交的spark application到yarn集群，实际上就是向RM申请了一系列的资源(这里会遵循yarn的资源调度规则)，如果任务提交成功，那么随后会在yarn集群中启动一个spark的小集群，其中就包含了我们所熟悉的Driver、Executors，Driver端运行的就是我们提交的jar的main方法，后续的任务调度就是spark自己调度的了。（这里不涉及过多细节，因为细节实在太多，关于yarn和spark on yarn的更多细节，可以阅读下这篇<a href="https://mp.weixin.qq.com/s/HKLq8rnP6GEdyhFYpIXlGQ" target="_blank" rel="noopener">博客</a>）。</p>
+<p><img src="/images/image-20210524151041975.png" alt="image-20210524151041975"></p>
+<h3 id="Scheduling-Within-an-Application"><a href="#Scheduling-Within-an-Application" class="headerlink" title="Scheduling Within an Application"></a><a href="https://spark.apache.org/docs/latest/job-scheduling.html#scheduling-within-an-application" target="_blank" rel="noopener">Scheduling Within an Application</a></h3><p>Job级别的调度：FAIR、FIFO</p>
+<p>这里是我们要介绍的重点。</p>
+<p>在一个spark的Application中是允许并行运行多个Job的，前提是需要在不同的线程中提交的。这里所说的Job是指spark中的一个action算子(比如collect，save等)。</p>
+<p>什么是Job？</p>
+<p><img src="/images/image-20210527114056176.png" alt="image-20210527114056176"></p>
+<h4 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h4><p>这是spark内部调度Job的默认策略，即：第一个被提交的Job会有使用集群全部资源的优先权，分为两种情况：</p>
+<ol>
+<li>如果当前Job把所有集群资源都占用了，那么后续提交的Job只能等待</li>
+<li>如果当前Job仅仅占用了集群的一部分资源，集群还有空闲资源，那么后续提交的任务可以立即执行。无论一个Application中并发提交了多少个Job，都是这样的方式调度。</li>
+</ol>
+<blockquote>
+<p>务必仅仅在scala/java语言编程中使用并发Job，不建议在pySpark中使用：<a href="https://spark.apache.org/docs/latest/job-scheduling.html#concurrent-jobs-in-pyspark" target="_blank" rel="noopener">Concurrent Jobs in PySpark</a></p>
+</blockquote>
+<h4 id="Fair-Sharing"><a href="#Fair-Sharing" class="headerlink" title="Fair Sharing"></a>Fair Sharing</h4><p>这是在spark0.8版本以后上线的特性，主要用于多租户使用同一个集群的情况，使得多个租户都可以享用到集群的资源，即使前面有一个很大的Job在执行，后续提交的任务也能够分到相应的资源去运行，保证良好的响应时间</p>
+<p>如果想使用<code>Fair Scheduler</code>，需要作如下的配置才行：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(...).setAppName(...)</span><br><span class="line">conf.set(<span class="string">"spark.scheduler.mode"</span>, <span class="string">"FAIR"</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br></pre></td></tr></table></figure>
+<p>除此以外，还需要一些系统配置：<a href="https://spark.apache.org/docs/latest/job-scheduling.html#fair-scheduler-pools" target="_blank" rel="noopener">Fair Scheduler Pools</a>，这里有些涉及到运维相关的了，与我们实际开发关系不是很大。</p>
+<h2 id="我们的Scheduler"><a href="#我们的Scheduler" class="headerlink" title="我们的Scheduler"></a>我们的Scheduler</h2><h3 id="依赖管理"><a href="#依赖管理" class="headerlink" title="依赖管理"></a>依赖管理</h3><p>我们项目中的DAG - 以一种比较简单数据结构实现了任务的依赖关系，下图是我们使用的数据结构的示意图</p>
+<p><img src="/images/image-20210507102816939.png" alt="image-20210507102816939"></p>
+<p>伪代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseTask</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">priority</span></span>: <span class="type">Int</span> = <span class="number">100</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> prev: mu.<span class="type">HashSet</span>[<span class="type">BaseTask</span>] = mu.<span class="type">HashSet</span>()</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">predecessors</span></span>: <span class="type">Set</span>[<span class="type">BaseTask</span>] = prev.toSet</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">val</span> next: mu.<span class="type">HashSet</span>[<span class="type">BaseTask</span>] = mu.<span class="type">HashSet</span>()</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">successors</span></span>: <span class="type">Set</span>[<span class="type">BaseTask</span>] = next.toSet</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">-&gt;</span></span>(other: <span class="type">BaseTask</span>): <span class="type">BaseTask</span> = &#123;</span><br><span class="line">    next += other</span><br><span class="line">    other.prev += <span class="keyword">this</span></span><br><span class="line">    other</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解读：每个Task有前驱结点Set集合(前驱依赖节点)和后继节点Set集合(下游节点)</p>
+<p>任务调度器：</p>
+<p>Scheduler维护了以下四个队列：</p>
+<ul>
+<li>入度为0的任务节点进入candidates队列，candidates是一个优先级队列，即高优先级的任务会被优先执行</li>
+<li>normal：初始化任务时所有任务都在这 </li>
+<li>running：正在运行的任务 </li>
+<li>failed：执行失败的任务。</li>
+<li>completed：执行完成的任务</li>
+</ul>
+<p>scheduler会设置一个并行度，也就是线程数</p>
+<p>当然这只是控制了我们在Driver启动的线程数，它表示我们可以一次向spark集群提交多少并发的任务 至于集群能够使用多少资源去执行，那是集群的资源调度，它同时受到能够分配给同一个SparkSession的资源配置(系统级的配置，当前app申请的资源配置)和当前集群资源使用情况的影响 </p>
+<p>这里的并行度设置的思路：</p>
+<p>1、在当前的应用场景下，我们的Driver端应该属于IO密集型的应用(Executor端属于计算密集型应用)，所以Driver端的线程大多数时间不是花在CPU运算上面，而是花在了等待IO(主要是网络IO)上，这时我们可以尽可能多的启动一些线程，去提交尽可能多(当然不会非常多，太多就真的是浪费资源了)的Job给spark，这对于Driver端并不会有很大的压力，因此我们根据当前可提交Job数设置了一个并行度，考虑到一些特殊情况(当前任务结束后，会释放多个下游节点，所以至少10个并行度，同时考虑一次性提交太多任务，又因为集群资源并不能一次性满足也减少driver的一点资源消耗，并行度上限设为20)，最后确定的并行度范围是[10,20]</p>
+<p>2、根据上面的讲述，我们采用的是spark默认的FIFO的调度策略，所以就算我们一次性提交多个JOB，也不会有什么问题，spark会根据当前集群资源自动的启动相关的JOB运行，所以我们可以一次性提交多个JOB给spark。实际上这样能够更加充分的利用集群资源(一旦有job完成，spark立马就可以从队列中取出来一个新的job执行)。</p>
+<p>调度步骤：</p>
+<p>在主线程中，只管去问scheduler要当前可以执行的任务，只要有任务返回就不断的询问，直到scheduler返回None，那就有两个问题需要解决： </p>
+<p>1、我们设置过并行提交任务数了，获取的任务数大于我们设置的任务数怎么办? </p>
+<p>2、这里任务的依赖是怎么解决的? </p>
+<p>3、优先级如何处理？</p>
+<p> 4、如果一个任务执行失败了怎么办? </p>
+<p>针对以上四个问题的解答如下：</p>
+<p>1、得到多出来的任务会被放到线程池的队列中，等到之前的任务执行完毕，将线程归还之后，会自动调度执行。这是线程池的策略 </p>
+<p>2、我们之前说过，是将入度为0任务节点取出放到candidates队列，当一个任务执行完毕，那么将其从running队列中删除，加入到completed队列中，同时去更新其后驱任务节点入度减一，并检查其入度是否为0，如果为0，则将其放入candidates队列。 如果当前询问时candidates为空了，并不能说明已经没有候选任务了，还可能是由于前驱任务都没有执行完导致还没有新任务被放入，此时会block住(candidates.wait())，直到有某些任务执行完毕时提醒(candidates.notify())主线程可以继续探索candidates(再次判断candidates.nonEmpty)，如果此时candidates中又有了新的任务，那么将任务取出返回(从normal队列中删除，加入到running队列) </p>
+<p>3、我们说过candidates是一个优先级队列，它会根据放入的任务的优先级进行排序，使得我们每次从其中取的任务是优先级最高的任务。从candidates中取到的任务放到线程池中是一个串行的执行，即它会根据送进来的任务的先后顺序依次执行(FIFO) </p>
+<p>4、这里涉及到一个失败任务应该如何处理的问题 </p>
+<ul>
+<li>一旦失败，将整个app停止 </li>
+<li>某一个任务失败，只将受到其影响的后驱任务标记为失败放到failed队列。其他任务不受影响继续执行 明显后者更好             </li>
+</ul>
+<h3 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h3><p>多线程，并发管理，同步处理(最重要的一部分，否则会发生难以debug的并发问题)</p>
+<p>同步处理主要就是控制并发的线程对共享变量(内存)的访问与操作，最常用的手段就是加锁，确保同一时刻只有一个线程能够访问共享变量，同时该线程对此共享变量的改变，当该线程释放锁之后，改变对其他线程是立即可见的(当然这是编程语言自动支持的特性)。</p>
+<p>具体基于java语言和scala语言的并发控制就不多说了，这里的内容非常多。</p>
+<h1 id="【讲】spark常见的异常处理"><a href="#【讲】spark常见的异常处理" class="headerlink" title="【讲】spark常见的异常处理"></a><font color="red">【讲】</font>spark常见的异常处理</h1><h2 id="内存异常"><a href="#内存异常" class="headerlink" title="内存异常"></a>内存异常</h2><h3 id="spark的内存管理"><a href="#spark的内存管理" class="headerlink" title="spark的内存管理"></a>spark的内存管理</h3><h4 id="Driver的内存"><a href="#Driver的内存" class="headerlink" title="Driver的内存"></a>Driver的内存</h4><p>Driver的内存主要有两块</p>
+<ul>
+<li>JVM进程运行所需要的内存，比如DAG的生成、网络通信、任务调度</li>
+<li>数据所占用的内存，主要就是用户手动collect的数据，以及spark内部自己优化collect到driver的数据，比如autoBroadcast。后面会介绍这中优化有时候会导致Driver的OOM</li>
+</ul>
+<h4 id="Executor内存"><a href="#Executor内存" class="headerlink" title="Executor内存"></a>Executor内存</h4><h5 id="spark的内存管理-1"><a href="#spark的内存管理-1" class="headerlink" title="spark的内存管理"></a>spark的内存管理</h5><p>RESERVED_SYSTEM_MEMORY_BYTES 300M - 这是系统预留的支持系统运行的内存空间</p>
+<p>systemMemory - Runtime.getRuntime.maxMemory - 默认是JVM进程启动的时候通过<code>-Xmx</code>指定的值</p>
+<p>minSystemMemory = reservedMemory * 1.5</p>
+<p>当systemMemory&lt;minSystemMemory时，Driver是启动不起来的，对应的启动参数是 <code>--driver-memory</code>，对应的是<code>spark.driver.memory</code>，默认是1G</p>
+<p>参数：spark.executor.memory</p>
+<p>executorMemory 当其小于minSystemMemory时，executor是启动不起来的，对应的启动参数为<code>--executor-memory</code>，默认是1G</p>
+<p>usableMemory = systemMemory - reservedMemory</p>
+<p>参数：spark.memory.fraction 0.6</p>
+<p>maxMemory = usableMemory * memoryFraction</p>
+<p>参数：spark.memory.storageFraction 0.5</p>
+<p>onHeapStorage = maxMemory  * spark.memory.storageFraction</p>
+<p>onHeapExecution = maxMemory  - onHeapStorage </p>
+<p><img src="/images/image-20210514100450527.png" alt="image-20210514100450527"></p>
+<p>举个例子：假设设置spark.driver.memory=1G=1024M</p>
+<p>那么Driver端实际上能够用于execution和storage的内存只有(默认情况下)：(1024-300)*0.6=434.4M</p>
+<p>以上讲的是onHeap的部分，在实际spark中，还可以使用offHeap内存来增加执行的效率</p>
+<p>TODO:offHeap这块的认知还需要打磨</p>
+<p>offHeap和onHeap的区别在于，在java中onHeap是java管理的内存空间，会触发GC，会有java Object的额外的内存消耗(比如说对象头，再小的对象，对象头也会占用12Bytes)，而offHeap是直接内存空间，offHeap内存储的就是字节数组，纯数据，直接对物理内存的操作，效率也会提高</p>
+<p><a href="https://blog.csdn.net/lquarius/article/details/106698097" target="_blank" rel="noopener">Spark参数spark.executor.memoryOverhead与spark.memory.offHeap.size的区别</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/115888408" target="_blank" rel="noopener">Spark内存空间管理</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.apache.spark.SparkConf: The configuration key &apos;spark.yarn.executor.memoryOverhead&apos; has been deprecated as of Spark 2.3 and may be removed in the future. Please use the new key &apos;spark.executor.memoryOverhead&apos; instead.</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>静态内存管理 - StaticMemoryManager - 已经不是默认选项了</p>
+<p>当设置了spark.memory.storageFraction，那么用户execute的内存和用于storage的内存大小是限定死的，他们不会根据实际内存使用情况动态调整。即系统很可能因为某一部分的内存不足而异常退出</p>
+</li>
+<li><p>动态内存管理 - UnifiedMemoryManager - 是较新版本的默认选项</p>
+<p>比如说当没有内存被使用为storage，或很少被使用为storage，同时execute会占用很多内存的时候，这个时候系统会自动调整execution和storage的比例。spark.memory.storageFraction只是一个初始比例</p>
+<p>内存利用会更加充分，我们也基本不用手动设置相关的参数，使用默认就好</p>
+</li>
+</ul>
+<h3 id="常见异常"><a href="#常见异常" class="headerlink" title="常见异常"></a>常见异常</h3><h4 id="driver内存异常"><a href="#driver内存异常" class="headerlink" title="driver内存异常"></a>driver内存异常</h4><p>最常导致driver内存溢出的问题是collect算子导致大量数据涌向driver节点，将导致内存溢出</p>
+<p>其中有一些是用户的误操作，比如在代码中对数据量比较大的df直接进行collect或toPandas(本质上就是collect)操作。</p>
+<p>建议：在不知情的情况下慎用collect类型的操作，否则可能会发生毁灭性的事情😯</p>
+<p>还有一些是spark内部优化导致的，比如下面将要介绍的autoBroadcast。</p>
+<h4 id="autoBroadcast导致的Driver内存溢出"><a href="#autoBroadcast导致的Driver内存溢出" class="headerlink" title="autoBroadcast导致的Driver内存溢出"></a>autoBroadcast导致的Driver内存溢出</h4><p><a href="https://spark.apache.org/docs/3.1.1/sql-ref-syntax-qry-select-hints.html#join-hints-types" target="_blank" rel="noopener">官方解读</a></p>
+<p>spark会对小表进行优化，使用广播变量来加速数据的join操作。我们知道普通的join操作必然会导致shuffle操作，这样会导致集群内大量的网络数据传输，导致效率急剧下降，而且会占用网络带宽。但是如果发生join的表较小，那么spark会自动检测出来并且进行广播处理，从而执行mapjoin，可以极大地减小网络带宽的占用。</p>
+<p>但是autoBroadcast的默认工作原理是将小表的数据collect到driver，然后使用broadcast算子进行广播操作，内存增加的计算公式为：<code>spark.sql.autoBroadcastJoinThreshold * the number of broadcast table * 2</code>，当广播任务比较频繁的时候，Driver有可能因为OOM而异常退出</p>
+<p>解决方案：</p>
+<p>1、调整<code>spark.sql.autoBroadcastJoinThreshold</code>，spark会将大小小于该值的小表自动广播，调小该值，可以让spark不广播某些表。但是属于指标不治本</p>
+<p>或者直接设置为<code>-1</code>关闭autoBroadcast功能</p>
+<p>2、调整driver内存，增加driver内存，某些场景下可用，可能换到另一个场景就不可用了，因此需要根据不同的业务场景调节driver内存以满足autoBroadcast的要求。</p>
+<p><del>3、设置<code>spark.sql.bigdata.useExecutorBroadcast</code>为true，使用Executor广播，将表数据缓存在Executor中，而不是放在Driver之中，减少Spark Driver内存的压力。driver不用多做调整</del></p>
+<blockquote>
+<p>经过spark2.4.2测试，完全没有效果！！！</p>
+</blockquote>
+<h4 id="coalesce导致的内存溢出"><a href="#coalesce导致的内存溢出" class="headerlink" title="coalesce导致的内存溢出"></a>coalesce导致的内存溢出</h4><p>Spark-error.log</p>
+<p><a href="https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce/65038141#65038141" target="_blank" rel="noopener">https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce/65038141#65038141</a></p>
+<p><a href="https://stackoverflow.com/questions/31674530/write-single-csv-file-using-spark-csv" target="_blank" rel="noopener">https://stackoverflow.com/questions/31674530/write-single-csv-file-using-spark-csv</a></p>
+<p><a href="https://stackoverflow.com/questions/38961251/java-lang-outofmemoryerror-unable-to-acquire-100-bytes-of-memory-got-0" target="_blank" rel="noopener">https://stackoverflow.com/questions/38961251/java-lang-outofmemoryerror-unable-to-acquire-100-bytes-of-memory-got-0</a></p>
+<p>test coalesce(1)、coalesce(2)、 repartition(1)</p>
+<p>join之后执行coalesce、filter之后执行coalesce都会</p>
+<p>如果coalesce之前没有shuffle的操作，直接调用coalesce(1)，可能会导致Executor OOM，因为coalesce操作不会触发计算操作，如果它之前没有shuffle操作，spark不会执行任何的计算，直接将原始数据加载到一个Executor上，才会开始执行计算，这样的话，实际上Executor上就有可能发生OOM</p>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">For instance: load().map(…).filter(…).coalesce(1).save()</span><br><span class="line"></span><br><span class="line">translates to: load().coalesce(1).map(…).filter(…).save()</span><br></pre></td></tr></table></figure>
+<p>Spark - repartition() vs coalesce()：<a href="https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce/65038141#65038141" target="_blank" rel="noopener">https://stackoverflow.com/questions/31610971/spark-repartition-vs-coalesce/65038141#65038141</a></p>
+<h4 id="数据倾斜"><a href="#数据倾斜" class="headerlink" title="数据倾斜"></a>数据倾斜</h4><p>主要体现在绝大多数task执行得都非常快，个别task执行很慢，拖慢整个任务的执行进程，甚至可能因为某个task处理的数据量过大而爆出OOM错误。</p>
+<p>shuffle操作中需要将各个节点上相同的key拉取到某一个节点上的一个task处理，如果某个key对应的数据量特别大，就会发生数据倾斜。</p>
+<p>4.3.1 分析数据分布</p>
+<p>如果是Spark SQL中的group by、join语句导致的数据倾斜，可以使用SQL分析执行SQL中的表的key分布情况；如果是Spark RDD执行shuffle算子导致的数据倾斜，可以在Spark作业中加入分析Key分布的代码，使用countByKey()统计各个key对应的记录数。</p>
+<p>4.3.2 数据倾斜的解决方案</p>
+<p>这里参考美团技术博客中给出的几个方案。</p>
+<p>1）针对hive表中的数据倾斜，可以尝试通过hive进行数据预处理，如按照key进行聚合，或是和其他表join，Spark作业中直接使用预处理后的数据。</p>
+<p>2）如果发现导致倾斜的key就几个，而且对计算本身的影响不大，可以考虑过滤掉少数导致倾斜的key</p>
+<p>3）设置参数spark.sql.shuffle.partitions，提高shuffle操作的并行度，增加shuffle read task的数量，降低每个task处理的数据量</p>
+<p>4）针对RDD执行reduceByKey等聚合类算子或是在Spark SQL中使用group by语句时，可以考虑两阶段聚合方案，即局部聚合+全局聚合。第一阶段局部聚合，先给每个key打上一个随机数，接着对打上随机数的数据执行reduceByKey等聚合操作，然后将各个key的前缀去掉。第二阶段全局聚合即正常的聚合操作。</p>
+<p>5）针对两个数据量都比较大的RDD/hive表进行join的情况，如果其中一个RDD/hive表的少数key对应的数据量过大，另一个比较均匀时，可以先分析数据，将数据量过大的几个key统计并拆分出来形成一个单独的RDD，得到的两个RDD/hive表分别和另一个RDD/hive表做join，其中key对应数据量较大的那个要进行key值随机数打散处理，另一个无数据倾斜的RDD/hive表要1对n膨胀扩容n倍，确保随机化后key值仍然有效。</p>
+<p>6）针对join操作的RDD中有大量的key导致数据倾斜，对有数据倾斜的整个RDD的key值做随机打散处理，对另一个正常的RDD进行1对n膨胀扩容，每条数据都依次打上0~n的前缀。处理完后再执行join操作</p>
+<h1 id="spark的常见优化"><a href="#spark的常见优化" class="headerlink" title="spark的常见优化"></a>spark的常见优化</h1><h2 id="正确使用数据缓存"><a href="#正确使用数据缓存" class="headerlink" title="正确使用数据缓存"></a>正确使用数据缓存</h2><p>cache：默认缓存级别是StorageLevel.MEMORY_AND_DISK，不能更改</p>
+<p>persist：可以手动指定缓存级别，直接调用persist()，效果和cache()一样</p>
+<h2 id="mapjoin"><a href="#mapjoin" class="headerlink" title="mapjoin"></a>mapjoin</h2><p>手动broadcast<br>mapjoin &amp; autoBroadcast</p>
+<p>join优化，spark会默认将小表广播，按照如下的参数设置，满足条件就会广播</p>
+<p>参数优化：</p>
+<p>spark.sql.broadcastTimeout：broadcast的加大超时的时间限制</p>
+<p>spark.sql.autoBroadcastJoinThreshold：默认是10M，大小低于该参数设置的阈值时，会被广播，但是默认的BroadCastJoin会将小表的内容，全部收集到Driver中，导致Driver压力变大</p>
+<p>spark.sql.bigdata.useExecutorBroadcast：设置为true时，使用Executor广播，将表数据缓存在Executor中，而不是放在Driver之中，减少Spark Driver内存的压力。</p>
+<p>在join中使用or连接关键字，会导致笛卡尔积的产生CartesianProduct(<strong>当join多个表</strong>)|BroadcastNestedLoopJoin(<strong>只join一个table</strong>)，故不建议这样做。</p>
+<h2 id="本地化级别"><a href="#本地化级别" class="headerlink" title="本地化级别"></a>本地化级别</h2><p>仅做了解，目前项目中没有发现很明显的这方面的问题导致的效率低下</p>
+<ul>
+<li>PROCESS_LOCAL：<ul>
+<li>task要计算的数据在本进程（Executor）的内存中。</li>
+</ul>
+</li>
+<li>NODE_LOCAL：<ul>
+<li>·task所计算的数据在本节点所在的磁盘上</li>
+<li>task所计算的数据在本节点其他Executor进程的内存中。</li>
+</ul>
+</li>
+<li>NO_PREF<ul>
+<li>task所计算的数据在关系型数据库中，如mysql。</li>
+</ul>
+</li>
+<li>RACK_LOCAL<ul>
+<li>task所计算的数据在同机架的不同节点的磁盘或者Executor进程的内存中</li>
+</ul>
+</li>
+<li>ANY<ul>
+<li>跨机架。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/image-20210508002913034.png" alt="image-20210508002913034"></p>
+<p>Spark中任务调度时，TaskScheduler在分发之前需要依据数据的位置来分发，最好将task分发到数据所在的节点上，如果TaskScheduler分发的task在默认3s依然无法执行的话，TaskScheduler会重新发送这个task到相同的Executor中去执行，会重试5次，如果依然无法执行，那么TaskScheduler会降低一级数据本地化的级别再次发送task。</p>
+<p>如上图中，会先尝试1,PROCESS_LOCAL数据本地化级别，如果重试5次每次等待3s,会默认这个Executor计算资源满了，那么会降低一级数据本地化级别到2，NODE_LOCAL,如果还是重试5次每次等待3s还是失败，那么还是会降低一级数据本地化级别到3，RACK_LOCAL。这样数据就会有网络传输，降低了执行效率。</p>
+<p>①   如何提高数据本地化的级别？</p>
+<p>可以增加每次发送task的等待时间（默认都是3s），将3s倍数调大，   结合WEBUI来调节：</p>
+<p>  • spark.locality.wait </p>
+<p>  • spark.locality.wait.process</p>
+<p>  • spark.locality.wait.node</p>
+<p>  • spark.locality.wait.rack</p>
+<p>注意：等待时间不能调大很大，调整数据本地化的级别不要本末倒置，虽然每一个task的本地化级别是最高了，但整个Application的执行时间反而加长。</p>
+<p>②   如何查看数据本地化的级别？</p>
+<p>通过日志或者WEBUI</p>
+<h2 id="增量计算代替全量计算"><a href="#增量计算代替全量计算" class="headerlink" title="增量计算代替全量计算"></a>增量计算代替全量计算</h2><p>如何使用增量表来优化每次全量数据的跑批 - 拿我们的ads层的一些表为例来说</p>
+<p>什么样的数据适合使用增量计算来代替全量计算呢？计算结果不会因为时间跨度的变化而改变，固定的时间范围的数据计算结果不会受到后续数据的影响</p>
+<p>这个就需要具体问题具体分析了，通过增量计算来代替全量计算可以极大的增大执行效率</p>
+<h2 id="其他代码级别的优化"><a href="#其他代码级别的优化" class="headerlink" title="其他代码级别的优化"></a>其他代码级别的优化</h2><ul>
+<li><p>三类筛选</p>
+<ul>
+<li><p>Partition Filters：使用分区字段过滤，完全跳过特定的子路径</p>
+</li>
+<li><p>Pushed Filters：横向减少存储与Apark之间的数据传输，比如👆说的基于时间戳字段使用Pushed Filters优化</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- timestamp类型的字段</span></span><br><span class="line">create_timestamp between CONCAT(add_months(last_day(from_utc_timestamp(now(), 'Asia/Jakarta')), -7),' ','17:00:00') AND CONCAT(date_sub(to_date(from_utc_timestamp(now(), 'Asia/Jakarta')), 1), ' 16:59:59.999')</span><br><span class="line"></span><br><span class="line"><span class="comment">-- long 类型的字段</span></span><br><span class="line">create_timestamp&lt;=cast(to_utc_timestamp(now(), 'Asia/Jakarta') as long)*1000</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 其他应用场景：取当月的数据，月初看上一个整月</span></span><br><span class="line">create_timestamp between if(</span><br><span class="line">    day(to_date(from_utc_timestamp(now(), 'Asia/Jakarta')))&lt;&gt;1, </span><br><span class="line">    concat(to_date(date_sub(date_trunc('MM', to_date(from_utc_timestamp(now(), 'Asia/Jakarta'))), 1)), ' 17:00:00'),</span><br><span class="line">    concat(to_date(date_sub(date_trunc('MM', date_sub(to_date(from_utc_timestamp(now(), 'Asia/Jakarta')), 1)), 1)), ' 17:00:00')</span><br><span class="line">) AND concat(date_add(to_date(from_utc_timestamp(now(), 'Asia/Jakarta')), -1), ' 16:59:59.999')</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Projection Pushdown：只查询使用到的字段，避免使用<code>*</code>，纵向减少存储与Spark之间的数据传输</p>
+</li>
+</ul>
+</li>
+<li><p>负载均衡</p>
+</li>
+</ul>
+<p>避免数据倾斜</p>
+<p>避免使用高频词或者null值较多的字段分组统计</p>
+<p>如果不得已要处理负载极度不均衡数据，首先处理均衡数据，然后特例处理不均衡数据</p>
+<h1 id="如何快捷的查看spark的执行计划"><a href="#如何快捷的查看spark的执行计划" class="headerlink" title="如何快捷的查看spark的执行计划"></a>如何快捷的查看spark的执行计划</h1><p>spark web ui的SQL选项  - 可以查看一个具体的实例</p>
+<p>或者调用<code>df.explain()</code>方法即可打印出来spark的执行计划。</p>
+<h1 id="spark中的五种join策略"><a href="#spark中的五种join策略" class="headerlink" title="spark中的五种join策略"></a>spark中的五种join策略</h1><p>Broadcast Hash Join -&gt; Shuffle Hash Join -&gt; Sort Merge Join -&gt;Cartesian Product Join -&gt; Broadcast Nested Loop Join<br><a href="https://blog.csdn.net/a934079371/article/details/108591314" target="_blank" rel="noopener">https://blog.csdn.net/a934079371/article/details/108591314</a><br><a href="https://www.cnblogs.com/jmx-bigdata/p/14021183.html" target="_blank" rel="noopener">https://www.cnblogs.com/jmx-bigdata/p/14021183.html</a></p>
+<p>沉思：join中的一个<code>or</code>就可能引发最低效的执行，or连接是非等值连接，所以极有可能会走Cartesian Product Join 或者 Broadcast Nested Loop Join，即会进行效率极差的双重for循环，来进行数据匹配</p>
+<p>所以，我们在做表关联的时候，一定要考虑到是否有小表可以进行广播，最优的策略是<code>Broadcast Hash Join</code>，它会将小表广播到所有的Executor上，然后在Executor上执行Hash Join</p>
+<p>Hash Join：对于每个Shuffle之后的分区，会将小表的分区数据构建成一个Hash table，然后根据join key与大表的分区数据记录进行匹配。</p>
+<h1 id="【讲】大数据集的高效处理"><a href="#【讲】大数据集的高效处理" class="headerlink" title="【讲】大数据集的高效处理"></a><font color="red">【讲】</font>大数据集的高效处理</h1><h2 id="map-vs-mapPartition"><a href="#map-vs-mapPartition" class="headerlink" title="map vs mapPartition"></a>map vs mapPartition</h2><p>map：apply func for each Row，每一行都会调用一次func函数，传递给func函数的参数是Row(或者一个case class对象)，结果返回一个新Row(或者一个自定义的case class对象)。</p>
+<p>mapPartition：apply func for each partition，对每一个分区调用一次func函数，传递给func函数的参数是Iterator[Row] (或者Iterator[case class])迭代器，结果返回的也是一个迭代器。</p>
+<p>mapPartition相比于map的优势：</p>
+<ul>
+<li>减少了CPU调用函数的次数</li>
+<li>如果需要连接外部环境，使用它可以减少连接的创建<ul>
+<li>比如一些可以分散在集群内部进行的任务，比如解密</li>
+<li>比如要在处理的过程读取一些外部介质的数据，比如mysql或redis</li>
+</ul>
+</li>
+<li>因为一次性要出一个分区的数据，所以可能导致Executor的OOM，这要在分区数与Executor内存之间做权衡。一般情况下在资源充足的情况下使用mapPartition会比使用map效率要高</li>
+</ul>
+<p>map相比于mapPartition的优势：</p>
+<ul>
+<li>不会导致OOM，因为一次只处理一条记录</li>
+<li>写法简单，易于理解</li>
+</ul>
+<p><a href="https://blog.csdn.net/high2011/article/details/79384159" target="_blank" rel="noopener">https://blog.csdn.net/high2011/article/details/79384159</a></p>
+<p><a href="https://blog.csdn.net/weixin_39043567/article/details/89916221" target="_blank" rel="noopener">https://blog.csdn.net/weixin_39043567/article/details/89916221</a></p>
+<h2 id="foreach-vs-foreachPartition"><a href="#foreach-vs-foreachPartition" class="headerlink" title="foreach vs foreachPartition"></a>foreach vs foreachPartition</h2><p>与map vs mapPartition一样</p>
+<h2 id="toLocalIterators"><a href="#toLocalIterators" class="headerlink" title="toLocalIterators"></a>toLocalIterators</h2><p>toLocalIetator()的工作原理类似于python中的<code>itertools.chain(*iterables)</code>，类似于下面的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chain</span><span class="params">(*iterables)</span>:</span></span><br><span class="line">    <span class="comment"># chain('ABC', 'DEF') --&gt; A B C D E F</span></span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> iterables:</span><br><span class="line">        <span class="keyword">for</span> element <span class="keyword">in</span> it:</span><br><span class="line">            <span class="keyword">yield</span> element</span><br></pre></td></tr></table></figure>
+<p>它是将所有的partition形成一个类似于Ietator的形式，使用的时候，spark会将数据数据一部分一部分的从excutor端收集到driver端(从sparkui上也可以看出来)，并不会一次性将所有partition的数据全量收集到driver端，导致driver端的OOM，这也是一种导出大量数据时候的选择，但是数据需要经历一个从excutor向driver传输的过程，所有partition都是串行的进行数据传输，这个过程是比较费时的。一个使用案例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_mkdir</span><span class="params">(base_dir, filename, delete=False)</span>:</span></span><br><span class="line">    path = os.path.join(base_dir, filename)</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(path) <span class="keyword">and</span> delete:</span><br><span class="line">        shutil.rmtree(path, <span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(path):</span><br><span class="line">        os.makedirs(path)</span><br><span class="line">    <span class="keyword">return</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_csv</span><span class="params">(df:DataFrame, filename, threshold=<span class="number">1000000</span>, base_dir=<span class="string">'result/'</span>)</span>:</span></span><br><span class="line">    row_num = <span class="number">0</span></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    csvwrite = <span class="literal">None</span></span><br><span class="line">    csvfile = <span class="literal">None</span></span><br><span class="line">    first = <span class="literal">True</span></span><br><span class="line">    <span class="keyword">for</span> val <span class="keyword">in</span> df.toLocalIterator():</span><br><span class="line"><span class="comment">#         print(type(val.asDict()))</span></span><br><span class="line"><span class="comment">#         print(val.asDict())</span></span><br><span class="line"><span class="comment">#         print([v for k,v in val.asDict().items()])</span></span><br><span class="line">        <span class="keyword">if</span> first <span class="keyword">or</span> row_num&gt;=threshold:</span><br><span class="line">            print(filename + <span class="string">' write '</span> + str(index) + <span class="string">'...'</span> + str(threshold*index))</span><br><span class="line">            file_path = _mkdir(base_dir, filename, first)</span><br><span class="line">            csvfile = open(os.path.join(file_path, filename+<span class="string">'_%04d.csv'</span> % index), <span class="string">'w'</span>, buffering=<span class="number">4096</span>)</span><br><span class="line">            csvwrite = csv.writer(csvfile)</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">            row_num = <span class="number">0</span></span><br><span class="line">            first = <span class="literal">False</span></span><br><span class="line">            </span><br><span class="line">        csvwrite.writerow(val)</span><br><span class="line">        csvfile.flush()</span><br><span class="line">            </span><br><span class="line">        row_num += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h1 id="使用spark过程中的一些小Tips"><a href="#使用spark过程中的一些小Tips" class="headerlink" title="使用spark过程中的一些小Tips"></a>使用spark过程中的一些小Tips</h1><h2 id="spark中的map-struct-array"><a href="#spark中的map-struct-array" class="headerlink" title="spark中的map-struct-array"></a>spark中的map-struct-array</h2><p>关于spark中的<code>map</code>、<code>struct</code>、<code>array</code>的一些操作</p>
+<p>首先创建一个dataframe</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark.sql.expressions.<span class="type">UserDefinedFunction</span></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.functions._</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.&#123;<span class="type">DataFrame</span>, <span class="type">Row</span>, <span class="type">SparkSession</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> sparkConf = <span class="keyword">new</span> <span class="type">SparkConf</span></span><br><span class="line">sparkConf.set(<span class="string">"spark.maxRemoteBlockSizeFetchToMem"</span>, <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">256</span> toString)</span><br><span class="line">sparkConf.set(<span class="string">"spark.sql.sources.partitionOverwriteMode"</span>, <span class="string">"dynamic"</span>)</span><br><span class="line">sparkConf.set(<span class="string">"spark.master"</span>, <span class="string">"local[*]"</span>)</span><br><span class="line"><span class="keyword">lazy</span> <span class="keyword">val</span> spark: <span class="type">SparkSession</span> = &#123;</span><br><span class="line">    <span class="type">SparkSession</span>.builder()</span><br><span class="line">      .config(sparkConf)</span><br><span class="line">      .appName(appName)</span><br><span class="line">      .enableHiveSupport()</span><br><span class="line">      .getOrCreate()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> spark.implicits._</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">TestStruct</span>(<span class="params">f1: <span class="type">String</span>, f2: <span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testUdf</span></span>: <span class="type">UserDefinedFunction</span> = udf((a: <span class="type">String</span>) =&gt; &#123;</span><br><span class="line">  <span class="type">List</span>(<span class="type">TestStruct</span>(a, <span class="string">"f1"</span>), <span class="type">TestStruct</span>(<span class="string">s"<span class="subst">$a</span>.00"</span>, <span class="string">"f2"</span>))</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testUdf1</span></span>: <span class="type">UserDefinedFunction</span> = udf((a: <span class="type">String</span>) =&gt; &#123;</span><br><span class="line">  <span class="type">TestStruct</span>(a, <span class="string">"f1"</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testUdf2</span></span>: <span class="type">UserDefinedFunction</span> = udf((a: <span class="type">String</span>) =&gt; &#123;</span><br><span class="line">  <span class="type">Map</span>(<span class="string">"key"</span> -&gt; a, <span class="string">"key1"</span> -&gt; a)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> lines: <span class="type">List</span>[(<span class="type">String</span>, <span class="type">Int</span>, <span class="type">Int</span>, <span class="type">Map</span>[<span class="type">String</span>, <span class="type">String</span>])] = <span class="type">List</span>(</span><br><span class="line">      <span class="type">Tuple4</span>(<span class="string">"a"</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="type">Map</span>(<span class="string">"a"</span> -&gt; <span class="string">"3"</span>, <span class="string">"c"</span> -&gt; <span class="string">"a"</span>)),</span><br><span class="line">      <span class="type">Tuple4</span>(<span class="string">"b"</span>, <span class="number">11</span>, <span class="number">22</span>, <span class="type">Map</span>(<span class="string">"a"</span> -&gt; <span class="string">"33"</span>, <span class="string">"c"</span> -&gt; <span class="string">"aa"</span>)),</span><br><span class="line">      <span class="type">Tuple4</span>(<span class="string">"c"</span>, <span class="number">111</span>, <span class="number">2222</span>, <span class="type">Map</span>(<span class="string">"a"</span> -&gt; <span class="string">"3333"</span>, <span class="string">"c"</span> -&gt; <span class="string">"aaa"</span>))</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">lines.toDF(</span><br><span class="line">      <span class="string">"f1"</span>, <span class="string">"f2"</span>, <span class="string">"f3"</span>, <span class="string">"extra"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_array"</span>, testUdf(<span class="symbol">'f1</span>)</span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"map"</span>, testUdf2(<span class="symbol">'f1</span>)</span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct"</span>, testUdf1(<span class="symbol">'f1</span>)</span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"extra_a"</span>, $<span class="string">"extra.a"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"extra_c"</span>, $<span class="string">"extra.c"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"extra_d"</span>, $<span class="string">"extra.d"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_array_f1"</span>, $<span class="string">"struct_array.f1"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_f1"</span>, $<span class="string">"struct.f1"</span></span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_f2"</span>, expr(<span class="string">"struct['f2']"</span>)</span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_array0"</span>, expr(<span class="string">"struct_array[0]"</span>)</span><br><span class="line">    ).withColumn(</span><br><span class="line">      <span class="string">"struct_array0_f1"</span>, expr(<span class="string">"struct_array[0].f1"</span>)</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+<p>打印上述dataframe的schema如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">root</span><br><span class="line"> |-- f1: string (nullable = true)</span><br><span class="line"> |-- f2: integer (nullable = true)</span><br><span class="line"> |-- f3: integer (nullable = true)</span><br><span class="line"> |-- extra: map (nullable = true)</span><br><span class="line"> |    |-- key: string</span><br><span class="line"> |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- struct_array: array (nullable = true)</span><br><span class="line"> |    |-- element: struct (containsNull = true)</span><br><span class="line"> |    |    |-- f1: string (nullable = true)</span><br><span class="line"> |    |    |-- f2: string (nullable = true)</span><br><span class="line"> |-- map: map (nullable = true)</span><br><span class="line"> |    |-- key: string</span><br><span class="line"> |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- struct: struct (nullable = true)</span><br><span class="line"> |    |-- f1: string (nullable = true)</span><br><span class="line"> |    |-- f2: string (nullable = true)</span><br><span class="line"> |-- extra_a: string (nullable = true)</span><br><span class="line"> |-- extra_c: string (nullable = true)</span><br><span class="line"> |-- extra_d: string (nullable = true)</span><br><span class="line"> |-- struct_array_f1: array (nullable = true)</span><br><span class="line"> |    |-- element: string (containsNull = true)</span><br><span class="line"> |-- struct_f1: string (nullable = true)</span><br><span class="line"> |-- struct_f2: string (nullable = true)</span><br><span class="line"> |-- struct_array0: struct (nullable = true)</span><br><span class="line"> |    |-- f1: string (nullable = true)</span><br><span class="line"> |    |-- f2: string (nullable = true)</span><br><span class="line"> |-- struct_array0_f1: string (nullable = true)</span><br></pre></td></tr></table></figure>
+<p>读取这个表数据，打印出来如下：</p>
+<p><img src="/images/image-20210426110056121.png" alt="image-20210426110056121"></p>
+<p>结论：</p>
+<ol>
+<li><p><code>map</code>结构的数据如果想使用<code>col</code>或者<code>$</code>操作符取<code>value</code>，可以直接通过<code>.</code>取到对应的值，如果<code>map</code>中没有对应的<code>key</code>，则返回<code>None</code>；</p>
+<p>不能使用类似<code>col(&quot;extra[&#39;a&#39;]&quot;)</code>或者<script type="math/tex">"extra['a']"`的方式取`value`，也可以想象：`col`或者`</script>操作符最终返回的是一个<code>Column</code>对象，它就是一个货真价实的<code>Column</code>，不是那种需要计算得来的<code>Column</code></p>
+<p>要想使用<code>extra[&#39;a&#39;]</code>的形式取值，需要使用<code>expr</code>操作符，如<code>expr(&quot;extra[&#39;a&#39;]&quot;)</code>，顾名思义，<code>expr</code>接受的是一个语句，它会解释并执行它，返回一个<code>Column</code></p>
+</li>
+<li><p><code>struct</code>结构的字段，取法和<code>map</code>结构基本一致，但是人一上来就会想到用<code>.</code>来取值，而不是用<code>[&#39;a&#39;]</code>的方式来取值，是因为它是一个定义清晰的结构体，字段定义清晰，但是<code>expr(struct[&#39;f2&#39;])</code>这种取值方式是可以的</p>
+</li>
+<li><p>对于一个<code>array</code>类型的字段，如果想要取第<code>i</code>个元素，那么必须要使用<code>expr</code>操作符，比如：<code>struct_array[0]</code>或<code>struct_array[0].f1</code></p>
+</li>
+<li><p>如果<code>array</code>的每个元素是一个结构体，取值时不需要考虑取哪一个，直接使用<code>.</code>取某个字段，则返回的是一个对应的字段的<code>array</code>，比如：<code>struct_array.f1</code></p>
+</li>
+<li><p>在sparkSQL中不需要忌讳以上所有的问题，想怎么取就怎么取，因为它本身就是一个<code>expr</code>，他可以兼容所有的情况^_^</p>
+</li>
+</ol>
+<p>意外收获：</p>
+<p>如果使用scala来编写spark的程序，那么创建map和struct类型的字段，就十分简单了。创建一个udf，然后balala一通，udf返回的是case class就会形成一个struct类型的字段，udf返回的是一个Map就会形成一个map类型的字段，比如上面的<code>testUdf2</code>、<code>testUdf1</code>、<code>testUdf</code></p>
+<p>同时也可以使用<code>org.apache.spark.sql.functions</code>中的<code>map</code>和<code>struct</code>方法创建map或者struct</p>
+<h2 id="spark中如何处理json数据"><a href="#spark中如何处理json数据" class="headerlink" title="spark中如何处理json数据"></a>spark中如何处理json数据</h2><p>有以下的<code>json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"status"</span>: <span class="string">"0x0000"</span>,</span><br><span class="line">    <span class="attr">"msg"</span>: <span class="string">"执行成功"</span>,</span><br><span class="line">    <span class="attr">"result"</span>: <span class="string">"通过"</span>,</span><br><span class="line">    <span class="attr">"score"</span>: <span class="string">"0"</span>,</span><br><span class="line">    <span class="attr">"engineName"</span>: <span class="string">"credit_unit_salim"</span>,</span><br><span class="line">    <span class="attr">"versionCode"</span>: <span class="string">"20200702credit_salim"</span>,</span><br><span class="line">    <span class="attr">"versionId"</span>: <span class="number">356307673651200</span>,</span><br><span class="line">    <span class="attr">"engineId"</span>: <span class="number">355251417716736</span>,</span><br><span class="line">    <span class="attr">"outputFields"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"return_reason"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出打回原因"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"null"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"deny_days"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出拒绝天数"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"deny_reason"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出拒绝原因"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"null"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"decision"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出决策"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"forward_manual"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"limit"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"输出授信额度"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"code"</span>: <span class="string">"cash_limit"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"现金贷款额度"</span>,</span><br><span class="line">            <span class="attr">"value"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"inputFields"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"indo_id_check"</span>: <span class="string">"DEDY DWI SETYAWAN"</span>,</span><br><span class="line">            <span class="attr">"indo_identical_accuracy_ktp"</span>: <span class="string">"-2.0"</span>,</span><br><span class="line">            <span class="attr">"indo_mobile_number_approving"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_name_diff_id_check"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_name_diff_ocr"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_approving"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_diff_employee_nik"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_nik_diff_ocr"</span>: <span class="string">"1"</span>,</span><br><span class="line">            <span class="attr">"indo_ocr_name"</span>: <span class="string">"DEDY DWI SEVYAWAN"</span>,</span><br><span class="line">            <span class="attr">"indo_ocr_nik"</span>: <span class="string">"3525051812850002"</span>,</span><br><span class="line">            <span class="attr">"indo_reject_his_nik"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"indo_reject_his_tel"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"同一个申请下return次数"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">"outputFieldInfo"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"输出打回原因"</span>: <span class="string">"null"</span>,</span><br><span class="line">            <span class="attr">"输出拒绝天数"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"输出拒绝原因"</span>: <span class="string">"null"</span>,</span><br><span class="line">            <span class="attr">"输出决策"</span>: <span class="string">"forward_manual"</span>,</span><br><span class="line">            <span class="attr">"输出授信额度"</span>: <span class="string">"0"</span>,</span><br><span class="line">            <span class="attr">"现金贷款额度"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>sql版本取json中的array，array的每个元素作为一个map结构</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">select</span></span><br><span class="line"><span class="string">    from_json(data, 'array&lt;map&lt;string,string&gt;&gt;') r</span></span><br><span class="line"><span class="string">from (</span></span><br><span class="line"><span class="string">	select json_tuple(json, 'inputFields') data</span></span><br><span class="line"><span class="string">) t</span></span><br><span class="line"><span class="string">"""</span>).printSchema()</span><br><span class="line"></span><br><span class="line">root</span><br><span class="line"> |-- r: array (nullable = true)</span><br><span class="line"> |    |-- element: map (containsNull = true)</span><br><span class="line"> |    |    |-- key: string</span><br><span class="line"> |    |    |-- value: string (valueContainsNull = true)</span><br></pre></td></tr></table></figure>
+<p><code>array&lt;map&lt;string,string&gt;&gt;</code>这个是如何得来的呢？是这样的，可以使用<code>schema_of_json</code>函数来获取一个json的结构是怎样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string">select schema_of_json(json)</span></span><br><span class="line"><span class="string">"""</span>).toPandas()</span><br><span class="line"></span><br><span class="line"><span class="comment">#array&lt;struct&lt;indo_id_check:string,indo_identical_accuracy_ktp:string,indo_mobile_number_approving:string,indo_name_diff_id_check:string,indo_name_diff_ocr:string,indo_nik_approving:string,indo_nik_diff_employee_nik:string,indo_nik_diff_ocr:string,indo_ocr_name:string,indo_ocr_nik:string,indo_reject_his_nik:string,indo_reject_his_tel:string,同一个申请下return次数:string&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但是通过上述方式得到的结果不能直接拿来用，需要做一些变形：如果array的每个元素的字段都是固定的，那么可以将array的元素定义为一个<code>struct</code>，但是我们的需求中的数据，array的每个元素的字段是不固定的，且我们没有将其字段都穷举出来，所以我们就把它定义为一个map类型的，后续将它使用explode_outer展开再进行处理。通过查询spark的api，可以知道MapType的构造方法需要两个参数，分别为key的Type和value的Type，这里我们直接使用最通用的String类型代替了</p>
+<p><strong>pyspark</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql.functions <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> *</span><br><span class="line">schema = ArrayType(MapType(StringType(), StringType()))</span><br><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).toPandas()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string">-- from atome_id_mysql_snapshot_ruleengine.t_result_catalog limit 1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'item'</span>, explode(<span class="string">'items'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'keys'</span>, map_keys(<span class="string">'item'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'values'</span>, map_values(<span class="string">'item'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'k_v'</span>, arrays_zip(<span class="string">'keys'</span>, <span class="string">'values'</span>)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'kv'</span>, explode_outer(<span class="string">'k_v'</span>)</span><br><span class="line">).printSchema()</span><br><span class="line"></span><br><span class="line">root</span><br><span class="line"> |-- items: array (nullable = true)</span><br><span class="line"> |    |-- element: map (containsNull = true)</span><br><span class="line"> |    |    |-- key: string</span><br><span class="line"> |    |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- item: map (nullable = true)</span><br><span class="line"> |    |-- key: string</span><br><span class="line"> |    |-- value: string (valueContainsNull = true)</span><br><span class="line"> |-- keys: array (nullable = true)</span><br><span class="line"> |    |-- element: string (containsNull = true)</span><br><span class="line"> |-- values: array (nullable = true)</span><br><span class="line"> |    |-- element: string (containsNull = true)</span><br><span class="line"> |-- k_v: array (nullable = true)</span><br><span class="line"> |    |-- element: struct (containsNull = false)</span><br><span class="line"> |    |    |-- keys: string (nullable = true)</span><br><span class="line"> |    |    |-- values: string (nullable = true)</span><br><span class="line"> |-- kv: struct (nullable = true)</span><br><span class="line"> |    |-- keys: string (nullable = true)</span><br><span class="line"> |    |-- values: string (nullable = true)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">df = spark.sql(<span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">select json_tuple(json, 'inputFields') items</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span>).withColumn(</span><br><span class="line">    <span class="string">'items'</span>,</span><br><span class="line">    from_json(<span class="string">'items'</span>, schema)</span><br><span class="line">).withColumn(</span><br><span class="line">    <span class="string">'item'</span>, explode(<span class="string">'items'</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># df.printSchema()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># df.select(expr("posexplode(d)")).printSchema</span></span><br><span class="line">df.select(expr(<span class="string">'explode(item)'</span>)).toPandas()  <span class="comment"># 将map 展开  posexplode会多一个pos的字段</span></span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>key</th>
+<th>value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>indo_id_check</td>
+<td>DEDY DWI SETYAWAN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>indo_identical_accuracy_ktp</td>
+<td>-2.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>indo_mobile_number_approving</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>indo_name_diff_id_check</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>indo_name_diff_ocr</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>indo_nik_approving</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>indo_nik_diff_employee_nik</td>
+<td>0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>indo_nik_diff_ocr</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>indo_ocr_name</td>
+<td>DEDY DWI SEVYAWAN</td>
+</tr>
+<tr>
+<td>9</td>
+<td>indo_ocr_nik</td>
+<td>3525051812850002</td>
+</tr>
+<tr>
+<td>10</td>
+<td>indo_reject_his_nik</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>indo_reject_his_tel</td>
+<td>0</td>
+</tr>
+<tr>
+<td>12</td>
+<td>同一个申请下return次数</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="如何理解import-spark-implicits"><a href="#如何理解import-spark-implicits" class="headerlink" title="如何理解import spark.implicits._"></a>如何理解<code>import spark.implicits._</code></h2><p>在初期使用spark的时候，大家都会遇见一个很奇怪的写法<strong><code>import spark.implicits._</code></strong></p>
+<p>这里面包含了四个关键字：<code>import</code>、<code>spark</code>、<code>implicits</code>、<code>_</code></p>
+<p><code>import</code>和<code>_</code>实际上是Scala中包引入的写法，表示引入指定包内的所有成员</p>
+<p>本文主要想记录一下另外两个关键字：<code>spark</code>、<code>implicits</code></p>
+<p><strong>关键字一：spark</strong></p>
+<p>spark在这里是这样产生的：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf: <span class="type">SparkConf</span> = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"test"</span>)</span><br><span class="line"><span class="keyword">val</span> spark: <span class="type">SparkSession</span> = <span class="type">SparkSession</span></span><br><span class="line">	.builder()</span><br><span class="line">	.config(conf)</span><br><span class="line">	.getOrCreate()</span><br></pre></td></tr></table></figure>
+<p>那么这就会有点让人奇怪的地方了，在scala中import到底是如何工作的呢？为什么可以import一个实例对象呢？</p>
+<p>经过查询发现，scala确实能够导入<strong>运行时对象实例的成员</strong>，举例如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">name:<span class="type">String</span>, age:<span class="type">Int</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">defined</span> <span class="title">class</span> <span class="title">User</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">scala&gt;</span> <span class="title">val</span> <span class="title">a=User</span>(<span class="params">"zzz",39</span>)</span></span><br><span class="line"><span class="class"><span class="title">a</span></span>: <span class="type">User</span> = <span class="type">User</span>(zzz,<span class="number">39</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; println(<span class="string">"%s's age is %d"</span> format (a.name, a.age))</span><br><span class="line">zzz<span class="symbol">'s</span> age is <span class="number">39</span></span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">import</span> a._</span><br><span class="line"><span class="keyword">import</span> a._</span><br><span class="line"></span><br><span class="line">scala&gt; println(<span class="string">"%s's age is %d"</span> format (name, age))</span><br><span class="line">zzz<span class="symbol">'s</span> age is <span class="number">39</span></span><br><span class="line"></span><br><span class="line">scala&gt; name</span><br><span class="line">res3: <span class="type">String</span> = zzz</span><br><span class="line"></span><br><span class="line">scala&gt; age</span><br><span class="line">res4: <span class="type">Int</span> = <span class="number">39</span></span><br></pre></td></tr></table></figure>
+<p>定义了一个<code>case class User</code>，然后执行了一次<code>import a._</code>，然后发现可以直接使用<code>a</code>实例对象的属性变量，而不需要加<code>a.</code>的前缀。</p>
+<p>那么为什么在spark中需要这么做呢？我们点进去<code>spark.implicits</code>，会发现源码是这样的：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SparkSession</span> </span>&#123;</span><br><span class="line">  <span class="class"><span class="keyword">object</span> <span class="title">implicits</span> <span class="keyword">extends</span> <span class="title">SQLImplicits</span> <span class="keyword">with</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">_sqlContext</span></span>: <span class="type">SQLContext</span> = <span class="type">SparkSession</span>.<span class="keyword">this</span>.sqlContext</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>implicits</code>是SparkSession的一个内部单例对象，它有一个<code>_sqlContext</code>的函数，用于获取<code>SQLContext</code>，但是它必须调用当前正在运行的SparkSession实例，通过调用它的<code>sqlContext</code>属性来获取。源码中的<code>SparkSession.this</code>实际上是调用了SparkSession class的伴生对象的<code>.this</code>，这个this实际上就是<code>正在运行的SparkSession实例</code>。</p>
+<p>具体的隐式转换都可以在<code>org.apache.spark.sql.SQLImplicits</code>中看到</p>
+<p>这里实际上是<font color="red">scala中class与伴生对象的爱恨纠缠</font>以及<font color="green">import关键字的使用技巧</font></p>
+<p>下面给出一个测试案例：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// TestObject.scala</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestObject</span>(<span class="params">name: <span class="type">String</span>, age: <span class="type">Int</span></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">val</span> user: <span class="type">User</span> = <span class="keyword">new</span> <span class="type">User</span>(name, age)</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">object</span> <span class="title">innerObj</span> </span>&#123;</span><br><span class="line">    <span class="keyword">val</span> user1: <span class="type">User</span> = <span class="type">TestObject</span>.<span class="keyword">this</span>.user</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">say</span></span>(name: <span class="type">String</span>) &#123;</span><br><span class="line">      println(<span class="string">s"<span class="subst">$&#123;name&#125;</span> innerObj say TestObject.this = <span class="subst">$&#123;TestObject.this&#125;</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">say2</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line">    println(<span class="string">s"TestObject say2 TestObject.this = <span class="subst">$&#123;TestObject.this&#125;</span>"</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestObject</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// User.scala</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">name: <span class="type">String</span>, age: <span class="type">Int</span></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">say</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line">    println(<span class="string">"%s's age is %d"</span> format(name, age))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Test.scala</span></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> testObject = <span class="keyword">new</span> <span class="type">TestObject</span>(<span class="string">"sfa"</span>, <span class="number">12</span>)</span><br><span class="line"></span><br><span class="line">    println(<span class="string">s"testObject = <span class="subst">$testObject</span>"</span>)  <span class="comment">// a</span></span><br><span class="line">    testObject.say2()  <span class="comment">// b</span></span><br><span class="line">    println(<span class="string">s"testObject.user = <span class="subst">$&#123;testObject.user&#125;</span>"</span>)  <span class="comment">// c</span></span><br><span class="line">    <span class="keyword">import</span> testObject.innerObj._</span><br><span class="line"></span><br><span class="line">    println(<span class="string">s"user1 = <span class="subst">$user1</span>"</span>)  <span class="comment">// d</span></span><br><span class="line">    say(<span class="string">"testObject"</span>)  <span class="comment">// e</span></span><br><span class="line"></span><br><span class="line">    println(<span class="string">"------------------------------"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//    val testObject1 = new TestObject("abc", 24)</span></span><br><span class="line"><span class="comment">//    println(s"testObject1 = $testObject1")</span></span><br><span class="line"><span class="comment">//    testObject1.say2()</span></span><br><span class="line"><span class="comment">//    println(s"testObject1.user = $&#123;testObject1.user&#125;")</span></span><br><span class="line"><span class="comment">//    import testObject1.innerObj._</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    println(s"testObject1 user1 = $user1")</span></span><br><span class="line"><span class="comment">//    say("testObject1")</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">testObject = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">TestObject say2 TestObject.this = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">testObject.user = com.msb.bigdata.scala.test_object.User@192b07fd</span><br><span class="line">user1 = com.msb.bigdata.scala.test_object.User@192b07fd</span><br><span class="line">testObject innerObj say TestObject.this = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">------------------------------</span><br></pre></td></tr></table></figure>
+<p>通过打印结果可以看到：</p>
+<ol>
+<li><p>a、b、e三处打印的是同一个对象实例，所以可以断定在class TestObject的内部中如果调用了<code>TestObject.this</code>实际上是指向的正在运行中的testObject对象</p>
+<p><code>TestObject.this</code>只能在class TestObject的内部调用，不能在外部调用</p>
+</li>
+<li><p>Test.scala中注掉的那一部分，这一句<code>import testObject1.innerObj._</code>会在编译期间报错，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Error:(29, 36) reference to user1 is ambiguous;</span><br><span class="line">it is imported twice in the same scope by</span><br><span class="line">import testObject1.innerObj._</span><br><span class="line">and import testObject.innerObj._</span><br><span class="line">    println(s&quot;testObject1 user1 </span><br><span class="line"></span><br><span class="line">Error:(30, 5) reference to say is ambiguous;</span><br><span class="line">it is imported twice in the same scope by</span><br><span class="line">import testObject1.innerObj._</span><br><span class="line">and import testObject.innerObj._</span><br><span class="line">    say(&quot;testObject1&quot;)= $user1&quot;)</span><br></pre></td></tr></table></figure>
+<p>import 实例对象的行为不能被多次使用，说的是user1变量和say函数被重复import在同一个作用域内，引发了歧义</p>
+<p>在spark那里，不允许以下的写法：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">lesson02_sql_api01_1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf: <span class="type">SparkConf</span> = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"test"</span>)</span><br><span class="line">    <span class="keyword">val</span> session: <span class="type">SparkSession</span> = <span class="type">SparkSession</span></span><br><span class="line">      .builder()</span><br><span class="line">      .config(conf)</span><br><span class="line">      .getOrCreate()</span><br><span class="line">    <span class="keyword">import</span> session.implicits._</span><br><span class="line">      </span><br><span class="line">    println(session)</span><br><span class="line">    <span class="keyword">val</span> session1: <span class="type">SparkSession</span> = <span class="type">SparkSession</span></span><br><span class="line">      .builder()</span><br><span class="line">      .config(conf)</span><br><span class="line">      .getOrCreate()</span><br><span class="line">    println(session1)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">import</span> session1.implicits._</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> dataDF: <span class="type">DataFrame</span> = <span class="type">List</span>(</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello msb"</span>,</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello spark"</span>,</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello spark"</span></span><br><span class="line">    ).toDF(<span class="string">"line"</span>)</span><br><span class="line"></span><br><span class="line">    dataDF.show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import session.implicits._ 和 import session1.implicits._可以同时出现，但是如果用到了其中的隐式转换，就会报错，一般也没人会这么写</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将Test.scala替换成如下的写法：</p>
+</li>
+</ol>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> testObject = <span class="keyword">new</span> <span class="type">TestObject</span>(<span class="string">"sfa"</span>, <span class="number">12</span>)</span><br><span class="line"></span><br><span class="line">    println(<span class="string">s"testObject = <span class="subst">$testObject</span>"</span>)  <span class="comment">// a</span></span><br><span class="line">    testObject.say2()  <span class="comment">// b</span></span><br><span class="line">    println(<span class="string">s"testObject.user = <span class="subst">$&#123;testObject.user&#125;</span>"</span>)  <span class="comment">// c</span></span><br><span class="line">    <span class="keyword">import</span> testObject.innerObj._</span><br><span class="line"></span><br><span class="line">    println(<span class="string">s"user1 = <span class="subst">$user1</span>"</span>)  <span class="comment">// d</span></span><br><span class="line">    say(<span class="string">"testObject"</span>)  <span class="comment">// e</span></span><br><span class="line"></span><br><span class="line">    println(<span class="string">"------------------------------"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> testObject1 = <span class="keyword">new</span> <span class="type">TestObject</span>(<span class="string">"abc"</span>, <span class="number">24</span>)</span><br><span class="line">    println(<span class="string">s"testObject1 = <span class="subst">$testObject1</span>"</span>)</span><br><span class="line">    testObject1.say2()</span><br><span class="line">    println(<span class="string">s"testObject1.user = <span class="subst">$&#123;testObject1.user&#125;</span>"</span>)</span><br><span class="line"><span class="comment">//    import testObject1.innerObj._</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    println(s"testObject1 user1 = $user1")</span></span><br><span class="line"><span class="comment">//    say("testObject1")</span></span><br><span class="line"></span><br><span class="line">    println(<span class="string">s"testObject.innerObj.user1 = <span class="subst">$&#123;testObject.innerObj.user1&#125;</span>"</span>)</span><br><span class="line">    println(<span class="string">s"testObject.innerObj.say = <span class="subst">$&#123;testObject.innerObj.say("testObject1")&#125;</span>"</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">testObject = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">TestObject say2 TestObject.this = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">testObject.user = com.msb.bigdata.scala.test_object.User@192b07fd</span><br><span class="line">user1 = com.msb.bigdata.scala.test_object.User@192b07fd</span><br><span class="line">testObject innerObj say TestObject.this = com.msb.bigdata.scala.test_object.TestObject@5702b3b1</span><br><span class="line">------------------------------</span><br><span class="line">testObject1 = com.msb.bigdata.scala.test_object.TestObject@64bfbc86</span><br><span class="line">TestObject say2 TestObject.this = com.msb.bigdata.scala.test_object.TestObject@64bfbc86</span><br><span class="line">testObject1.user = com.msb.bigdata.scala.test_object.User@64bf3bbf</span><br><span class="line">testObject1.innerObj.user1 = com.msb.bigdata.scala.test_object.User@64bf3bbf</span><br><span class="line">testObject1 innerObj say TestObject.this = com.msb.bigdata.scala.test_object.TestObject@64bfbc86</span><br><span class="line">testObject1.innerObj.say = ()</span><br></pre></td></tr></table></figure>
+<p>我们会发现，就没问题了。而且testObject1的InnerObject调用的TestObject.this实际上是指向的testObject1对象。</p>
+<p><strong>关键字二：implicits</strong></p>
+<p><code>import spark.implicits._</code>中的<code>implicits</code>关键字实际上是<code>SparkSession</code>的内部object，它继承了<code>SQLImplicits</code></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">implicits</span> <span class="keyword">extends</span> <span class="title">SQLImplicits</span> <span class="keyword">with</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">_sqlContext</span></span>: <span class="type">SQLContext</span> = <span class="type">SparkSession</span>.<span class="keyword">this</span>.sqlContext</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>org.apache.spark.sql.SQLImplicits</code>：A collection of implicit methods for converting common Scala objects into Datasets.</p>
+<p>从以上的案例中可以得到： <code>SparkSession.this</code>是当前运行的<code>SparkSession</code>实例，我们可以通过实例对象将<code>SparkSession</code>的<code>内部object</code>引入进来。这里为什么一定要使用<code>SparkSession</code>实例的这种方式引入隐式转换呢？根据源码可以知道，在进行隐式转换的时候需要用到<code>sqlContext</code>，它是<code>sparkSession</code>的一个属性，只有在<code>SparkSession</code>创建完成之后，它才有值。</p>
+<p>可以看到在<code>org.apache.spark.sql.SQLImplicits</code>中这里用到了<code>_sqlContext</code>对象</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a [[Dataset]] from an RDD.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @since 1.6.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">rddToDatasetHolder</span></span>[<span class="type">T</span> : <span class="type">Encoder</span>](rdd: <span class="type">RDD</span>[<span class="type">T</span>]): <span class="type">DatasetHolder</span>[<span class="type">T</span>] = &#123;</span><br><span class="line">  <span class="type">DatasetHolder</span>(_sqlContext.createDataset(rdd))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a [[Dataset]] from a local Seq.</span></span><br><span class="line"><span class="comment"> * @since 1.6.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">localSeqToDatasetHolder</span></span>[<span class="type">T</span> : <span class="type">Encoder</span>](s: <span class="type">Seq</span>[<span class="type">T</span>]): <span class="type">DatasetHolder</span>[<span class="type">T</span>] = &#123;</span><br><span class="line">  <span class="type">DatasetHolder</span>(_sqlContext.createDataset(s))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从<code>org.apache.spark.sql.SQLImplicits</code>中   我们可以看到几个非常漂亮的隐式转换，如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Converts $"col name" into a [[Column]].</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @since 2.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">implicit</span> <span class="class"><span class="keyword">class</span> <span class="title">StringToColumn</span>(<span class="params">val sc: <span class="type">StringContext</span></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">$</span></span>(args: <span class="type">Any</span>*): <span class="type">ColumnName</span> = &#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="type">ColumnName</span>(sc.s(args: _*))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * An implicit conversion that turns a Scala `Symbol` into a [[Column]].</span></span><br><span class="line"><span class="comment"> * @since 1.3.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">symbolToColumn</span></span>(s: <span class="type">Symbol</span>): <span class="type">ColumnName</span> = <span class="keyword">new</span> <span class="type">ColumnName</span>(s.name)</span><br></pre></td></tr></table></figure>
+<p>这就是我们平时可以直接下如下的脚本的关键所在：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.select(<span class="string">"a"</span>, <span class="string">"b"</span>, $<span class="string">"c"</span>, $<span class="string">"d"</span>+<span class="number">1</span>, <span class="symbol">'e</span>, <span class="symbol">'f</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="why-create-SparkSession-what-is-SparkSession"><a href="#why-create-SparkSession-what-is-SparkSession" class="headerlink" title="why create SparkSession\what is SparkSession"></a>why create SparkSession\what is SparkSession</h2><p>Client - Driver</p>
+<p>1、第一个属性就是：sparkContext  一个上下文对象</p>
+<p>是用户端程序与spark集群沟通(通信)的桥梁：提交任务、监控任务、任务调度，支持spark分布式的核心，这里面要讲的内容就太多了，</p>
+<p>2、提供执行spark sql的入口</p>
+<p>3、提供table方法 直接读取hive表</p>
+<p>4、封装了一系列创建DataFrame的方法</p>
+<p>什么是DataFrame：type DataFrame = Dataset[Row]</p>
+<p>所以这就是为什么我们每个application都要先创建一SparkSession或者sparkContext的原因了。具体细节暂时无法展开，对于不理解为什么要创建这个对象的同学来说，理解到这里就够了</p>
+<h2 id="窗口函数"><a href="#窗口函数" class="headerlink" title="窗口函数"></a>窗口函数</h2><p><strong>什么是窗口函数？应该如何理解开窗操作？</strong></p>
+<p>窗口函数是对一组具有相同key的数据(partition by)，根据特定的字段顺序(order by)做的一个特殊的处理，既然是窗口，那么除了可以限定根据哪个key分组，根据哪个字段排序，当然也可以限定窗口的大小(rows between或者 range between)</p>
+<p>开窗操作，实际上是从划分好的窗口内的提取一些关键信息，比如：一个窗口内的顺序(row_number)，统计值(max、min、mean)，第一个值(<a href="https://spark.apache.org/docs/latest/api/sql/index.html#first" target="_blank" rel="noopener">first</a>)，最后一个值(<a href="https://spark.apache.org/docs/latest/api/sql/index.html#last" target="_blank" rel="noopener">last</a>)；以及一些特殊信息，比如：取窗口内当前行的前n行数据(<a href="https://spark.apache.org/docs/latest/api/sql/index.html#lag" target="_blank" rel="noopener">lag</a>)，取窗口内当前行的后n行(<a href="https://spark.apache.org/docs/latest/api/sql/index.html#lead" target="_blank" rel="noopener">lead</a>)等</p>
+<blockquote>
+<p>注意，开窗操作不会减少数据量</p>
+</blockquote>
+<p>窗口函数适合什么样的场景</p>
+<p>类似于见到以下的一些场景，就可以考虑使用窗口函数，需要分组，[需要组内排序，]同时又不能减少列的数量(其他的列应该保持不变)</p>
+<ol>
+<li><p>取用户的第1条订单， row_number() over(partition by user_id order by create_timestamp) = 1</p>
+</li>
+<li><p>给每个用户的订单按照创建时间加个序号，row_number() over(partition by user_id order by create_timestamp)</p>
+</li>
+<li><p>需要判断用户从哪个页面过来的，根据目前我们的埋点结构，就可以：</p>
+<p>离开上一个页面：last_page，LeavePage</p>
+<p>进入当前页面：current_page，PageEvent</p>
+<p>严格情况，埋点打点的时候一定会按照先离开再进入，且这两者之间再没有其他的action发生，那么可以直接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_page, lag(last_page) <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> user_id <span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">timestamp</span>) last_page <span class="keyword">from</span> ...</span><br></pre></td></tr></table></figure>
+<p>但是呢，通常情况下这种情况是不可能一直保持的，由于各种打点的问题，所以我们可以退一步判断，只要保证进入当前页面前一定有一个离开上一个页面的action，就可以了，但是也有个要求，埋点不能漏掉，否则也无法进行判断了。可以这样做</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> current_page, <span class="keyword">last</span>(<span class="keyword">if</span>(<span class="keyword">action</span>=<span class="string">'LeavePage'</span> last_page, <span class="literal">null</span>), <span class="literal">true</span>) <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> user_id <span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">timestamp</span>) last_page <span class="keyword">from</span> ...</span><br></pre></td></tr></table></figure>
+<p>true表示只返回最后一个不为空的last_page</p>
+</li>
+<li><p>将某个值辐射到窗口内的所有记录上</p>
+</li>
+</ol>
+<p><strong>窗口函数与分组聚合函数的区别</strong></p>
+<p>窗口函数不会减少数据量，它的结果是把从特定窗口提取的信息放到一个新列上</p>
+<p>分组聚合函数，会相应的减少数据量，最终的结果只会保留被分组的字段以及聚合的字段</p>
+<p><strong>窗口的大小如何设定？</strong></p>
+<p>窗口大小有两种方式可以设定</p>
+<p>子窗口需要指定一个边界，有以下两种方式：</p>
+<ul>
+<li>ROWS between CURRENT ROW | UNBOUNDED PRECEDING | [num] PRECEDING <strong>AND</strong>  UNBOUNDED FOLLOWING | [num] FOLLOWING| CURRENT ROW</li>
+<li>RANGE between [num] PRECEDING  <strong>AND</strong> [num] FOLLOWING</li>
+</ul>
+<p>窗口的含义</p>
+<p>ROWS是物理窗口，从<strong>行数上</strong>控制窗口的尺寸的，表示在当前行的前后偏移量，较好理解。<br>RANGE是逻辑窗口，从<strong>列值上</strong>控制窗口的尺寸，表示根据当前列值的前后偏移量，是与当前列的具体值挂钩的！！！</p>
+<p>比如：range between 4 preceding AND 7 following，描述的是：如果当前值为10的话就取前后的值在6到17之间的数据。</p>
+<p>可以参考这篇文章：<a href="https://blog.csdn.net/qq_42374697/article/details/115109386" target="_blank" rel="noopener">https://blog.csdn.net/qq_42374697/article/details/115109386</a></p>
+<p><strong>窗口函数的一些默认情况</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sum(1) over(partition by  shop_id order by date)</span><br><span class="line"><span class="comment">-- 有order by  关键字，排序的时候 会有空值在前还是在后之分，默认是 NULLS FIRST，窗口大小为RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW，如下</span></span><br><span class="line">sum(CAST(1 AS BIGINT)) OVER (PARTITION BY shop_id ORDER BY date ASC NULLS FIRST RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>与 NULLS FIRST对应的是NULLS LAST</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sum(1) over(partition by shop_id)</span><br><span class="line"><span class="comment">-- 不加order by 关键字，实际上row between为UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING，如下</span></span><br><span class="line">sum(CAST(1 AS BIGINT)) OVER (PARTITION BY shop_id ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING)</span><br></pre></td></tr></table></figure>
+<h2 id="常用的join函数介绍"><a href="#常用的join函数介绍" class="headerlink" title="常用的join函数介绍"></a>常用的join函数介绍</h2><ul>
+<li><p>outer，full，full outer：全连</p>
+</li>
+<li><p>left，left outer：左连</p>
+</li>
+<li><p>right，right outer：右连</p>
+</li>
+<li><p>inner，不写：返回joinDF1和joinDF2合并的rows，如果joinDF2中有多条记录对应于joinDF1的同一条记录，那么返回的row number会大于joinDF1的row number</p>
+</li>
+<li><p>left anti：过滤出joinDF1中joinDF2没有的部分，只返回joinDF1中的rows</p>
+</li>
+<li><p>left semi：过滤出joinDF1中和joinDF2共有的部分，只返回joinDF1中的rows</p>
+</li>
+</ul>
+<p>left anti和left semi在某些场景下也会经常用到</p>
+<h1 id="如何调试使用Scala编写的Spark程序"><a href="#如何调试使用Scala编写的Spark程序" class="headerlink" title="如何调试使用Scala编写的Spark程序"></a>如何调试使用Scala编写的Spark程序</h1><p>key points：set(“spark.master”, “local[*]”)</p>
+<p>由于spark task是运行在集群的executor节点上，如果在某个具体的步骤想通过打印一些数据来调试程序，是不可能的，除非你可以进入到真正执行对应task的executor节点，去看它的log。</p>
+<p>所以如果想要调试spark程序，只能在local模式，同时，为了增加调试的效率，可以适量的缩减数据量，比如你要在一个很大的日志数据上测试逻辑，那么你可以只读取其中一个分区。</p>
+<p>local模式的时候，Driver端会扮演Executor的角色，所以是可以看到你打印的信息的。</p>
+<h1 id="【讲】Spark的设计原理"><a href="#【讲】Spark的设计原理" class="headerlink" title="【讲】Spark的设计原理"></a><font color="red">【讲】</font>Spark的设计原理</h1><p>分布式、函数闭包（是否可序列化）、高阶函数（函数可以作为参数传递给另一个函数）函数式编程，下面的介绍中你将会很明显的感受到</p>
+<h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>A Resilient Distributed Dataset (RDD) <font color="red">弹性</font><font size="1">[仅介绍]</font><font color="green">分布式</font><font size="1">[仅介绍]</font><font color="blue">数据集</font><font size="1">[讲]</font></p>
+<p>What is RDD?</p>
+<ul>
+<li><p>A list of partitions - 分区计算</p>
+</li>
+<li><p>A function for computing each split - 每个RDD都含有一个对当前RDD进行处理的方法</p>
+</li>
+<li><p>A list of dependencies on other RDDs - 这里就是我们后面要说的宽窄依赖，即上下游RDD是如何映射的</p>
+</li>
+<li><p>a Partitioner for key-value RDDs (e.g. to say that the RDD is hash-partitioned) - 分区的策略</p>
+</li>
+<li><p>a list of preferred locations to compute each split on (e.g. block locations for an HDFS file) - 计算向数据移动 的思想</p>
+<blockquote>
+<p>离线与实时计算的区别：</p>
+<p>离线计算，是数据已经存放在某个位置，所以如果在数据所在的节点启动计算，那么可以减少网络IO的消耗，提高计算效率，这是离线计算平台应该有的优化策略</p>
+<p>实时计算：数据未知，源源不断的产生，一般都会从消息队列中拿到对应的数据，然后将数据走一遍流式处理，这个时候数据具体存在的节点已经不是集群中的datanode，一般是数据计算引擎主动去消息队列拉取数据，所以此时就是数据向计算移动</p>
+<p>Spark 与Flink的区别：</p>
+<p>spark的shuffle过程是采用下游stage主动拉取上游stage的结果数据，pull模式</p>
+<p>Flink是将上游结果数据主动推给下游的处理节点，push模式，所以它在处理流式数据的时候更加有效，更像是水流一样流畅</p>
+</blockquote>
+</li>
+</ul>
+<p>Resilient  - 弹性：支持数据结果cache，checkpoint，可以很高效的自定义不同的缓存点，加速任务的执行效率</p>
+<p>Distributed  - 分布式：所有用户编写的程序都不是在Driver运行(local模式除外)，都是在集群中的executor上运行的，对全量数据集进行分区处理，可以在大量的executor节点上进行并行处理</p>
+<p>Dataset  - 数据集：支持数据集的所有操作，针对RDD的操作，实际上就和针对于一个本地的数据集操作那么简单，直观。支持的操作比如下面所示：</p>
+<p><img src="/images/image-20210531104119809.png" alt="image-20210531104119809"></p>
+<p>DataSet采用的是基于迭代器模式的丰富实现模式可以有比较直观的了解。</p>
+<p>Resilient  和Distributed  需要结合SparkContext讲解，这里面的内容更加复杂，就先不讲解了。</p>
+<h2 id="Iterator模式"><a href="#Iterator模式" class="headerlink" title="Iterator模式"></a>Iterator模式</h2><p>什么是迭代器模式，迭代器本身不包含数据，它包含的访问数据的方式，它主要有两个方法<code>hasNext</code>和<code>next</code>方法。</p>
+<p><code>hasNext</code>用来询问集合中是否还有数据可供访问，<code>next</code>用来实际获取数据，使用迭代器模式，可以做到，数据从始至终只有一份(中间过程中被cache的不算)。</p>
+<h3 id="scala版本的迭代器模式"><a href="#scala版本的迭代器模式" class="headerlink" title="scala版本的迭代器模式"></a>scala版本的迭代器模式</h3><p>使用scala编写了一段<code>wordcount</code>的代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestIterator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> listStr = <span class="type">List</span>(</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello msb"</span>,</span><br><span class="line">      <span class="string">"good idea"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> flatMap: <span class="type">List</span>[<span class="type">String</span>] = listStr.flatMap((x: <span class="type">String</span>) =&gt; x.split(<span class="string">" "</span>))</span><br><span class="line">    flatMap.foreach(println)</span><br><span class="line">    <span class="keyword">val</span> mapList: <span class="type">List</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = flatMap.map((_, <span class="number">1</span>))</span><br><span class="line">    mapList.foreach(println)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析一下上面程序的执行过程：</p>
+<ol>
+<li>创建listStr对象</li>
+<li>listStr调用flatMap，作用是将listStr的每个元素使用空格分隔，然后<code>合并</code>成一个大的list</li>
+<li>继续调用map，将每个元素<code>转换</code>成一个[String,Int]的二元组</li>
+<li>打印结果</li>
+</ol>
+<p>以上代码有一个致命的问题：在数据量非常的的时候，会急剧的消耗内存空间。为什么？简单分析下：第一步空间复杂度为O(N)，第二步又生成了一个全新的List[String]对象，又是O(N)的空间复杂度，第三步中又生成了一个List[(String,Int)]对象，空间复杂度依然是O(N)。通过分析可知，在数据统计的过程中，貌似并没有必要将中间过程的数据存储下来，不但占用空间，还没有任何用处。</p>
+<p>于是，我们想到了一种设计模式-迭代器模式。迭代器模式在内部维护了一个指针，实际上并不会存储数据，在遍历数据集的时候，不断的消耗当前指针。</p>
+<p><strong>现在开始复习一下迭代器模式</strong></p>
+<p>迭代器一定有两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123; <span class="comment">//Element E //Type T //Key K //Value V</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;  <span class="comment">// 是否还有下一个元素</span></span><br><span class="line"></span><br><span class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>;  <span class="comment">// 获取下一个元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>集合类一定有一个返回迭代器的函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(E o)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Iterator <span class="title">iterator</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体的集合类实现Collection接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Collection</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    E[] objects = (E[]) <span class="keyword">new</span> Object[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(E o)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index == objects.length) &#123;</span><br><span class="line">            E[] newObjects = (E[]) <span class="keyword">new</span> Object[objects.length * <span class="number">2</span>];</span><br><span class="line">            System.arraycopy(objects, <span class="number">0</span>, newObjects, <span class="number">0</span>, objects.length);</span><br><span class="line">            objects = newObjects;</span><br><span class="line">        &#125;</span><br><span class="line">        objects[index] = o;</span><br><span class="line">        index++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayListIterator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayListIterator</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> currentIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (currentIndex &gt;= index) <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            E o = (E) objects[currentIndex];</span><br><span class="line">            currentIndex++;</span><br><span class="line">            <span class="keyword">return</span> o;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以发现，迭代器中不会存数据，只是保存了一个指针，指向当前遍历到了哪一个索引，只有真正开始遍历的时候，指针才会开始移动，并且没有回退的方法，即迭代器只能遍历一次(另有设计的除外)。</p>
+<p><strong>解决方案</strong></p>
+<p>使用迭代器实现上面的功能</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestIterator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> listStr = <span class="type">List</span>(</span><br><span class="line">      <span class="string">"hello world"</span>,</span><br><span class="line">      <span class="string">"hello msb"</span>,</span><br><span class="line">      <span class="string">"good idea"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> iter: <span class="type">Iterator</span>[<span class="type">String</span>] = listStr.iterator <span class="comment">//什么是迭代器，为什么会有迭代器模式？  迭代器里不存数据！</span></span><br><span class="line">    <span class="keyword">val</span> iterFlatMap = iter.flatMap((x: <span class="type">String</span>) =&gt; x.split(<span class="string">" "</span>))</span><br><span class="line">    <span class="comment">//    iterFlatMap.foreach(println)  // 中途不能打印，否则后续就读取不到数据了</span></span><br><span class="line">    <span class="keyword">val</span> iterMapList = iterFlatMap.map((_, <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">while</span> (iterMapList.hasNext) &#123;</span><br><span class="line">      <span class="keyword">val</span> tuple: (<span class="type">String</span>, <span class="type">Int</span>) = iterMapList.next()</span><br><span class="line">      println(tuple)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//1.listStr真正的数据集，有数据的</span></span><br><span class="line">    <span class="comment">//2.iter.flatMap  没有发生计算，返回了一个新的迭代器</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析：基于迭代器的方案中，除了listStr中存储了数据，中间的过程中只有计算逻辑没有存储数据(faltMap会有一点少少的数据缓冲存储)。这和spark中的算子的思想一样啊，也可以说spark是借鉴了迭代器的编程模式。</p>
+<ul>
+<li>Spark的transformation算子：类比这里的flatMap/map</li>
+<li>Spark的action算子：类比这里的foreach</li>
+</ul>
+<p>关于scala中flatMap、map、foreach的过程分析</p>
+<p><img src="/images/scala_iterator.jpg" alt="scala_iterator源码分析图"></p>
+<ol>
+<li><p>iter = listStr.iterator</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iterator</span></span>: <span class="type">Iterator</span>[<span class="type">A</span>] = <span class="keyword">new</span> <span class="type">AbstractIterator</span>[<span class="type">A</span>] &#123;</span><br><span class="line">  <span class="keyword">var</span> these = self</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span></span>: <span class="type">Boolean</span> = !these.isEmpty</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">next</span></span>(): <span class="type">A</span> =</span><br><span class="line">    <span class="keyword">if</span> (hasNext) &#123;</span><br><span class="line">      <span class="keyword">val</span> result = these.head; these = these.tail; result</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="type">Iterator</span>.empty.next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>iterator返回的是一个AbstractIterator对象，重写了hasNext和next函数：</p>
+<ul>
+<li>hasNext：调用listStr的isEmpty方法，如果为空则返回false</li>
+<li>next：<ul>
+<li>先检测是否有元素，有的话返回listStr的头结点，并且移动these到剩余部分的头部；</li>
+<li>否则返回空。按理说不会为空，因为都是先判断了hasNext为true才会调用next</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>iterFlatMap = iter.flatMap((x:String) =&gt; x.split(“ “))</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatMap</span></span>[<span class="type">B</span>](f: <span class="type">A</span> =&gt; <span class="type">GenTraversableOnce</span>[<span class="type">B</span>]): <span class="type">Iterator</span>[<span class="type">B</span>] = <span class="keyword">new</span> <span class="type">AbstractIterator</span>[<span class="type">B</span>] &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">var</span> cur: <span class="type">Iterator</span>[<span class="type">B</span>] = empty</span><br><span class="line">  <span class="keyword">private</span> <span class="function"><span class="keyword">def</span> <span class="title">nextCur</span></span>() &#123; cur = f(self.next()).toIterator &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span></span>: <span class="type">Boolean</span> = &#123;</span><br><span class="line">    <span class="comment">// Equivalent to cur.hasNext || self.hasNext &amp;&amp; &#123; nextCur(); hasNext &#125;</span></span><br><span class="line">    <span class="comment">// but slightly shorter bytecode (better JVM inlining!)</span></span><br><span class="line">    <span class="keyword">while</span> (!cur.hasNext) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!self.hasNext) <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">      nextCur()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">next</span></span>(): <span class="type">B</span> = (<span class="keyword">if</span> (hasNext) cur <span class="keyword">else</span> empty).next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>flatMap返回的也是一个AbstractIterator，也重写了hasNext和next函数：</p>
+<ul>
+<li><p>它在这里维护了一个cur的小迭代器，之所以说小，是因为它会缓存上一个调用节点的一条记录经过f处理之后的结果</p>
+</li>
+<li><p>hasNext：<strong>重点看这个函数</strong></p>
+<ul>
+<li>这里会先判断cur是否有元素，有的话直接返回true；</li>
+<li>否则的话，调用父类的hasNext，判断是否还有值，没有的话，返回false；</li>
+<li>否则的话调用父类的next获取一条新的记录，并交给处理函数f处理，处理完之后交给cur缓存起来</li>
+</ul>
+</li>
+<li>next：如果有值，则直接从cur中取值，而且永远都只从cur中取值</li>
+</ul>
+</li>
+<li><p>iterMapList = iterFlatMap.map((_, 1))</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map</span></span>[<span class="type">B</span>](f: <span class="type">A</span> =&gt; <span class="type">B</span>): <span class="type">Iterator</span>[<span class="type">B</span>] = <span class="keyword">new</span> <span class="type">AbstractIterator</span>[<span class="type">B</span>] &#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">hasNext</span> </span>= self.hasNext</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">next</span></span>() = f(self.next())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>map返回的也是一个AbstractIterator，也重写了hasNext和next函数，不过他这里的逻辑比较简单了，因为map只是完成了一个映射的过程</p>
+</li>
+<li><p>iterMapList.foreach(println)</p>
+<p>打印收工。</p>
+</li>
+</ol>
+<h3 id="通过解析spark的wordcount程序理解迭代器模式"><a href="#通过解析spark的wordcount程序理解迭代器模式" class="headerlink" title="通过解析spark的wordcount程序理解迭代器模式"></a>通过解析spark的wordcount程序理解迭代器模式</h3><p>以下是最精简的一个spark的入门程序代码：统计一个文件的单词数量</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>()</span><br><span class="line">conf.setAppName(<span class="string">"wordcount"</span>)</span><br><span class="line">conf.setMaster(<span class="string">"local"</span>) <span class="comment">//单击本地运行</span></span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> fileRDD: <span class="type">RDD</span>[<span class="type">String</span>] = sc.textFile(<span class="string">"testdata.txt"</span>)</span><br><span class="line">fileRDD.flatMap(  _.split(<span class="string">" "</span>) ).map((_,<span class="number">1</span>)).reduceByKey(  _+_   ).foreach(println)</span><br></pre></td></tr></table></figure>
+<p>下面根据这个程序详细解读一下spark的执行原理：</p>
+<p>行1-4创建上下文对象</p>
+<p>行6创建第一个rdd</p>
+<p>行7通过pipeline的<code>api方式</code>组装我们的业务逻辑</p>
+<p>主要解读行6和行的7所发生的事情</p>
+<ul>
+<li><p>sc.textFile(“testdata.txt”)</p>
+<p>Read a text file from HDFS, a local file system (available on all nodes), or any Hadoop-supported file system URI, and return it as an RDD of Strings.</p>
+<p>得到一个HadoopRDD，贴源的RDD，可以用来读取数据，它会返回一个数据源的iterator</p>
+</li>
+<li><p>flatMap</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatMap</span></span>[<span class="type">U</span>: <span class="type">ClassTag</span>](f: <span class="type">T</span> =&gt; <span class="type">TraversableOnce</span>[<span class="type">U</span>]): <span class="type">RDD</span>[<span class="type">U</span>] = withScope &#123;</span><br><span class="line">   <span class="keyword">val</span> cleanF = sc.clean(f)</span><br><span class="line">   <span class="keyword">new</span> <span class="type">MapPartitionsRDD</span>[<span class="type">U</span>, <span class="type">T</span>](<span class="keyword">this</span>, (context, pid, iter) =&gt; iter.flatMap(cleanF))</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>flatMap会返回一个MapPartitionsRDD，他的构造方法中有两个参数：this和一个func，this表示当前对象，func是一个新的函数，它调包装了我们传递进去的函数，这其实就是一个闭包，最终这个函数是作用在一个本地(executor上)的scala的iterator上</p>
+<blockquote>
+<p>这里还有一个函数调用<code>sc.clean(f)</code>，这里就是我们上面所说的闭包检查，因为spark程序是一个分布式的，我们这里定义的函数实际上并不是在我们的这台机器上运行的，而是会在集群中的任意Executor上运行，所以spark就需要将其序列化然后传输到其他的Executor上，然后在Executor上在反序列化出来执行，如果你传递的f不能够被序列化，那么就会抛出一个异常<code>org.apache.spark.SparkException: Task not serializable</code>，程序直接退出。</p>
+<p>clean的过程需要做的事情如下：</p>
+<ol>
+<li>removes unreferenced variables in $outer’s，去除未被使用的变量</li>
+<li>updates REPL variables，直接填充计算结果</li>
+</ol>
+<p>所以如果你定义的一些f，引用了map外部不可序列化的对象就会报不可序列化的异常。</p>
+<p>关于闭包的知识点可以看下这个文章：<a href="https://blog.csdn.net/qq_26838315/article/details/114700368" target="_blank" rel="noopener">https://blog.csdn.net/qq_26838315/article/details/114700368</a></p>
+</blockquote>
+</li>
+<li><p>map</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map</span></span>[<span class="type">U</span>: <span class="type">ClassTag</span>](f: <span class="type">T</span> =&gt; <span class="type">U</span>): <span class="type">RDD</span>[<span class="type">U</span>] = withScope &#123;</span><br><span class="line">   <span class="keyword">val</span> cleanF = sc.clean(f)</span><br><span class="line">   <span class="keyword">new</span> <span class="type">MapPartitionsRDD</span>[<span class="type">U</span>, <span class="type">T</span>](<span class="keyword">this</span>, (context, pid, iter) =&gt; iter.map(cleanF))</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>同理如上</p>
+</li>
+<li><p>reduceByKey</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reduceByKey</span></span>(partitioner: <span class="type">Partitioner</span>, func: (<span class="type">V</span>, <span class="type">V</span>) =&gt; <span class="type">V</span>): <span class="type">RDD</span>[(<span class="type">K</span>, <span class="type">V</span>)] = self.withScope &#123;</span><br><span class="line">   combineByKeyWithClassTag[<span class="type">V</span>]((v: <span class="type">V</span>) =&gt; v, func, func, partitioner)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>reduceByKey，是一个聚合类的算子，会引发shuffle行为，它内部实际上是调用了combineByKey，了解过hadoop的MR程序的话，我们就会知道，combine在MR中是一项优化点，即会在map端进行数据的预聚合，可以减少需要网络传输的数据量，极大程度的减少带宽的使用，提高效率。</p>
+<p>reduce操作，需要考虑三种情况</p>
+<ol>
+<li>第一条数据怎么放</li>
+<li>后续数据怎么放</li>
+<li>在大数据量的情况下，必然会发生数据溢写，那么就会涉及溢写数据的合并</li>
+</ol>
+<p>所以combineByKey需要三个函数，分别对应以上三种情况</p>
+<ol>
+<li><p>createCombiner: V =&gt; C</p>
+<p>V是输入的原始数据类型，C是输出数据类型。可见，我们可以对数据做一些变换操作</p>
+</li>
+<li><p>mergeValue: (C, V) =&gt; C</p>
+<p>V是输入的原始数据类型，C是输出数据类型。这个函数的第一个参数是已经聚合过的历史结果，第二个参数是新进来的数据，最终输出一个结果</p>
+</li>
+<li><p>mergeCombiners: (C, C) =&gt; C</p>
+<p>这里是对溢写文件的合并，所以数据类型都是输出的数据类型。</p>
+</li>
+</ol>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">combineByKeyWithClassTag</span></span>[<span class="type">C</span>](</span><br><span class="line">     createCombiner: <span class="type">V</span> =&gt; <span class="type">C</span>,</span><br><span class="line">     mergeValue: (<span class="type">C</span>, <span class="type">V</span>) =&gt; <span class="type">C</span>,</span><br><span class="line">     mergeCombiners: (<span class="type">C</span>, <span class="type">C</span>) =&gt; <span class="type">C</span>,</span><br><span class="line">     partitioner: <span class="type">Partitioner</span>,</span><br><span class="line">     mapSideCombine: <span class="type">Boolean</span> = <span class="literal">true</span>,</span><br><span class="line">     serializer: <span class="type">Serializer</span> = <span class="literal">null</span>)(<span class="keyword">implicit</span> ct: <span class="type">ClassTag</span>[<span class="type">C</span>]): <span class="type">RDD</span>[(<span class="type">K</span>, <span class="type">C</span>)] = self.withScope &#123;</span><br><span class="line">     <span class="keyword">new</span> <span class="type">ShuffledRDD</span>[<span class="type">K</span>, <span class="type">V</span>, <span class="type">C</span>](self, partitioner)</span><br><span class="line">       .setSerializer(serializer)</span><br><span class="line">       .setAggregator(aggregator)</span><br><span class="line">       .setMapSideCombine(mapSideCombine)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里就需要区分reduceByKey与groupByKey的区别了。</p>
+<p>groupByKey底层也是调用的combineByKeyWithClassTag，但是把mapSideCombine参数设置为了false，即默认不开启map的预聚合</p>
+</blockquote>
+</li>
+<li><p>foreach</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foreach</span></span>(f: <span class="type">T</span> =&gt; <span class="type">Unit</span>): <span class="type">Unit</span> = withScope &#123;</span><br><span class="line">  <span class="keyword">val</span> cleanF = sc.clean(f)</span><br><span class="line">  sc.runJob(<span class="keyword">this</span>, (iter: <span class="type">Iterator</span>[<span class="type">T</span>]) =&gt; iter.foreach(cleanF))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>action算子，调用runJob提交Job，触发计算逻辑</p>
+</li>
+</ul>
+<p>从这个过程中可以发现，我们每次调用的算子，并不会触发计算，而是创建了一个个的RDD对象，直到我们调用了action算子。</p>
+<p><img src="/images/image-20210601120513748.png" alt="image-20210601120513748"></p>
+<p>简单介绍一下上面这幅图：</p>
+<p>这幅图一共有两个层次：</p>
+<p>第一层：api层</p>
+<p>api层就是spark暴露给我们的编程接口，也就是我们平时所写的rdd.map.filter.flatMap等等，请注意，我们这里写的这些只是向spark声明了一系列的依赖关系以及，我们想在job运行时对每条数据实施的具体操作，在这个时候，spark并不会立刻去执行我们的逻。</p>
+<p>第二层：pipeline层</p>
+<p>这里是spark依据我们组装的业务逻辑，在底层构造的一条完整的数据管道，当遇到action算子，触发了runJob，那么spark就会把以上所有的逻辑分发到集群的Executor节点上，这个时候，数据处理的逻辑才真正的开始运行</p>
+<h2 id="宽窄依赖"><a href="#宽窄依赖" class="headerlink" title="宽窄依赖"></a>宽窄依赖</h2><p>Dependency</p>
+<ul>
+<li><p>NarrowDependency - 窄依赖</p>
+<ul>
+<li><p>OneToOneDependency</p>
+<p>分区的对应关系，上游RDD的分区一一映射到下游RDD</p>
+<p>RDD的数量不变</p>
+<p>常见操作：map，filter</p>
+</li>
+<li><p>RangeDependency</p>
+<p>上游RDD和下游RDD的对应关系是多对一，分区总数不变，常见操作：union</p>
+<p>上游多个RDD的分区形成下游的一个分区，常见操作：coalesce</p>
+</li>
+</ul>
+</li>
+<li><p>ShuffleDependency - 宽依赖</p>
+<ul>
+<li>下游RDD的分区数据来自于上游RDD所有分区的部分数据<ul>
+<li>一个RDD：分组聚合操作</li>
+<li>多个RDD形成一个RDD：join</li>
+<li>对某个RDD手动分区：repartition</li>
+</ul>
+</li>
+<li>shuffle：实际上就是人类惯用的思考模式，你的数据是否需要按照一个key为一组进行操作。<ul>
+<li>包括统计相同key的记录数、最大最小等聚合指标</li>
+<li>做数据的关联-将相同key的数据放到一起考虑</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/image-20210531103244533.png" alt="image-20210531103244533"></p>
+<h2 id="Partition"><a href="#Partition" class="headerlink" title="Partition"></a>Partition</h2><p>什么是分区？分区有什么作用(并行度)，分区与Task的关系</p>
+<p>分区是spark并行计算的核心，也就是说不同分区的数据可以并行的被处理，提高执行效率。</p>
+<p>一个分区对应了一个具体的可执行的task，这里所说的并行处理，实际上就是多个thread并发的进行</p>
+<p>分区与文件的关系?</p>
+<p>初始分区数貌似是不确定的，他会根据原始数据文件的大小，DataFrame和Dataset的api是经过<a href="https://databricks.com/glossary/catalyst-optimizer" target="_blank" rel="noopener">Catalyst optimizer</a>优化的，所以初始分区数是经过优化计算得来的。这一般不是我们所担心的。</p>
+<p>什么时候需要重分区？</p>
+<p>遇到shuffle的时候，就会进行重分区</p>
+<p>手动进行重分区，以希望能解决数据倾斜，</p>
+<p>手动进行重分区，以希望减少输出的文件数</p>
+<p>什么是shuffle，shuffle的本质是什么？</p>
+<p>shuffle是是在计算过程中，对数据按照某种规则进行混洗的过程，他的目标是将具有相同特征的数据集中到一起，以便于对他们进行聚合以及关联等操作</p>
+<p>本质其实就是根据某种策略进行重分区，这里的策略最多的就是根据特定字段进行hash取模，计算出每一条记录应该属于的分区号</p>
+<p>重分区的操作有哪些：repartition&amp;coalesce，他们之间有什么差异？什么时候该用repartition，什么时候该用coalesce？</p>
+<blockquote>
+<p>此处的coalesce与functions中的coalesce是不一样的哦</p>
+</blockquote>
+<p>可以参考<a href="#coalesce导致的内存溢出">coalesce导致的内存溢出</a>这里的回答</p>
+<p>具体案例分析：</p>
+<p>不对原始数据源做任务处理，或者做一些映射类的处理，直接写入目标路径，会产生多少文件？如果有分区字段，会产生多少文件？小文件数很多对于集群会有怎样的影响？如何减少小文件的数量？</p>
+<ol>
+<li>结果文件数和原始分区数是一样的</li>
+<li>每个分区的文件数都会和原始分区数是一样的</li>
+<li>针对于HDFS来说，小文件太多会对NameNode节点造成较大的压力，因为NameNode节点需要管理集群文件块的元数据。同时刷新hive matestore的效率也会变慢</li>
+<li>可以使用我们上面说的重分区操作，那么具体使用repartition还是coalesce还是需要视具体情况而定的。如果要进行重分区的dataframe前面已经经过了，coalesce是某些情况下效率较repartition要高。</li>
+</ol>
+<h2 id="RDD与DataFrame-DataSet-的区别是什么"><a href="#RDD与DataFrame-DataSet-的区别是什么" class="headerlink" title="RDD与DataFrame[DataSet]的区别是什么"></a>RDD与DataFrame[DataSet]的区别是什么</h2><p>RDD处理的数据都是没有具体schema的，较为底层，基于RDD开发就必须要非常清楚每次要处理的那一条记录的每个位置的数据的含义是什么</p>
+<p>DataFrame或者DataSet是有具体schema的RDD的实现，它基于RDD的基础之上给我们提供了更加友好的使用RDD的方式，它在底层的数据与具体的schema之间做了一个转化，让用户在使用的时候看到的是具体schema信息，使用者可以不用操心每次操作数据还要担心我要处理的当前字段的含义是否是我所需要的。</p>
+<h1 id="【讲】Spark框架"><a href="#【讲】Spark框架" class="headerlink" title="【讲】Spark框架"></a><font color="red">【讲】</font>Spark框架</h1><h2 id="几个角色"><a href="#几个角色" class="headerlink" title="几个角色"></a>几个角色</h2><p>资源层：Master、Worker<br>计算层：Client、Driver、Executor</p>
+<p>存储层：Hdfs或者S3     <img src="/images/image-20210506095928300.png" alt="image-20210506095928300"></p>
+<h2 id="部署模式"><a href="#部署模式" class="headerlink" title="部署模式"></a>部署模式</h2><h3 id="standalone"><a href="#standalone" class="headerlink" title="standalone"></a>standalone</h3><p>master、worker  主从架构 - 主要是负责资源调度<br>只支持client模式：Driver运行在本地 - main方法运行在本地 - client与Driver都在本地</p>
+<h3 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h3><p>hdfs：NameNode、DataNode</p>
+<p>ResourceManager、NodeManager、ApplicationMaster<br>spark的所有角色都是运行在NodeManager上，每个角色实际上就是一个JVM进程，所有进程都是运行在NodeManager节点上的Container里面</p>
+<p>Container是对一组资源的抽象，包括内存、CPU、磁盘，网络等资源，但是没有做到CPU的隔离，所有进程都是共享的宿主机的CPU<br>appMaster(Container)-Driver、Executor(Container)<br>利用yarn的资源调度简化了spark自身的职能，master不需要自己维护集群中的资源使用情况，只负责接收client提交的任务</p>
+<p>yarn是一个通用的资源调度平台，很多应用都可以运行在yarn上，因此，yarn管理的集群资源是一种更加广泛的资源，不止spark这一种应用所占用的资源。这样一来可以更加充分的利用整个集群的资源。<br>同理一些其他的资源调度平台，如k8s等也是一样的道理</p>
+<p>支持client和cluster模式<br>cluster：Driver会运行在急群众的任意一个节点上 - client在执行spark-submit的节点 - 这种模式无法进行打印形式的debug，除非集群中可以看到运行Driver的那个节点的日志</p>
+<h3 id="k8s-amp-Mesos"><a href="#k8s-amp-Mesos" class="headerlink" title="k8s&amp;Mesos"></a>k8s&amp;Mesos</h3><p>略</p>
+<h1 id="Spark中的一些概念"><a href="#Spark中的一些概念" class="headerlink" title="Spark中的一些概念"></a>Spark中的一些概念</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Term</th>
+<th style="text-align:left">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Application</td>
+<td style="text-align:left">User program built on Spark. Consists of a <em>driver program</em> and <em>executors</em> on the cluster.</td>
+</tr>
+<tr>
+<td style="text-align:left">Application jar</td>
+<td style="text-align:left">A jar containing the user’s Spark application. In some cases users will want to create an “uber jar” containing their application along with its dependencies. The user’s jar should never include Hadoop or Spark libraries, however, these will be added at runtime.</td>
+</tr>
+<tr>
+<td style="text-align:left">Driver program</td>
+<td style="text-align:left">The process running the main() function of the application and creating the SparkContext</td>
+</tr>
+<tr>
+<td style="text-align:left">Cluster manager</td>
+<td style="text-align:left">An external service for acquiring resources on the cluster (e.g. standalone manager, Mesos, YARN)</td>
+</tr>
+<tr>
+<td style="text-align:left">Deploy mode</td>
+<td style="text-align:left">Distinguishes where the driver process runs. In “cluster” mode, the framework launches the driver inside of the cluster. In “client” mode, the submitter launches the driver outside of the cluster.</td>
+</tr>
+<tr>
+<td style="text-align:left">Worker node</td>
+<td style="text-align:left">Any node that can run application code in the cluster</td>
+</tr>
+<tr>
+<td style="text-align:left">Executor</td>
+<td style="text-align:left">A process launched for an application on a worker node, that runs tasks and keeps data in memory or disk storage across them. Each application has its own executors.</td>
+</tr>
+<tr>
+<td style="text-align:left">Task</td>
+<td style="text-align:left">A unit of work that will be sent to one executor</td>
+</tr>
+<tr>
+<td style="text-align:left">Job</td>
+<td style="text-align:left">A parallel computation consisting of multiple tasks that gets spawned in response to a Spark action (e.g. <code>save</code>, <code>collect</code>); you’ll see this term used in the driver’s logs.</td>
+</tr>
+<tr>
+<td style="text-align:left">Stage</td>
+<td style="text-align:left">Each job gets divided into smaller sets of tasks called <em>stages</em> that depend on each other (similar to the map and reduce stages in MapReduce); you’ll see this term used in the driver’s logs.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>job+stage+task 是逻辑上的概念</li>
+</ul>
+<p>一个Job会根据rdd的dependency关系被切分成不同的stage(遇到宽依赖就会切分stage)，每个stage会根据分区器(partitioner)并结合系统的并行度计算出对应的分区数，每个分区实际上可以运行一个task，所以一个stage包含了一组task</p>
+<ul>
+<li>executor + thread 是物理上的概念</li>
+</ul>
+<p>具体的task是运行在executor上的一个线程上，所以我们设置的一个executor的cores决定了每个executor最多可以并行多少个thread，也就是并行多少个task</p>
+<p><img src="/images/image-20210601121530393.png" alt="image-20210601121530393"></p>
+<p>所以我们才能在spark的web ui的Executors一栏中看到如上图的表示：我们会发现有两列 Cores和Active Tasks，就是对应了我上面说的那句话。</p>
+<h1 id="Spark2-4新特性"><a href="#Spark2-4新特性" class="headerlink" title="Spark2.4新特性"></a>Spark2.4新特性</h1><p>spark2.4新增了一些特性，可以让spark SQL更加灵活使用，可以从<a href="https://spark.apache.org/docs/latest/api/sql/index.html#built-in-functions" target="_blank" rel="noopener">官网文档</a>上搜索<code>Since: 2.4.0</code>，下面罗列一些</p>
+<ul>
+<li>array<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_sort" target="_blank" rel="noopener">array_sort</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_union" target="_blank" rel="noopener">array_union</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#arrays_overlap" target="_blank" rel="noopener">arrays_overlap</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#arrays_zip" target="_blank" rel="noopener">arrays_zip</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_distinct" target="_blank" rel="noopener">array_distinct</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_except" target="_blank" rel="noopener">array_except</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_intersect" target="_blank" rel="noopener">array_intersect</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_join" target="_blank" rel="noopener">array_join</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_max" target="_blank" rel="noopener">array_max</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_min" target="_blank" rel="noopener">array_min</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_position" target="_blank" rel="noopener">array_position</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_remove" target="_blank" rel="noopener">array_remove</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#array_repeat" target="_blank" rel="noopener">array_repeat</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#exists" target="_blank" rel="noopener">exists</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#filter" target="_blank" rel="noopener">filter</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#flatten" target="_blank" rel="noopener">flatten</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#shuffle" target="_blank" rel="noopener">shuffle</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#slice" target="_blank" rel="noopener">slice</a></li>
+</ul>
+</li>
+<li>array&amp;map<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#element_at" target="_blank" rel="noopener">element_at</a></li>
+</ul>
+</li>
+<li>map<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#map_concat" target="_blank" rel="noopener">map_concat</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#map_from_arrays" target="_blank" rel="noopener">map_from_arrays</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#map_from_entries" target="_blank" rel="noopener">map_from_entries</a></li>
+</ul>
+</li>
+<li>sequence<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#sequence" target="_blank" rel="noopener">sequence</a></li>
+</ul>
+</li>
+<li>lambda<ul>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#transform" target="_blank" rel="noopener">transform</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#zip_with" target="_blank" rel="noopener">zip_with</a></li>
+<li><a href="https://spark.apache.org/docs/latest/api/sql/index.html#aggregate" target="_blank" rel="noopener">aggregate</a>：这个函数很有用，我们发现新特性里面并没有提供array_sum的方法，使用这个方法就可以实现😃</li>
+</ul>
+</li>
+</ul>
+<p>以上这些新的特性，在使用的时候非常方便，大家可以在自己的应用场景下尽可能的尝试，有些函数组合起来可以产生很强大的效果哦。比如，下面是一个组合使用<code>sequence</code>、<code>transform</code>、<code>explode</code>方法实现的一个自动生成日期序列的方式。</p>
+<p>在某些场景下非常好用：系统中没有日期表，但是我们又需要一个日期序列来进行类似于<code>cross join</code>的操作，可以直接通过这些新特性直接实现。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- schema:</span></span><br><span class="line"><span class="comment">-- date: 日期</span></span><br><span class="line"><span class="comment">-- year: 年份</span></span><br><span class="line"><span class="comment">-- month: 月份</span></span><br><span class="line"><span class="comment">-- week1: 周的第一天(start from Monday)</span></span><br><span class="line"><span class="comment">-- week2: 周的第一天(start from Sunday)</span></span><br><span class="line"><span class="comment">-- quarter: 季度</span></span><br><span class="line"><span class="comment">-- today: 今天的day_of_month</span></span><br><span class="line"><span class="comment">-- is_curr_month: 是否为当月</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- day 维度</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    <span class="built_in">date</span>[<span class="number">0</span>] <span class="built_in">date</span>, <span class="built_in">date</span>[<span class="number">1</span>] <span class="keyword">year</span>, <span class="built_in">date</span>[<span class="number">2</span>] <span class="keyword">month</span>, <span class="built_in">date</span>[<span class="number">3</span>] week1, <span class="built_in">date</span>[<span class="number">4</span>] <span class="keyword">quarter</span>, <span class="built_in">date</span>[<span class="number">5</span>] week2</span><br><span class="line">    , <span class="built_in">date</span>[<span class="number">6</span>] next_month, <span class="built_in">date</span>[<span class="number">7</span>] last_month, <span class="built_in">date</span>[<span class="number">8</span>] today, <span class="built_in">date</span>[<span class="number">9</span>] is_curr_month</span><br><span class="line"><span class="keyword">from</span>  (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        <span class="keyword">explode</span>(</span><br><span class="line">            transform(</span><br><span class="line">                <span class="keyword">sequence</span>(</span><br><span class="line">                    <span class="keyword">date_sub</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>), <span class="number">7</span> * <span class="number">52</span> + <span class="keyword">dayofweek</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)) - <span class="number">1</span>), </span><br><span class="line">                    <span class="keyword">date_add</span>(<span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)), <span class="number">-1</span>), </span><br><span class="line">                    <span class="built_in">interval</span> <span class="number">1</span> <span class="keyword">day</span></span><br><span class="line">                ), x -&gt; <span class="built_in">array</span>(</span><br><span class="line">                    x, </span><br><span class="line">                    <span class="keyword">to_date</span>(date_trunc(<span class="string">'YEAR'</span>, x)), </span><br><span class="line">                    <span class="keyword">to_date</span>(date_trunc(<span class="string">'MM'</span>, x)), </span><br><span class="line">                    <span class="keyword">to_date</span>(date_trunc(<span class="string">'WEEK'</span>, x)), </span><br><span class="line">                    <span class="keyword">to_date</span>(date_trunc(<span class="string">'QUARTER'</span>, x)), </span><br><span class="line">                    <span class="keyword">to_date</span>(<span class="keyword">date_sub</span>(next_day(x, <span class="string">'Sun'</span>), <span class="number">7</span>)),</span><br><span class="line">                    add_months(<span class="keyword">to_date</span>(date_trunc(<span class="string">'MM'</span>, x)), <span class="number">1</span>),</span><br><span class="line">                    add_months(<span class="keyword">to_date</span>(date_trunc(<span class="string">'MM'</span>, x)), <span class="number">-1</span>),</span><br><span class="line">                    <span class="keyword">string</span>(<span class="keyword">day</span>(<span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)))),</span><br><span class="line">                    <span class="keyword">string</span>(<span class="keyword">to_date</span>(date_trunc(<span class="string">'MM'</span>, x))==date_trunc(<span class="string">'MM'</span>, <span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>))))</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        ) <span class="built_in">date</span></span><br><span class="line">) tmp</span><br><span class="line"></span><br><span class="line"><span class="comment">-- week 维度</span></span><br><span class="line">        <span class="keyword">SELECT</span> <span class="keyword">EXPLODE</span>(</span><br><span class="line">            <span class="keyword">SEQUENCE</span>(</span><br><span class="line">                <span class="keyword">date_sub</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>), <span class="number">60</span>),</span><br><span class="line">                <span class="keyword">date_add</span>(<span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)), <span class="number">-1</span>), </span><br><span class="line">                <span class="built_in">INTERVAL</span> <span class="number">1</span> <span class="keyword">WEEK</span></span><br><span class="line">            )</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="comment">-- month 维度</span></span><br><span class="line"><span class="keyword">select</span> tmp.d[<span class="number">0</span>] <span class="built_in">date</span> <span class="keyword">from</span> (</span><br><span class="line">        <span class="keyword">SELECT</span> <span class="keyword">EXPLODE</span>(</span><br><span class="line">            transform(</span><br><span class="line">                <span class="keyword">SEQUENCE</span>(</span><br><span class="line">                    <span class="keyword">to_date</span>(<span class="string">'2018-09-30'</span>),</span><br><span class="line">                    add_months(<span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)), <span class="number">1</span>), </span><br><span class="line">                    <span class="built_in">INTERVAL</span> <span class="number">1</span> <span class="keyword">MONTH</span></span><br><span class="line">                ), x -&gt; <span class="built_in">array</span>(</span><br><span class="line">                    <span class="keyword">if</span>(date_trunc(<span class="string">'MM'</span>, x)=date_trunc(<span class="string">'MM'</span>, <span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>))), <span class="keyword">date_add</span>(<span class="keyword">to_date</span>(from_utc_timestamp(<span class="keyword">now</span>(), <span class="string">'Asia/Jakarta'</span>)), <span class="number">-1</span>), x)</span><br><span class="line">                )</span><br><span class="line">            )</span><br><span class="line">        ) d</span><br><span class="line">) tmp</span><br></pre></td></tr></table></figure>
+<h1 id="Spark启动参数"><a href="#Spark启动参数" class="headerlink" title="Spark启动参数"></a>Spark启动参数</h1><p>可以通过SparkConf配置参数：</p>
+<ul>
+<li>spark.driver.memory</li>
+<li>spark.executor.memory</li>
+<li>spark.executor.cores</li>
+<li>spark.yarn.executor.memoryOverhead</li>
+<li>spark.executor.memoryOverhead</li>
+<li>spark.sql.shuffle.partitions</li>
+<li>spark.default.parallelism</li>
+<li>spark.port.maxRetries</li>
+<li>spark.sql.legacy.parser.havingWithoutGroupByAsWhere</li>
+<li>spark.maxRemoteBlockSizeFetchToMem</li>
+<li>spark.sql.sources.partitionOverwriteMode</li>
+<li>spark.dynamicAllocation.maxExecutors</li>
+<li>spark.sql.autoBroadcastJoinThreshold</li>
+<li>spark.master</li>
+<li>spark.ui.killEnabled</li>
+</ul>
+<p>spark启动参数的优先级：SparkConf &gt; spark-submit 或 spark-shell &gt;spark-defaults.conf</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/post/Python学习-高级函数/" rel="prev" title="Python学习-高级函数">
+      <i class="fa fa-chevron-left"></i> Python学习-高级函数
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/post/工具使用-markdown文档/" rel="next" title="工具使用-markdown文档">
+      工具使用-markdown文档 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】项目介绍"><span class="nav-number">1.</span> <span class="nav-text">【讲】项目介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式"><span class="nav-number">1.1.</span> <span class="nav-text">设计模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数仓项目"><span class="nav-number">1.2.</span> <span class="nav-text">数仓项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目优化点"><span class="nav-number">1.3.</span> <span class="nav-text">项目优化点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】任务调度"><span class="nav-number">2.</span> <span class="nav-text">【讲】任务调度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spark的Scheduler"><span class="nav-number">2.1.</span> <span class="nav-text">spark的Scheduler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheduling-Across-Applications"><span class="nav-number">2.1.1.</span> <span class="nav-text">Scheduling Across Applications</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheduling-Within-an-Application"><span class="nav-number">2.1.2.</span> <span class="nav-text">Scheduling Within an Application</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#FIFO"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">FIFO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fair-Sharing"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">Fair Sharing</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们的Scheduler"><span class="nav-number">2.2.</span> <span class="nav-text">我们的Scheduler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖管理"><span class="nav-number">2.2.1.</span> <span class="nav-text">依赖管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发控制"><span class="nav-number">2.2.2.</span> <span class="nav-text">并发控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】spark常见的异常处理"><span class="nav-number">3.</span> <span class="nav-text">【讲】spark常见的异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存异常"><span class="nav-number">3.1.</span> <span class="nav-text">内存异常</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spark的内存管理"><span class="nav-number">3.1.1.</span> <span class="nav-text">spark的内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Driver的内存"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">Driver的内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Executor内存"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Executor内存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#spark的内存管理-1"><span class="nav-number">3.1.1.2.1.</span> <span class="nav-text">spark的内存管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见异常"><span class="nav-number">3.1.2.</span> <span class="nav-text">常见异常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#driver内存异常"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">driver内存异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#autoBroadcast导致的Driver内存溢出"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">autoBroadcast导致的Driver内存溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#coalesce导致的内存溢出"><span class="nav-number">3.1.2.3.</span> <span class="nav-text">coalesce导致的内存溢出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据倾斜"><span class="nav-number">3.1.2.4.</span> <span class="nav-text">数据倾斜</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spark的常见优化"><span class="nav-number">4.</span> <span class="nav-text">spark的常见优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#正确使用数据缓存"><span class="nav-number">4.1.</span> <span class="nav-text">正确使用数据缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapjoin"><span class="nav-number">4.2.</span> <span class="nav-text">mapjoin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地化级别"><span class="nav-number">4.3.</span> <span class="nav-text">本地化级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增量计算代替全量计算"><span class="nav-number">4.4.</span> <span class="nav-text">增量计算代替全量计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他代码级别的优化"><span class="nav-number">4.5.</span> <span class="nav-text">其他代码级别的优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何快捷的查看spark的执行计划"><span class="nav-number">5.</span> <span class="nav-text">如何快捷的查看spark的执行计划</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spark中的五种join策略"><span class="nav-number">6.</span> <span class="nav-text">spark中的五种join策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】大数据集的高效处理"><span class="nav-number">7.</span> <span class="nav-text">【讲】大数据集的高效处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#map-vs-mapPartition"><span class="nav-number">7.1.</span> <span class="nav-text">map vs mapPartition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#foreach-vs-foreachPartition"><span class="nav-number">7.2.</span> <span class="nav-text">foreach vs foreachPartition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toLocalIterators"><span class="nav-number">7.3.</span> <span class="nav-text">toLocalIterators</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用spark过程中的一些小Tips"><span class="nav-number">8.</span> <span class="nav-text">使用spark过程中的一些小Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spark中的map-struct-array"><span class="nav-number">8.1.</span> <span class="nav-text">spark中的map-struct-array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark中如何处理json数据"><span class="nav-number">8.2.</span> <span class="nav-text">spark中如何处理json数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何理解import-spark-implicits"><span class="nav-number">8.3.</span> <span class="nav-text">如何理解import spark.implicits._</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#why-create-SparkSession-what-is-SparkSession"><span class="nav-number">8.4.</span> <span class="nav-text">why create SparkSession\what is SparkSession</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窗口函数"><span class="nav-number">8.5.</span> <span class="nav-text">窗口函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的join函数介绍"><span class="nav-number">8.6.</span> <span class="nav-text">常用的join函数介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何调试使用Scala编写的Spark程序"><span class="nav-number">9.</span> <span class="nav-text">如何调试使用Scala编写的Spark程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】Spark的设计原理"><span class="nav-number">10.</span> <span class="nav-text">【讲】Spark的设计原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD"><span class="nav-number">10.1.</span> <span class="nav-text">RDD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Iterator模式"><span class="nav-number">10.2.</span> <span class="nav-text">Iterator模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scala版本的迭代器模式"><span class="nav-number">10.2.1.</span> <span class="nav-text">scala版本的迭代器模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过解析spark的wordcount程序理解迭代器模式"><span class="nav-number">10.2.2.</span> <span class="nav-text">通过解析spark的wordcount程序理解迭代器模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宽窄依赖"><span class="nav-number">10.3.</span> <span class="nav-text">宽窄依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Partition"><span class="nav-number">10.4.</span> <span class="nav-text">Partition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD与DataFrame-DataSet-的区别是什么"><span class="nav-number">10.5.</span> <span class="nav-text">RDD与DataFrame[DataSet]的区别是什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#【讲】Spark框架"><span class="nav-number">11.</span> <span class="nav-text">【讲】Spark框架</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#几个角色"><span class="nav-number">11.1.</span> <span class="nav-text">几个角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署模式"><span class="nav-number">11.2.</span> <span class="nav-text">部署模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#standalone"><span class="nav-number">11.2.1.</span> <span class="nav-text">standalone</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yarn"><span class="nav-number">11.2.2.</span> <span class="nav-text">yarn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k8s-amp-Mesos"><span class="nav-number">11.2.3.</span> <span class="nav-text">k8s&amp;Mesos</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark中的一些概念"><span class="nav-number">12.</span> <span class="nav-text">Spark中的一些概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark2-4新特性"><span class="nav-number">13.</span> <span class="nav-text">Spark2.4新特性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark启动参数"><span class="nav-number">14.</span> <span class="nav-text">Spark启动参数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">王尚</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">194</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">148</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王尚</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+  <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three.min.js"></script>
+    <script defer src="//cdn.jsdelivr.net/gh/theme-next/theme-next-three@1/three-waves.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

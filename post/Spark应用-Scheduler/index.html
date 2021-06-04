@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://shang.at/images/image-20201218111253237.png">
 <meta property="og:image" content="https://shang.at/images/image-20201218111318397.png">
 <meta property="og:image" content="https://shang.at/images/image-20201218111337942.png">
-<meta property="og:updated_time" content="2020-12-18T03:13:45.330Z">
+<meta property="og:updated_time" content="2021-05-07T01:51:09.179Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark应用-Scheduler">
 <meta name="twitter:description" content="Spark任务有四种提交方式：  local standalone yarn(这里着重讲) mesos  这里涉及到两层的任务调度： 第一层：schedule across applications，应用间的任务调度Spark的application提交到yarn平台，yarn平台负责Spark application的调度，这里也分为两层： 第一层：Yarn的队列，Spark applicati">
@@ -204,7 +204,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-18 11:13:45" itemprop="dateModified" datetime="2020-12-18T11:13:45+08:00">2020-12-18</time>
+                <time title="修改时间：2021-05-07 09:51:09" itemprop="dateModified" datetime="2021-05-07T09:51:09+08:00">2021-05-07</time>
               </span>
 
           
@@ -229,7 +229,7 @@
 <h5 id="第一层：schedule-across-applications，应用间的任务调度"><a href="#第一层：schedule-across-applications，应用间的任务调度" class="headerlink" title="第一层：schedule across applications，应用间的任务调度"></a>第一层：schedule across applications，应用间的任务调度</h5><p>Spark的application提交到yarn平台，yarn平台负责Spark application的调度，这里也分为两层：</p>
 <h6 id="第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"><a href="#第一层：Yarn的队列，Spark-application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排" class="headerlink" title="第一层：Yarn的队列，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排"></a>第一层：<a href="https://blog.csdn.net/bingduanlbd/article/details/52000151" target="_blank" rel="noopener">Yarn的队列</a>，Spark application和其他运行在Yarn平台上的应用并无二致，都要统一服从yarn平台的安排</h6><p>yarn有三种任务调度模型：</p>
 <ul>
-<li>FIFO scheduler：先入先出调度器，整个Yarn集群只有一个任务队列，所有提交的任务都要等待上一个任务完全执行完才能执行</li>
+<li>FIFO scheduler：先入先出调度器，整个Yarn集群只有一个任务队列，所有提交的任务都要等待上一个任务完全执行完才能执行，除非集群中有空闲的资源</li>
 </ul>
 <p><img src="/images/image-20201218111253237.png" alt="image-20201218111253237"></p>
 <ul>
@@ -342,7 +342,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">194</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -355,7 +355,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">146</span>
+        <span class="site-state-item-count">148</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
